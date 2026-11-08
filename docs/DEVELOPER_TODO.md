@@ -1,28 +1,49 @@
-# Jobs only the developer can do
+# งานที่คุณต้องทำเอง
 
-Claude keeps working while these wait. Tick them when done and tell Claude.
+ระหว่างรอ Claude ทำงานส่วนอื่นต่อได้ ทำข้อไหนเสร็จแล้วให้ติ๊กช่อง แล้วบอก Claude
 
-## Now (needed for the saves to work in Studio and live)
-- [x] Game Settings -> Security -> **Enable Studio Access to API Services** = on, then Save. (checked 2026-11-08)
-- [ ] Game Settings -> Places / Basic Info: **Max players = 8** (a Studio Play still showed 60: please check and publish).
-- [ ] File -> Publish to Roblox once the milestone 1 test build is ready (the live game uses the published place).
+## ทำตอนนี้ (ให้บันทึกเซฟได้ทั้งในสตูดิโอและในเกมจริง)
+- [x] Game Settings -> Security -> เปิด **Enable Studio Access to API Services** แล้วกด Save (เช็คแล้ว 2026-11-08)
+- [ ] Game Settings -> Places / Basic Info: ตั้ง **จำนวนผู้เล่นสูงสุด (Max players) = 8**
+  (ตอนกดเล่นในสตูดิโอยังขึ้น 60 อยู่ ช่วยเช็คแล้วกดเผยแพร่)
+- [ ] File -> Publish to Roblox (เผยแพร่เกม) เพราะเกมจริงใช้ไฟล์ที่เผยแพร่ล่าสุด
 
-## Later (milestone 2)
-- [ ] Game passes (5) and developer products (12 entries in Config.Products.List: Slots1-3 at rising prices,
-  CashS/M/L/XL, Strength, Luck3, ServerLuck, SummonMythical, Starter) in the group's experience; send the ids and
-  the client's Robux prices. Claude puts them in Config and checks them from outside.
-- [ ] Sound ids: fill the yellow ID column of `docs/Sweetpotato_Sounds.xlsx` (24 sounds + 4 songs incl. the Mythical / Secret event music; Creator Store free audio, blank = silent) and send it back. Claude puts them in Config.Sounds / Config.Music.
-- [ ] Phone test of the HUD and the whole loop, and a test with 2+ players (Test tab -> Clients and Servers -> 2 players):
-  like the other player's pen sign -> toast + faster walking for 5 min; a second like the same day is refused;
-  both fish the same cat (first full bar wins, the other is dropped); hit the carrier with the bat outside the
-  lobby -> the cat drops and they fly; no hits inside the lobby or on someone fishing.
-- [ ] 2-player trade test (milestone 2): Trade -> Ask -> the other taps Accept; put cats in; both Ready -> after 5 s
-  the cats swap and stay after rejoining; changing an offer clears Ready; a locked cat cannot be added; leaving
-  mid-trade cancels it.
-- [ ] Game icon + thumbnails: follow `docs/gpt_store_prompts.md` in ChatGPT (attach the 3 pictures it names), put
-  `icon` and `thumb1`-`thumb4` in `art/source/gpt_store/` and tell Claude (Claude sizes them to 512 x 512 and
-  1920 x 1080). Then upload them in the Creator Dashboard and paste the store description (EN, and TH under
-  Localization) from the same file.
-- [ ] Launch: `docs/LAUNCH_CHECKLIST.md` sections B (8-player / phone / purchase tests), C (Dashboard) and D
-  (launch day, in order). Note: the Studio place no longer has the FreshSave switch (2026-11-08), so Studio
-  Play now writes your real test save; `!reset` it before launch (D3).
+## ทำทีหลัง (งวดที่ 2)
+- [ ] **สร้างของขาย Robux** ในเกมของกลุ่ม แล้วส่งเลข (id) ของแต่ละอันกับราคาที่ลูกค้ายืนยันมาให้ Claude
+  - Game pass 5 อย่าง: x2 Speed, x2 Cash, x2 Strength, Lucky, VIP
+  - สินค้าซื้อซ้ำได้ 12 อย่าง:
+    - เพิ่มช่องคอก +20 ช่อง 3 ขั้น ราคาแพงขึ้นทีละขั้น (Slots1, Slots2, Slots3)
+    - แพ็กเงิน 4 ขนาด (CashS, CashM, CashL, CashXL)
+    - แพ็กพลัง (Strength)
+    - โชค x3 นาน 15 นาที (Luck3)
+    - โชคทั้งเซิร์ฟเวอร์ 15 นาที (ServerLuck)
+    - เรียกแมว Mythical (SummonMythical)
+    - แพ็กเริ่มต้น ซื้อได้ครั้งเดียว (Starter)
+  - Claude จะใส่เลขในเกมและตรวจจากภายนอกให้
+- [ ] **เลือกเสียง:**
+  - เปิดไฟล์ `docs/Sweetpotato_Sounds.xlsx` แล้วใส่เลขเสียงในช่องสีเหลือง (เสียง 24 ช่อง + เพลง 4 ช่อง รวมเพลงตอนแมว Mythical / Secret โผล่)
+  - เลือกเสียงฟรีจาก Toolbox -> Audio ช่องไหนไม่อยากมีเสียงให้เว้นว่าง
+  - เสร็จแล้วส่งไฟล์กลับมา
+- [ ] **ทดสอบบนมือถือและเล่น 2 คนขึ้นไป** (แท็บ Test -> Clients and Servers -> เลือก 2 players -> Start)
+  - กดไลก์ป้ายคอกของอีกคน: ต้องขึ้นข้อความ และเดินเร็วขึ้น 5 นาที กดซ้ำในวันเดียวกันต้องไม่ได้
+  - ตกแมวตัวเดียวกันพร้อมกัน: คนที่หลอดเต็มก่อนได้แมว อีกคนต้องหลุดจากมินิเกมทันที
+  - ตีคนที่แบกแมวด้วยไม้เบสบอลนอกล็อบบี้: แมวต้องหล่นและคนโดนตีกระเด็น
+  - ในล็อบบี้ต้องตีไม่ได้ และตีคนที่กำลังตกแมวไม่ได้
+- [ ] **ทดสอบแลกแมว 2 คน:**
+  - กด Trade -> Ask -> อีกคนกด Accept -> ใส่แมว -> ทั้งคู่กด Ready -> รอ 5 วินาที แมวต้องสลับกัน
+  - ออกแล้วเข้าเกมใหม่ แมวที่แลกต้องยังอยู่
+  - เปลี่ยนแมวที่เสนอแล้ว Ready ต้องหลุด
+  - ใส่แมวที่ล็อกไว้ไม่ได้
+  - ออกเกมกลางคันแล้วการแลกต้องยกเลิก
+- [ ] **ไอคอนเกมและหน้าปก:**
+  - ทำใน ChatGPT ตามไฟล์ `docs/gpt_store_prompts.md` (แนบรูป 3 รูปที่ไฟล์บอก)
+  - ได้รูปแล้วตั้งชื่อ `icon` และ `thumb1` ถึง `thumb4` ใส่ไว้ใน `art/source/gpt_store/` แล้วบอก Claude
+    (Claude ย่อเป็น 512 x 512 และ 1920 x 1080 ให้)
+  - จากนั้นอัปโหลดในเว็บ Creator Dashboard และวางคำอธิบายเกมจากไฟล์เดียวกัน
+    (ภาษาอังกฤษ และภาษาไทยในเมนู Localization)
+- [ ] **เปิดเกม:** ทำตามไฟล์ `docs/LAUNCH_CHECKLIST.md`
+  - ข้อ B: ทดสอบ 8 คน, มือถือจริง, ซื้อจริง 1 ครั้ง
+  - ข้อ C: ตั้งค่าในเว็บ Creator Dashboard
+  - ข้อ D: ขั้นตอนวันเปิดเกม ทำตามลำดับ
+  - หมายเหตุ: ปิดโหมดทดสอบ (FreshSave) ในสตูดิโอแล้วเมื่อ 2026-11-08 ตอนนี้กดเล่นในสตูดิโอจะบันทึกลงเซฟจริงของคุณ
+    ก่อนเปิดเกมให้พิมพ์ `!reset` ในเกมเพื่อล้างเซฟทดสอบ (ข้อ D3)

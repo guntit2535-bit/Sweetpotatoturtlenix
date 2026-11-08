@@ -87,7 +87,9 @@ Engine behaviour (physics, UI, DataStores, purchases, phones) can only be tested
   capture set the Edit camera back to `Fixed`.
 
 ## Rules
-- Talk to the developer in **Thai**, short, outcome first. Code, comments, commits and `docs/` in English.
+- Talk to the developer in **Thai**, short, outcome first. Code, comments, commits and `docs/` in English,
+  except what the developer reads and fills in: `docs/DEVELOPER_TODO.md` and `docs/Sweetpotato_Sounds.xlsx`
+  are in Thai (developer, 2026-11-08: "ขอภาษาไทย").
 - **One task at a time.** After a task: mark `[~]`, Log line, commit, push, give numbered test steps
   starting with "GitHub Desktop: Fetch origin -> Pull origin", end with
   `ผ่าน → พิมพ์ "ผ่าน" · มีปัญหา → เล่าอาการ`. The next task starts only after "ผ่าน".

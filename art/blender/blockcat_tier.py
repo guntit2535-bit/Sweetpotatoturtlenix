@@ -18,6 +18,7 @@ import bpy  # noqa: E402
 from mathutils import Vector  # noqa: E402
 
 import blockcat  # noqa: E402
+import catalog  # noqa: E402,F401  (adds every tier's designs)
 import kit  # noqa: E402
 
 OUT = os.path.join(HERE, "..", "preview", "cats_v1")

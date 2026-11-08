@@ -91,7 +91,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] V5 ★ All 400 cats as approved: block cats with LEGO studs, 50 unique designs per tier (docs/Sweetpotato_Cats.xlsx), bones + walk / idle animation, a unique effect round every Mythical / Secret cat
   - [x] V5a design table (300) + one Blender cat per tier + bones / walk preview (art/preview/cats_v1/walk.gif)
   - [ ] V5b-g the other 294 in Blender, one tier at a time, a sheet per tier for approval (Basic, Rare, Epic, Legendary, Mythical, Secret)
-    - [~] V5b Basic: all 50 built (`art/preview/cats_v1/tier_basic.png`), waiting for the developer's check
+    - [x] V5b Basic: all 50 built (`art/preview/cats_v1/tier_basic.png`), approved 2026-11-09
+    - [~] V5c Rare: all 50 (`tier_rare.png`), self-checked (developer: "build every tier, check them yourself"), for the morning check
   - [ ] V5h into the game: an exporter writes every design as block data per bone (size, offset, colour, studs, glow) to a Luau module; CatModel builds the cat from Parts on the same rig (Body, Head, Tail1/2, legs, wings) so CatAnims moves it; the studs come from one MaterialVariant (a studs normal map the developer uploads), so no extra parts; effects from a small library (orbiting block objects + particle styles) keyed by effectKey; Cats data: 400 cats (100/80/70/50/50/50), names from the table
   - [ ] V5i Studio checks: pens with many cats on a phone, book, trade, crate opening, the Caught! card
 
@@ -511,3 +512,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   cheeks, flat face, ruff, hairless wrinkles, curls, cloud puffs, yawn, blush. `BASIC_LOOKS` = the 50 Basic designs
   from the table (31-61 blocks each); `art/blender/blockcat_tier.py` renders a tier on one sheet at the same
   scale. All 50 rig cleanly (catrig: new head / body / sock names).
+- 2026-11-09 V5b approved; developer: build all the other tiers, check and fix them myself, review in the morning.
+  V5c Rare: `art/blender/catparts.py` = the parts library for every tier above Basic (hats, glasses, clothes, held
+  things, wings, effect previews; boxes / balls / cylinders / wedges only, name prefix = bone), `cats_rare.py` = the
+  49 Rare designs, `catalog.py` loads every tier. Self-check fixes: ears tilt out under hats, clothes stand 0.22
+  off the body with studs only on top (no studs or pattern patches poking through), white-on-white accessories
+  recoloured. 34-80 parts per cat (average 45).

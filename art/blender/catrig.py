@@ -55,6 +55,20 @@ class Rig:
         n = base_name(o)
         c = o.matrix_world.translation if not o.data.vertices else sum((o.matrix_world @ v.co for v in o.data.vertices), Vector()) / len(o.data.vertices)
         flat_dist = math.hypot(c.x, c.y - A["by"])
+        # parts from catparts.py say their bone in the name: H_ head, B_ body, L_ leg, T_ tail, W_ wing, Fx effect
+        if n.startswith("Fx"):
+            return "Fx"
+        pre = n[:2]
+        if pre == "H_":
+            return "Head"
+        if pre == "B_":
+            return "Body"
+        if pre == "W_":
+            return "WingL" if c.x < 0 else "WingR"
+        if pre == "T_":
+            return "Tail1" if c.z < A["bz"] + 0.5 else "Tail2"
+        if pre == "L_":
+            return ("LegF" if c.y < A["by"] else "LegB") + ("L" if c.x < 0 else "R")
         if n in FX_NAMES or (n == "Gem" and flat_dist > A["bw"] / 2 + 1.2):
             return "Fx"
         if n in WING_NAMES:

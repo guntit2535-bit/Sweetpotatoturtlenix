@@ -70,7 +70,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.22 Animations: cats (idle, walk, struggle, carried), players (cast, reel, lift, run, swing, carry). Reuse: BA `client/CharacterAnims`, `CreatureAnimator`, SP `art/animations`
 - [x] 2.23 Sound: sound module + sound list xlsx for the developer to pick ids (event music included). Reuse: SP `client/Sound`, `SoundController`, PSE `tools/gen/sounds_xlsx.luau`
 - [x] 2.24 Game icon 512 + 3-5 thumbnails 1920x1080 (GPT prompts) + store description EN / TH
-- [ ] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
+- [~] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
 
 ## Plan changes
 - 2026-11-08 (developer: the client threatens to cancel for slowness; "สร้างจริงบน roblox studio ได้เลย"): the map is
@@ -246,3 +246,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   / wings, Gold / Rainbow / Glow, 400 cats, weights + Secret giant; Roblox rules in every prompt) and the store
   description EN / TH. Style references for ChatGPT: `art/preview/cats_lineup.jpg` (Studio render of real cats)
   and `art/preview/carry_ingame.jpg`. Making the pictures and uploading = DEVELOPER_TODO.
+- 2026-11-08: 2.25 `docs/LAUNCH_CHECKLIST.md` (every blueprint item with its state and how to try it, the
+  developer's tests, Dashboard settings, launch-day order, handover) and `scripts/launch_check.luau` (fails while
+  any pass / product id is 0, Debug is on, GroupId 0 or players != 8; lists silent sounds). Studio Play
+  2026-11-08: `!crate <kind> 20000` matches the blueprint odds (Diamond Mythical 0.48 % for 0.5 %), 18 cats on 60
+  spots in each zone, Output clean except a "ContentId 203785492 ... type does not match" line that is not in
+  the place, the code or the character (Studio's own). The Edit place has only Terrain, Camera and Map. Left
+  [~]: the full-server / phone tests, Debug off, publish and the `.rbxl` are the developer's (checklist B-D).

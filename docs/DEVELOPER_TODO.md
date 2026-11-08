@@ -68,6 +68,8 @@
   2. ใน Studio ลบ Model ชื่อ `Rods` ใน `ReplicatedStorage > ItemModels`
   3. Import 3D ไฟล์ `art/export/Rods.fbx` (Creator = กลุ่ม Sweetpotatoturtlenix) แล้วลาก Model ที่ได้ไปใส่ใน `ItemModels`
   4. Save / Publish แล้วบอก Claude
+- [ ] **บันทึกแมพใหม่ (V3):** Claude เปลี่ยนน้ำพุ ลำธาร และน้ำตกในแมพให้แล้ว (ของเก่าเก็บไว้ใน ServerStorage > MapBackup_V3)
+  กด Save / Publish ใน Studio ถ้าดูแล้วชอบแบบใหม่ บอก Claude ให้ลบของเก่าทิ้ง
 - [ ] **บอกลูกค้า:** ตัวเลขเงิน / พลัง / ความเร็ว / น้ำหนักแมวจะใหญ่ขึ้นจนสูงสุดราว 99 Sx (เปลี่ยนจากตารางในพิมพ์เขียว)
 - [x] **อัปโหลดไอคอน UI 12 รูป (R9):** (ได้ครบ 12 เลข ใส่ในเกมแล้ว 2026-11-08) ใน Studio เปิด View -> Asset Manager -> Bulk Import (ปุ่มลูกศรขึ้น) เลือกไฟล์ทั้ง 12 ไฟล์ในโฟลเดอร์
   `art/export/ui_icons/` (P01_shop.png ถึง P12_event.png ไม่ต้องเลือก _review.png) ตอนอัปโหลดให้เลือกเจ้าของเป็น **กลุ่ม Sweetpotatoturtlenix**

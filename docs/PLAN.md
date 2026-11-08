@@ -86,7 +86,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 ## Phase 4 — revision round 2, the last free round (developer, 2026-11-09; spec `docs/tasks/phase-4.md`)
 - [~] V1 ★ Cat style board in Blender: one original voxel cat in 3 options (Pixel / Brick / Mix), then the pick on 4 base shapes; the developer and the client approve
 - [~] V2 Fishing pose matching the rod: right hand at the grip, left hand turning the reel handle on the rod
-- [ ] V3 Map detail pass: survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
+- [~] V3 Map detail pass: survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
 - [~] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
 - [ ] V5 ★ All 400 cats in the approved style (region meshes coloured in game, same cat data), the developer imports
 
@@ -453,3 +453,12 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   marker to the Backyard / nearest catchable cat / pen / weights, a pulsing ring on the Shop button). Reward
   Config.Tutorial.Reward 1000 once. Studio: 1 -> 2 (Next) -> 3 (left the lobby) -> 4 (carrying) -> 3 (lost) ->
   6 (training) -> 7 (Shop opened) -> done + reward; Skip; no errors (art/preview/v4/). Save put back.
+- 2026-11-09: V3 part 1 (water): survey found the fountain as plain cylinders with white sticks, creeks as a straight
+  strip with round ends, waterfalls as a white block (art/preview/v3/before_*). New MapKit fountain (octagonal stone
+  basin, rim, corner posts, pedestal, two bowls, glassy water, 16 + 8 flowing streams (Beams with a built-in texture
+  moving), top spray, splashes, a light under the water), creek (winding glassy water over a darker bed, sand / snow
+  banks, bank stones, reeds, lily pads, stepping stones, flowing current; the bridge and its hiding spot unchanged)
+  and waterfall (rough rock blocks with moss, glass curtains with flowing water, upper fall, a pool with a stone ring,
+  foam and mist; frozen: ice curtains, icicles, crystals). MapTools/Upgrade swaps them in place (frames read back from
+  the old parts) with the old ones in ServerStorage.MapBackup_V3 (Upgrade.undo puts them back): 19 fountains,
+  79 creeks, 47 waterfalls. Studio Play: wild cats hide in every zone, no errors. Next: ground detail per zone.

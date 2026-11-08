@@ -554,23 +554,165 @@ end
 -- Water, bridges, cliffs
 
 -- A short stream along local X with an arched bridge across it (along Z). style: "wood" | "stone" | "red".
+-- V3 water: glassy see-through water (Glass, a little reflection) over a darker bed, water that flows (Beams with
+-- a built-in texture moving along them: no uploads), splashes and mist. Old saves of the map are swapped in place
+-- by MapTools/Upgrade (same spots for hiding cats).
+local WATER = hex("3aa9ec")
+local WATER_DEEP = hex("2a6f9c")
+local ICE = hex("c9efff")
+local SAND = hex("ead9a8")
+local FLOW_TEXTURE = "rbxasset://textures/particles/smoke_main.dds"
+
+local function waterSurface(parent: Instance, size: Vector3, cf: CFrame, frozen: boolean?, shape: Enum.PartType?): Part
+	return P(parent, size, cf, if frozen then ICE else WATER, {
+		mat = Enum.Material.Glass,
+		t = if frozen then 0.12 else 0.32,
+		refl = if frozen then 0.3 else 0.18,
+		decor = true,
+		shadow = false,
+		shape = shape,
+	})
+end
+
+local function waterDisc(parent: Instance, cf: CFrame, d: number, h: number, frozen: boolean?): Part
+	local p = waterSurface(parent, Vector3.new(h, d, d), cf * CFrame.Angles(0, 0, math.pi / 2), frozen, Enum.PartType.Cylinder)
+	return p
+end
+
+-- A flowing stream between two points (a Beam with a moving texture), on a small invisible anchor.
+local function flow(parent: Instance, a: Vector3, b: Vector3, width0: number, width1: number, speed: number, color: Color3?)
+	local anchor = P(parent, Vector3.new(0.2, 0.2, 0.2), CFrame.new(a), WATER, { decor = true, t = 1, shadow = false, name = "Flow" })
+	local a0 = Instance.new("Attachment")
+	a0.Parent = anchor
+	local a1 = Instance.new("Attachment")
+	a1.Parent = anchor -- (parent first: WorldPosition only means the world once it is attached)
+	a1.WorldPosition = b
+	local beam = Instance.new("Beam")
+	beam.Attachment0 = a0
+	beam.Attachment1 = a1
+	beam.Texture = FLOW_TEXTURE
+	beam.TextureMode = Enum.TextureMode.Wrap
+	beam.TextureLength = 2.5
+	beam.TextureSpeed = speed
+	beam.Color = ColorSequence.new(color or C.WaterLight)
+	beam.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.05), NumberSequenceKeypoint.new(1, 0.3) })
+	beam.Width0 = width0
+	beam.Width1 = width1
+	beam.LightEmission = 0.7
+	beam.LightInfluence = 0.6
+	beam.FaceCamera = false
+	beam.Segments = 8
+	beam.Parent = anchor
+	return beam
+end
+
+local function droplets(parent: BasePart, rate: number, size: number, speed: number, spread: number)
+	local e = Instance.new("ParticleEmitter")
+	e.Color = ColorSequence.new(C.White)
+	e.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, size), NumberSequenceKeypoint.new(1, size * 0.3) })
+	e.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.2), NumberSequenceKeypoint.new(1, 1) })
+	e.Rate = rate
+	e.Lifetime = NumberRange.new(0.5, 0.9)
+	e.Speed = NumberRange.new(speed * 0.7, speed)
+	e.SpreadAngle = Vector2.new(spread, spread)
+	e.Acceleration = Vector3.new(0, -18, 0)
+	e.LightEmission = 0.3
+	e.Parent = parent
+end
+
+local function mist(parent: BasePart, rate: number, size: number)
+	local e = Instance.new("ParticleEmitter")
+	e.Color = ColorSequence.new(C.White)
+	e.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, size * 0.5), NumberSequenceKeypoint.new(1, size) })
+	e.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.55), NumberSequenceKeypoint.new(1, 1) })
+	e.Rate = rate
+	e.Lifetime = NumberRange.new(1.6, 2.4)
+	e.Speed = NumberRange.new(1.5, 3)
+	e.SpreadAngle = Vector2.new(60, 60)
+	e.Acceleration = Vector3.new(0, 1, 0)
+	e.Parent = parent
+end
+
 function Kit.creek(parent: Instance, cf: CFrame, rng: Random, styleName: string, frozen: boolean?): (Model, Spot)
 	local m = M(parent, "Creek")
-	local water = if frozen then C.Ice else C.Water
-	P(m, Vector3.new(56, 0.3, 12), at(cf, 0, 0.16, 0), water, { decor = true, refl = 0.12, t = if frozen then 0.05 else 0.08, shadow = false })
-	for _, x in { -1, 1 } do
-		D(m, at(cf, x * 28, 0.16, 0), 12, 0.3, water, { decor = true, shadow = false })
+	-- a winding path along local X (the bridge crosses it at x = 0, where it runs straight)
+	local phase = rng:NextNumber(0, math.pi * 2)
+	local amp = rng:NextNumber(2.5, 4)
+	local pts = {}
+	for i = 0, 10 do
+		local x = -32 + i * 6.4
+		local z = amp * math.sin(x / 19 + phase) * math.clamp(math.abs(x) / 10, 0, 1)
+		table.insert(pts, Vector3.new(x, 0, z))
 	end
-	for i = 1, 6 do
-		local x = rng:NextNumber(-30, 30)
-		local z = if i % 2 == 0 then 7 else -7
-		P(m, Vector3.new(rng:NextNumber(2, 3.5), rng:NextNumber(1, 2), rng:NextNumber(2, 3)), at(cf, x, 0.6, z) * CFrame.Angles(0, rng:NextNumber(0, 3), 0), C.Rock, { decor = true })
-	end
-	if not frozen then
-		for _ = 1, 3 do
-			D(m, at(cf, rng:NextNumber(-20, 20), 0.36, rng:NextNumber(-3, 3)), 2.2, 0.15, C.Leaf2, { decor = true, shadow = false })
+	local bank = if frozen then C.Snow else SAND
+	for i = 1, #pts - 1 do
+		local a, b = pts[i], pts[i + 1]
+		local mid = (a + b) / 2
+		local len = (b - a).Magnitude + 1.6
+		local seg = cf * CFrame.lookAt(mid, b) * CFrame.Angles(0, math.pi / 2, 0)
+		local wide = 10.5 + math.sin(i * 1.7 + phase) * 1.2
+		P(m, Vector3.new(len, 0.12, wide + 1), seg * CFrame.new(0, 0.07, 0), if frozen then C.SnowShade else WATER_DEEP, { decor = true, shadow = false })
+		waterSurface(m, Vector3.new(len, 0.26, wide), seg * CFrame.new(0, 0.2, 0), frozen)
+		for _, s in { -1, 1 } do
+			P(m, Vector3.new(len, 0.34, 2.2), seg * CFrame.new(0, 0.18, s * (wide / 2 + 0.9)), bank, { decor = true, shadow = false })
+		end
+		if not frozen then
+			flow(m, (cf * CFrame.new(a + Vector3.new(0, 0.36, 0))).Position, (cf * CFrame.new(b + Vector3.new(0, 0.36, 0))).Position, wide * 0.55, wide * 0.55, 0.9, C.WaterLight)
 		end
 	end
+	-- round pools at both ends
+	for _, e in { pts[1], pts[#pts] } do
+		P(m, Vector3.new(0.12, 14, 14), cf * CFrame.new(e + Vector3.new(0, 0.07, 0)) * CFrame.Angles(0, 0, math.pi / 2), if frozen then C.SnowShade else WATER_DEEP, { decor = true, shadow = false, shape = Enum.PartType.Cylinder })
+		waterDisc(m, cf * CFrame.new(e + Vector3.new(0, 0.2, 0)), 12, 0.26, frozen)
+		D(m, cf * CFrame.new(e + Vector3.new(0, 0.12, 0)), 15.4, 0.3, bank, { decor = true, shadow = false })
+	end
+	-- stones on the banks, reeds and lily pads (summer), snow lumps (winter)
+	for _ = 1, 14 do
+		local i = rng:NextInteger(1, #pts)
+		local s = if rng:NextNumber() < 0.5 then -1 else 1
+		local p = pts[i] + Vector3.new(rng:NextNumber(-2, 2), 0, s * rng:NextNumber(5.6, 7.4))
+		local d = rng:NextNumber(0.9, 2.2)
+		B(m, d, (cf * CFrame.new(p + Vector3.new(0, d * 0.25, 0))).Position, if rng:NextNumber() < 0.5 then C.Rock else C.Stone2, { decor = true })
+	end
+	if not frozen then
+		for _ = 1, 4 do
+			local i = rng:NextInteger(2, #pts - 1)
+			if math.abs(pts[i].X) < 7 then
+				continue
+			end
+			local s = if rng:NextNumber() < 0.5 then -1 else 1
+			local base = cf * CFrame.new(pts[i] + Vector3.new(0, 0, s * 5.8))
+			for k = 1, rng:NextInteger(3, 5) do
+				local h = rng:NextNumber(1.8, 3.2)
+				local foot = base * CFrame.new(rng:NextNumber(-0.9, 0.9), 0, rng:NextNumber(-0.6, 0.6)) * CFrame.Angles(rng:NextNumber(-0.12, 0.12), 0, rng:NextNumber(-0.12, 0.12))
+				pole(m, foot, 0.22, h, if k % 2 == 0 then C.Leaf else C.LeafDark, { decor = true })
+				P(m, Vector3.new(0.36, 0.8, 0.36), foot * CFrame.new(0, h + 0.2, 0), C.WoodDark, { decor = true })
+			end
+		end
+		for _ = 1, 5 do
+			local i = rng:NextInteger(2, #pts - 1)
+			if math.abs(pts[i].X) < 6 then
+				continue
+			end
+			local p = cf * CFrame.new(pts[i] + Vector3.new(rng:NextNumber(-2, 2), 0.36, rng:NextNumber(-3, 3)))
+			D(m, p, rng:NextNumber(1.6, 2.4), 0.12, C.Leaf2, { decor = true, shadow = false })
+			if rng:NextNumber() < 0.5 then
+				B(m, 0.6, (p * CFrame.new(0.3, 0.2, 0)).Position, C.PinkLight, { decor = true })
+			end
+		end
+		-- stepping stones across, away from the bridge
+		local x = if rng:NextNumber() < 0.5 then -20 else 20
+		for k = -2, 2 do
+			D(m, cf * CFrame.new(x + rng:NextNumber(-0.5, 0.5), 0.35, k * 2.6), 2.2, 0.5, C.Stone2)
+		end
+	else
+		for _ = 1, 6 do
+			local i = rng:NextInteger(1, #pts)
+			local s = if rng:NextNumber() < 0.5 then -1 else 1
+			B(m, rng:NextNumber(1.5, 2.6), (cf * CFrame.new(pts[i] + Vector3.new(0, 0.4, s * 6.5))).Position, C.Snow, { decor = true })
+		end
+	end
+	-- the bridge (unchanged: the hiding spot sits under it)
 	local deck = if styleName == "stone" then C.Stone else if styleName == "red" then C.Red else C.Wood
 	local rail = if styleName == "stone" then C.Stone2 else if styleName == "red" then C.Red else C.Wood
 	local bw = if styleName == "stone" then 9 else 7
@@ -589,39 +731,77 @@ function Kit.creek(parent: Instance, cf: CFrame, rng: Random, styleName: string,
 			P(m, Vector3.new(1.2, 0.6, 1.2), at(cf, x * (bw / 2 - 0.3), 4.6, s * 10), if styleName == "red" then C.Yellow else C.White, { decor = true })
 		end
 	end
+	m:SetAttribute("Style", styleName)
+	m:SetAttribute("Frozen", frozen == true)
+	m:SetAttribute("V3", true)
 	return m, { kind = "bridge", pos = at(cf, 0, 0.8, 0).Position }
 end
 
 function Kit.waterfall(parent: Instance, cf: CFrame, rng: Random, frozen: boolean?): (Model, Spot)
 	local m = M(parent, "Waterfall")
 	local top = if frozen then C.Snow else C.Moss
-	P(m, Vector3.new(30, 16, 12), at(cf, 0, 8, 6), C.Rock)
-	P(m, Vector3.new(30, 1, 12), at(cf, 0, 16.4, 6), top, { decor = true })
-	P(m, Vector3.new(18, 9, 9), at(cf, -3, 20.5, 8), C.RockDark)
-	P(m, Vector3.new(18, 1, 9), at(cf, -3, 25.4, 8), top, { decor = true })
-	local water = if frozen then C.Ice else C.WaterLight
-	for _, x in { -6, 5 } do
-		P(m, Vector3.new(5, 16, 0.8), at(cf, x, 8.5, -0.3), water, { mat = if frozen then Enum.Material.Glass else Enum.Material.Neon, t = if frozen then 0.1 else 0.25, decor = true })
+	-- the cliff: rough rock blocks round the old footprint (30 x 16 x 12 at z 6; an upper tier at -3, 25)
+	local blocks = {
+		{ Vector3.new(14, 15, 11), Vector3.new(-9, 7.5, 6.5) },
+		{ Vector3.new(13, 16.5, 12), Vector3.new(6.5, 8.2, 6) },
+		{ Vector3.new(9, 13, 9), Vector3.new(-0.5, 6.5, 8) },
+		{ Vector3.new(8, 9, 8), Vector3.new(-12, 4.5, 2.5) },
+		{ Vector3.new(7, 8, 7), Vector3.new(12, 4, 2) },
+		{ Vector3.new(17, 9, 9), Vector3.new(-3, 20.5, 8.5) },
+		{ Vector3.new(8, 6, 7), Vector3.new(5, 19, 9.5) },
+	}
+	for i, b in blocks do
+		local tilt = CFrame.Angles(rng:NextNumber(-0.06, 0.06), rng:NextNumber(-0.2, 0.2), rng:NextNumber(-0.06, 0.06))
+		local cfb = at(cf, b[2].X, b[2].Y, b[2].Z) * tilt
+		P(m, b[1], cfb, if i % 3 == 0 then C.RockDark else C.Rock)
+		P(m, Vector3.new(b[1].X - 0.6, 0.8, b[1].Z - 0.6), cfb * CFrame.new(0, b[1].Y / 2 + 0.3, 0), top, { decor = true })
+		if not frozen then
+			for _ = 1, 2 do
+				P(m, Vector3.new(rng:NextNumber(1.5, 3), rng:NextNumber(1, 2.4), 0.5), cfb * CFrame.new(rng:NextNumber(-b[1].X / 2.6, b[1].X / 2.6), rng:NextNumber(-b[1].Y / 3, b[1].Y / 3), -b[1].Z / 2 - 0.1), C.Moss, { decor = true, shadow = false })
+			end
+		end
 	end
-	D(m, at(cf, 0, 0.16, -8), 24, 0.3, if frozen then C.Ice else C.Water, { decor = true, refl = 0.12, t = 0.05, shadow = false })
+	-- the falls: a see-through sheet and flowing water in front, from the top down into the pool
+	for _, f in { { -4.5, 16.6, 5.5 }, { 4.5, 16.6, 5 }, { -3, 25.2, 4 } } do
+		local x, y, w = f[1], f[2], f[3]
+		local zTop = if y > 20 then 3.6 else 0.2
+		local bottomY = if y > 20 then 16.8 else 0.4
+		P(m, Vector3.new(w, y - bottomY, 0.5), at(cf, x, (y + bottomY) / 2, zTop - 0.4), if frozen then ICE else C.WaterLight, {
+			mat = Enum.Material.Glass,
+			t = if frozen then 0.1 else 0.35,
+			refl = 0.2,
+			decor = true,
+			shadow = false,
+		})
+		if not frozen then
+			flow(m, at(cf, x, y, zTop - 0.8).Position, at(cf, x, bottomY, zTop - 1.6).Position, w, w + 1.2, 2.2, C.White)
+		else
+			for k = -1, 1 do
+				W(m, Vector3.new(0.6, 2.2, 0.6), at(cf, x + k * w / 3, y - 1.2, zTop - 0.9) * CFrame.Angles(math.pi, 0, 0), ICE, { decor = true })
+			end
+		end
+	end
+	-- the pool: a bed, glassy water, a ring of stones; foam and mist where the falls land
+	D(m, at(cf, 0, 0.07, -7), 25, 0.12, if frozen then C.SnowShade else WATER_DEEP, { decor = true, shadow = false })
+	waterDisc(m, at(cf, 0, 0.2, -7), 24, 0.26, frozen)
+	for k = 0, 13 do
+		local a = math.pi * (0.95 + k / 13 * 1.1)
+		local d = rng:NextNumber(1.4, 2.6)
+		B(m, d, at(cf, math.cos(a) * 12.6, d * 0.3, -7 + math.sin(a) * 12.6).Position, if k % 2 == 0 then C.Rock else C.Stone2, { decor = true })
+	end
 	if not frozen then
-		for _, x in { -6, 5 } do
-			local foam = B(m, 3.5, at(cf, x, 0.8, -1.5).Position, C.White, { decor = true, t = 0.2 })
-			local e = Instance.new("ParticleEmitter")
-			e.Color = ColorSequence.new(C.White)
-			e.Size = NumberSequence.new(1.2, 2.5)
-			e.Transparency = NumberSequence.new(0.3, 1)
-			e.Rate = 8
-			e.Lifetime = NumberRange.new(1, 1.6)
-			e.Speed = NumberRange.new(3, 5)
-			e.SpreadAngle = Vector2.new(50, 50)
-			e.Parent = foam
+		for _, x in { -4.5, 4.5 } do
+			local foam = B(m, 3, at(cf, x, 0.5, -1.4).Position, C.White, { decor = true, t = 0.35, shadow = false })
+			droplets(foam, 16, 0.6, 9, 45)
+			mist(foam, 6, 5)
 		end
 	else
 		for _ = 1, 3 do
 			Kit.crystals(m, at(cf, rng:NextNumber(-12, 12), 0, -10), rng, C.Ice)
 		end
 	end
+	m:SetAttribute("Frozen", frozen == true)
+	m:SetAttribute("V3", true)
 	return m, { kind = "rock", pos = at(cf, 17, 1, 2).Position }
 end
 
@@ -641,36 +821,89 @@ end
 ----------------------------------------------------------------------------------------------------
 -- Lobby pieces
 
+-- V3: a real stone fountain: an octagonal basin (walls, a wide rim, corner posts with finials), a pedestal,
+-- two bowls with lips, glassy water in each, water falling from bowl to bowl as flowing streams, a spray on
+-- top, splashes where the water lands and a soft light under the water at night. s = scale (1.5 plaza, 0.75
+-- in a zone).
 function Kit.fountain(parent: Instance, cf: CFrame, s: number)
 	local m = M(parent, "Fountain")
-	D(m, at(cf, 0, 0.9 * s, 0), 24 * s, 1.8 * s, C.Stone2)
-	D(m, at(cf, 0, 1.9 * s, 0), 21 * s, 0.4 * s, C.Water, { refl = 0.15, t = 0.05 })
-	D(m, at(cf, 0, 3.5 * s, 0), 4 * s, 5 * s, C.Stone)
-	D(m, at(cf, 0, 6.3 * s, 0), 11 * s, 1 * s, C.Stone2)
-	D(m, at(cf, 0, 6.85 * s, 0), 9.4 * s, 0.3 * s, C.Water, { refl = 0.15 })
-	D(m, at(cf, 0, 8.4 * s, 0), 2 * s, 3 * s, C.Stone)
-	D(m, at(cf, 0, 10 * s, 0), 5.5 * s, 0.8 * s, C.Stone2)
-	local top = B(m, 2.2 * s, at(cf, 0, 10.8 * s, 0).Position, C.WaterLight, { mat = Enum.Material.Neon, t = 0.2, decor = true })
-	local e = Instance.new("ParticleEmitter")
-	e.Color = ColorSequence.new(C.WaterLight)
-	e.Size = NumberSequence.new(0.8, 0.3)
-	e.Transparency = NumberSequence.new(0.2, 1)
-	e.Rate = 25
-	e.Lifetime = NumberRange.new(1.2, 1.6)
-	e.Speed = NumberRange.new(8, 10)
-	e.SpreadAngle = Vector2.new(25, 25)
-	e.Acceleration = Vector3.new(0, -14, 0)
-	e.Parent = top
-	-- falling water from the two bowls
+	local stone, stone2, light = C.Stone, C.Stone2, hex("eef0f5")
+	local R = 12 * s
+	local side = 2 * R * math.tan(math.pi / 8)
+	-- floor of the basin (a blue mosaic look) and the octagonal wall with its rim
+	D(m, at(cf, 0, 0.25 * s, 0), 2 * R + 0.4, 0.5 * s, hex("5a9fcf"))
 	for i = 0, 7 do
 		local a = i * math.pi / 4
-		P(m, Vector3.new(1.2, 3.8 * s, 0.4), at(cf, math.cos(a) * 5.2 * s, 4.6 * s, math.sin(a) * 5.2 * s) * CFrame.Angles(0, -a + math.pi / 2, 0), C.WaterLight, { mat = Enum.Material.Neon, t = 0.35, decor = true })
+		local w = cf * CFrame.Angles(0, a, 0)
+		P(m, Vector3.new(side + 0.4 * s, 2.2 * s, 1.3 * s), w * CFrame.new(0, 1.1 * s, R), stone)
+		P(m, Vector3.new(side + 0.9 * s, 0.45 * s, 2.1 * s), w * CFrame.new(0, 2.4 * s, R), light)
+		P(m, Vector3.new(side * 0.7, 0.35 * s, 0.25), w * CFrame.new(0, 1.2 * s, R + 0.7 * s), stone2, { decor = true })
+		-- corner posts with a ball on top
+		local c = cf * CFrame.Angles(0, a + math.pi / 8, 0) * CFrame.new(0, 0, R / math.cos(math.pi / 8))
+		P(m, Vector3.new(1.5 * s, 3.2 * s, 1.5 * s), c * CFrame.new(0, 1.6 * s, 0), stone2)
+		B(m, 1.2 * s, (c * CFrame.new(0, 3.65 * s, 0)).Position, light, { decor = true })
 	end
-	-- flower ring
+	local pool = waterDisc(m, at(cf, 0, 1.75 * s, 0), 2 * R - 0.6, 0.3 * s)
+	-- pedestal, the big bowl, the column, the small bowl, the top
+	D(m, at(cf, 0, 0.9 * s, 0), 5.2 * s, 0.8 * s, stone2)
+	D(m, at(cf, 0, 3.5 * s, 0), 3.4 * s, 5 * s, stone)
+	D(m, at(cf, 0, 5.75 * s, 0), 4.4 * s, 0.5 * s, stone2)
+	D(m, at(cf, 0, 6.15 * s, 0), 7 * s, 0.4 * s, stone)
+	D(m, at(cf, 0, 6.55 * s, 0), 9.2 * s, 0.45 * s, stone)
+	D(m, at(cf, 0, 6.95 * s, 0), 11 * s, 0.45 * s, light)
+	local bowl = waterDisc(m, at(cf, 0, 7.12 * s, 0), 10 * s, 0.2 * s)
+	D(m, at(cf, 0, 8.4 * s, 0), 1.9 * s, 2.6 * s, stone)
+	D(m, at(cf, 0, 9.75 * s, 0), 3.6 * s, 0.4 * s, stone)
+	D(m, at(cf, 0, 10.1 * s, 0), 5.4 * s, 0.4 * s, light)
+	waterDisc(m, at(cf, 0, 10.25 * s, 0), 4.8 * s, 0.15 * s)
+	D(m, at(cf, 0, 10.75 * s, 0), 1.1 * s, 1 * s, stone)
+	local top = B(m, 1.5 * s, at(cf, 0, 11.6 * s, 0).Position, light, { decor = true })
+	-- the spray on top
+	local e = Instance.new("ParticleEmitter")
+	e.Color = ColorSequence.new(C.WaterLight)
+	e.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.5 * s), NumberSequenceKeypoint.new(1, 0.2 * s) })
+	e.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.15), NumberSequenceKeypoint.new(1, 1) })
+	e.Rate = 30
+	e.Lifetime = NumberRange.new(0.7, 0.9)
+	e.Speed = NumberRange.new(4 * s, 5 * s)
+	e.SpreadAngle = Vector2.new(30, 30)
+	e.Acceleration = Vector3.new(0, -20 * s, 0)
+	e.LightEmission = 0.4
+	e.Parent = top
+	-- water falling from the small bowl into the big one, and from the big one into the basin
+	for i = 0, 7 do
+		local a = i * math.pi / 4 + math.pi / 8
+		local dir = Vector3.new(math.cos(a), 0, math.sin(a))
+		local base = cf.Position
+		flow(m, base + dir * 2.7 * s + Vector3.new(0, 10.3 * s, 0), base + dir * 3.6 * s + Vector3.new(0, 7.2 * s, 0), 1.3 * s, 1.7 * s, 1.6)
+	end
+	for i = 0, 15 do
+		local a = i * math.pi / 8
+		local dir = Vector3.new(math.cos(a), 0, math.sin(a))
+		local base = cf.Position
+		flow(m, base + dir * 5.5 * s + Vector3.new(0, 7.0 * s, 0), base + dir * 6.9 * s + Vector3.new(0, 1.9 * s, 0), 2 * s, 2.6 * s, 1.8)
+	end
+	-- splashes where it lands, and a soft light under the water
+	local ring = P(m, Vector3.new(14 * s, 0.2, 14 * s), at(cf, 0, 1.95 * s, 0), C.White, { decor = true, t = 1, shadow = false, name = "Splash" })
+	droplets(ring, 30, 0.35 * s, 5 * s, 25)
+	local glow = Instance.new("PointLight")
+	glow.Color = hex("8fe0ff")
+	glow.Range = 16 * s
+	glow.Brightness = 1.2
+	glow.Parent = pool
+	local _ = bowl
+	-- a ring of flower bushes round it
 	for i = 0, 11 do
 		local a = i * math.pi / 6
-		B(m, 1.6 * s, at(cf, math.cos(a) * 13 * s, 1.2 * s, math.sin(a) * 13 * s).Position, Kit.FlowerColors[i % #Kit.FlowerColors + 1], { decor = true })
+		local p = cf.Position + Vector3.new(math.cos(a) * 15 * s, 0, math.sin(a) * 15 * s)
+		B(m, 2 * s, p + Vector3.new(0, 0.8 * s, 0), C.Leaf2, { decor = true })
+		for k = 0, 2 do
+			local b = k * 2.1 + i
+			B(m, 0.7 * s, p + Vector3.new(math.cos(b) * 0.6 * s, 1.7 * s, math.sin(b) * 0.6 * s), Kit.FlowerColors[(i + k) % #Kit.FlowerColors + 1], { decor = true })
+		end
 	end
+	m:SetAttribute("Scale", s)
+	m:SetAttribute("V3", true)
 	return m
 end
 

@@ -315,3 +315,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   money bonus) on the player; `IncomePopupController` shows "+$X" over each of your cats within 80 studs every tick
   (one reused label per cat, random 0-0.35 s start) and "+$total" right of the money pill. Studio Play: 3 cats,
   popups sum 27.94/s = Income 27.94, money +84 in 3 s; labels visible over the cats and by the pill.
+- 2026-11-08: R4 step 1: `tools/sim/economy_sx.luau` + options A / B / C in `docs/economy.md` (log-ladder cat weights,
+  x3.6 heavier cats per rebirth, income rate x kg^0.6, Strength x~3.95 per rebirth, rebirth need x4, 99 Sx cap).
+  Waiting for the developer's pick before Config, migration and tests.

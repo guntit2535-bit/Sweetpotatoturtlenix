@@ -26,3 +26,37 @@ players take cats, the minigame fails, bat hits drop cats), and milestone 2 adds
 - Zone odds: Backyard Basic 90 Rare 10 · Market Basic 30 Rare 60 Epic 10 · Forest Rare 35 Epic 55 Legendary 10 ·
   Snow Epic 45 Legendary 55 · Sky Epic 20 Legendary 80 (heavier). Mythical and Secret come only from events
   (and the Diamond crate's 0.5% Mythical in milestone 2).
+
+---
+
+# R4: numbers up to 99 Sx (developer, 2026-11-08: "สูงสุดอยู่ที่99SX" = 99 sextillion, money / Strength / Speed)
+
+Simulation: `lune run tools/sim/economy_sx.luau` (a stand-alone model of the new curves; one player from a new
+save to rebirth 25: a catch every 45 s in the best zone it can hold, lifting 60 % of the rest, buying weights
+levels when affordable, rebirthing as soon as Strength allows; pen slots 10 + 2 per rebirth).
+
+## The proposed shape (same for every option)
+- Cat weights on a log ladder: Basic 1-100 kg, Rare 100-10K, Epic 10K-1M, Legendary 1M-100M; event cats Mythical
+  100M-1B, Secret 1B-1.18B. Rolled `min * (max / min) ^ (u ^ 2)` (heavy cats rarer).
+- **Each rebirth makes every cat in the world x3.6 heavier** (wild, event and crate cats), so Strength always
+  matters: at rebirth 25 the heaviest Secret cat is 99 Sx.
+- A cat earns `rate x kg ^ 0.6` per second (heavier cats earn more, but slower than their weight), x1.5 money per
+  rebirth as now.
+- Weights: Strength per second `1.6 ^ (level - 1)`, x ~3.95 per rebirth (instead of x1.5); level costs
+  `Cost0 x ~1.78 ^ (level - 1) x 3 ^ rebirths`. Treadmill the same shape for Speed.
+- Rebirth need: `Need0 x 4 ^ rebirths` Strength. Zone gates x3.6 per rebirth (or the rebirth count, as now).
+- Walk speed from the Speed stat **relative to the current life** (Speed / 3.95 ^ rebirths), so walking feels the
+  same every life and the stat can still grow to Sx.
+- Hard cap 99 Sx on Money, Strength, Speed and cat weight. Big numbers: the money leaderboard stores log10 x 1000;
+  old saves are converted once (each value moved to the same place on the new ladder); the save key is unchanged.
+
+## Options (pace only)
+
+| Option | Zone 2 / 3 / 4 / 5 (first life) | Rebirth 1 | Rebirth 10 | Rebirth 25 | At rebirth 25 |
+|---|---|---|---|---|---|
+| A fast | 2 / 6 / 16 / 23 min | 46 min | 5 h | **13 h** | Strength 38 Sx, money 4 Sx |
+| **B normal (recommended)** | 2 / 7 / 20 / 32 min | 1 h 22 | 10 h | **26 h** | Strength 42 Sx, money 13 Sx |
+| C slow | 2 / 11 / 29 / 45 min | 2 h 17 | 18 h | **50 h** | Strength 47 Sx, money 39 Sx |
+
+After rebirth 25 the numbers keep growing until the 99 Sx cap. Real play is slower than the sim (other players
+take cats, the minigame fails, bats drop cats), so B in the sim is roughly 1.5-2x longer for a real player.

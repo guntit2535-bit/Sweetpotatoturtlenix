@@ -86,6 +86,22 @@ Text.Lines = {
 	BatHitCat = { en = "You knocked {name}'s cat loose! Catch it!", th = "คุณตีแมวของ {name} หลุดแล้ว! รีบตกเลย!" },
 	CaughtTitle = { en = "Caught!", th = "ตกได้แล้ว!" },
 
+	-- Training and zone gates (tasks 1.15 / 1.16)
+	TrainUpgrade = { en = "Upgrade ${cost}", th = "อัปเกรด ${cost}" },
+	TrainMax = { en = "Max level", th = "เลเวลสูงสุด" },
+	WeightsName = { en = "Weights Lv {level}", th = "ยกเวท Lv {level}" },
+	TreadName = { en = "Treadmill Lv {level}", th = "ลู่วิ่ง Lv {level}" },
+	WeightsUp = { en = "Weights level {level}!", th = "ยกเวทเลเวล {level}!" },
+	TreadUp = { en = "Treadmill level {level}!", th = "ลู่วิ่งเลเวล {level}!" },
+	NotEnoughMoney = { en = "Not enough money (${cost})", th = "เงินไม่พอ (${cost})" },
+	NotYourGym = { en = "Use the gym at your own pen", th = "ใช้อุปกรณ์หน้าคอกของคุณเอง" },
+	ZoneLocked = { en = "{zone} needs {strength} Strength (or {rebirths} rebirths)", th = "{zone} ต้องมีพลัง {strength} (หรือรีเบิร์ธ {rebirths} ครั้ง)" },
+	ZoneBackyard = { en = "Backyard", th = "Backyard" },
+	ZoneTownMarket = { en = "Town Market", th = "Town Market" },
+	ZoneForest = { en = "Forest", th = "Forest" },
+	ZoneSnowMountain = { en = "Snow Mountain", th = "Snow Mountain" },
+	ZoneSkyIslands = { en = "Sky Islands", th = "Sky Islands" },
+
 	-- Settings window (task 1.1)
 	SettingsButton = { en = "Settings", th = "ตั้งค่า" },
 	SettingsTitle = { en = "Settings", th = "ตั้งค่า" },

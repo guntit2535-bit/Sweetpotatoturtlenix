@@ -39,8 +39,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] 1.12 Fighting over a cat: several players fish the same cat, the first full meter wins, the others drop out at once; caught card (name, tier, weight). Reuse: PSE `CaptureService` (multi-catcher, first to 100 wins)
 - [x] 1.13 Carry home: the winner holds the cat over the head with a floating cat icon, walks into the lobby to the own pen, the cat goes in and starts earning. Reuse: HR `GrabService` (carry over the head), PSE `TrainService` / `shared/Escape` (delivery on entering the town)
 - [~] 1.14 Baseball bat: hotbar tool next to the rod, short cooldown, server hit check (range, facing), no hits in the lobby or on players fishing; a hit carrier drops the cat where hit and is knocked far; the dropped cat is fishable by all, 60 s then back to hiding; the bat model (Blender) is made in this task. Reuse: HR `BatService`, `Controllers/BatSwingController`, `KnockbackController`
-- [ ] 1.15 Weights, 25 levels: stand at the spot = auto lift, Strength per rep by level, upgrade sign (money), 5 looks (dumbbell > barbell > bench > machine > giant barbell). Reuse: PSE `TreadmillService`, `shared/Treadmill`, `Controllers/TreadmillController`, `TreadmillTierUI`, `StandController`
-- [ ] 1.16 Treadmill, 25 levels next to the weights: stand = auto run, Speed, upgrade with money; walk speed from Speed. Reuse: PSE `TreadmillService`, `shared/Speed`, `SpeedTrail`
+- [x] 1.15 Weights, 25 levels: stand at the spot = auto lift, Strength per rep by level, upgrade sign (money), 5 looks (dumbbell > barbell > bench > machine > giant barbell). Reuse: PSE `TreadmillService`, `shared/Treadmill`, `Controllers/TreadmillController`, `TreadmillTierUI`, `StandController`
+- [x] 1.16 Treadmill, 25 levels next to the weights: stand = auto run, Speed, upgrade with money; walk speed from Speed. Reuse: PSE `TreadmillService`, `shared/Speed`, `SpeedTrail`
 - [ ] 1.17 ★ HUD (phone first): left Shop / x2 Speed (blink) / My Cats / Trade, right Strength + weights / treadmill levels, bottom-left Speed + money, bottom-centre hotbar (bat + rod), bottom-right event countdown, Settings; UI look options first (GPT style board). Reuse: PSE `client/UI/Style`, `Window`, `Icons`, `Controllers/HudController`, BA `client/Ui/HudLayout`, `Kit`
 - [ ] 1.18 Events: Mythical every 10-20 min, Secret every 40 min; server-wide announcement, light beam, arrow, bottom-right countdown, 3 min then it escapes; Secret: bigger announcement, sky colour change, event music hook; caught event cats are carried home like others. Reuse: PSE `MythicEventService`, `GoldenEventService`, `Controllers/ZoneFx`, BA `LightingController`, SP `EventService`
 - [ ] 1.21 Milestone 1 check: 2+ players and a phone test, fixes, play video + test notes for the client
@@ -152,3 +152,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   real remotes: Basic caught in 10 s, no input -> escaped in 6 s, carried 4.7 studs over the head, delivered at
   the pen (cat count +1, income starts), !drop -> dropped wild cat re-fished, too weak -> "Need 211 Strength".
   **Two-player parts (contest, bat hits) need the developer's 2-player test** (DEVELOPER_TODO).
+- 2026-11-08: 1.15 / 1.16 `TrainingService` (own pen's weights / treadmill train every second, Upgrade prompts,
+  weights look per 5 levels via `Util/GymLooks`), `TrainingController` (Roblox default cheer / run animation in
+  place, "+0.1 kg" popups, own-pen prompts with cost), zone gates enforced: `ZoneGateService` (server puts players
+  back with "needs X Strength") + `GateController` (barriers solid on the client while closed). Studio Play:
+  Strength 1 -> 1.4 in 3 s at the weights, Speed 0 -> 0.6 on the treadmill (walk 16.5), look 1 -> 3 (Lv 11) -> 5
+  (Lv 21), Market with Strength 1 -> put back to r = 322. The Upgrade prompt click itself is for the developer's
+  test (key F at your weights / treadmill).

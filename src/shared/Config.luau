@@ -106,6 +106,11 @@ Config.Economy = {
 -- the next level costs Cost * CostGrowth^(L-1) money.
 Config.Weights = { Levels = 25, Tick = 1, Gain = 0.1, Growth = 1.33, Cost = 100, CostGrowth = 2.5 }
 Config.Treadmill = { Levels = 25, Tick = 1, Gain = 0.2, Growth = 1.4, Cost = 40, CostGrowth = 1.85 }
+-- Standing within StandRadius of your own pen's weights / treadmill trains; the gym looks change every
+-- LookEvery weights levels (dumbbell > barbell > bench > machine > giant barbell).
+Config.Gym = { StandRadius = 3.6, LookEvery = 5, UpgradeRate = { maxCalls = 3, window = 1 } }
+-- Zone gates: a player inside a zone they may not enter yet is put back just outside it.
+Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
 -- Walk speed from the Speed stat: Base + Bonus * ln(1 + Speed / Scale), at most Max (studs/s).
 Config.Walk = { Base = 16, Bonus = 9, Scale = 10, Max = 60, LikeBuff = 2, LikeBuffSeconds = 300 }
 Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 1.5 }

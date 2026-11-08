@@ -43,7 +43,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 1.16 Treadmill, 25 levels next to the weights: stand = auto run, Speed, upgrade with money; walk speed from Speed. Reuse: PSE `TreadmillService`, `shared/Speed`, `SpeedTrail`
 - [x] 1.17 ★ HUD (phone first): left Shop / x2 Speed (blink) / My Cats / Trade, right Strength + weights / treadmill levels, bottom-left Speed + money, bottom-centre hotbar (bat + rod), bottom-right event countdown, Settings; UI look options first (GPT style board). Reuse: PSE `client/UI/Style`, `Window`, `Icons`, `Controllers/HudController`, BA `client/Ui/HudLayout`, `Kit`
 - [x] 1.18 Events: Mythical every 10-20 min, Secret every 40 min; server-wide announcement, light beam, arrow, bottom-right countdown, 3 min then it escapes; Secret: bigger announcement, sky colour change, event music hook; caught event cats are carried home like others. Reuse: PSE `MythicEventService`, `GoldenEventService`, `Controllers/ZoneFx`, BA `LightingController`, SP `EventService`
-- [ ] 1.21 Milestone 1 check: 2+ players and a phone test, fixes, play video + test notes for the client
+- [~] 1.21 Milestone 1 check: 2+ players and a phone test, fixes, play video + test notes for the client
 
 ## Milestone 2 — everything else (4,000 THB at full delivery)
 - [ ] 2.1 Shop window (in-game money), tabs Rods / Shoes / Pen / Treats / Crates. Reuse: SP `ShopService` + `UI/ShopPanel`, PSE `UpgradeService` + `UpgradesUI`
@@ -172,3 +172,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   music hook). Studio Play: HUD as specified, Mythical beam + arrow + countdown 2:56, escape message, Secret tint;
   fishing the event cat with no input -> it moved 674 studs and the event went on. No errors in Output.
   Fixed: BindableEvents copy tables, so wild cat removals now pass the id.
+- 2026-11-08: milestone 1 built and self-tested in Studio (single player + debug commands). Waiting for the
+  developer (docs/DEVELOPER_TODO.md): API Services on (saves across sessions), max players 8, a 2-player test
+  (contest, bat, likes), a phone test, publish, then the play video for the client.

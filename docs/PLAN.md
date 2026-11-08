@@ -81,7 +81,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [ ] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
 - [ ] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
 - [ ] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
-- [ ] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
+- [~] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
 
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
@@ -330,3 +330,13 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   !money past 99 Sx caps at 9.9e22, rebirth 1 -> wild Basic 1 kg shows 3.6 kg + "Need 4 Strength", the server
   refuses at Strength 1, catches at 10, the pen gets 3.6 kg, income 3.56/s as computed, weights +7.90/s, upgrade
   $90; no errors. FreshSave removed again.
+- 2026-11-08: plan change: R9 (UI) moves ahead of R5-R8 because the developer's UI pictures came first (style board,
+  12 screens, 12 icons in `art/source/gpt_ui/`); R5 waits for the item reference pictures.
+- 2026-11-08: R9 step 1: the 12 icons cut to 512 px transparent (`tools/gen/item_icons.py ui` -> `art/export/ui_icons`,
+  all clean; upload = DEVELOPER_TODO, ids -> `Config.UIIcons`, a white paw until then). Kit restyled from the style
+  board: cream windows with cat ears, peach inner border and faint paw prints, pink cat-head title banner, round pink
+  close button, glossy jelly buttons with a lip and a tiny paw, cream tabs (`Kit.Colors.tab`), `Kit.paw`, `Kit.ears`,
+  `Kit.icon`. HUD from mockup 01: square cat-ear menu buttons with icon + label, cream Strength panel with ears and
+  level pills, cream speed / money pills, purple event pill, cat-ear Settings button. Studio Play: every window picks
+  up the new kit (Shop checked), the HUD fits a short viewport without overlaps, no errors. Next: each window laid
+  out like its mockup (Shop, Robux, My Cats, Book, Rewards, Rebirth, Trade, Settings, fishing, popups).

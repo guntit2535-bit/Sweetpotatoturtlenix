@@ -9,8 +9,12 @@ from collections import deque
 from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-SRC = os.path.join(ROOT, "art", "source", "gpt_items")
-OUT = os.path.join(ROOT, "art", "export", "store_items")
+import sys
+
+# default: the store items; `python item_icons.py ui` cuts the UI icons (P01-P12) instead
+KIND = sys.argv[1] if len(sys.argv) > 1 else "items"
+SRC = os.path.join(ROOT, "art", "source", "gpt_ui" if KIND == "ui" else "gpt_items")
+OUT = os.path.join(ROOT, "art", "export", "ui_icons" if KIND == "ui" else "store_items")
 SIZE = 512
 MARGIN = 0.05
 
@@ -73,6 +77,8 @@ def main():
         key, ext = os.path.splitext(name)
         if ext.lower() not in (".webp", ".png", ".jpg", ".jpeg"):
             continue
+        if KIND == "ui" and not key.startswith("P"):
+            continue  # the screen mockups are not icons
         icon = square(cut(Image.open(os.path.join(SRC, name))))
         icon.save(os.path.join(OUT, key + ".png"))
         done.append((key, icon))

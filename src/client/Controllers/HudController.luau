@@ -5,8 +5,9 @@
 --   bottom-left   Speed and money (+ money per second)
 --   bottom-centre the hotbar (Roblox's own: Bat + Rod)
 --   bottom-right  the event countdown (workspace attributes from EventService, task 1.18)
--- Every number comes from the player's attributes (DataService / PenService). Shop, x2 Speed and Trade
--- open in milestone 2; until then they say so.
+-- Every number comes from the player's attributes (DataService / PenService).
+-- R9 cute-cat look (art/source/gpt_ui/01_hud): cream panels with cat ears and navy outlines, icons from
+-- Config.UIIcons (the drawn coin / dumbbell until they are uploaded).
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -63,7 +64,7 @@ local function pill(parent: Instance, name: string, size: UDim2, pos: UDim2, anc
 	f.AnchorPoint = anchor
 	f.Position = pos
 	f.Size = size
-	f.BackgroundColor3 = C.white
+	f.BackgroundColor3 = C.panel
 	f.Parent = parent
 	Kit.corner(f, 24)
 	Kit.stroke(f, 3, nil, true)
@@ -71,6 +72,10 @@ local function pill(parent: Instance, name: string, size: UDim2, pos: UDim2, anc
 end
 
 local function coin(parent: Instance, size: number, pos: UDim2)
+	if (Config.UIIcons :: any).Coin > 0 then
+		Kit.icon(parent, "Coin", size + 6, pos - UDim2.fromOffset(3, 3))
+		return
+	end
 	local c = Instance.new("Frame")
 	c.Size = UDim2.fromOffset(size, size)
 	c.Position = pos
@@ -89,6 +94,10 @@ local function coin(parent: Instance, size: number, pos: UDim2)
 end
 
 local function dumbbell(parent: Instance, pos: UDim2)
+	if (Config.UIIcons :: any).Strength > 0 then
+		Kit.icon(parent, "Strength", 44, pos - UDim2.fromOffset(0, 10))
+		return
+	end
 	local d = Instance.new("Frame")
 	d.BackgroundTransparency = 1
 	d.Size = UDim2.fromOffset(46, 24)
@@ -141,7 +150,7 @@ local function eventText()
 	if type(s) == "number" and s < at then
 		which, at = "Secret", s
 	end
-	eventFrame.BackgroundColor3 = C.ink
+	eventFrame.BackgroundColor3 = Color3.fromHex("6c4fc4")
 	return Lang.text("EventNext", { event = Lang.text("Event" .. which), time = Format.clock(math.max(0, at - now)) })
 end
 
@@ -153,7 +162,6 @@ local function build()
 	Hud.leftButton("Shop", "ShopButton", C.coral, 1, ShopController.toggle)
 	local speed = Hud.leftButton("Speed2x", "Speed2xButton", C.sky, 2, StoreController.speedButton)
 	local holder = speed.Parent :: Frame
-	holder.Size = UDim2.fromOffset(150, 74)
 	local glow = Instance.new("UIStroke")
 	glow.Thickness = 5
 	glow.Color = C.yellow
@@ -184,12 +192,13 @@ local function build()
 	local right = Instance.new("Frame")
 	right.Name = "Strength"
 	right.AnchorPoint = Vector2.new(1, 0)
-	right.Position = UDim2.new(1, -12, 0, 92)
-	right.Size = UDim2.fromOffset(210, 150)
-	right.BackgroundColor3 = C.white
+	right.Position = UDim2.new(1, -12, 0, 104)
+	right.Size = UDim2.fromOffset(210, 160)
+	right.BackgroundColor3 = C.panel
 	right.Parent = gui
-	Kit.corner(right, 18)
-	Kit.stroke(right, 3, nil, true)
+	Kit.corner(right, 22)
+	Kit.stroke(right, 4, nil, true)
+	Kit.ears(right, 30, { 0.22, 0.78 })
 	fitScale(right, 720)
 	dumbbell(right, UDim2.fromOffset(12, 12))
 	strengthTitle = Kit.text(right, "Title", UDim2.new(1, -72, 0, 24), UDim2.fromOffset(66, 12), 20)
@@ -197,8 +206,22 @@ local function build()
 	strengthTitle.TextColor3 = C.muted
 	strengthValue = Kit.text(right, "Value", UDim2.new(1, -16, 0, 44), UDim2.fromOffset(8, 40), 38)
 	strengthValue.TextScaled = true
-	weightsLine = Kit.text(right, "Weights", UDim2.new(1, -16, 0, 24), UDim2.fromOffset(8, 88), 19)
-	treadLine = Kit.text(right, "Treadmill", UDim2.new(1, -16, 0, 24), UDim2.fromOffset(8, 114), 19)
+	for i, nameKey in { "Weights", "Treadmill" } do
+		local line = Instance.new("Frame")
+		line.Name = nameKey .. "Pill"
+		line.Size = UDim2.new(1, -20, 0, 26)
+		line.Position = UDim2.fromOffset(10, 88 + (i - 1) * 32)
+		line.BackgroundColor3 = C.soft
+		line.Parent = right
+		Kit.corner(line, 13)
+		Kit.stroke(line, 2, C.peach, true)
+		local t = Kit.text(line, nameKey, UDim2.new(1, -12, 1, 0), UDim2.fromOffset(6, 0), 18)
+		if i == 1 then
+			weightsLine = t
+		else
+			treadLine = t
+		end
+	end
 
 	-- bottom-left: speed + money
 	local bl = Instance.new("Frame")
@@ -224,9 +247,12 @@ local function build()
 
 	-- bottom-right: event countdown
 	eventFrame = pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 1, -12), Vector2.new(1, 1))
-	eventFrame.BackgroundColor3 = C.ink
+	eventFrame.BackgroundColor3 = Color3.fromHex("6c4fc4")
 	fitScale(eventFrame, 720)
-	eventLabel = Kit.text(eventFrame, "Text", UDim2.new(1, -20, 1, -6), UDim2.fromOffset(10, 3), 22, true)
+	if (Config.UIIcons :: any).Event > 0 then
+		Kit.icon(eventFrame, "Event", 48, UDim2.fromOffset(-14, -6))
+	end
+	eventLabel = Kit.text(eventFrame, "Text", UDim2.new(1, -44, 1, -6), UDim2.fromOffset(34, 3), 22, true)
 	eventLabel.TextScaled = true
 	eventFrame.Visible = false
 end

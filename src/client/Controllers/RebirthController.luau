@@ -71,7 +71,7 @@ function RebirthController.Start(_self: any)
 	local s = if camera then math.clamp(camera.ViewportSize.Y / 720, 0.6, 1) else 1
 	scale.Scale = s
 	holder.AnchorPoint = Vector2.new(1, 0)
-	holder.Position = UDim2.new(1, -12, 0, 92 + 150 * s + 10)
+	holder.Position = UDim2.new(1, -12, 0, 104 + 160 * s + 12)
 	open.Activated:Connect(function()
 		refresh()
 		window.setOpen(not window.isOpen())

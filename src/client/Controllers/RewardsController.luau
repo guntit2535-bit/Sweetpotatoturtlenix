@@ -90,7 +90,7 @@ local function redraw()
 	window.title.Text = Lang.text("RewardsTitle")
 	for tab, b in tabButtons do
 		Kit.setButtonText(b, Lang.text("Tab" .. tab))
-		Kit.setButtonColor(b, if tab == current then C.yellow else C.grey)
+		Kit.setButtonColor(b, if tab == current then C.yellow else C.tab)
 	end
 	for _, c in list:GetChildren() do
 		if c:IsA("GuiObject") then
@@ -192,7 +192,7 @@ function RewardsController.Start(_self: any)
 	tl.SortOrder = Enum.SortOrder.LayoutOrder
 	tl.Parent = tabs
 	for i, tab in TABS do
-		local b = Kit.button(tabs, tab, C.grey, UDim2.fromOffset(112, 40), UDim2.new())
+		local b = Kit.button(tabs, tab, C.tab, UDim2.fromOffset(112, 40), UDim2.new())
 		;(b.Parent :: Frame).LayoutOrder = i
 		b.Activated:Connect(function()
 			current = tab
@@ -229,7 +229,7 @@ function RewardsController.Start(_self: any)
 	local s = if camera then math.clamp(camera.ViewportSize.Y / 720, 0.6, 1) else 1
 	scale.Scale = s
 	holder.AnchorPoint = Vector2.new(1, 0)
-	holder.Position = UDim2.new(1, -12, 0, 92 + 150 * s + 10 + 52 * s)
+	holder.Position = UDim2.new(1, -12, 0, 104 + 160 * s + 12 + 52 * s)
 	badge = Instance.new("Frame")
 	badge.Size = UDim2.fromOffset(24, 24)
 	badge.Position = UDim2.new(1, -14, 0, -10)

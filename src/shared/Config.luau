@@ -199,6 +199,23 @@ Config.Events = {
 }
 
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
+-- R9: UI icons from the developer's GPT pictures (art/export/ui_icons, 512 px), uploaded to the group; 0 = not
+-- uploaded yet (a white paw shows instead).
+Config.UIIcons = {
+	Shop = 0, -- P01
+	Speed2x = 0, -- P02
+	MyCats = 0, -- P03
+	Trade = 0, -- P04
+	Settings = 0, -- P05
+	Rebirth = 0, -- P06
+	Rewards = 0, -- P07
+	Book = 0, -- P08
+	Coin = 0, -- P09
+	Strength = 0, -- P10
+	Speed = 0, -- P11
+	Event = 0, -- P12
+}
+
 -- R3: "+$X" popups over your own pen cats every income tick, and "+$total" by the money pill.
 Config.IncomePopup = {
 	Range = 80, -- only cats this close to the camera (studs)

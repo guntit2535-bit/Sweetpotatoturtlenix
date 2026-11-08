@@ -142,7 +142,7 @@ local function redraw()
 	window.title.Text = Lang.text("ShopTitle")
 	for tab, b in tabButtons do
 		Kit.setButtonText(b, Lang.text("Tab" .. tab))
-		Kit.setButtonColor(b, if tab == current then C.yellow else C.grey)
+		Kit.setButtonColor(b, if tab == current then C.yellow else C.tab)
 	end
 	for _, c in list:GetChildren() do
 		if c:IsA("Frame") then
@@ -211,7 +211,7 @@ local function build()
 		if tab == "Shoes" and not Config.Shoes.Enabled then
 			continue
 		end
-		local b = Kit.button(tabs, tab, C.grey, UDim2.fromOffset(100, 42), UDim2.new())
+		local b = Kit.button(tabs, tab, C.tab, UDim2.fromOffset(100, 42), UDim2.new())
 		;(b.Parent :: Frame).LayoutOrder = i
 		b.Activated:Connect(function()
 			current = tab

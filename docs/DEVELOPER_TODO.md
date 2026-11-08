@@ -23,3 +23,6 @@ Claude keeps working while these wait. Tick them when done and tell Claude.
   `icon` and `thumb1`-`thumb4` in `art/source/gpt_store/` and tell Claude (Claude sizes them to 512 x 512 and
   1920 x 1080). Then upload them in the Creator Dashboard and paste the store description (EN, and TH under
   Localization) from the same file.
+- [ ] Launch: `docs/LAUNCH_CHECKLIST.md` sections B (8-player / phone / purchase tests), C (Dashboard) and D
+  (launch day, in order). Note: the Studio place no longer has the FreshSave switch (2026-11-08), so Studio
+  Play now writes your real test save; `!reset` it before launch (D3).

@@ -3,11 +3,15 @@
 -- rod, built from parts. The tools only show what the player holds: FishingService and BatService do the
 -- work on the server (clients ask through Cast / Swing). Tool names stay English ("Bat", "Rod") because
 -- the server finds the held tool by name.
+-- R5: when the Blender meshes are imported (shared/ItemModels) the tools wear them: the bat, and the rod of the
+-- player's best level (Rod1..Rod25) with the line's "Tip" attachment at the mesh's tip. The part-built look
+-- stays as the fallback.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Config = require(ReplicatedStorage.Shared.Config)
+local ItemModels = require(ReplicatedStorage.Shared.ItemModels)
 local Shop = require(ReplicatedStorage.Shared.Shop)
 local DataService = require(script.Parent.DataService)
 
@@ -44,6 +48,42 @@ local function weld(a: BasePart, b: BasePart)
 	w.Parent = b
 end
 
+-- R5: swaps a tool's look for the mesh `id` (welded to the Handle at the grip). Returns false when the mesh
+-- is not imported (the tool keeps its parts).
+local LOOK_PARTS = { "Barrel", "Tip", "Band", "Pole", "Reel", "TipPart", "Mesh", "Glass" }
+local function dress(tool: Tool, id: string, scale: number): boolean
+	local handle = tool:FindFirstChild("Handle")
+	local model = ItemModels.build(id, scale)
+	if not model or not handle or not handle:IsA("BasePart") then
+		if model then
+			model:Destroy()
+		end
+		return false
+	end
+	for _, name in LOOK_PARTS do
+		local old = tool:FindFirstChild(name)
+		if old and old ~= handle then
+			old:Destroy()
+		end
+	end
+	local root = model.PrimaryPart :: BasePart
+	for _, c in model:GetChildren() do
+		if c:IsA("BasePart") and c ~= root then
+			local offset = root.CFrame:ToObjectSpace(c.CFrame)
+			local w = c:FindFirstChildOfClass("WeldConstraint")
+			if w then
+				w:Destroy()
+			end
+			c.CFrame = handle.CFrame * offset
+			c.Parent = tool
+			weld(handle, c)
+		end
+	end
+	model:Destroy()
+	handle.Transparency = 1
+	return true
+end
+
 -- The handle is the grip, its long side along Y; the rest is welded to it.
 local function makeBat(): Tool
 	local tool = Instance.new("Tool")
@@ -58,6 +98,9 @@ local function makeBat(): Tool
 		weld(handle, p)
 	end
 	tool.Grip = CFrame.new(0, -0.4, 0) * CFrame.Angles(math.rad(-90), 0, 0)
+	if dress(tool, "Bat", Config.ItemModels.BatScale) then
+		tool.Grip = CFrame.new(0, -0.4, 0) * CFrame.Angles(math.rad(Config.ItemModels.BatGrip), 0, 0)
+	end
 	return tool
 end
 
@@ -80,7 +123,7 @@ local function makeRod(): Tool
 	return tool
 end
 
--- The rod's pole and tip take the colour of the best rod's material (task 2.2).
+-- The rod shows the best rod: its mesh (R5), else the pole and tip in the material's colour (task 2.2).
 function ToolService.refreshRod(player: Player)
 	local data = DataService.GetData(player)
 	local level = if data then data.RodLevel else 1
@@ -88,7 +131,20 @@ function ToolService.refreshRod(player: Player)
 	local color = Color3.fromHex(Config.Rods.Colors[m])
 	for _, container in { player:FindFirstChild("Backpack"), player.Character } do
 		local rod = container and container:FindFirstChild("Rod")
-		if rod then
+		if rod and rod:IsA("Tool") and rod:GetAttribute("Level") == level and rod:FindFirstChild("Mesh") then
+			continue
+		end
+		if rod and rod:IsA("Tool") and dress(rod, "Rod" .. level, Config.ItemModels.RodScale) then
+			local handle = rod:FindFirstChild("Handle") :: BasePart
+			local old = handle:FindFirstChild("Tip")
+			local tip = if old and old:IsA("Attachment") then old else Instance.new("Attachment")
+			tip.Name = "Tip"
+			-- the rod's tip in Blender (art/blender/items.py rod): (0, -0.9, length) from the base, grip 0.4 up
+			tip.Position = ItemModels.point(Config.ItemModels.RodScale, 0, -0.9, 4.6 + 0.04 * level - 0.4)
+			tip.Parent = handle
+			rod.Grip = CFrame.new(0, -0.3, 0) * CFrame.Angles(math.rad(Config.ItemModels.RodGrip), 0, 0)
+			rod:SetAttribute("Level", level)
+		elseif rod then
 			for _, name in { "Pole", "TipPart" } do
 				local p = rod:FindFirstChild(name)
 				if p and p:IsA("BasePart") then
@@ -128,6 +184,7 @@ function ToolService:Start()
 	for _, player in Players:GetPlayers() do
 		hook(player)
 	end
+	DataService.Changed:Connect(ToolService.refreshRod) -- R5: a no-op unless the best rod changed
 end
 
 return ToolService

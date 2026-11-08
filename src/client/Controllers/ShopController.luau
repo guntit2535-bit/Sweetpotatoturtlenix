@@ -14,6 +14,7 @@ local Shop = require(Shared:WaitForChild("Shop"))
 local Lang = require(script.Parent.Parent.Lang)
 local PlayerData = require(script.Parent.Parent.PlayerData)
 local Kit = require(script.Parent.Parent.UI.Kit)
+local ItemPortrait = require(script.Parent.Parent.UI.ItemPortrait)
 
 local ShopController = {}
 
@@ -61,6 +62,7 @@ local function drawRods(data: { [string]: any })
 		local luck = math.floor((level - 1) * Config.Rods.LuckPerLevel * 100 + 0.5)
 		local row = card(level, Lang.text("RodName", { material = Lang.text("Mat" .. Config.Rods.Materials[m]), n = n }),
 			Lang.text("RodEffect", { zone = zone, fill = fill, luck = luck }), Color3.fromHex(Config.Rods.Colors[m]))
+		ItemPortrait.onRow(row, "Rod" .. level, Vector3.new(1, 0.15, -0.3)) -- R5: the rod's mesh
 		local state = if level == have then "inuse" elseif level < have then "owned" elseif level == have + 1 then "buy" else "locked"
 		action(row, state, Shop.rodCost(level), function()
 			buyRemote:FireServer("Rod", level)
@@ -72,6 +74,7 @@ local function drawShoes(data: { [string]: any })
 	local have = data.Shoes or 0
 	for pair, s in Config.Shoes.List do
 		local row = card(pair, Lang.text("Shoe" .. s.Key), Lang.text("ShoeEffect", { speed = s.Speed }), C.sky)
+		ItemPortrait.onRow(row, "Shoe_" .. s.Key, Vector3.new(-1, 0.55, -0.6))
 		local state = if pair == have then "inuse" elseif pair < have then "owned" elseif pair == have + 1 then "buy" else "locked"
 		action(row, state, s.Cost, function()
 			buyRemote:FireServer("Shoes", pair)
@@ -105,6 +108,7 @@ local function drawTreats(data: { [string]: any })
 			line ..= "  ·  " .. Lang.text("TreatLeft", { time = Format.clock(left) })
 		end
 		local row = card(i, Lang.text("Treat" .. t.Name), line, if t.Key == "Money" then C.yellow elseif t.Key == "Luck" then C.green else C.purple)
+		ItemPortrait.onRow(row, "Treat_" .. t.Name, Vector3.new(0.4, 0.35, -1))
 		action(row, "buy", Shop.treatCost(t.Key, income), function()
 			buyRemote:FireServer("Treat", t.Key)
 		end)

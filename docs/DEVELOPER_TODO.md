@@ -55,7 +55,7 @@
   แล้วค่อยทำข้อ 1-12 และไอคอน P01-P12 ใส่ที่ `art/source/gpt_ui/`
 - [x] **รูปต้นแบบไอเทม (R5):** (ได้ครบ 20 รูป 2026-11-08) ทำใน ChatGPT ตามไฟล์ `docs/gpt_model_prompts.md` (20 รูป) เริ่มที่ M01, M11, M16 ส่งให้ Claude ดูก่อน
   ใส่ที่ `art/source/gpt_models/`
-- [ ] **นำเข้าโมเดลไอเทม (R5):** ทำหลังตรวจรูปทั้งหมดผ่านแล้ว
+- [x] **นำเข้าโมเดลไอเทม (R5):** (นำเข้าแล้ว 2026-11-08 Claude ย้ายเข้า ReplicatedStorage > ItemModels ให้แล้ว เหลือกด Save / Publish)
   1. GitHub Desktop: Fetch origin -> Pull origin
   2. ใน Studio สร้าง Folder ชื่อ `ItemModels` ไว้ใน ReplicatedStorage (ถ้ายังไม่มี)
   3. แท็บ Home (หรือ File) -> Import 3D -> เลือกไฟล์ `art/export/Treadmills.fbx`

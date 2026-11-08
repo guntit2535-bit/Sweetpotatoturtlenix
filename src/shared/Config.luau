@@ -124,6 +124,20 @@ Config.Gym = {
 	Face = { Weights = 0, Treadmill = 0 }, -- extra turn (degrees) from the stand's facing
 	StopRate = { maxCalls = 4, window = 1 },
 }
+-- R5: item meshes made in Blender (shared/ItemModels, ReplicatedStorage.ItemModels). Scales are studs per Blender
+-- unit for each use; Flip = the 3D Importer turned the meshes 180 degrees about Y (checked in Studio 2026-11-08).
+Config.ItemModels = {
+	Flip = true,
+	GlassTransparency = 0.35,
+	RodScale = 1.2, -- in the hand (the rod's tip is where the fishing line starts)
+	RodGrip = 15, -- degrees: the rod leans up and forward (checked in Studio)
+	BatScale = 1.05,
+	BatGrip = -20, -- degrees: the bat stands up, a little back, ready to swing
+	TreadmillScale = 1.8, -- at the pens; the meshes already grow 2 % a level
+	WeightsScale = 1.6, -- the rack at the pens (level 1)
+	WeightsGrowth = 0.5, -- keep this power of the meshes' own growth (6 % a level: level 25 = 2.44 -> 1.56x)
+	ShoeScale = 0.85, -- on each foot (R15)
+}
 -- Zone gates: a player inside a zone they may not enter yet is put back just outside it.
 Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
 -- Walk speed from the Speed stat: Base + Bonus * ln(1 + S / Scale), at most Max (studs/s), where S = Speed /

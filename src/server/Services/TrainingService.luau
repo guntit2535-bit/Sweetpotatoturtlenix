@@ -61,13 +61,21 @@ end
 
 local function refreshLook(index: number)
 	local p = pen(index)
+	local owner = ownerOf(index)
+	local data = owner and DataService.GetData(owner)
+	-- R5: a mesh look for every level (falls back to the 5 part-built weights looks)
+	local treadmill = p and p:FindFirstChild("Treadmill")
+	if treadmill and treadmill:IsA("Model") then
+		GymLooks.applyLevel(treadmill, "Treadmill", if data then data.TreadLevel else 1)
+	end
 	local weights = p and p:FindFirstChild("Weights")
 	if not weights or not weights:IsA("Model") then
 		return
 	end
-	local owner = ownerOf(index)
-	local data = owner and DataService.GetData(owner)
-	GymLooks.apply(weights, lookFor(if data then data.WeightsLevel else 1))
+	local level = if data then data.WeightsLevel else 1
+	if not GymLooks.applyLevel(weights, "Weights", level) then
+		GymLooks.apply(weights, lookFor(level))
+	end
 end
 
 local function upgrade(player: Player, index: number, which: string)
@@ -102,9 +110,7 @@ local function upgrade(player: Player, index: number, which: string)
 		end
 	end)
 	Notify.send(player, if isWeights then "WeightsUp" else "TreadUp", { level = level + 1 }, "good")
-	if isWeights then
-		refreshLook(index)
-	end
+	refreshLook(index)
 end
 
 local function setupPrompts()

@@ -77,7 +77,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
 - [x] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
 - [x] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
-- [ ] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
+- [~] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
 - [ ] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
 - [ ] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
 - [ ] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
@@ -99,6 +99,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- R5 (2026-11-08): the left foot wears the same (right) shoe mesh (Roblox cannot mirror a MeshPart; the shoes are
+  nearly symmetric); the rack's own growth is softened at the pens (Config.ItemModels.WeightsGrowth 0.5: level 25
+  is 1.56x level 1 instead of 2.44x, so it fits the pen corner); with the meshes the rod is held leaning up and
+  forward (RodGrip 15) and the bat upright (BatGrip -20) instead of the old backward angles; the R15 animations
+  of R5 (curl) are done with R6. R7's 25 treadmill looks and the Stand moving onto the bigger belt are in now.
 - 2.10-2.15 (2026-11-08): offline income at 50% of the normal rate (blueprint gives only the 8-hour cap); gift
   codes live in Config.Codes (add one and publish) instead of an admin panel; the Rewards button sits under
   Rebirth on the right (the left column keeps the 4 buttons of blueprint §16).
@@ -378,3 +383,13 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Export `items_export.py` -> `art/export/{Treadmills,Weights,Dumbbells,Rods,Gear,Crates}.fbx` + manifest
   (RES 0.5, per-item triangle caps, see-through parts in `<id>_Glass`, crate lids as `Crate_<key>_Lid` with the
   hinge); `manifest_to_luau.py` -> `src/shared/ItemModelData.luau`. The developer imports after approving the sheets.
+- 2026-11-08: R5 in the game. The developer imported the 6 FBX (132 MeshParts; Claude moved them from Workspace into
+  ReplicatedStorage.ItemModels, the place needs a Save / Publish). Checked in Studio: the importer turned the meshes
+  180 degrees about Y (Config.ItemModels.Flip). New `shared/ItemModels` (build a copy with a Root at the item's
+  origin) + generated `shared/ItemModelData`; ToolService dresses the bat and the best rod (Tip attachment at the
+  mesh tip, follows RodLevel on every data change); GymLooks.applyLevel puts Treadmill1..25 / Weights1..25 at the
+  pens with an invisible collider and moves the treadmill's Stand onto the belt (falls back to the old looks);
+  new ShoeService puts the best pair on both R15 feet; shop rows (rods, shoes, treats) and the crates tab show the
+  mesh in a ViewportFrame (UI/ItemPortrait). Debug `!gear rod|shoes N`. Studio Play: treadmill Lv4 / Lv25 lock and
+  run on the belt, rack Lv25, rod 25 + bat in the hand, Bouncy Boots on both feet, every shop tab drawn; no errors.
+  The developer's save was put back as it was (rod 1, shoes 0, treadmill 4, weights 2, Speed 2623.04).

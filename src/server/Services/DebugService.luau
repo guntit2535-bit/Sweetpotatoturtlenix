@@ -146,6 +146,23 @@ local function registerBasics()
 		return `{which} level = {n}`
 	end)
 
+	DebugService.register("gear", "!gear rod|shoes N  set the best rod (1-25) / shoe pair (0-8) (R5 looks)", function(player, args)
+		local which = args[1]
+		local n = Commands.integer(args[2])
+		if n == nil or (which ~= "rod" and which ~= "shoes") then
+			return "usage: !gear rod|shoes N"
+		end
+		n = if which == "rod" then math.clamp(n, 1, Config.Rods.Levels) else math.clamp(n, 0, #Config.Shoes.List)
+		DataService.Update(player, function(data)
+			if which == "rod" then
+				data.RodLevel = n :: number
+			else
+				data.Shoes = n :: number
+			end
+		end)
+		return `{which} = {n}`
+	end)
+
 	DebugService.register("reset", "!reset  make this save a brand-new player (receipts kept)", function(player)
 		local ok = DataService.Update(player, function(data)
 			local receipts = data.ReceiptIds

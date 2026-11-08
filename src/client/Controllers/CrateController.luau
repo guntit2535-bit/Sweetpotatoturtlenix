@@ -19,6 +19,7 @@ local Mutation = require(Shared:WaitForChild("Mutation"))
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
+local ItemPortrait = require(script.Parent.Parent.UI.ItemPortrait)
 local ShopController = require(script.Parent.ShopController)
 
 local CrateController = {}
@@ -45,6 +46,10 @@ local function drawTab(list: ScrollingFrame)
 		box.Parent = row
 		Kit.corner(box, 10)
 		Kit.stroke(box, 3, nil, true)
+		-- R5: the crate's mesh over its colour
+		if ItemPortrait.make(box, "Crate_" .. crate.Key) then
+			box.BackgroundColor3 = C.panel
+		end
 		local name = Kit.text(row, "Name", UDim2.new(1, -260, 0, 30), UDim2.fromOffset(88, 8), 24)
 		name.TextXAlignment = Enum.TextXAlignment.Left
 		name.Text = Lang.text("Crate" .. crate.Key)

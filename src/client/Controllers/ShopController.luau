@@ -28,30 +28,7 @@ local cratesBuilder: ((list: ScrollingFrame) -> ())? = nil
 local robuxBuilder: ((list: ScrollingFrame) -> ())? = nil
 
 local function card(order: number, title: string, line: string, color: Color3): Frame
-	local row = Instance.new("Frame")
-	row.Name = `Item{order}`
-	row.LayoutOrder = order
-	row.Size = UDim2.new(1, -12, 0, 72)
-	row.BackgroundColor3 = C.soft
-	row.Parent = list
-	Kit.corner(row, 14)
-	Kit.stroke(row, 3, nil, true)
-	local chip = Instance.new("Frame")
-	chip.Size = UDim2.fromOffset(46, 46)
-	chip.Position = UDim2.fromOffset(12, 13)
-	chip.BackgroundColor3 = color
-	chip.Parent = row
-	Kit.corner(chip, 12)
-	Kit.stroke(chip, 3, nil, true)
-	local name = Kit.text(row, "Name", UDim2.new(1, -240, 0, 28), UDim2.fromOffset(70, 8), 22)
-	name.TextXAlignment = Enum.TextXAlignment.Left
-	name.TextTruncate = Enum.TextTruncate.AtEnd
-	name.Text = title
-	local info = Kit.text(row, "Info", UDim2.new(1, -240, 0, 22), UDim2.fromOffset(70, 40), 16)
-	info.TextXAlignment = Enum.TextXAlignment.Left
-	info.TextColor3 = C.muted
-	info.TextTruncate = Enum.TextTruncate.AtEnd
-	info.Text = line
+	local row = Kit.row(list, order, title, line, color) -- R9 row (mockup 02)
 	return row
 end
 
@@ -67,8 +44,7 @@ local function action(row: Frame, state: string, cost: number?, onBuy: () -> ())
 	else
 		text, color = Lang.text("BuyPrevious"), C.grey
 	end
-	local b = Kit.button(row, "Action", color, UDim2.fromOffset(150, 48), UDim2.new(1, -162, 0.5, -26))
-	Kit.setButtonText(b, text)
+	local b = Kit.rowButton(row, text, color)
 	if state == "buy" then
 		b.Activated:Connect(onBuy)
 	end
@@ -196,15 +172,35 @@ function ShopController.toggle()
 end
 
 local function build()
-	window = Kit.window({ name = "ShopWindow", width = 690, height = 540, color = C.coral })
+	window = Kit.window({ name = "ShopWindow", width = 720, height = 560, color = C.coral })
+	-- R9 (mockup 02): the player's money in a pill at the top right of the window
+	local moneyPill = Instance.new("Frame")
+	moneyPill.Name = "Money"
+	moneyPill.AnchorPoint = Vector2.new(1, 0)
+	moneyPill.Position = UDim2.new(1, -58, 0, 14)
+	moneyPill.Size = UDim2.fromOffset(118, 40)
+	moneyPill.BackgroundColor3 = C.soft
+	moneyPill.Parent = window.panel
+	Kit.corner(moneyPill, 20)
+	Kit.stroke(moneyPill, 3, nil, true)
+	Kit.icon(moneyPill, "Coin", 34, UDim2.fromOffset(4, 3))
+	local moneyText = Kit.text(moneyPill, "Value", UDim2.new(1, -46, 1, 0), UDim2.fromOffset(40, 0), 22, true)
+	local me = game:GetService("Players").LocalPlayer
+	local function showMoney()
+		local m = me:GetAttribute("Money")
+		moneyText.Text = "$" .. Format.short(if type(m) == "number" then m else 0)
+	end
+	showMoney()
+	me:GetAttributeChangedSignal("Money"):Connect(showMoney)
 	local tabs = Instance.new("Frame")
 	tabs.Name = "Tabs"
 	tabs.BackgroundTransparency = 1
 	tabs.Size = UDim2.new(1, 0, 0, 50)
 	tabs.Parent = window.body
+	tabs.Position = UDim2.fromOffset(0, 8)
 	local layout = Instance.new("UIListLayout")
 	layout.FillDirection = Enum.FillDirection.Horizontal
-	layout.Padding = UDim.new(0, 8)
+	layout.Padding = UDim.new(0, 6)
 	layout.SortOrder = Enum.SortOrder.LayoutOrder
 	layout.Parent = tabs
 	for i, tab in TABS do
@@ -223,8 +219,8 @@ local function build()
 	list.Name = "List"
 	list.BackgroundTransparency = 1
 	list.BorderSizePixel = 0
-	list.Position = UDim2.fromOffset(0, 58)
-	list.Size = UDim2.new(1, 0, 1, -58)
+	list.Position = UDim2.fromOffset(0, 60)
+	list.Size = UDim2.new(1, 0, 1, -60)
 	list.AutomaticCanvasSize = Enum.AutomaticSize.Y
 	list.CanvasSize = UDim2.new()
 	list.ScrollBarThickness = 8

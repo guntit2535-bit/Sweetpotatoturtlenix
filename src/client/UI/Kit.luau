@@ -179,6 +179,70 @@ function Kit.paw(parent: Instance, size: number, pos: UDim2, color: Color3, tran
 	return p
 end
 
+-- A list row (R9, mockups 02 / 03): cream card with a navy outline, a sky-blue picture box on the left (`chip`,
+-- holding a colour square until item pictures exist), a big outlined name and the description in a small
+-- cream pill. Leave room on the right for a button (Kit.rowButton). Returns the row and the picture box.
+function Kit.row(parent: Instance, order: number, title: string, line: string, chipColor: Color3?): (Frame, Frame)
+	local row = Instance.new("Frame")
+	row.Name = `Item{order}`
+	row.LayoutOrder = order
+	row.Size = UDim2.new(1, -12, 0, 86)
+	row.BackgroundColor3 = C.soft
+	row.Parent = parent
+	Kit.corner(row, 18)
+	Kit.stroke(row, 3, nil, true)
+	Kit.paw(row, 22, UDim2.new(1, -196, 0, 8), C.peach, 0.45)
+	Kit.paw(row, 16, UDim2.new(1, -186, 1, -26), C.peach, 0.55)
+	local chip = Instance.new("Frame")
+	chip.Name = "Picture"
+	chip.Size = UDim2.fromOffset(66, 66)
+	chip.Position = UDim2.fromOffset(10, 10)
+	chip.BackgroundColor3 = C.sky
+	chip.Parent = row
+	Kit.corner(chip, 14)
+	Kit.stroke(chip, 3, nil, true)
+	local g = Instance.new("UIGradient")
+	g.Color = ColorSequence.new(hex("bfeaff"), hex("4fb6f2"))
+	g.Rotation = 90
+	g.Parent = chip
+	if chipColor then
+		local sq = Instance.new("Frame")
+		sq.Name = "Color"
+		sq.AnchorPoint = Vector2.new(0.5, 0.5)
+		sq.Position = UDim2.fromScale(0.5, 0.5)
+		sq.Size = UDim2.fromScale(0.55, 0.55)
+		sq.BackgroundColor3 = chipColor
+		sq.Parent = chip
+		Kit.corner(sq, 10)
+		Kit.stroke(sq, 3, nil, true)
+	end
+	local name = Kit.text(row, "Name", UDim2.new(1, -260, 0, 32), UDim2.fromOffset(88, 8), 26, true)
+	name.TextXAlignment = Enum.TextXAlignment.Left
+	name.TextTruncate = Enum.TextTruncate.AtEnd
+	name.Text = title
+	local pill = Instance.new("Frame")
+	pill.Name = "InfoPill"
+	pill.Size = UDim2.new(1, -262, 0, 28)
+	pill.Position = UDim2.fromOffset(86, 46)
+	pill.BackgroundColor3 = C.panel
+	pill.Parent = row
+	Kit.corner(pill, 14)
+	Kit.stroke(pill, 2, C.peach, true)
+	local info = Kit.text(pill, "Info", UDim2.new(1, -16, 1, 0), UDim2.fromOffset(8, 0), 16)
+	info.TextXAlignment = Enum.TextXAlignment.Left
+	info.TextTruncate = Enum.TextTruncate.AtEnd
+	info.TextColor3 = C.ink
+	info.Text = line
+	return row, chip
+end
+
+-- The button on the right of a Kit.row.
+function Kit.rowButton(row: Frame, text: string, color: Color3): TextButton
+	local b = Kit.button(row, "Action", color, UDim2.fromOffset(156, 54), UDim2.new(1, -168, 0.5, -29))
+	Kit.setButtonText(b, text)
+	return b
+end
+
 -- A UI icon (Config.UIIcons[key], R9) as an ImageLabel, or a white paw while its id is still 0.
 function Kit.icon(parent: Instance, key: string, size: number, pos: UDim2): GuiObject
 	local Config = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Config")) :: any

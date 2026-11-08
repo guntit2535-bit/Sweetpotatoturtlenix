@@ -45,33 +45,25 @@ local function price(kind: string, id: number): string
 end
 
 local function card(list: ScrollingFrame, order: number, title: string, line: string, color: Color3, iconKey: string?): Frame
-	local row = Instance.new("Frame")
-	row.LayoutOrder = order
-	row.Size = UDim2.new(1, -12, 0, 72)
-	row.BackgroundColor3 = C.soft
-	row.Parent = list
-	Kit.corner(row, 14)
-	Kit.stroke(row, 3, nil, true)
-	local chip = Instance.new("Frame")
-	chip.Size = UDim2.fromOffset(46, 46)
-	chip.Position = UDim2.fromOffset(12, 13)
-	chip.BackgroundColor3 = color
-	chip.Parent = row
-	Kit.corner(chip, 12)
-	Kit.stroke(chip, 3, nil, true)
+	-- R9 row (mockup 03); the item's Creator Hub picture fills the picture box once it has loaded
+	local row, chip = Kit.row(list, order, title, line, color)
 	local icon = if iconKey then icons[iconKey] else nil
 	if icon and icon ~= 0 then
 		-- the item's own picture from Creator Hub, a bit bigger than the chip. The coloured chip stays until the
 		-- picture has loaded (a new icon can stay unloaded for a while during Roblox's review).
 		local img = Instance.new("ImageLabel")
 		img.BackgroundTransparency = 1
-		img.Size = UDim2.fromOffset(60, 60)
-		img.Position = UDim2.fromOffset(-7, -7)
+		img.Size = UDim2.fromOffset(74, 74)
+		img.Position = UDim2.fromOffset(-4, -4)
 		img.Image = `rbxassetid://{icon}`
 		img.Parent = chip
 		local function shown()
 			if img.IsLoaded then
 				chip.BackgroundTransparency = 1
+				local sq = chip:FindFirstChild("Color")
+				if sq then
+					sq:Destroy()
+				end
 				local s = chip:FindFirstChildOfClass("UIStroke")
 				if s then
 					s.Enabled = false
@@ -81,20 +73,11 @@ local function card(list: ScrollingFrame, order: number, title: string, line: st
 		img:GetPropertyChangedSignal("IsLoaded"):Connect(shown)
 		shown()
 	end
-	local name = Kit.text(row, "Name", UDim2.new(1, -240, 0, 28), UDim2.fromOffset(70, 8), 22)
-	name.TextXAlignment = Enum.TextXAlignment.Left
-	name.Text = title
-	local info = Kit.text(row, "Info", UDim2.new(1, -240, 0, 22), UDim2.fromOffset(70, 40), 15)
-	info.TextXAlignment = Enum.TextXAlignment.Left
-	info.TextColor3 = C.muted
-	info.TextTruncate = Enum.TextTruncate.AtEnd
-	info.Text = line
 	return row
 end
 
 local function action(row: Frame, text: string, color: Color3, onClick: (() -> ())?)
-	local b = Kit.button(row, "Action", color, UDim2.fromOffset(150, 48), UDim2.new(1, -162, 0.5, -26))
-	Kit.setButtonText(b, text)
+	local b = Kit.rowButton(row, text, color)
 	if onClick then
 		b.Activated:Connect(onClick)
 	end

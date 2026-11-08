@@ -52,6 +52,7 @@ Text.Lines = {
 	MyCatsTitle = { en = "My Cats", th = "แมวของฉัน" },
 	MyCatsCount = { en = "{count} / {max} cats", th = "แมว {count} / {max} ตัว" },
 	MyCatsEmpty = { en = "No cats yet. Catch one with your rod!", th = "ยังไม่มีแมว ไปตกแมวด้วยเบ็ดกันเลย!" },
+	MyCatsTap = { en = "Tap a cat to choose it", th = "แตะแมวเพื่อเลือก" },
 	CatIncome = { en = "${money}/s", th = "${money}/วิ" },
 	CatKg = { en = "{kg} kg", th = "{kg} กก." },
 	Sell = { en = "Sell", th = "ขาย" },

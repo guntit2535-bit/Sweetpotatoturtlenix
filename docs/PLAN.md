@@ -343,3 +343,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-08: the developer uploaded the 12 UI icons to the group; ids in `Config.UIIcons` (checked: images, group,
   load). HUD now shows them (menu buttons, Settings, Strength dumbbell, coin, Speed lightning, event cat, Rebirth /
   Rewards buttons): Studio Play, 11 / 11 icons loaded, the layout fits a 746 x 531 view.
+- 2026-11-08: R9 windows 1: `Kit.row` / `Kit.rowButton` (mockups 02 / 03: sky picture box, big outlined name,
+  description pill, paw marks) used by the Shop tabs and the Robux tab (item icons fill the picture box); money
+  pill on the Shop window. My Cats rebuilt as a card grid (mockup 04): real cat pictures from `UI/CatPortrait`
+  (CatModel in a ViewportFrame, built only for cards on screen), tier ribbon, kg, income, mutation tag, lock badge;
+  tap a card to choose it, Sell (tap twice) and Lock at the bottom; Book button with its icon. Studio Play: Shop,
+  Robux and My Cats drawn as the mockups, choosing a cat works, no errors.

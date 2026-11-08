@@ -26,6 +26,13 @@ Text.Lines = {
 	-- Settings -> Language (each language names itself)
 	LanguageEnglish = { en = "English", th = "English" },
 	LanguageThai = { en = "ไทย (Thai)", th = "ไทย" },
+
+	-- Settings window (task 1.1)
+	SettingsButton = { en = "Settings", th = "ตั้งค่า" },
+	SettingsTitle = { en = "Settings", th = "ตั้งค่า" },
+	SettingsLanguage = { en = "Language", th = "ภาษา" },
+	SettingsLanguageNote = { en = "Every text in the game", th = "ข้อความทั้งหมดในเกม" },
+	Close = { en = "Close", th = "ปิด" },
 } :: { [string]: { en: string, th: string } }
 
 function Text.isLang(value: unknown): boolean

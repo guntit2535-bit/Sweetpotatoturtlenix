@@ -44,6 +44,19 @@ Config.Debug = {
 	Prefix = "!",
 }
 
+-- Remotes (task 1.1). Every client -> server remote is rate limited per player (src/server/Util/Guard).
+Config.Remotes = {
+	WaitTimeout = 10, -- seconds a client waits for a remote the server has not created yet
+	DefaultMaxCalls = 10, -- calls allowed per player per remote ...
+	DefaultWindow = 1, -- ... in this many seconds
+	MaxStringLength = 200, -- longest string a client may send
+}
+
+-- Settings window (task 1.1): language now; music / sound switches come with the sounds (2.23).
+Config.Settings = {
+	SetRate = { maxCalls = 4, window = 1 }, -- SetSetting calls per player
+}
+
 -- Saves (task 1.2). NEVER rename StoreName after launch: every player's progress would be lost.
 Config.Data = {
 	StoreName = "Sweetpotato_PlayerData_v1",

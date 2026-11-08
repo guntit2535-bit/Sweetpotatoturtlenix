@@ -18,6 +18,10 @@ end
 
 local loaded: { { name: string, service: Service } } = {}
 
+-- Every remote exists before any client asks for it (src/shared/Remotes lists them all).
+local Remotes = require(game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Remotes"))
+Remotes.createAll()
+
 local servicesFolder = script:FindFirstChild("Services")
 if servicesFolder then
 	for _, child in servicesFolder:GetChildren() do

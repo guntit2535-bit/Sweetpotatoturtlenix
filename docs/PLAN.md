@@ -27,7 +27,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] A7 Cat rig + animations (developer 2026-11-08, pulled forward from 2.22 for cats only): Motor6D bones in `CatModel` (Body, Head, Tail1-2, 4 legs, wings), clips idle / walk / struggle / carried / sleep + "showcase" (all in turn) as maths in `shared/CatAnims`, played on the clients by `CatAnimController` (no animation uploads). Player animations stay in 2.22
 
 ### Code
-- [ ] 1.1 Project base: Remotes (all created at start, typed, rate limited), Guard / RateLimiter / Validate, client Lang, number Format (K/M/B/T), Settings button + language switch EN/TH (saved in 1.2). Reuse: PSE `shared/Remotes`, `shared/Validate`, `shared/Format`, `server/Util/Guard`, `RateLimiter`, `client/Lang`, `Controllers/SettingsUI`, `SettingsService`
+- [~] 1.1 Project base: Remotes (all created at start, typed, rate limited), Guard / RateLimiter / Validate, client Lang, number Format (K/M/B/T), Settings button + language switch EN/TH (saved in 1.2). Reuse: PSE `shared/Remotes`, `shared/Validate`, `shared/Format`, `server/Util/Guard`, `RateLimiter`, `client/Lang`, `Controllers/SettingsUI`, `SettingsService`
 - [ ] 1.2 Saves: ProfileStore `Sweetpotato_PlayerData_v1`, DataTemplate (money, Strength, Speed, levels, cats by unique id, slots, likes, settings, receipts), leaderstats, client data copy, `Workspace.FreshSave` test profile. Reuse: PSE `DataService` + `shared/DataTemplate`, BA `DataService` (FreshSave)
 - [ ] 1.3 Debug commands (Studio + admins): money, strength, speed, give cat, spawn event, reset, fresh save. Reuse: PSE `DebugService` + `shared/Commands`, BA `DebugService`
 - [ ] 1.5 Cat data, 400 cats: generator from base shapes x colours x patterns x accessories, 6 tiers with the blueprint counts and weight ranges, weight roll, size rule (Mythical 1.3-2x, Secret 3-6x by weight), income from weight; pure module + spec. Reuse: PSE `tools/gen/species.luau`, `shared/Creatures`, `shared/Income`
@@ -116,3 +116,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Fixed on the way: with StreamingEnabled a cat arrived before its joints, so the controller waits for all of
   them ("Bones" attribute) and cats stream as Atomic models.
 - 2026-11-08: A7 passed ("ผ่าน"). The Studio camera was left Scriptable by the MCP screen capture (developer could not turn it); reset to Fixed. Next: 1.1 project base (code tasks start).
+- 2026-11-08: 1.1 built: `shared/Remotes` (full list, all created at server start), `server/Util/Guard` + `RateLimiter`,
+  `shared/Validate`, `shared/Format`, `client/Lang` (follows the player's "Language" attribute), `client/UI/Kit`
+  (buttons, windows, one open at a time, phone fit), `SettingsController` (gear button top right + Settings window,
+  English / ไทย) and `SettingsService`. Specs: RateLimiter, Validate, Format, Remotes. Studio Play: gear -> Thai
+  switched every text; bad values ignored; 30 calls in a row -> 4 accepted; no errors. Saving the language is 1.2.

@@ -349,3 +349,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   (CatModel in a ViewportFrame, built only for cards on screen), tier ribbon, kg, income, mutation tag, lock badge;
   tap a card to choose it, Sell (tap twice) and Lock at the bottom; Book button with its icon. Studio Play: Shop,
   Robux and My Cats drawn as the mockups, choosing a cat works, no errors.
+- 2026-11-08: R9 windows 2: Book (mockup 05: cat pictures, dark silhouettes for unseen cats via CatPortrait, yellow /
+  cream tabs, progress bar with a cat head, gold bonus ribbon), Rewards (shared rows with the gift icon), Rebirth
+  (mockup 07: keep / reset cards around a glowing Mythical cat, "Rebirth 0 -> 1", Money / Strength / Cats chips from
+  Config.Rebirth, Strength progress bar, purple button). Studio Play: all three drawn, no errors.

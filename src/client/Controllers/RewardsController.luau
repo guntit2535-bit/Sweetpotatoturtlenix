@@ -52,32 +52,14 @@ local function rewardText(r: any): string
 end
 
 local function row(order: number, title: string, line: string, color: Color3): Frame
-	local f = Instance.new("Frame")
-	f.LayoutOrder = order
-	f.Size = UDim2.new(1, -12, 0, 66)
-	f.BackgroundColor3 = C.soft
-	f.Parent = list
-	Kit.corner(f, 14)
-	Kit.stroke(f, 3, nil, true)
-	local chip = Instance.new("Frame")
-	chip.Size = UDim2.fromOffset(12, 42)
-	chip.Position = UDim2.fromOffset(10, 12)
-	chip.BackgroundColor3 = color
-	chip.Parent = f
-	Kit.corner(chip, 6)
-	local t = Kit.text(f, "Title", UDim2.new(1, -220, 0, 26), UDim2.fromOffset(32, 6), 21)
-	t.TextXAlignment = Enum.TextXAlignment.Left
-	t.Text = title
-	local l = Kit.text(f, "Line", UDim2.new(1, -220, 0, 22), UDim2.fromOffset(32, 36), 16)
-	l.TextXAlignment = Enum.TextXAlignment.Left
-	l.TextColor3 = C.muted
-	l.Text = line
+	local f, picture = Kit.row(list, order, title, line, nil) -- R9 row (same as the shop), the gift icon in the box
+	Kit.icon(picture, "Rewards", 56, UDim2.fromOffset(5, 5))
+	local _ = color
 	return f
 end
 
 local function button(f: Frame, text: string, color: Color3, onClick: (() -> ())?)
-	local b = Kit.button(f, "Action", color, UDim2.fromOffset(150, 46), UDim2.new(1, -162, 0.5, -25))
-	Kit.setButtonText(b, text)
+	local b = Kit.rowButton(f, text, color)
 	if onClick then
 		b.Activated:Connect(onClick)
 	end
@@ -154,15 +136,17 @@ local function redraw()
 		box.Parent = f
 		Kit.corner(box, 8)
 		Kit.stroke(box, 2, nil, true)
-		;(f:FindFirstChild("Title") :: TextLabel).Visible = false
+		;(f:FindFirstChild("Name") :: TextLabel).Visible = false
+		;(f:FindFirstChild("InfoPill") :: Frame).Visible = false
 		button(f, Lang.text("CodeRedeem"), C.green, function()
 			codeRemote:FireServer(box.Text)
 		end)
 	elseif current == "Group" then
 		local f = row(1, Lang.text("TabGroup"), Lang.text("GroupText", { money = Format.short(Config.Group.Money) }), C.coral)
 		f.Size = UDim2.new(1, -12, 0, 90)
-		;(f:FindFirstChild("Line") :: TextLabel).TextWrapped = true
-		;(f:FindFirstChild("Line") :: TextLabel).Size = UDim2.new(1, -220, 0, 44)
+		local pill = f:FindFirstChild("InfoPill") :: Frame
+		pill.Size = UDim2.new(1, -262, 0, 44)
+		;(pill:FindFirstChild("Info") :: TextLabel).TextWrapped = true
 		if d.GroupClaimed then
 			button(f, Lang.text("Claimed"), C.grey)
 		else

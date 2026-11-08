@@ -362,3 +362,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-08: R9 approved by the developer ("ผ่าน"). The 20 item reference pictures for R5 arrived
   (`art/source/gpt_models/M01-M20`): rods x 5 sets, bat, shoes 1-4 / 5-8, treats, crates, dumbbell racks x 5 sets,
   treadmills x 5 sets (steps 1 / 3 / 5). R5 starts with the pilot sheet.
+- 2026-11-08: R5 pilot: `art/blender/items.py` (builders: treadmill / weights / dumbbell / rod by level 1-25 =
+  5 families x 5 steps, bat, crate by key) + `pilot.py` (renders and lays out `art/preview/models/pilot_sheet.png`):
+  treadmill Lv1 / 13 / 25, weights Lv1 / 13 / 25, wood rod 5, gold rod 3, bat, paper / gold / diamond crate.
+  Treadmill screens face the runner (+Y; front = -Y). Sent to the developer for approval before the other families.

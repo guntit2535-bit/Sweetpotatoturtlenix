@@ -128,74 +128,141 @@ def star(m, center, r, color, frame=Matrix(), emit=0.0):
 
 
 # --------------------------------------------------------------------------------------------------
-# Treadmill (M16-M20): 5 families, steps 1-5 add console ears (3+), front pillars with gems (4+), a ring (5)
+# Treadmill (M16-M20). Every step adds something you can see (cumulative):
+#   1 base machine with the cat screen   2 side panels + a light bar on the front
+#   3 cat ears on the screen + paw badges on the sides + fat grips   4 front pillars with gems (cosmic: planets)
+#   5 a halo ring with stars + a winged star on the front
+# Family extras: sport = racing stripes, neon = glowing belt edges + under-glow, gold = red gems + a crown,
+# cosmic = stars on the belt. Size +2 % a level (level 25 = 1.48x).
+def winged_star(m, frame, r, color, wing=(255, 255, 255), emit=0.6):
+    star(m, (0, 0, 0), r, color, frame=frame, emit=emit)
+    for x in (-1, 1):
+        for i, (ln, up) in enumerate(((1.5, 0.25), (1.2, 0.0), (0.9, -0.25))):
+            base = frame @ Vector((x * r * 0.7, -0.02, up * r))
+            d = frame.to_3x3() @ Vector((x, 0, 0.35 - i * 0.3))
+            m.leaf(base, d, ln * r, 0.45 * r, wing, up=frame.to_3x3() @ Vector((0, -1, 0)), name="Wing")
+
+
 def treadmill(level):
     f, step = fam_step(level)
     P = TREAD[f]
+    name = P["name"]
     m = Model(f"Treadmill{level}")
     k = 1 + 0.02 * (level - 1)
     fr = Matrix.Scale(k, 4)
-    glow_emit = 2.5 if P["name"] in ("neon", "cosmic") else 0.0
-    # deck, belt, side rails, feet
+    glow = 2.5 if name in ("neon", "cosmic") else 1.2
+    belt = (60, 36, 130) if name == "cosmic" else P["dark"]
+    # deck, belt, rollers, side rails, feet
     rbox(m, (0, 0, 0.5), (1.2, 2.1, 0.32), P["frame"], e=0.28, frame=fr)
-    rbox(m, (0, 0.1, 0.84), (0.86, 1.95, 0.06), P["dark"] if P["name"] != "cosmic" else (60, 36, 130), e=0.2, frame=fr)
+    rbox(m, (0, 0.1, 0.84), (0.86, 1.95, 0.06), belt, e=0.2, frame=fr)
     for x in (-1, 1):
         rbox(m, (x * 1.02, 0.05, 0.82), (0.2, 2.0, 0.1), P["accent"], e=0.3, frame=fr)
         for y in (-1.8, 1.8):
             rbox(m, (x * 0.95, y, 0.12), (0.22, 0.22, 0.12), P["dark"], e=0.4, frame=fr)
-        if step >= 2:
-            rbox(m, (x * 1.23, 0.3, 0.5), (0.04, 1.4, 0.06), P["glow"], e=0.4, frame=fr, emit=glow_emit or 1.2)
-    # uprights, handlebars, console
+    # uprights, handlebars, console with the cat screen (it faces the runner: +Y)
     for x in (-1, 1):
         cyl(m, fr @ Vector((x * 0.95, -1.8, 0.7)), fr @ Vector((x * 0.82, -2.05, 3.0)), 0.15 * k, P["frame"])
         cyl(m, fr @ Vector((x * 0.85, -1.95, 2.55)), fr @ Vector((x * 0.95, -0.9, 2.62)), 0.12 * k, P["dark"])
-        cyl(m, fr @ Vector((x * 0.94, -1.05, 2.62)), fr @ Vector((x * 0.95, -0.75, 2.62)), 0.13 * k, P["accent"])
-    # the runner stands on the belt facing -Y, so the screen faces +Y (back at the runner), tilted up
-    tilt = R(0.32, "X")
-    cons = fr @ T(0, -2.1, 3.25) @ tilt
+        grip = 0.13 if step < 3 else 0.18
+        cyl(m, fr @ Vector((x * 0.94, -1.1, 2.62)), fr @ Vector((x * 0.95, -0.72, 2.62)), grip * k, P["accent"])
+    cons = fr @ T(0, -2.1, 3.25) @ R(0.32, "X")
     rbox(m, (0, 0, 0), (0.95, 0.24, 0.62), P["frame"], e=0.35, frame=cons)
     rbox(m, (0, 0.2, 0.12), (0.7, 0.06, 0.4), (30, 90, 200), e=0.25, frame=cons, emit=0.5)
     cat_face(m, cons @ T(0, 0.27, 0.12), 0.3, (150, 230, 255))
     for x, col in ((-0.2, (90, 220, 90)), (0.2, (240, 70, 80))):
         rbox(m, (x, 0.22, -0.43), (0.13, 0.05, 0.07), col, e=0.4, frame=cons, emit=0.4)
+
+    # family extras (every step)
+    if name == "sport":
+        for x in (-1, 1):
+            for dz in (0.08, -0.08):
+                rbox(m, (x * 1.21, 0.0, 0.5 + dz), (0.025, 1.7, 0.035), WHITE, e=0.4, frame=fr)
+    if name == "neon":
+        for x in (-1, 1):
+            rbox(m, (x * 0.84, 0.1, 0.9), (0.03, 1.9, 0.03), P["accent"], e=0.4, frame=fr, emit=3.0)
+        rbox(m, (0, 0, 0.2), (1.0, 1.9, 0.03), P["glow"], e=0.4, frame=fr, emit=3.0)
+    if name == "gold":
+        for x in (-1, 1):
+            for y in (-1.2, 0.0, 1.2):
+                m.blob((0.12, 0.12, 0.12), P["gem"], fr @ T(x * 1.22, y, 0.5) @ R(PI / 4, "Y"), e1=1.0, e2=1.0, name="Gem", emit=0.3)
+    if name == "cosmic":
+        for i, (x, y) in enumerate(((-0.5, -1.2), (0.3, -0.5), (-0.2, 0.4), (0.55, 1.1), (-0.6, 1.5), (0.1, 1.7))):
+            star(m, (0, 0, 0), 0.1 + 0.03 * (i % 2), (255, 230, 120), frame=fr @ T(x, y, 0.91) @ R(-PI / 2, "X"), emit=2.0)
+
+    # steps
+    if step >= 2:
+        for x in (-1, 1):
+            rbox(m, (x * 1.16, 0.15, 0.5), (0.1, 1.6, 0.24), P["accent"], e=0.35, frame=fr)
+        rbox(m, (0, -2.12, 0.5), (0.85, 0.06, 0.08), P["glow"], e=0.4, frame=fr, emit=glow)
+        if name == "gold":
+            crown = [(-0.4, 0), (0.4, 0), (0.4, 0.22), (0.25, 0.1), (0.13, 0.3), (0, 0.12), (-0.13, 0.3), (-0.25, 0.1), (-0.4, 0.22)]
+            m.slab(crown, 0.12, (255, 214, 60), cons @ T(0, 0, 0.62) @ R(PI / 2, "X"), bevel=0.04, name="Crown")
     if step >= 3:
         for x in (-1, 1):
-            ear(m, cons @ Vector((x * 0.55, 0, 0.5)), 0.32 * k, P["frame"], inner=PINK if P["name"] != "neon" else (255, 120, 230))
+            ear(m, cons @ Vector((x * 0.55, 0, 0.5)), 0.32 * k, P["frame"], inner=PINK if name != "neon" else (255, 120, 230))
+            paw(m, fr @ Vector((x * 1.27, 0.6, 0.5)), (x, 0, 0), (0, 0, 1), 0.36 * k, WHITE if name != "basic" else P["accent"])
     if step >= 4:
         for x in (-1, 1):
             cyl(m, fr @ Vector((x * 1.3, -1.6, 0.6)), fr @ Vector((x * 1.3, -1.6, 2.0)), 0.18 * k, P["accent"])
-            m.ball(fr @ Vector((x * 1.3, -1.6, 2.35)), 0.3 * k, P["gem"], emit=1.0)
+            top = fr @ Vector((x * 1.3, -1.6, 2.38))
+            if name == "cosmic":
+                m.ball(top, 0.3 * k, (150, 90, 240), emit=0.3)
+                m.torus(0.46 * k, 0.04 * k, P["accent"], Matrix.Translation(top) @ R(0.4, "X"), emit=1.0)
+            else:
+                m.ball(top, 0.3 * k, P["gem"], emit=1.0)
     if step >= 5:
         m.torus(1.25 * k, 0.07 * k, P["glow"], cons @ R(-PI / 2 + 0.25, "X"), emit=2.0)
         for i in range(3):
             a = 0.5 + i * 2.1
-            star(m, cons @ Vector((1.25 * math.cos(a), 1.25 * math.sin(a) * 0.25, 1.25 * math.sin(a) * 0.95)), 0.25 * k, (255, 210, 60), emit=1.0)
-        # a winged star on the front of the deck
-        star(m, fr @ Vector((0, -2.15, 0.55)), 0.42, (255, 210, 60), emit=0.6)
+            star(m, cons @ Vector((1.25 * math.cos(a), 1.25 * math.sin(a) * 0.25, 1.25 * math.sin(a) * 0.95)), 0.25 * k,
+                 (255, 210, 60), emit=1.0)
+        winged_star(m, fr @ T(0, -2.22, 0.5), 0.36, (255, 210, 60), wing=(255, 255, 255) if name != "gold" else (255, 240, 200))
     return m
 
 
 # --------------------------------------------------------------------------------------------------
-# Dumbbells (M11-M15): one dumbbell, and the rack with a pair for the pen
+# Dumbbells (M11-M15): one dumbbell (held in each hand) and the rack with a pair for the pen.
+# Every step (cumulative): 1 one plate a side   2 a second plate + end caps + an accent rack bar
+#   3 cat ears on the plates + a star on the rack   4 a third plate + gems on the rack feet
+#   5 glow rings round the plates + a winged star on the rack
+# Family extras: chrome = blue rims, gold = red gems on the plates, crystal = cut (hexagon) plates,
+# cosmic = stars round the plates. Size +6 % a level.
 def _dumbbell(m, center, level, scale=1.0):
     f, step = fam_step(level)
     P = WEIGHTS[f]
+    name = P["name"]
     k = scale * (1 + 0.06 * (level - 1))
     c = Vector(center)
     ax = Vector((1, 0, 0))
-    cyl(m, c - ax * 0.75 * k, c + ax * 0.75 * k, 0.11 * k, P["bar"])
-    plates = 1 + (step - 1) // 2
-    pr = (0.36 + 0.03 * step) * k
+    plates = (1, 2, 2, 3, 3)[step - 1]
+    pr = (0.34 + 0.035 * step) * k
+    span = 0.5 + plates * 0.17
+    cyl(m, c - ax * (span + 0.12) * k, c + ax * (span + 0.12) * k, 0.1 * k, P["bar"])
+    cyl(m, c - ax * 0.3 * k, c + ax * 0.3 * k, 0.13 * k, P["bar"] if name != "rubber" else (70, 72, 82))  # handle grip
+    shape = dict(nu=6, nv=8) if name == "crystal" else {}
     for side in (-1, 1):
         for i in range(plates):
-            x = side * (0.5 + i * 0.16) * k
-            cyl(m, c + ax * (x - 0.07 * k), c + ax * (x + 0.07 * k), pr * (1 - i * 0.06), P["plate"], e=0.35, alpha=P["alpha"])
-        outer = c + ax * side * (0.5 + plates * 0.16) * k
-        paw(m, outer + ax * side * 0.01, ax * side, Vector((0, 0, 1)), pr * 0.9, WHITE if f != 3 else (230, 250, 255))
+            x = side * (0.45 + i * 0.17) * k
+            r = pr * (1 - i * 0.08)
+            cyl(m, c + ax * (x - 0.075 * k), c + ax * (x + 0.075 * k), r, P["plate"], e=0.35, alpha=P["alpha"], **shape)
+            if name == "chrome":
+                m.torus(r, 0.035 * k, (40, 120, 235), Matrix.Translation(c + ax * x) @ R(PI / 2, "Y"))
+            if name == "gold":
+                m.blob((0.07 * k,) * 3, (222, 28, 52), Matrix.Translation(c + ax * x + Vector((0, 0, r))), e1=1.0, e2=1.0, name="Gem")
+        outer = c + ax * side * (0.45 + (plates - 1) * 0.17 + 0.08) * k
+        paw(m, outer + ax * side * 0.01, ax * side, Vector((0, 0, 1)), pr * 0.85, WHITE if name != "crystal" else (230, 250, 255))
+        if step >= 2:
+            cyl(m, c + ax * side * (span + 0.02) * k, c + ax * side * (span + 0.14) * k, 0.15 * k, P["bar"], e=0.4)
         if step >= 3:
-            ear(m, c + ax * side * (0.5 + (plates - 1) * 0.08) * k + Vector((0, 0, pr * 0.85)), 0.14 * k, P["plate"], facing=Vector((0, -1, 0)))
+            ear(m, c + ax * side * (0.45 + (plates - 1) * 0.085) * k + Vector((0, 0, pr * 0.8)), 0.16 * k, P["plate"],
+                facing=Vector((0, -1, 0)))
         if step >= 5 and P["glow"]:
-            m.torus(pr * 1.15, 0.03 * k, P["glow"], Matrix.Translation(c + ax * side * 0.55 * k) @ R(PI / 2, "Y"), emit=2.0)
+            m.torus(pr * 1.15, 0.035 * k, P["glow"], Matrix.Translation(c + ax * side * 0.6 * k) @ R(PI / 2, "Y"), emit=2.0)
+        if name == "cosmic":
+            for j in range(2 + step // 2):
+                a = j * 2.4 + side
+                p = c + ax * side * 0.6 * k + Vector((0, math.cos(a), math.sin(a))) * pr * 1.25
+                star(m, (0, 0, 0), 0.07 * k, (255, 220, 90), frame=Matrix.Translation(p), emit=2.0)
     return m
 
 
@@ -209,16 +276,23 @@ def weights(level):
     P = WEIGHTS[f]
     m = Model(f"Weights{level}")
     k = 1 + 0.06 * (level - 1)
-    w, h = 1.15 * k, 1.9 * k
+    w, h = 1.25 * k, 1.9 * k
+    accent = P["bar"] if step >= 2 else P["rack"]
     for x in (-1, 1):
         cyl(m, (x * w, -0.45, 0.1), (x * w * 0.95, 0, h), 0.1 * k, P["rack"])
         cyl(m, (x * w, 0.45, 0.1), (x * w * 0.95, 0, h), 0.1 * k, P["rack"])
         rbox(m, (x * w, 0, 0.1), (0.16 * k, 0.6, 0.1), P["rack"], e=0.4)
-    for z in (0.75 * h, h * 1.02):
-        rbox(m, (0, 0, z - 0.32 * k), (w, 0.16 * k, 0.07), P["rack"], e=0.4)
+        if step >= 4:
+            for y in (-0.55, 0.55):
+                m.blob((0.11 * k,) * 3, (222, 28, 52) if f == 2 else P["glow"] or (90, 200, 255), T(x * w, y, 0.24),
+                       e1=1.0, e2=1.0, name="Gem", emit=0.4)
+    for i, z in enumerate((0.75 * h, h * 1.02)):
+        rbox(m, (0, 0, z - 0.32 * k), (w, 0.16 * k, 0.07), accent if i == 1 else P["rack"], e=0.4)
     rbox(m, (0, 0, 0.25), (w * 0.9, 0.5, 0.1), P["rack"], e=0.4)
     if step >= 3:
-        star(m, (0, -0.55, 0.3), 0.22 * k, (255, 210, 60), emit=0.5)
+        star(m, (0, -0.55, 0.42), 0.24 * k, (255, 210, 60), emit=0.5)
+    if step >= 5:
+        winged_star(m, T(0, -0.62, 0.42), 0.28 * k, (255, 210, 60))
     _dumbbell(m, (0, 0, 0.75 * h - 0.32 * k + 0.45 * k), level, 0.95)
     _dumbbell(m, (0, 0, 1.02 * h - 0.32 * k + 0.45 * k), level, 0.95)
     return m

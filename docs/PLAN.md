@@ -371,3 +371,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   crisp bevels; paper = tape + taped corners + printed arrows, wood = grooved planks, posts, rims, brace, metal
   brackets with bolts, gold = edge bands, rivets, faceted red gems, cat-face lock, diamond = chamfered crystal,
   crystal bars and diamonds, glowing core. Sheet `art/preview/models/crates_sheet.png` (4 closed + gold open).
+- 2026-11-08: crates approved ("ผ่าน"). All families built: `shoes.py` (8 shoes, M07 / M08), `treats.py` (3, M09);
+  treadmill and weights reworked so every step adds a visible part (2 side panels / plate + caps, 3 ears + paws /
+  ears + star, 4 gem pillars / third plate + gems, 5 halo ring + winged star / glow rings + winged star) plus a
+  signature per family. Sheets via `sheets.py`: `art/preview/models/sheet_{treadmill,weights,rod,shoes,treats}.png`.
+  Export `items_export.py` -> `art/export/{Treadmills,Weights,Dumbbells,Rods,Gear,Crates}.fbx` + manifest
+  (RES 0.5, per-item triangle caps, see-through parts in `<id>_Glass`, crate lids as `Crate_<key>_Lid` with the
+  hinge); `manifest_to_luau.py` -> `src/shared/ItemModelData.luau`. The developer imports after approving the sheets.

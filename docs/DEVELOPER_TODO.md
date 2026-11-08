@@ -55,6 +55,14 @@
   แล้วค่อยทำข้อ 1-12 และไอคอน P01-P12 ใส่ที่ `art/source/gpt_ui/`
 - [x] **รูปต้นแบบไอเทม (R5):** (ได้ครบ 20 รูป 2026-11-08) ทำใน ChatGPT ตามไฟล์ `docs/gpt_model_prompts.md` (20 รูป) เริ่มที่ M01, M11, M16 ส่งให้ Claude ดูก่อน
   ใส่ที่ `art/source/gpt_models/`
+- [ ] **นำเข้าโมเดลไอเทม (R5):** ทำหลังตรวจรูปทั้งหมดผ่านแล้ว
+  1. GitHub Desktop: Fetch origin -> Pull origin
+  2. ใน Studio สร้าง Folder ชื่อ `ItemModels` ไว้ใน ReplicatedStorage (ถ้ายังไม่มี)
+  3. แท็บ Home (หรือ File) -> Import 3D -> เลือกไฟล์ `art/export/Treadmills.fbx`
+     ในหน้าต่างนำเข้า ให้ตรวจว่าผู้สร้าง (Creator) เป็น **กลุ่ม Sweetpotatoturtlenix** แล้วกด Import
+  4. ได้ Model ใหม่ใน Workspace ให้ลากไปใส่ใน `ReplicatedStorage > ItemModels`
+  5. ทำซ้ำข้อ 3-4 กับอีก 5 ไฟล์: `Weights.fbx`, `Dumbbells.fbx`, `Rods.fbx`, `Gear.fbx`, `Crates.fbx`
+  6. กด Save / Publish แล้วบอก Claude (Claude จะเปลี่ยนโค้ดให้ใช้โมเดลใหม่และตรวจในเกมเอง)
 - [ ] **บอกลูกค้า:** ตัวเลขเงิน / พลัง / ความเร็ว / น้ำหนักแมวจะใหญ่ขึ้นจนสูงสุดราว 99 Sx (เปลี่ยนจากตารางในพิมพ์เขียว)
 - [x] **อัปโหลดไอคอน UI 12 รูป (R9):** (ได้ครบ 12 เลข ใส่ในเกมแล้ว 2026-11-08) ใน Studio เปิด View -> Asset Manager -> Bulk Import (ปุ่มลูกศรขึ้น) เลือกไฟล์ทั้ง 12 ไฟล์ในโฟลเดอร์
   `art/export/ui_icons/` (P01_shop.png ถึง P12_event.png ไม่ต้องเลือก _review.png) ตอนอัปโหลดให้เลือกเจ้าของเป็น **กลุ่ม Sweetpotatoturtlenix**

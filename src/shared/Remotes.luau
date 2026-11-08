@@ -35,6 +35,8 @@ Remotes.Events = {
 	"BuyCrate", -- client -> server: (crateKey), task 2.6
 	"CrateResult", -- server -> client: (crateKey, kind, kg, mutation) after the save, task 2.6
 	"Rebirth", -- client -> server: rebirth now, task 2.7
+	"ClaimReward", -- client -> server: (kind "Login" | "Playtime" | "Quest" | "Group", index), tasks 2.11 - 2.16
+	"RedeemCode", -- client -> server: (code), task 2.15
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

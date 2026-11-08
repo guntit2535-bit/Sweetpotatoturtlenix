@@ -19,6 +19,8 @@ export type Cat = {
 	Mutation: string?, -- "" / nil = none, "Gold" | "Rainbow" | "Glow" (task 2.9)
 }
 
+export type Quest = { Kind: string, Goal: number, Progress: number, Claimed: boolean }
+
 export type Data = {
 	Money: number,
 	MoneyFrac: number, -- fraction of money carried between income ticks (< 1)
@@ -39,6 +41,15 @@ export type Data = {
 	PenBuys: number, -- pen expansions bought with money (task 2.4)
 	Boosts: { [string]: number }, -- Luck / Money / Easy / Luck3 -> os.time() the boost ends (2.5, 2.19)
 	SpeedPassOn: boolean, -- the x2 Speed button switch (task 2.18)
+	LoginStep: number, -- next daily login reward 1 .. 7 (task 2.11)
+	LoginDay: number, -- UTC day number of the last login claim
+	PlayDay: number, -- UTC day of PlaySeconds (task 2.13)
+	PlaySeconds: number, -- seconds played that day
+	PlayClaimed: number, -- playtime gifts claimed that day (bit i-1 = gift i)
+	QuestDay: number, -- UTC day of Quests (task 2.12)
+	Quests: { Quest },
+	CodesUsed: { [string]: boolean }, -- gift codes redeemed (task 2.15)
+	GroupClaimed: boolean, -- the group reward (task 2.16)
 	Settings: {
 		Language: string, -- "en" (default) or "th"
 	},
@@ -72,6 +83,15 @@ DataTemplate.Template = {
 	PenBuys = 0,
 	Boosts = { Luck = 0, Money = 0, Easy = 0, Luck3 = 0 },
 	SpeedPassOn = true,
+	LoginStep = 1,
+	LoginDay = 0,
+	PlayDay = 0,
+	PlaySeconds = 0,
+	PlayClaimed = 0,
+	QuestDay = 0,
+	Quests = {},
+	CodesUsed = {},
+	GroupClaimed = false,
 	Settings = {
 		Language = "en",
 	},
@@ -138,6 +158,24 @@ function DataTemplate.sanitize(data: Data): number
 			data.Boosts[key] = nil
 			fixes += 1
 		end
+	end
+	set("LoginStep", whole(data.LoginStep, 1, #Config.Login, 1))
+	for _, key in { "LoginDay", "PlayDay", "PlaySeconds", "PlayClaimed", "QuestDay" } do
+		set(key, whole((data :: any)[key], 0, math.huge, 0))
+	end
+	if type(data.GroupClaimed) ~= "boolean" then
+		set("GroupClaimed", false)
+	end
+	local questsOk = #data.Quests <= Config.Quests.PerDay
+	for _, q in data.Quests do
+		if type(q) ~= "table" or type(q.Kind) ~= "string" or not isFinite(q.Goal) or not isFinite(q.Progress) or type(q.Claimed) ~= "boolean" then
+			questsOk = false
+		end
+	end
+	if not questsOk then
+		data.Quests = {}
+		data.QuestDay = 0
+		fixes += 1
 	end
 	if type(data.SpeedPassOn) ~= "boolean" then
 		set("SpeedPassOn", true)

@@ -55,13 +55,13 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.7 Rebirth x25: resets money / Strength / Speed / weights / treadmill, x1.5 money + x1.5 Strength permanent, opens zones; cats and items stay. Reuse: SP `RebirthService`, `shared/RebirthRules`
 - [x] 2.8 Collection book, 400 cats, silhouettes, full-set bonus. Reuse: PSE `BookService`, `shared/Collection`, `Controllers/BookUI`, `UI/Portrait`
 - [x] 2.9 Mutations Gold / Rainbow / Glow, money x2-x10, Basic-Legendary only. Reuse: PSE `shared/Mutation`, `MutationFx`, `RainbowFx`
-- [ ] 2.10 Offline income, max 8 hours, welcome-back window. Reuse: PSE `OfflineService`, `shared/Offline`, `WelcomeBackUI`
-- [ ] 2.11 Daily login, 7-day cycle, day 7 big reward. Reuse: BA `LoginService`, `shared/Login`, `RewardsService`
-- [ ] 2.12 Daily quests. Reuse: SP `QuestService`, `shared/Quests`, BA `QuestBoardService`
-- [ ] 2.13 Playtime gifts. Reuse: SP `PlaytimeService`, `shared/Playtime`, BA `RewardsService`
-- [ ] 2.14 Leaderboards: money per second + cat count (OrderedDataStore + lobby boards). Reuse: SP `LeaderboardService` + `tools/lib/BuildLeaderboard`, BA `LeaderboardService`
-- [ ] 2.15 Gift codes. Reuse: BA `CodeService`
-- [ ] 2.16 Group reward (needs Config.GroupId). Reuse: BA `GroupChestService`
+- [x] 2.10 Offline income, max 8 hours, welcome-back window. Reuse: PSE `OfflineService`, `shared/Offline`, `WelcomeBackUI`
+- [x] 2.11 Daily login, 7-day cycle, day 7 big reward. Reuse: BA `LoginService`, `shared/Login`, `RewardsService`
+- [x] 2.12 Daily quests. Reuse: SP `QuestService`, `shared/Quests`, BA `QuestBoardService`
+- [x] 2.13 Playtime gifts. Reuse: SP `PlaytimeService`, `shared/Playtime`, BA `RewardsService`
+- [x] 2.14 Leaderboards: money per second + cat count (OrderedDataStore + lobby boards). Reuse: SP `LeaderboardService` + `tools/lib/BuildLeaderboard`, BA `LeaderboardService`
+- [x] 2.15 Gift codes. Reuse: BA `CodeService`
+- [x] 2.16 Group reward (needs Config.GroupId). Reuse: BA `GroupChestService`
 - [ ] 2.17 Trading: request / accept, up to 6 cats each, Ready + 5 s countdown (any change resets), confirm, server re-checks ownership + pen room + locks, one-step swap, both saves, trade log, leave = cancel, duplicate-proof. Reuse: BA `TradeService`, `shared/Trade`, `TradeController` (minus capsules)
 - [ ] 2.18 Game passes x5 (x2 Speed button: blink, then on/off toggle; x2 Cash, x2 Strength, Lucky, VIP tag + 10%). Reuse: PSE `PassService`, `shared/Passes`, `VipTagController`, SP `GamePassService`
 - [ ] 2.19 Developer products x7 (+20 slots in price steps, 4 cash packs by income, strength pack, luck x3 15 min, server luck 15 min + announcement, summon Mythical, starter pack once) + the one ProcessReceipt. Reuse: PSE `ProductService`, `shared/Products`, SP `DevProductService`
@@ -84,6 +84,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- 2.10-2.15 (2026-11-08): offline income at 50% of the normal rate (blueprint gives only the 8-hour cap); gift
+  codes live in Config.Codes (add one and publish) instead of an admin panel; the Rewards button sits under
+  Rebirth on the right (the left column keeps the 4 buttons of blueprint §16).
 - 2.2 (2026-11-08): "luck" (rods, Lucky pass, Lucky Treat, luck x3, server luck) raises the mutation chance of
   caught and crate cats (2.9); wild cats are shared by the server, so server luck also tilts the zone tier odds.
 - 1.17 (2026-11-08): the HUD uses the chunky bright button kit already in the game (no separate GPT UI board);
@@ -196,3 +199,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   cats, rods, shoes, slots, book). Studio Play (FreshSave): 100,000 rolls per crate within 0.1% of the odds,
   Diamond crate bought -> Legendary "Tabby Sesame" revealed and in the pen, rebirth refused at 1,000, done at
   1,600: money / Strength reset, cat kept, income 600 -> 900/s.
+- 2026-11-08: 2.10-2.16: `shared/Rewards` (days, money by income, offline, quest pick, gift bits; spec),
+  `RewardsService` (offline income 50% up to 8 h with a toast, 7-day login, playtime gifts per UTC day, 3 daily
+  quests fed by `Util/Progress` from catches / bat hits / training / crates / likes, codes from Config.Codes, group
+  reward via IsInGroupAsync; saved before toasts; RewardsReady badge; !playtime !newday), `CrateService.give` (free
+  crates), `LeaderboardService` (2 OrderedDataStores, boards outside the lobby ring) + `LeaderboardController`,
+  `RewardsController` (Daily / Gifts / Quests / Codes / Group, button under Rebirth). Studio Play (FreshSave):
+  login 500, second claim refused, code MEOW once (then "already used"), unknown code refused, group 10K + treat,
+  gifts 1-4 (gift 4 = a Wood crate cat), gift 5 refused at 31 min, quest "open 2 crates" paid, board row written.

@@ -33,6 +33,7 @@ local PlayerStore = ProfileStore.New(Config.Data.StoreName, DataTemplate.Templat
 
 local profiles: { [Player]: Profile } = {}
 local dirty: { [Player]: boolean } = {}
+local lastOnlineAtJoin: { [Player]: number } = {} -- LastOnline as loaded (offline income, task 2.10)
 local loadedEvent = Instance.new("BindableEvent")
 local changedEvent = Instance.new("BindableEvent")
 local playerDataRemote: RemoteEvent
@@ -163,6 +164,7 @@ local function onPlayerAdded(player: Player)
 		profile:AddUserId(player.UserId) -- GDPR
 	end
 	profile:Reconcile() -- fill in fields added to the template after this save was made
+	lastOnlineAtJoin[player] = profile.Data.LastOnline
 	local fixes = DataTemplate.sanitize(profile.Data)
 	if fixes > 0 then
 		log(`repaired {fixes} value(s) in {player.Name}'s save`)
@@ -221,6 +223,11 @@ end
 -- functions below so attributes, leaderstats and the client copy stay in sync.
 function DataService.GetData(player: Player): Data?
 	return dataOf(player)
+end
+
+-- os.time() the player was last online before this session (0 on a first join), as loaded.
+function DataService.LastOnlineAtJoin(player: Player): number
+	return lastOnlineAtJoin[player] or 0
 end
 
 function DataService.IsLoaded(player: Player): boolean

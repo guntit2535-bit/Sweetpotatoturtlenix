@@ -276,6 +276,50 @@ Config.Book = { TierBonus = 0.05, AllBonus = 0.25 }
 -- Rebirth (task 2.7): rebirth r + 1 needs Strength >= Strength * Growth^r.
 Config.RebirthNeed = { Strength = 1500, Growth = 2.2 }
 
+-- Extra systems (tasks 2.10 - 2.16). Money rewards = max(Base, Seconds of the player's income).
+Config.Offline = { MaxHours = 8, Share = 0.5, MinSeconds = 120 } -- income while away, at half rate
+Config.Login = { -- a 7-day cycle; missing a day does not reset it; day 7 is the big one
+	{ Money = { Base = 500, Seconds = 120 } },
+	{ Money = { Base = 1000, Seconds = 240 } },
+	{ Treat = "Luck" },
+	{ Money = { Base = 2500, Seconds = 480 } },
+	{ Treat = "Money" },
+	{ Money = { Base = 5000, Seconds = 900 } },
+	{ Crate = "Gold", Money = { Base = 10000, Seconds = 1800 } },
+}
+Config.Playtime = { -- minutes played today -> gift (each once per UTC day)
+	{ Minutes = 5, Money = { Base = 300, Seconds = 60 } },
+	{ Minutes = 10, Treat = "Easy" },
+	{ Minutes = 20, Money = { Base = 1000, Seconds = 180 } },
+	{ Minutes = 30, Crate = "Wood" },
+	{ Minutes = 45, Treat = "Luck" },
+	{ Minutes = 60, Money = { Base = 4000, Seconds = 600 } },
+	TickSeconds = 10,
+}
+Config.Quests = { -- 3 a day, picked from these kinds; Goal grows a little with rebirths
+	PerDay = 3,
+	Kinds = {
+		{ Key = "Catch", Goal = 5, Money = { Base = 1500, Seconds = 300 } },
+		{ Key = "CatchRare", Goal = 2, Money = { Base = 2500, Seconds = 420 } },
+		{ Key = "Train", Goal = 300, Money = { Base = 1000, Seconds = 240 } }, -- seconds training
+		{ Key = "Hit", Goal = 2, Money = { Base = 1500, Seconds = 300 } },
+		{ Key = "Crate", Goal = 2, Money = { Base = 2000, Seconds = 300 } },
+		{ Key = "Like", Goal = 1, Money = { Base = 800, Seconds = 180 } },
+	},
+}
+Config.Codes = { -- gift codes (upper case); each player once. Add new ones here and publish.
+	SWEETPOTATO = { Money = 5000, Treat = "Luck" },
+	MEOW = { Money = 2000 },
+}
+Config.Group = { Money = 10000, Treat = "Luck", TreatSeconds = 1800 } -- joining Config.GroupId
+Config.Leaderboards = {
+	Stores = { Income = "Sweetpotato_LB_Income_v1", Cats = "Sweetpotato_LB_Cats_v1" },
+	WriteEvery = 120, -- seconds between a player's score writes
+	ReadEvery = 120,
+	Show = 10,
+}
+Config.Rewards = { ClaimRate = { maxCalls = 4, window = 1 }, CodeRate = { maxCalls = 2, window = 3 } }
+
 -- Cat crates (task 2.6, blueprint §12): bought with in-game money, odds (%) shown before buying, no
 -- Secret. Costs set so a crate pays itself back in about 3 / 5 / 10 / 20 minutes of its average cat.
 Config.Crates = {

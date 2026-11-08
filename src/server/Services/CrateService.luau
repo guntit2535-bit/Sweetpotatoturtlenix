@@ -21,6 +21,7 @@ local Validate = require(Shared.Validate)
 local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
+local Progress = require(script.Parent.Parent.Util.Progress)
 local DataService = require(script.Parent.DataService)
 local DebugService = require(script.Parent.DebugService)
 local PenService = require(script.Parent.PenService)
@@ -55,6 +56,19 @@ local function onBuy(player: Player, rawKey: unknown)
 		return
 	end
 	busy[player] = true
+	if not CrateService.give(player, key) then
+		DataService.AddMoney(player, crate.Cost) -- the pen filled up in between: money back
+	end
+	busy[player] = nil
+	Progress.add(player, "Crate", 1)
+end
+
+-- Rolls a crate for free (paid above, or a reward) into the pen; saved before CrateResult. False when full.
+function CrateService.give(player: Player, key: string): boolean
+	local data = DataService.GetData(player)
+	if not data or not Crates.get(key) or not PenService.hasRoom(player) then
+		return false
+	end
 	local tier = Crates.roll(key, rng:NextNumber())
 	local list = Cats.ByTier[tier]
 	local kind = list[rng:NextInteger(1, #list)]
@@ -62,14 +76,11 @@ local function onBuy(player: Player, rawKey: unknown)
 	local mutation = Mutation.roll(tier, Bonus.luck(BonusCtx.of(player, data)), rng:NextNumber())
 	local id = PenService.addCat(player, kind, kg, mutation)
 	if not id then
-		-- the pen filled up in between: give the money back
-		DataService.AddMoney(player, crate.Cost)
-		busy[player] = nil
-		return
+		return false
 	end
 	DataService.SaveAsync(player) -- saved before it is shown
-	busy[player] = nil
 	resultRemote:FireClient(player, key, kind, kg, mutation)
+	return true
 end
 
 function CrateService:Init()

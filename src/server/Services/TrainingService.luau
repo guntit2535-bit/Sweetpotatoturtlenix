@@ -16,6 +16,7 @@ local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local Format = require(Shared.Format)
 local GymLooks = require(script.Parent.Parent.Util.GymLooks)
 local Notify = require(script.Parent.Parent.Util.Notify)
+local Progress = require(script.Parent.Parent.Util.Progress)
 local DataService = require(script.Parent.DataService)
 local PenService = require(script.Parent.PenService)
 
@@ -142,6 +143,9 @@ local function tick()
 						training = which
 					end
 				end
+			end
+			if training then
+				Progress.add(player, "Train", Config.Weights.Tick)
 			end
 			if training == "Weights" then
 				local gain = CatRules.weightsGain(data.WeightsLevel) * Bonus.strength(BonusCtx.of(player, data))

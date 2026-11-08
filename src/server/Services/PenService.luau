@@ -28,6 +28,7 @@ local Mutation = require(Shared.Mutation)
 local Validate = require(Shared.Validate)
 local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
+local Progress = require(script.Parent.Parent.Util.Progress)
 local DataService = require(script.Parent.DataService)
 local DebugService = require(script.Parent.DebugService)
 
@@ -185,6 +186,11 @@ function PenService.penIndex(player: Player): number?
 	return penOf[player]
 end
 
+-- Money per second right now (cats x mutations x every multiplier): offline income, rewards.
+function PenService.incomeRate(player: Player): number
+	return (incomeOf[player] or 0) * Bonus.money(BonusCtx.of(player, DataService.GetData(player)))
+end
+
 function PenService.hasRoom(player: Player): boolean
 	local data = DataService.GetData(player)
 	return data ~= nil and DataTemplate.catCount(data) < data.PenSlots
@@ -286,6 +292,7 @@ local function onLike(player: Player, index: number)
 	setSign(index, owner)
 	player:SetAttribute("LikeBuffUntil", workspace:GetServerTimeNow() + Config.Walk.LikeBuffSeconds)
 	Notify.send(player, "LikeDone", { name = owner.DisplayName }, "good")
+	Progress.add(player, "Like", 1)
 	Notify.send(owner, "LikeGot", { name = player.DisplayName }, "good")
 end
 

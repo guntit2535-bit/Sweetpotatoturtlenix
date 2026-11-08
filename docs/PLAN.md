@@ -96,6 +96,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
     - [~] V5d Epic: all 50 costumes (`tier_epic.png`), self-checked, for the morning check
     - [~] V5e Legendary: all 50 food / animal cats (`tier_legendary.png`), self-checked, for the morning check
     - [~] V5f Mythical: all 50 creatures with their effects (`tier_mythical.png`), self-checked, for the morning check
+    - [~] V5g Secret: all 50 gods / cosmic cats with their effects (`tier_secret.png`), self-checked, for the morning check
   - [ ] V5h into the game: an exporter writes every design as block data per bone (size, offset, colour, studs, glow) to a Luau module; CatModel builds the cat from Parts on the same rig (Body, Head, Tail1/2, legs, wings) so CatAnims moves it; the studs come from one MaterialVariant (a studs normal map the developer uploads), so no extra parts; effects from a small library (orbiting block objects + particle styles) keyed by effectKey; Cats data: 400 cats (100/80/70/50/50/50), names from the table
   - [ ] V5i Studio checks: pens with many cats on a phone, book, trade, crate opening, the Caught! card
 
@@ -533,3 +534,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   in game). Self-check: pale cats recoloured (Ice Dragon, Crystal, Fairy, Ghost, Snow Spirit, Cloud Dragon, Bubble,
   Pegasus wings, Mummy), sheets now on a slightly darker background so white cats show. Note for V5h: Mermaid and
   Genie have no back legs (fish tail / smoke), so the game rig must allow a missing bone. 33-73 parts (average 49).
+- 2026-11-09 V5g Secret: `cats_secret.py` = 49 god / cosmic designs (discs and wheels behind, rings round the body,
+  crowns, wings, crystals, tentacles, a mountain or a tree on the back) with their effects. Self-check: Earth Titan's
+  mountain made taller (it hid behind the head), Moon Goddess crescent made gold, Angel wings gold-edged, Prism's
+  rainbow beam moved to the visible side. 34-101 parts (average 60; Sakura Goddess the most).

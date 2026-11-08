@@ -57,13 +57,14 @@ function ToastController.show(key: string, vars: { [string]: any }?, kind: strin
 	end
 	local toast = Instance.new("Frame")
 	toast.Name = "Toast"
-	toast.Size = UDim2.new(1, 0, 0, 46)
+	toast.Size = UDim2.new(1, 0, 0, 50)
 	toast.BackgroundColor3 = COLORS[kind or "info"] or Kit.Colors.sky
 	toast.LayoutOrder = math.floor(os.clock() * 100)
 	toast.Parent = list
-	Kit.corner(toast, 14)
+	Kit.corner(toast, 25) -- R9 (mockup 11): a round pill with a paw on the left
 	Kit.stroke(toast, 3, nil, true)
-	local label = Kit.text(toast, "Text", UDim2.new(1, -20, 1, -6), UDim2.fromOffset(10, 3), 22, true)
+	Kit.paw(toast, 30, UDim2.fromOffset(12, 10), Color3.new(1, 1, 1), 0.1)
+	local label = Kit.text(toast, "Text", UDim2.new(1, -60, 1, -6), UDim2.fromOffset(50, 3), 22, true)
 	label.Text = Lang.text(key, resolve(vars))
 	label.TextScaled = true
 	local limit = Instance.new("UITextSizeConstraint")

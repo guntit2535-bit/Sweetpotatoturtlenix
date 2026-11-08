@@ -353,3 +353,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   cream tabs, progress bar with a cat head, gold bonus ribbon), Rewards (shared rows with the gift icon), Rebirth
   (mockup 07: keep / reset cards around a glowing Mythical cat, "Rebirth 0 -> 1", Money / Strength / Cats chips from
   Config.Rebirth, Strength progress bar, purple button). Studio Play: all three drawn, no errors.
+- 2026-11-08: R9 windows 3: Trade (mockup 08: "You" / partner pills, cat cards with pictures and tier ribbons, Ready /
+  Not ready pills, the picker row with pictures, cream invite popup with ears; checked with a fake TradeState),
+  fishing (mockup 10: light bar, round HOLD with a pink paw), the Caught! card (mockup 11: pink cat-ear banner, the
+  real cat picture, details; FishingService sends the cat kind), toasts as round pills with a paw. Settings uses the
+  new kit as built. Studio Play: catch -> Caught! card with Ginger Pumpkin, toast pill; no errors. R9 stays [~]
+  for the developer's look check; the crate opening screen (mockup 12) comes with R8.

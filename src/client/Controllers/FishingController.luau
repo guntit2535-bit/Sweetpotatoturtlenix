@@ -13,11 +13,13 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Cats = require(Shared:WaitForChild("Cats"))
 local Config = require(Shared:WaitForChild("Config"))
 local FishingBar = require(Shared:WaitForChild("FishingBar"))
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
+local CatPortrait = require(script.Parent.Parent.UI.CatPortrait)
 local ToastController = require(script.Parent.ToastController)
 
 local FishingController = {}
@@ -136,7 +138,7 @@ local function build()
 	bar.Name = "Bar"
 	bar.Position = UDim2.fromOffset(0, 50)
 	bar.Size = UDim2.fromOffset(78, BAR_H)
-	bar.BackgroundColor3 = Color3.fromHex("27407a")
+	bar.BackgroundColor3 = Color3.fromHex("cfd6e6") -- R9 (mockup 10): a light bar, the green zone inside
 	bar.ClipsDescendants = true
 	bar.Parent = panel
 	Kit.corner(bar, 16)
@@ -185,7 +187,7 @@ local function build()
 	meter.Name = "Meter"
 	meter.Position = UDim2.fromOffset(94, 50)
 	meter.Size = UDim2.fromOffset(32, BAR_H)
-	meter.BackgroundColor3 = C.white
+	meter.BackgroundColor3 = Color3.fromHex("cfd6e6")
 	meter.ClipsDescendants = true
 	meter.Parent = panel
 	Kit.corner(meter, 12)
@@ -212,11 +214,21 @@ local function build()
 	local hs = Instance.new("UIScale")
 	hs.Parent = holdHolder
 	hs.Scale = if UserInputService.TouchEnabled then 1 else 0.7
-	Kit.corner(holdButton, 75)
-	local lip = holdHolder:FindFirstChild("Lip")
-	if lip then
-		Kit.corner(lip, 75)
+	-- round: change the kit's corners (a second UICorner would be ignored)
+	for _, part in { holdButton :: Instance, holdHolder:FindFirstChild("Lip") } do
+		if part then
+			for _, c in part:GetChildren() do
+				if c:IsA("UICorner") then
+					c.CornerRadius = UDim.new(0.5, 0)
+				end
+			end
+		end
 	end
+	-- R9: a pink paw over the label
+	Kit.paw(holdButton, 56, UDim2.new(0.5, -28, 0, 20), C.pink)
+	local holdLabel = holdButton:FindFirstChild("Label") :: TextLabel
+	holdLabel.Position = UDim2.new(0, 6, 1, -62)
+	holdLabel.Size = UDim2.new(1, -12, 0, 44)
 	holdButton.MouseButton1Down:Connect(function()
 		holdingButton = true
 		sendHold()
@@ -234,16 +246,45 @@ local function build()
 	card = Instance.new("Frame")
 	card.Name = "Card"
 	card.AnchorPoint = Vector2.new(0.5, 0.5)
-	card.Position = UDim2.fromScale(0.5, 0.42)
-	card.Size = UDim2.fromOffset(420, 150)
-	card.BackgroundColor3 = C.white
+	card.Position = UDim2.fromScale(0.5, 0.58)
+	card.Size = UDim2.fromOffset(340, 340)
+	card.BackgroundColor3 = C.panel
 	card.Visible = false
 	card.Parent = Kit.screen("CaughtCard", 15)
-	Kit.corner(card, 22)
+	Kit.corner(card, 26)
 	Kit.stroke(card, 4, nil, true)
-	local title = Kit.text(card, "Title", UDim2.new(1, 0, 0, 50), UDim2.fromOffset(0, 8), 40, true)
-	title.TextColor3 = C.yellow
-	local body = Kit.text(card, "Body", UDim2.new(1, -24, 0, 70), UDim2.fromOffset(12, 64), 24)
+	-- R9 (mockup 11): pink cat-ear banner, the cat's picture, then the details
+	local banner = Instance.new("Frame")
+	banner.AnchorPoint = Vector2.new(0.5, 0.5)
+	banner.Position = UDim2.new(0.5, 0, 0, 4)
+	banner.Size = UDim2.fromOffset(230, 58)
+	banner.BackgroundColor3 = C.pink
+	banner.Parent = card
+	Kit.corner(banner, 29)
+	Kit.stroke(banner, 4, nil, true)
+	Kit.ears(banner, 30, { 0.2, 0.8 }, C.pink, Color3.fromHex("ffd0e4"))
+	local title = Kit.text(banner, "Title", UDim2.new(1, -20, 1, -8), UDim2.fromOffset(10, 4), 34, true)
+	title.TextScaled = true
+	title.Name = "Title"
+	title.Parent = card
+	title.AnchorPoint = Vector2.new(0.5, 0.5)
+	title.Position = UDim2.new(0.5, 0, 0, 4)
+	title.Size = UDim2.fromOffset(210, 46)
+	title.ZIndex = 3
+	local pic = Instance.new("Frame")
+	pic.Name = "Picture"
+	pic.AnchorPoint = Vector2.new(0.5, 0)
+	pic.Position = UDim2.new(0.5, 0, 0, 44)
+	pic.Size = UDim2.fromOffset(200, 170)
+	pic.BackgroundColor3 = C.sky
+	pic.Parent = card
+	Kit.corner(pic, 20)
+	Kit.stroke(pic, 3, nil, true)
+	local pg = Instance.new("UIGradient")
+	pg.Color = ColorSequence.new(Color3.fromHex("d6f2ff"), Color3.fromHex("62c0f5"))
+	pg.Rotation = 90
+	pg.Parent = pic
+	local body = Kit.text(card, "Body", UDim2.new(1, -24, 0, 100), UDim2.fromOffset(12, 222), 22, true)
 	body.TextWrapped = true
 end
 
@@ -271,6 +312,18 @@ local function showCard(vars: { [string]: any })
 	(card:FindFirstChild("Title") :: TextLabel).Text = Lang.text("CaughtTitle")
 	local tier = vars.tier
 	local tierText = if type(tier) == "string" then Lang.text("Tier" .. tier) else ""
+	-- the cat's picture (R9)
+	local pic = card:FindFirstChild("Picture") :: Frame
+	local old = pic:FindFirstChild("Portrait")
+	if old then
+		old:Destroy()
+	end
+	local design = if type(vars.kind) == "string" then Cats.ById[vars.kind] else nil
+	if design then
+		local look = table.clone(design.Look) :: any
+		look.mutation = if type(vars.mutation) == "string" and vars.mutation ~= "" then vars.mutation else nil
+		CatPortrait.make(pic, look)
+	end
 	;(card:FindFirstChild("Body") :: TextLabel).Text = Lang.text("FishCaught", { name = vars.name, tier = tierText, kg = vars.kg })
 		.. (if type(vars.mutation) == "string" and vars.mutation ~= "" then " · " .. Lang.text("Mut" .. vars.mutation) .. "!" else "")
 	card.Visible = true

@@ -249,6 +249,7 @@ Text.Lines = {
 	TradeMyCats = { en = "Tap your cats to add or remove (max 6)", th = "แตะแมวของคุณเพื่อใส่หรือเอาออก (สูงสุด 6)" },
 	TradeReadyButton = { en = "Ready", th = "พร้อม" },
 	TradeNotReady = { en = "Cancel ready", th = "ยกเลิกพร้อม" },
+	TradeNotReadyState = { en = "Not ready", th = "ยังไม่พร้อม" },
 	TradeWaiting = { en = "Both press Ready", th = "รอทั้งสองฝ่ายกดพร้อม" },
 	TradeIn = { en = "Swap in {n}...", th = "แลกใน {n}..." },
 	TradeCancelButton = { en = "Cancel", th = "ยกเลิก" },

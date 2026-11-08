@@ -195,6 +195,7 @@ local function step(dt: number)
 			local mutation = w.mutation or Mutation.roll(w.tier, Bonus.luck(BonusCtx.of(player, DataService.GetData(player))), math.random())
 			finish(player, "FishCaught", {
 				mutation = mutation,
+				kind = w.kind, -- R9: the client draws the cat on the Caught! card
 				name = if design then design.Name else "?",
 				tier = Config.Tiers[w.tier].Key,
 				kg = Format.money(CatRules.kgFor(w.kg, (DataService.GetData(player) or { Rebirths = 0 } :: any).Rebirths)),

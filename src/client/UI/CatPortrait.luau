@@ -46,11 +46,11 @@ end
 
 -- Builds the portrait of every card in `list` that is on screen and has none yet. `lookOf(card)` gives the look
 -- (nil = skip) and `silhouetteOf(card)` whether to draw it dark. The picture goes into the card's "Picture".
-function CatPortrait.fillVisible(list: ScrollingFrame, lookOf: (Instance) -> any, silhouetteOf: ((Instance) -> boolean)?)
+function CatPortrait.fillVisible(list: GuiObject, lookOf: (Instance) -> any, silhouetteOf: ((Instance) -> boolean)?)
 	local top = list.AbsolutePosition.Y - 40
 	local bottom = top + list.AbsoluteSize.Y + 80
 	for _, card in list:GetChildren() do
-		if card:IsA("Frame") then
+		if card:IsA("GuiObject") then
 			local box = card:FindFirstChild("Picture")
 			if box and not box:FindFirstChild("Portrait") then
 				local y = card.AbsolutePosition.Y

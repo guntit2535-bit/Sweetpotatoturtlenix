@@ -15,6 +15,7 @@ local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local PlayerData = require(script.Parent.Parent.PlayerData)
 local Kit = require(script.Parent.Parent.UI.Kit)
+local CatPortrait = require(script.Parent.Parent.UI.CatPortrait)
 
 local TradeController = {}
 
@@ -33,6 +34,7 @@ local function clear()
 	end
 end
 
+-- R9 (mockup 08): a cat card with its picture (CatPortrait, filled for cards on screen) and a tier ribbon.
 local function catChip(parent: Instance, kind: string, kg: number, mutation: string?, order: number, onClick: (() -> ())?): TextButton
 	local design = Cats.ById[kind]
 	local t = design and Config.Tiers[design.Tier]
@@ -40,19 +42,49 @@ local function catChip(parent: Instance, kind: string, kg: number, mutation: str
 	b.LayoutOrder = order
 	b.AutoButtonColor = onClick ~= nil
 	b.Text = ""
-	b.BackgroundColor3 = if t then Color3.fromHex(t.Color) else C.grey
+	b.BackgroundColor3 = C.soft
+	b:SetAttribute("Kind", kind)
+	b:SetAttribute("Mutation", mutation or "")
 	b.Parent = parent
-	Kit.corner(b, 10)
-	Kit.stroke(b, 2, nil, true)
-	local name = Kit.text(b, "Name", UDim2.new(1, -6, 0.6, 0), UDim2.fromOffset(3, 2), 13, true)
-	name.TextWrapped = true
-	name.Text = if design then design.Name else "?"
-	local info = Kit.text(b, "Info", UDim2.new(1, -6, 0.38, 0), UDim2.new(0, 3, 0.6, 0), 12, true)
+	Kit.corner(b, 12)
+	Kit.stroke(b, 3, nil, true)
+	local box = Instance.new("Frame")
+	box.Name = "Picture"
+	box.Size = UDim2.new(1, -8, 1, -30)
+	box.Position = UDim2.fromOffset(4, 4)
+	box.BackgroundColor3 = C.sky
+	box.Parent = b
+	Kit.corner(box, 10)
+	local g = Instance.new("UIGradient")
+	g.Color = ColorSequence.new(Color3.fromHex("d6f2ff"), Color3.fromHex("62c0f5"))
+	g.Rotation = 90
+	g.Parent = box
+	local ribbon = Instance.new("Frame")
+	ribbon.Size = UDim2.new(1, -8, 0, 22)
+	ribbon.Position = UDim2.new(0, 4, 1, -25)
+	ribbon.BackgroundColor3 = if t then Color3.fromHex(t.Color) else C.grey
+	ribbon.Parent = b
+	Kit.corner(ribbon, 7)
+	Kit.stroke(ribbon, 2, nil, true)
+	local info = Kit.text(ribbon, "Info", UDim2.new(1, -4, 1, 0), UDim2.fromOffset(2, 0), 13, true)
+	info.TextScaled = true
 	info.Text = `{Format.money(kg)} kg` .. (if mutation and mutation ~= "" then " · " .. Lang.text("Mut" .. mutation) else "")
 	if onClick then
 		b.Activated:Connect(onClick)
 	end
 	return b
+end
+
+local function lookOfCard(card: Instance): any
+	local kind = card:GetAttribute("Kind")
+	local design = if type(kind) == "string" then Cats.ById[kind] else nil
+	if not design then
+		return nil
+	end
+	local look = table.clone(design.Look) :: any
+	local m = card:GetAttribute("Mutation")
+	look.mutation = if type(m) == "string" and m ~= "" then m else nil
+	return look
 end
 
 local function grid(parent: Instance, pos: UDim2, size: UDim2, cell: Vector2): Frame
@@ -118,12 +150,26 @@ local function drawTrade()
 	for _, id in mine do
 		mineSet[id] = true
 	end
-	local you = Kit.text(body, "You", UDim2.new(0.5, -6, 0, 24), UDim2.new(), 20)
-	you.Text = Lang.text("TradeYou") .. (if s.readyMine then "  ✓" else "")
-	local them = Kit.text(body, "Them", UDim2.new(0.5, -6, 0, 24), UDim2.new(0.5, 6, 0, 0), 20)
-	them.Text = s.partner .. (if s.readyTheirs then "  ✓" else "")
-	local left = grid(body, UDim2.fromOffset(0, 28), UDim2.new(0.5, -6, 0, 150), Vector2.new(88, 66))
-	local right = grid(body, UDim2.new(0.5, 6, 0, 28), UDim2.new(0.5, -6, 0, 150), Vector2.new(88, 66))
+	-- R9: a name pill over each side and a Ready pill under it
+	local function sidePill(x: number, text: string, color: Color3, y: number, w: number): TextLabel
+		local p = Instance.new("Frame")
+		p.Size = UDim2.new(0.5, -6 - w, 0, 30)
+		p.Position = UDim2.new(x, if x > 0 then 6 + w / 2 else w / 2, 0, y)
+		p.BackgroundColor3 = color
+		p.Parent = body
+		Kit.corner(p, 15)
+		Kit.stroke(p, 3, nil, true)
+		local l = Kit.text(p, "Text", UDim2.new(1, -10, 1, 0), UDim2.fromOffset(5, 0), 20, true)
+		l.TextScaled = true
+		l.Text = text
+		return l
+	end
+	sidePill(0, Lang.text("TradeYou"), C.green, 0, 40)
+	sidePill(0.5, s.partner, C.purple, 0, 40)
+	sidePill(0, Lang.text(if s.readyMine then "TradeReadyButton" else "TradeNotReadyState"), if s.readyMine then C.green else C.grey, 244, 90)
+	sidePill(0.5, Lang.text(if s.readyTheirs then "TradeReadyButton" else "TradeNotReadyState"), if s.readyTheirs then C.green else C.grey, 244, 90)
+	local left = grid(body, UDim2.fromOffset(0, 36), UDim2.new(0.5, -6, 0, 202), Vector2.new(92, 92))
+	local right = grid(body, UDim2.new(0.5, 6, 0, 36), UDim2.new(0.5, -6, 0, 202), Vector2.new(92, 92))
 	for i, id in mine do
 		local c = myCats[id]
 		if c then
@@ -141,20 +187,20 @@ local function drawTrade()
 	for i, c in s.theirs or {} do
 		catChip(right, c.Kind, c.Kg, c.Mutation, i, nil)
 	end
-	local hint = Kit.text(body, "Hint", UDim2.new(1, 0, 0, 22), UDim2.fromOffset(0, 184), 16)
+	local hint = Kit.text(body, "Hint", UDim2.new(1, 0, 0, 22), UDim2.fromOffset(0, 280), 16)
 	hint.Text = Lang.text("TradeMyCats")
 	hint.TextColor3 = C.muted
 	local pick = Instance.new("ScrollingFrame")
 	pick.BackgroundColor3 = C.soft
-	pick.Position = UDim2.fromOffset(0, 208)
-	pick.Size = UDim2.new(1, 0, 0, 150)
+	pick.Position = UDim2.fromOffset(0, 304)
+	pick.Size = UDim2.new(1, 0, 0, 130)
 	pick.AutomaticCanvasSize = Enum.AutomaticSize.Y
 	pick.CanvasSize = UDim2.new()
 	pick.ScrollBarThickness = 6
 	pick.Parent = body
 	Kit.corner(pick, 12)
 	local g = Instance.new("UIGridLayout")
-	g.CellSize = UDim2.fromOffset(88, 66)
+	g.CellSize = UDim2.fromOffset(92, 110)
 	g.CellPadding = UDim2.fromOffset(6, 6)
 	g.Parent = pick
 	local order = 0
@@ -170,6 +216,14 @@ local function drawTrade()
 			end)
 		end
 	end
+	task.defer(function()
+		CatPortrait.fillVisible(left, lookOfCard)
+		CatPortrait.fillVisible(right, lookOfCard)
+		CatPortrait.fillVisible(pick, lookOfCard)
+	end)
+	pick:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
+		CatPortrait.fillVisible(pick, lookOfCard)
+	end)
 	local status = Kit.text(body, "Status", UDim2.new(1, -330, 0, 44), UDim2.new(0, 0, 1, -48), 22)
 	status.TextXAlignment = Enum.TextXAlignment.Left
 	if s.ends then
@@ -220,7 +274,7 @@ function TradeController.Start(_self: any)
 	for _, n in { "TradeRequest", "TradeRespond", "TradeSet", "TradeReady", "TradeCancel" } do
 		R[n] = Remotes.event(n)
 	end
-	window = Kit.window({ name = "TradeWindow", width = 640, height = 520, color = C.purple })
+	window = Kit.window({ name = "TradeWindow", width = 660, height = 620, color = C.purple })
 	body = window.body
 	-- the invite popup
 	local gui = Kit.screen("TradeInvite", 12)
@@ -228,11 +282,12 @@ function TradeController.Start(_self: any)
 	invite.AnchorPoint = Vector2.new(0.5, 1)
 	invite.Position = UDim2.new(0.5, 0, 1, -110)
 	invite.Size = UDim2.fromOffset(420, 110)
-	invite.BackgroundColor3 = C.white
+	invite.BackgroundColor3 = C.panel
 	invite.Visible = false
 	invite.Parent = gui
-	Kit.corner(invite, 18)
-	Kit.stroke(invite, 3, nil, true)
+	Kit.corner(invite, 22)
+	Kit.stroke(invite, 4, nil, true)
+	Kit.ears(invite, 36, { 0.15, 0.85 })
 	local text = Kit.text(invite, "Text", UDim2.new(1, -20, 0, 40), UDim2.fromOffset(10, 6), 22)
 	local yes = Kit.button(invite, "Yes", C.green, UDim2.fromOffset(150, 44), UDim2.new(0.5, -160, 1, -54))
 	local no = Kit.button(invite, "No", C.coral, UDim2.fromOffset(150, 44), UDim2.new(0.5, 10, 1, -54))

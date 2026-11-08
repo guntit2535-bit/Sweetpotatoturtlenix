@@ -170,6 +170,16 @@ Config.Bat = {
 	SwingRate = { maxCalls = 4, window = 1 },
 }
 
+-- Events (task 1.18, blueprint §10): a Mythical cat every 10-20 minutes, a Secret cat every 40 minutes,
+-- at a random hiding spot anywhere on the map; nobody catching it within EscapeSeconds = it runs away.
+Config.Events = {
+	MythicalEvery = { 600, 1200 },
+	SecretEvery = 2400,
+	EscapeSeconds = 180,
+	BeamHeight = 400,
+	MusicId = 0, -- the developer picks the Secret event music (milestone 2 sound list)
+}
+
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
 Config.CatAnim = {
 	Range = 160, -- only cats this close to the camera are animated (studs)

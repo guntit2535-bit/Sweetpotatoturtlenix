@@ -39,7 +39,8 @@ local rng = Random.new()
 local nextId = 0
 local removedEvent = Instance.new("BindableEvent")
 
--- Fires (wild, reason) when a wild cat leaves the world: "caught" | "escaped" | "returned" | "event".
+-- Fires (wildId, reason) when a wild cat leaves the world: "caught" | "escaped" | "returned" | "event".
+-- (An id, not the record: BindableEvents copy tables, so a record would not compare equal.)
 WildCatService.Removed = removedEvent.Event
 
 local function spotsOf(zone: number): { BasePart }
@@ -153,7 +154,7 @@ function WildCatService.remove(w: Wild, reason: string)
 	if w.model.Parent then
 		w.model:Destroy()
 	end
-	removedEvent:Fire(w, reason)
+	removedEvent:Fire(w.id, reason)
 	if w.zone > 0 then
 		local wait = rng:NextNumber(Config.WildCats.RespawnMin, Config.WildCats.RespawnMax)
 		task.delay(wait, function()
@@ -167,7 +168,7 @@ function WildCatService.take(w: Wild): Model
 	cats[w.id] = nil
 	WildCatService.leaveSpot(w)
 	CollectionService:RemoveTag(w.model, "WildCat")
-	removedEvent:Fire(w, "caught")
+	removedEvent:Fire(w.id, "caught")
 	if w.zone > 0 then
 		local wait = rng:NextNumber(Config.WildCats.RespawnMin, Config.WildCats.RespawnMax)
 		task.delay(wait, function()

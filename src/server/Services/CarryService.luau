@@ -26,7 +26,7 @@ local droppedEvent = Instance.new("BindableEvent")
 
 -- Fires (player, kind, kg, event?) when a carried cat goes into its pen.
 CarryService.Delivered = deliveredEvent.Event
--- Fires (player, wild) when a carried cat is dropped (wild = the new dropped wild cat).
+-- Fires (player, wildId) when a carried cat is dropped (the new dropped wild cat).
 CarryService.Dropped = droppedEvent.Event
 
 local function rootOf(player: Player): BasePart?
@@ -104,7 +104,7 @@ function CarryService.drop(player: Player): WildCatService.Wild?
 		end
 	end
 	local w = WildCatService.drop(c.kind, c.kg, CFrame.new(ground) * CFrame.Angles(0, math.random() * math.pi * 2, 0), c.event, zone)
-	droppedEvent:Fire(player, w)
+	droppedEvent:Fire(player, w.id)
 	return w
 end
 

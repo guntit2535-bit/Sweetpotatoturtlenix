@@ -102,6 +102,30 @@ Text.Lines = {
 	ZoneSnowMountain = { en = "Snow Mountain", th = "Snow Mountain" },
 	ZoneSkyIslands = { en = "Sky Islands", th = "Sky Islands" },
 
+	-- HUD (task 1.17)
+	ShopButton = { en = "Shop", th = "ร้านค้า" },
+	Speed2xButton = { en = "x2 Speed", th = "เร็ว x2" },
+	TradeButton = { en = "Trade", th = "เทรด" },
+	ComingSoon = { en = "Coming in the next update!", th = "จะมาในอัปเดตถัดไป!" },
+	StrengthLabel = { en = "Strength", th = "พลัง" },
+	KgValue = { en = "{kg} kg", th = "{kg} กก." },
+	WeightsLv = { en = "Weights Lv {level}/{max}", th = "ยกเวท Lv {level}/{max}" },
+	TreadLv = { en = "Treadmill Lv {level}/{max}", th = "ลู่วิ่ง Lv {level}/{max}" },
+	SpeedValue = { en = "Speed {speed}", th = "ความเร็ว {speed}" },
+	IncomeRate = { en = "+${money}/s", th = "+${money}/วิ" },
+	EventNext = { en = "{event} in {time}", th = "{event} ใน {time}" },
+	EventLive = { en = "{event} cat out! {time}", th = "แมว {event} ออกมาแล้ว! {time}" },
+	EventMythical = { en = "Mythical", th = "Mythical" },
+	EventSecret = { en = "Secret", th = "Secret" },
+
+	-- Events (task 1.18)
+	EventOutMythical = { en = "A MYTHICAL cat appeared! Follow the light!", th = "แมว MYTHICAL ปรากฏตัวแล้ว! ตามแสงไปเลย!" },
+	EventOutSecret = { en = "A SECRET cat appeared!!! Follow the light!", th = "แมว SECRET ปรากฏตัวแล้ว!!! ตามแสงไปเลย!" },
+	EventEscaped = { en = "The {event} cat ran away...", th = "แมว {event} หนีไปแล้ว..." },
+	EventCaught = { en = "{name} caught the {event} cat!", th = "{name} ตกแมว {event} ได้แล้ว!" },
+	EventDistance = { en = "{event} · {m} m", th = "{event} · {m} ม." },
+	EventMoved = { en = "The {event} cat broke free and hid somewhere new!", th = "แมว {event} หลุดเบ็ดแล้วไปซ่อนที่ใหม่!" },
+
 	-- Settings window (task 1.1)
 	SettingsButton = { en = "Settings", th = "ตั้งค่า" },
 	SettingsTitle = { en = "Settings", th = "ตั้งค่า" },

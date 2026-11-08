@@ -41,8 +41,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] 1.14 Baseball bat: hotbar tool next to the rod, short cooldown, server hit check (range, facing), no hits in the lobby or on players fishing; a hit carrier drops the cat where hit and is knocked far; the dropped cat is fishable by all, 60 s then back to hiding; the bat model (Blender) is made in this task. Reuse: HR `BatService`, `Controllers/BatSwingController`, `KnockbackController`
 - [x] 1.15 Weights, 25 levels: stand at the spot = auto lift, Strength per rep by level, upgrade sign (money), 5 looks (dumbbell > barbell > bench > machine > giant barbell). Reuse: PSE `TreadmillService`, `shared/Treadmill`, `Controllers/TreadmillController`, `TreadmillTierUI`, `StandController`
 - [x] 1.16 Treadmill, 25 levels next to the weights: stand = auto run, Speed, upgrade with money; walk speed from Speed. Reuse: PSE `TreadmillService`, `shared/Speed`, `SpeedTrail`
-- [ ] 1.17 ★ HUD (phone first): left Shop / x2 Speed (blink) / My Cats / Trade, right Strength + weights / treadmill levels, bottom-left Speed + money, bottom-centre hotbar (bat + rod), bottom-right event countdown, Settings; UI look options first (GPT style board). Reuse: PSE `client/UI/Style`, `Window`, `Icons`, `Controllers/HudController`, BA `client/Ui/HudLayout`, `Kit`
-- [ ] 1.18 Events: Mythical every 10-20 min, Secret every 40 min; server-wide announcement, light beam, arrow, bottom-right countdown, 3 min then it escapes; Secret: bigger announcement, sky colour change, event music hook; caught event cats are carried home like others. Reuse: PSE `MythicEventService`, `GoldenEventService`, `Controllers/ZoneFx`, BA `LightingController`, SP `EventService`
+- [x] 1.17 ★ HUD (phone first): left Shop / x2 Speed (blink) / My Cats / Trade, right Strength + weights / treadmill levels, bottom-left Speed + money, bottom-centre hotbar (bat + rod), bottom-right event countdown, Settings; UI look options first (GPT style board). Reuse: PSE `client/UI/Style`, `Window`, `Icons`, `Controllers/HudController`, BA `client/Ui/HudLayout`, `Kit`
+- [x] 1.18 Events: Mythical every 10-20 min, Secret every 40 min; server-wide announcement, light beam, arrow, bottom-right countdown, 3 min then it escapes; Secret: bigger announcement, sky colour change, event music hook; caught event cats are carried home like others. Reuse: PSE `MythicEventService`, `GoldenEventService`, `Controllers/ZoneFx`, BA `LightingController`, SP `EventService`
 - [ ] 1.21 Milestone 1 check: 2+ players and a phone test, fixes, play video + test notes for the client
 
 ## Milestone 2 — everything else (4,000 THB at full delivery)
@@ -84,6 +84,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- 1.17 (2026-11-08): the HUD uses the chunky bright button kit already in the game (no separate GPT UI board);
+  the hotbar is Roblox's own backpack bar; tools are named "Bat" / "Rod" in English (the server finds them by name).
+- 1.18 (2026-11-08): an event cat that breaks free from a rod hides at a new random spot and the event goes on
+  (normal cats: back to a new hiding spot too); the 3-minute escape clock waits while someone is fishing it.
 - 1.5 (2026-11-08): cat names are English in both languages (like zone names); Mythical / Secret cats come only
   from events (and the Diamond crate in milestone 2), never from normal zone spawns.
 - 1.6 (2026-11-08): economy option B "normal" (docs/economy.md); the like buff doubles the walk-speed bonus above
@@ -159,3 +163,12 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Strength 1 -> 1.4 in 3 s at the weights, Speed 0 -> 0.6 on the treadmill (walk 16.5), look 1 -> 3 (Lv 11) -> 5
   (Lv 21), Market with Strength 1 -> put back to r = 322. The Upgrade prompt click itself is for the developer's
   test (key F at your weights / treadmill).
+- 2026-11-08: 1.17 `HudController` (left: Shop / x2 Speed blinking / My Cats / Trade - Shop, x2 Speed and Trade say
+  "coming in the next update" until milestone 2; right: Strength + levels; bottom-left: Speed, money, +money/s;
+  bottom-right: event countdown; Roblox's own hotbar for Bat + Rod; phone scaling). 1.18 `EventService` (Mythical
+  every 10-20 min, Secret every 40 min, random hiding spot anywhere, beam, 3 min escape that waits while someone is
+  fishing, a cat that breaks free from a rod hides at a new spot and the event goes on, !mythical !secret
+  !eventin !endevent) + `EventController` (banner, arrow over your head, beam label with distance, Secret sky tint,
+  music hook). Studio Play: HUD as specified, Mythical beam + arrow + countdown 2:56, escape message, Secret tint;
+  fishing the event cat with no input -> it moved 674 studs and the event went on. No errors in Output.
+  Fixed: BindableEvents copy tables, so wild cat removals now pass the id.

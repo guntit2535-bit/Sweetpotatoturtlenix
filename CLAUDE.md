@@ -88,7 +88,8 @@ Engine behaviour (physics, UI, DataStores, purchases, phones) can only be tested
 
 ## Rules
 - Talk to the developer in **Thai**, short, outcome first. Code, comments, commits and `docs/` in English,
-  except what the developer reads and fills in: `docs/DEVELOPER_TODO.md` and `docs/Sweetpotato_Sounds.xlsx`
+  except what the developer reads and fills in: `docs/DEVELOPER_TODO.md`, `docs/Sweetpotato_Sounds.xlsx` and
+  `docs/Sweetpotato_Robux.xlsx`
   are in Thai (developer, 2026-11-08: "ขอภาษาไทย").
 - **One task at a time.** After a task: mark `[~]`, Log line, commit, push, give numbered test steps
   starting with "GitHub Desktop: Fetch origin -> Pull origin", end with

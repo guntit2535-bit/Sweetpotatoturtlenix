@@ -62,7 +62,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.14 Leaderboards: money per second + cat count (OrderedDataStore + lobby boards). Reuse: SP `LeaderboardService` + `tools/lib/BuildLeaderboard`, BA `LeaderboardService`
 - [x] 2.15 Gift codes. Reuse: BA `CodeService`
 - [x] 2.16 Group reward (needs Config.GroupId). Reuse: BA `GroupChestService`
-- [~] 2.17 Trading: request / accept, up to 6 cats each, Ready + 5 s countdown (any change resets), confirm, server re-checks ownership + pen room + locks, one-step swap, both saves, trade log, leave = cancel, duplicate-proof. Reuse: BA `TradeService`, `shared/Trade`, `TradeController` (minus capsules)
+- [x] 2.17 Trading: request / accept, up to 6 cats each, Ready + 5 s countdown (any change resets), confirm, server re-checks ownership + pen room + locks, one-step swap, both saves, trade log, leave = cancel, duplicate-proof. Reuse: BA `TradeService`, `shared/Trade`, `TradeController` (minus capsules)
 - [x] 2.18 Game passes x5 (x2 Speed button: blink, then on/off toggle; x2 Cash, x2 Strength, Lucky, VIP tag + 10%). Reuse: PSE `PassService`, `shared/Passes`, `VipTagController`, SP `GamePassService`
 - [x] 2.19 Developer products x7 (+20 slots in price steps, 4 cash packs by income, strength pack, luck x3 15 min, server luck 15 min + announcement, summon Mythical, starter pack once) + the one ProcessReceipt. Reuse: PSE `ProductService`, `shared/Products`, SP `DevProductService`
 - [x] 2.20 Robux store window + card images (GPT prompts). Reuse: PSE `Controllers/StoreUI`, BA `LivePrices`, `StoreController`
@@ -260,3 +260,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   developer which picks carry other games' names (deliver, drop, escape, rebirth): their call.
 - 2026-11-08: the developer keeps the 4 sounds named after other games (deliver, drop, escape, rebirth) as they
   are ("เก็บไว้ตามเดิม"). If Roblox removes one, only that sound goes silent; swap its id in Config.Sounds.
+- 2026-11-08: the developer's tests passed: 8-player server, a real phone, 2 players (same cat, bat, likes,
+  trade). Max players = 8 set and the game published. 2.17 -> [x]. 2.25 stays [~] until launch day (Robux ids,
+  Debug off, `.rbxl`).
+- 2026-11-08: `docs/Sweetpotato_Robux.xlsx` (from `tools/gen/robux_xlsx.py`, Thai): the 5 passes and 12 products
+  with the English name / description to paste into Creator Hub, a suggested price (client confirms), yellow
+  columns for the client's price and the id. Decision to review: "luck" (Lucky pass, Luck x3, Server Luck) raises
+  only the Gold / Rainbow / Glow chance, as built in 2.8; the descriptions say so.

@@ -9,8 +9,33 @@ local Config = {}
 Config.GameName = "Sweetpotatoturtlenix"
 Config.MaxPlayers = 8 -- one pen per player in the lobby (blueprint §1, §6)
 
--- CLIENT PENDING: the Roblox group that owns the game. 0 = not known yet (group reward, pass checks).
-Config.GroupId = 0
+-- The Roblox group that owns the game (created by the team, owner GUN2535551; transferred to the client
+-- after approval + full payment). Experience: GameId 10775309921, start place 85516549821714.
+Config.GroupId = 565190385
+
+-- Map layout in studs (A2, built by tools/lib/BuildMap). The lobby sits at 0,0 (safe zone, no hitting);
+-- 5 ring zones around it, from the inside out. 8 roads leave the plaza at 0, 45, 90 ... degrees and
+-- cross every zone wall through a gate; the 8 pens sit between the roads.
+Config.World = {
+	GroundY = 0,
+	LobbyRadius = 150, -- safe zone edge
+	PlazaRadius = 46,
+	Pens = { Count = 8, Ring = 100, Width = 40, Depth = 34 }, -- pen i at angle (i - 0.5) * 45 degrees
+	Roads = { Count = 8, Width = 16 },
+	GateWidth = 24,
+	Tile = { Lobby = 20, Zones = 24 }, -- checkerboard grass tile sizes
+	SkyCloudY = -60, -- the cloud sea under the Sky Islands
+	ClusterSpacing = 80, -- studs between prop clusters along a lane (zones 1-4)
+	-- 180-stud rings: at the start walk speed (16) the map edge is ~65 s from the plaza
+	Zones = {
+		{ Key = "Backyard", Inner = 150, Outer = 330 },
+		{ Key = "TownMarket", Inner = 330, Outer = 510 },
+		{ Key = "Forest", Inner = 510, Outer = 690 },
+		{ Key = "SnowMountain", Inner = 690, Outer = 870 },
+		{ Key = "SkyIslands", Inner = 870, Outer = 1050 },
+	},
+	HideSpotsPerZone = { Min = 30, Max = 60 },
+}
 
 -- Debug commands (task 1.3). Studio always; live servers only for these user ids. Off at launch.
 Config.Debug = {

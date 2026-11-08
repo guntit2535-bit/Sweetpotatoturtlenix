@@ -20,8 +20,8 @@ stacked cubes, cute blocky cats with big round eyes peeking out of hiding places
 Cat looks seen in the pictures (input for A6): calico (white / orange / black), grey tabby, grey and
 white, cream; Sky Islands cats with small wings and a halo (a fit for Mythical / Secret accessories).
 
-## Open points (developer)
-- Style A (glossy blocks) for everything: assumed from the pictures sent.
-- The lobby picture shows small studs on the grass and toy-figure players; the brief says plain
-  checkerboard grass, and players are the players' own Roblox avatars.
-- Z4 drifted to dark outlines (style B); it is used for the theme and props only.
+## Decisions (developer 2026-11-08, "1A 2A 3A")
+- Style A (glossy blocks) for the whole game.
+- Plain two-tone checkerboard grass, **no studs** (the lobby picture's studs and toy-figure players are
+  not used; players are their own Roblox avatars).
+- Z4 is not redrawn: its theme and props are used, built in style A like the other zones.

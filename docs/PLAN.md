@@ -15,14 +15,14 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 
 ## Milestone 1 — the core loop (4,000 THB when the test passes)
 - [x] 1.0 Project setup: repo, Rojo 7.7.1 + Lune, ProfileStore, bootstrap loaders, Config / Text skeleton, check script, CLAUDE.md, BLUEPRINT, PLAN
-- [ ] 1.4 Developer (alongside A1 / A2, needed before the first import in A3): Roblox group (client's or ours, pending) + experience, place published, API Services on, max players 8
+- [x] 1.4 Developer: Roblox group **Sweetpotatoturtlenix** (565190385, made by the team) + experience (GameId 10775309921, place 85516549821714) in Team Create. Still to check: API Services on, max players 8
 
 ### Map and models first (developer 2026-11-08, "1A 2A 3B 4A")
-- [~] A1 ★ Art direction with GPT: prompt file `docs/gpt_map_prompts.md`; the developer makes 2 lobby style options (A / B), picks one, then the 5 zones in the same chat; pictures in `art/source/gpt_map/`
-- [ ] A2 ★ Map layout plan (top-down, sizes in studs): lobby safe circle, ring of 8 pens, training spot per pen, the 5 ring widths, zone gates, hiding-spot kinds and counts per zone, walk times at start speed, streaming decision for phones; a private page for approval (replaces the box blockout)
-- [ ] A3 Lobby in Blender in the approved look: plaza, 8 pens + signs, weights (5 looks: dumbbell > barbell > bench > machine > giant barbell) + treadmill per pen, safe-zone edge; renders first, then export with box colliders, the developer imports under the group, a builder places it. Reuse: PSE `server/Util/MapKit`, `art/world2_export.py`, art kit
-- [ ] A4 Backyard zone as the template: renders first, export + import, 30-60 tagged hiding spots (roof / bush / rock / bridge), zone gate. Reuse: PSE `MapKit`, SP `tools/lib/WorldKit`
-- [ ] A5 The other 4 zones in the approved Backyard standard, one batch: Town Market, Forest, Snow Mountain, Sky Islands (each its own theme, 30-60 hiding spots, gates)
+- [x] A1 ★ Art direction with GPT: prompt file `docs/gpt_map_prompts.md`; the developer makes 2 lobby style options (A / B), picks one, then the 5 zones in the same chat; pictures in `art/source/gpt_map/`
+- [~] A2 ★ Map layout plan (top-down, sizes in studs): lobby safe circle, ring of 8 pens, training spot per pen, the 5 ring widths, zone gates, hiding-spot kinds and counts per zone, walk times at start speed, streaming decision for phones; numbers in `Config.World` (developer 2026-11-08: build it straight in Studio, no page)
+- [~] A3 Lobby in the approved look (built from Studio parts by `src/server/MapTools`, see Plan changes): plaza, 8 pens + signs, weights (5 looks: dumbbell > barbell > bench > machine > giant barbell) + treadmill per pen, safe-zone edge; renders first, then export with box colliders, the developer imports under the group, a builder places it. Reuse: PSE `server/Util/MapKit`, `art/world2_export.py`, art kit
+- [~] A4 Backyard zone as the template: renders first, export + import, 30-60 tagged hiding spots (roof / bush / rock / bridge), zone gate. Reuse: PSE `MapKit`, SP `tools/lib/WorldKit`
+- [~] A5 The other 4 zones in the approved Backyard standard, one batch: Town Market, Forest, Snow Mountain, Sky Islands (each its own theme, 30-60 hiding spots, gates)
 - [ ] A6 ★ Cat look prototype: 2-3 base shapes x colour / pattern / accessory as Blender renders, one cat per tier, Mythical / Secret sizes; the approved style is used for all 400 in milestone 2 (2.21). Reuse: PSE `CreatureModels`, art kit
 
 ### Code
@@ -72,6 +72,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [ ] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
 
 ## Plan changes
+- 2026-11-08 (developer: the client threatens to cancel for slowness; "สร้างจริงบน roblox studio ได้เลย"): the map is
+  built **now, straight in Studio** from anchored Parts by `src/server/MapTools` (MapKit props + BuildMap layout) in
+  the A1 look, instead of Blender kits with renders first. No client summary page. Blender meshes can replace props
+  later if the look needs it.
 - 2026-11-08 (developer, "1A 2A 3B 4A"): **map and models first**, code after. The box blockout (old
   1.7) is dropped; the top-down layout plan A2 is approved before modelling instead. Old 1.19 (map art)
   and 1.20 (cat prototype) became A1-A6. The developer's Roblox setup (1.4) moves up: the first import
@@ -79,6 +83,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- A2-A5 (2026-11-08): rings 180 studs wide (lobby 150, edge 1050; ~65 s to the edge at walk speed 16), 8 roads
+  with a gate on every zone wall, 24-stud checker tiles, Town Market paved; StreamingEnabled on with
+  StreamingTargetRadius 600 / MinRadius 160 (the map is ~35,000 parts); gate barriers are see-through and
+  not solid until the gate code exists.
 - 1.0: streaming is decided in A2 (the 360 map may be big for phones, Tamer Academy lesson).
 - A2: with no box blockout the core loop is first played on the real map; the layout plan (sizes,
   walk times) is the guard against a "เกมเฉย ๆ" redesign (Pet Storm Escape lesson).
@@ -92,3 +100,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   style); waiting for the developer's GPT pictures in `art/source/gpt_map/`.
 - 2026-11-08: A1 pictures received (L_A lobby + Z1-Z5, style A), saved in `art/source/gpt_map/`,
   notes in `docs/art_direction.md`; waiting for the developer's answers on the open points.
+- 2026-11-08: A2-A5 built in Studio (Team Create) with `BuildMap.all()`: lobby (plaza, fountain, 8 pens with cat
+  house, gate sign, treadmill, dumbbell rack, glowing safe edge), checker ground, 8 roads, 3 zone walls + snow cliff
+  with 32 gates, Backyard / Town Market / Forest / Snow Mountain clusters, Sky Islands (56 + 28 islands, rope bridges,
+  clouds, 2 rainbows), lighting; 300 hiding spots (55-60 per zone). Checked by Studio captures of every zone; not yet
+  walked in Play or on a phone.

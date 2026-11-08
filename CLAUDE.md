@@ -42,8 +42,9 @@ are starting values: they live in Config and are tuned after playtests (simulate
 
 ### Waiting for the client (defaults in Config, work does not wait)
 - x2 Speed: permanent game pass or timed, and its price -> `Config.Passes.Speed2x` (default: permanent).
-- Roblox group: the client's own or one the team creates -> `Config.GroupId` (0); all pass / product
-  ids stay 0 until the experience exists in that group.
+- Roblox group: **done 2026-11-08**: the team created group "Sweetpotatoturtlenix" (565190385, owner
+  GUN2535551) with the experience (GameId 10775309921, place 85516549821714) -> `Config.GroupId`.
+  Pass / product ids stay 0 until they are made in that experience.
 - Shoes: keep them next to the treadmill or drop them -> `Config.Shoes.Enabled` (default: keep).
 
 ### Scope changes
@@ -59,8 +60,11 @@ are starting values: they live in Config and are tuned after playtests (simulate
   never stops the others.
 - Every number in `src/shared/Config.luau`; every word a player sees in `src/shared/Text.luau`
   (EN + TH, same placeholders, checked by `tests/Text.spec.luau`).
-- Maps and imported meshes live in the place file; maps are built by builder modules (`tools/lib/`)
-  run from the Command Bar. Art comes from Blender scripts in `art/`; flat art (icons, store cards, UI
+- Maps and imported meshes live in the place file. The map is built from Studio parts by
+  `src/server/MapTools` (MapKit props + BuildMap layout from `Config.World`; never required by the running
+  game), run from the Command Bar / Studio MCP:
+  `require(game.ServerScriptService.Server.MapTools:Clone().BuildMap).all()`. The place uses
+  StreamingEnabled (target radius 600): a far part may not exist on a client. Art comes from Blender scripts in `art/`; flat art (icons, store cards, UI
   look, game icon, thumbnails) from GPT pictures made from Claude's prompts.
 - Log prefix in Output: `[Sweetpotato]`.
 - Save key: `Config.Data.StoreName = "Sweetpotato_PlayerData_v1"`. **Never rename it.**

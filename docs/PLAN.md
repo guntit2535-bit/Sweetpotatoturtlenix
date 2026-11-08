@@ -303,3 +303,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   bush. The place change goes live with the developer's next Save / Publish.
 - 2026-11-08: the developer confirmed "99SX" = 99 sextillion for money, Strength and Speed (R4), and wants the new UI
   in a cute-cat style (R9).
+- 2026-11-08: GPT prompt files for phase 3: `docs/gpt_ui_prompts.md` (cute-cat style board, 12 screens of the real
+  game, 12 icons) and `docs/gpt_model_prompts.md` (20 reference sheets: rods x 5 sets, bat, shoes x 2, treats, crates,
+  dumbbells x 5 sets, treadmills x 5 sets). The developer makes the pictures while R2-R4 are built.

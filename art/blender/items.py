@@ -322,13 +322,13 @@ def rod(level):
     # tip ring the line hangs from
     tip = Vector(pts[-1])
     m.ball(tip, 0.13, P["trim"])
-    # reel on the +X side (the angler's left in the game), the paw facing out
-    rc = Vector((0.42, 0, 1.45))  # V2: on +X = the angler's left after the import turn (the left hand cranks)
-    cyl(m, rc + Vector((-0.22, 0, 0)), Vector((0, 0, 1.45)), 0.09, P["trim"])
+    # reel on the -X side (the angler's right in the game), the paw facing out
+    rc = Vector((-0.42, 0, 1.45))  # on -X = the angler's right in the game: the right hand cranks (V2, developer)
+    cyl(m, rc + Vector((0.22, 0, 0)), Vector((0, 0, 1.45)), 0.09, P["trim"])
     cyl(m, rc - Vector((0.16, 0, 0)), rc + Vector((0.16, 0, 0)), 0.38, P["reel"], e=0.3)
-    paw(m, rc + Vector((0.17, 0, 0)), (1, 0, 0), (0, 0, 1), 0.42, WHITE)
-    cyl(m, rc + Vector((0.17, 0.0, -0.1)), rc + Vector((0.3, 0.32, -0.42)), 0.06, P["trim"])
-    cyl(m, rc + Vector((0.3, 0.32, -0.42)), rc + Vector((0.55, 0.32, -0.42)), 0.1, P["grip"])
+    paw(m, rc - Vector((0.17, 0, 0)), (-1, 0, 0), (0, 0, 1), 0.42, WHITE)
+    cyl(m, rc + Vector((-0.17, 0.0, -0.1)), rc + Vector((-0.3, 0.32, -0.42)), 0.06, P["trim"])
+    cyl(m, rc + Vector((-0.3, 0.32, -0.42)), rc + Vector((-0.55, 0.32, -0.42)), 0.1, P["grip"])
     if step >= 3:
         for y in (-1, 1):
             ear(m, rc + Vector((0, y * 0.18, 0.3)), 0.15, P["reel"])

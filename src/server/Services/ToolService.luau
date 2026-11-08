@@ -142,12 +142,12 @@ function ToolService.refreshRod(player: Player)
 			-- the rod's tip in Blender (art/blender/items.py rod): (0, -0.9, length) from the base, grip 0.4 up
 			tip.Position = ItemModels.point(Config.ItemModels.RodScale, 0, -0.9, 4.6 + 0.04 * level - 0.4)
 			tip.Parent = handle
-			-- V2: the crank of the reel (items.py rod: reel centre (0.42, 0, 1.45), the knob 0.42 further out on a
-			-- 0.53 circle round the reel's axis = the handle's X); the left hand turns it (PlayerAnimController)
+			-- V2: the crank of the reel (items.py rod: reel centre (-0.42, 0, 1.45), the knob 0.42 further out on a
+			-- 0.53 circle round the reel's axis = the handle's X); the right hand turns it (PlayerAnimController)
 			local oldReel = handle:FindFirstChild("Reel")
 			local reel = if oldReel and oldReel:IsA("Attachment") then oldReel else Instance.new("Attachment")
 			reel.Name = "Reel"
-			reel.Position = ItemModels.point(Config.ItemModels.RodScale, 0.84, 0, 1.45 - 0.4)
+			reel.Position = ItemModels.point(Config.ItemModels.RodScale, -0.84, 0, 1.45 - 0.4)
 			reel:SetAttribute("Radius", 0.53 * Config.ItemModels.RodScale)
 			reel.Parent = handle
 			rod.Grip = CFrame.new(0, -0.3, 0) * CFrame.Angles(math.rad(Config.ItemModels.RodGrip), 0, 0)
@@ -165,22 +165,56 @@ function ToolService.refreshRod(player: Player)
 	end
 end
 
+-- V2: while fishing (attribute "Fishing") an R15 player holds the rod in the LEFT hand so the right hand can
+-- turn the reel: Roblox's RightGrip weld is switched off and a LeftGrip weld holds the handle at the left
+-- hand's grip; back to normal when fishing ends or the rod is put away.
+local function leftHand(player: Player, on: boolean)
+	local character = player.Character
+	local rod = character and character:FindFirstChild("Rod")
+	local handle = rod and rod:FindFirstChild("Handle")
+	local hand = character and character:FindFirstChild("LeftHand")
+	local right = character and character:FindFirstChild("RightHand")
+	local rightGrip = right and right:FindFirstChild("RightGrip")
+	local old = hand and hand:FindFirstChild("LeftGrip")
+	if old then
+		old:Destroy()
+	end
+	if rightGrip and rightGrip:IsA("JointInstance") then
+		rightGrip.Enabled = not on
+	end
+	if not on or not rod or not rod:IsA("Tool") or not handle or not handle:IsA("BasePart") or not hand or not hand:IsA("BasePart") then
+		return
+	end
+	local at = hand:FindFirstChild("LeftGripAttachment")
+	local w = Instance.new("Weld")
+	w.Name = "LeftGrip"
+	w.Part0 = hand
+	w.Part1 = handle
+	w.C0 = if at and at:IsA("Attachment") then at.CFrame else CFrame.new(0, -hand.Size.Y / 2, 0)
+	w.C1 = rod.Grip
+	w.Parent = hand
+end
+
 local function give(player: Player)
 	local backpack = player:WaitForChild("Backpack", 10)
 	if not backpack then
 		return
 	end
-	if not backpack:FindFirstChild("Bat") and not (player.Character and player.Character:FindFirstChild("Bat")) then
-		makeBat().Parent = backpack
-	end
+	-- the hotbar follows the order tools arrive: 1 = rod, 2 = bat (developer, round 2)
 	if not backpack:FindFirstChild("Rod") and not (player.Character and player.Character:FindFirstChild("Rod")) then
 		makeRod().Parent = backpack
+	end
+	if not backpack:FindFirstChild("Bat") and not (player.Character and player.Character:FindFirstChild("Bat")) then
+		makeBat().Parent = backpack
 	end
 	ToolService.refreshRod(player)
 end
 
 function ToolService:Start()
 	local function hook(player: Player)
+		player:GetAttributeChangedSignal("Fishing"):Connect(function()
+			leftHand(player, player:GetAttribute("Fishing") ~= nil)
+		end)
 		player.CharacterAdded:Connect(function()
 			task.defer(give, player)
 		end)

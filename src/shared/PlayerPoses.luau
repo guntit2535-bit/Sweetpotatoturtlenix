@@ -2,8 +2,8 @@
 -- Player arm poses (task 2.22) as plain maths, like shared/CatAnims: no animation uploads.
 -- PlayerAnimController turns them into shoulder Motor6D.Transform values on every nearby player:
 --   carry: both arms straight up holding the cat over the head, with a small struggle bob
---   reel:  the rod arm held out in front, the other arm turning the reel (V2: on R15 the left hand is put on
---          the rod's crank by PlayerAnimController and follows it round; crank = the crank's angle)
+--   reel:  the rod arm held out in front, the other arm turning the reel (V2: on R15 the rod moves to the left
+--          hand (ToolService) and the right hand is put on the crank by PlayerAnimController)
 --   curl:  R6 task: standing two-hand dumbbell curl, the arms taking turns (elbows bend; R15 only)
 -- The cast and the bat swing use Roblox's default tool "Slash" (Util/ToolAnim on the server); lifting and
 -- the treadmill use Roblox's default run (TrainingController); lifting is the curl here (R15; R6 rigs, which
@@ -14,7 +14,18 @@
 
 local PlayerPoses = {}
 
-export type Arms = { rx: number, rz: number, lx: number, lz: number, re: number?, le: number?, crank: number? }
+export type Arms = {
+	rx: number,
+	rz: number,
+	lx: number,
+	lz: number,
+	re: number?,
+	le: number?,
+	crank: number?, -- reel: the crank's angle (the right hand follows it)
+	hx: number?, -- reel: the rod-holding (left) arm when the crank is used
+	hz: number?,
+	he: number?,
+}
 
 PlayerPoses.Kinds = { "carry", "reel", "curl" }
 PlayerPoses.CurlRep = 1.2 -- seconds for one arm's rep; the arms take turns
@@ -31,14 +42,16 @@ function PlayerPoses.arms(kind: string, t: number): Arms
 	elseif kind == "reel" then
 		local turn = t * 11
 		return {
-			-- the rod hand in close in front of the belly (so the other hand reaches the reel), the rod
-			-- tipping a little as the cat pulls
-			rx = 0.45 + math.sin(t * 3) * 0.05,
-			rz = 0.3,
-			re = 1.35,
-			-- fallback for rigs without elbows / rods without a crank: the left arm circles
+			-- the rod in the right hand (R6, or no crank): the right arm out in front, the left arm circling
+			rx = 1.25 + math.sin(t * 3) * 0.08,
+			rz = 0.1,
 			lx = 1.0 + math.sin(turn) * 0.35,
 			lz = 0.3 + math.cos(turn) * 0.2,
+			-- V2 (R15 with the mesh rod): the rod held in the LEFT hand in close by the belly, tipping a little
+			-- as the cat pulls; the right hand turns the crank (PlayerAnimController)
+			hx = 0.45 + math.sin(t * 3) * 0.05,
+			hz = -0.3,
+			he = 1.35,
 			crank = turn % (2 * math.pi) - math.pi,
 		}
 	elseif kind == "curl" then

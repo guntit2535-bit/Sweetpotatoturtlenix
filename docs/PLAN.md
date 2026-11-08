@@ -462,3 +462,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   foam and mist; frozen: ice curtains, icicles, crystals). MapTools/Upgrade swaps them in place (frames read back from
   the old parts) with the old ones in ServerStorage.MapBackup_V3 (Upgrade.undo puts them back): 19 fountains,
   79 creeks, 47 waterfalls. Studio Play: wild cats hide in every zone, no errors. Next: ground detail per zone.
+- 2026-11-09: round 2 feedback: (1) the rod in the LEFT hand while fishing and the right hand cranking the reel on the
+  rod's right (the first export's side; Rods.fbx re-exported back to it, ItemModelData as before): ToolService switches
+  Roblox's RightGrip off and welds the handle to the left hand (LeftGrip) while "Fishing" is set, back after;
+  PlayerPoses reel holds with the left arm (hx / hz / he), PlayerAnimController puts the right hand on the crank
+  (the arm solve now works for either arm). Studio: handle 0.36 from the left hand, right hand on the crank circle,
+  grip back to the right hand after. (2) Hotbar 1 = rod, 2 = bat (tools given rod first).

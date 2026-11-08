@@ -63,7 +63,7 @@
   4. ได้ Model ใหม่ใน Workspace ให้ลากไปใส่ใน `ReplicatedStorage > ItemModels`
   5. ทำซ้ำข้อ 3-4 กับอีก 5 ไฟล์: `Weights.fbx`, `Dumbbells.fbx`, `Rods.fbx`, `Gear.fbx`, `Crates.fbx`
   6. กด Save / Publish แล้วบอก Claude (Claude จะเปลี่ยนโค้ดให้ใช้โมเดลใหม่และตรวจในเกมเอง)
-- [ ] **นำเข้าเบ็ดใหม่ (V2 ท่าตกปลา):** ย้ายรอกไปฝั่งซ้ายของเบ็ดให้มือซ้ายหมุนได้จริง
+- [ ] **เบ็ด (V2 ท่าตกปลา):** รอบล่าสุดรอกกลับมาอยู่ฝั่งขวาเหมือนเดิม (มือซ้ายถือเบ็ด มือขวาหมุน) **ถ้ายังไม่ได้นำเข้า Rods.fbx รอบก่อน ไม่ต้องทำข้อนี้** ถ้านำเข้าไปแล้ว ให้นำเข้าไฟล์ล่าสุดอีกครั้งตามขั้นตอนนี้
   1. GitHub Desktop: Fetch origin -> Pull origin
   2. ใน Studio ลบ Model ชื่อ `Rods` ใน `ReplicatedStorage > ItemModels`
   3. Import 3D ไฟล์ `art/export/Rods.fbx` (Creator = กลุ่ม Sweetpotatoturtlenix) แล้วลาก Model ที่ได้ไปใส่ใน `ItemModels`

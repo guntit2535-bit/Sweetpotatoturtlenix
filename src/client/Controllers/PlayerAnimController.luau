@@ -7,8 +7,8 @@
 -- each joint's own axes. The cast and bat swing are the default tool "Slash" (server, ToolAnim).
 -- R6 task: "Training" = "weights" -> the two-hand curl, which also bends the elbows (R15 only: a rig without
 -- elbows is left to TrainingController's cheer).
--- V2: reeling on R15 with the mesh rod: the left hand is placed on the rod's crank (the "Reel" attachment on
--- the rod's Handle) and follows it round its circle: a two-bone solve for the left shoulder and elbow.
+-- V2: reeling on R15 with the mesh rod: the rod is in the left hand (ToolService) and the right hand is placed
+-- on the rod's crank (the "Reel" attachment on the Handle) and follows it round: a two-bone arm solve.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -25,6 +25,7 @@ type Rig = {
 	rightElbow: Instance?,
 	leftElbow: Instance?,
 	leftWrist: Instance?,
+	rightWrist: Instance?,
 	weight: number,
 	kind: string?,
 }
@@ -36,7 +37,7 @@ local RIGHT = { RightShoulder = true, ["Right Shoulder"] = true }
 local LEFT = { LeftShoulder = true, ["Left Shoulder"] = true }
 
 local function scan(rig: Rig)
-	rig.right, rig.left, rig.rightElbow, rig.leftElbow, rig.leftWrist = nil, nil, nil, nil, nil
+	rig.right, rig.left, rig.rightElbow, rig.leftElbow, rig.leftWrist, rig.rightWrist = nil, nil, nil, nil, nil, nil
 	for _, d in rig.character:GetDescendants() do
 		if d:IsA("Motor6D") or d:IsA("AnimationConstraint") then
 			if RIGHT[d.Name] then
@@ -49,6 +50,8 @@ local function scan(rig: Rig)
 				rig.leftElbow = d
 			elseif d.Name == "LeftWrist" then
 				rig.leftWrist = d
+			elseif d.Name == "RightWrist" then
+				rig.rightWrist = d
 			end
 		end
 	end
@@ -97,15 +100,15 @@ local function pivot(joint: Instance?): (CFrame?, Vector3?, Vector3?)
 	return nil, nil, nil
 end
 
--- V2: the left arm's shoulder (x, z) and elbow angles that put the left hand on `target` (world). Works from the
+-- V2: an arm's shoulder (x, z) and elbow angles that put its hand on `target` (world). Works from the
 -- rig's own rest arm (the bones as built: shoulder -> elbow -> wrist -> hand, which need not hang straight
 -- down): hand = Rshoulder * (upper + Relbow * lower), Rshoulder = Angles(x, 0, z) in the torso's axes,
 -- Relbow = Angles(e, 0, 0) in the upper arm's. Out of reach: the arm stretches towards it.
-local function reachLeft(rig: Rig, target: Vector3): (number?, number?, number?)
-	local s, _, sChild = pivot(rig.left) -- shoulder pivot (world); its offset in the upper arm
-	local _, eParent, eChild = pivot(rig.leftElbow) -- elbow offset in the upper arm / in the lower arm
-	local _, wParent = pivot(rig.leftWrist) -- wrist offset in the lower arm
-	local joint = rig.left
+local function reach(shoulder: Instance?, elbow: Instance?, wrist: Instance?, target: Vector3): (number?, number?, number?)
+	local s, _, sChild = pivot(shoulder) -- shoulder pivot (world); its offset in the upper arm
+	local _, eParent, eChild = pivot(elbow) -- elbow offset in the upper arm / in the lower arm
+	local _, wParent = pivot(wrist) -- wrist offset in the lower arm
+	local joint = shoulder
 	local torso: BasePart? = nil
 	if joint and joint:IsA("Motor6D") then
 		torso = joint.Part0
@@ -121,14 +124,14 @@ local function reachLeft(rig: Rig, target: Vector3): (number?, number?, number?)
 	lower += lower.Unit * 0.25 -- to the middle of the hand
 	local d = torso.CFrame:VectorToObjectSpace(target - s.Position)
 	-- the elbow: bisection on the reach (|upper + R(e) lower| shrinks as the elbow bends)
-	local function reach(e: number): number
+	local function length(e: number): number
 		return (upper + CFrame.Angles(e, 0, 0) * lower).Magnitude
 	end
 	local lo, hi = 0, 2.6
-	local want = math.clamp(d.Magnitude, reach(hi), reach(lo))
+	local want = math.clamp(d.Magnitude, length(hi), length(lo))
 	for _ = 1, 14 do
 		local mid = (lo + hi) / 2
-		if reach(mid) > want then
+		if length(mid) > want then
 			lo = mid
 		else
 			hi = mid
@@ -185,23 +188,28 @@ local function step(dt: number)
 			if rig.weight > 0 and rig.kind then
 				local a = PlayerPoses.arms(rig.kind, now + player.UserId % 7)
 				local w = rig.weight * rig.weight * (3 - 2 * rig.weight)
-				apply(rig.right, a.rx, a.rz, w)
-				local target = if a.crank and rig.leftElbow then crankTarget(rig.character, a.crank) else nil
-				local lx, lz, le = nil, nil, nil
+				-- V2 reel on R15: the rod is in the left hand (ToolService's LeftGrip), the right hand on the crank
+				local hand = rig.character:FindFirstChild("LeftHand")
+				local leftHeld = hand ~= nil and hand:FindFirstChild("LeftGrip") ~= nil
+				local target = if a.crank and leftHeld and rig.rightElbow then crankTarget(rig.character, a.crank) else nil
+				local x, z, e = nil, nil, nil
 				if target then
-					lx, lz, le = reachLeft(rig, target)
+					x, z, e = reach(rig.right, rig.rightElbow, rig.rightWrist, target)
 				end
-				if lx and lz and le then
-					apply(rig.left, lx, lz, w)
-					apply(rig.leftElbow, le, 0, w)
+				if x and z and e and a.hx and a.hz and a.he then
+					apply(rig.left, a.hx, a.hz, w)
+					apply(rig.leftElbow, a.he, 0, w)
+					apply(rig.right, x, z, w)
+					apply(rig.rightElbow, e, 0, w)
 				else
+					apply(rig.right, a.rx, a.rz, w)
 					apply(rig.left, a.lx, a.lz, w)
-				end
-				if a.re then
-					apply(rig.rightElbow, a.re, 0, w)
-				end
-				if a.le then
-					apply(rig.leftElbow, a.le, 0, w)
+					if a.re then
+						apply(rig.rightElbow, a.re, 0, w)
+					end
+					if a.le then
+						apply(rig.leftElbow, a.le, 0, w)
+					end
 				end
 			elseif not kind then
 				rigs[player] = nil

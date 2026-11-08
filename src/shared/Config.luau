@@ -154,7 +154,7 @@ Config.Fishing = {
 
 -- Carrying a caught cat home (task 1.13) and the baseball bat (task 1.14).
 Config.Carry = {
-	HeadOffset = 3.6, -- studs above the head
+	HeadOffset = 2.6, -- studs above the root part (the cat rests on the raised hands, task 2.22)
 	Scale = 0.7, -- a carried cat is shown at this share of its size ...
 	MaxScale = 1.0, -- ... and never bigger than this model scale
 	DeliverRadius = 22, -- studs from the pen centre
@@ -186,6 +186,11 @@ Config.Events = {
 Config.CatAnim = {
 	Range = 160, -- only cats this close to the camera are animated (studs)
 	RescanSeconds = 1, -- a cat whose joints have not all streamed in yet is looked up again this often
+}
+-- Player arm poses (task 2.22, shared/PlayerPoses): carrying a cat and reeling, drawn by every client.
+Config.PlayerAnim = {
+	Range = 160, -- only players this close to the camera are posed (studs)
+	Blend = 0.25, -- seconds to ease into / out of a pose
 }
 
 -- Languages: English is the default for every player, Thai is picked in Settings and saved.

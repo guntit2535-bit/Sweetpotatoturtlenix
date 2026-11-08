@@ -14,6 +14,7 @@ local Remotes = require(Shared.Remotes)
 local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
 local Progress = require(script.Parent.Parent.Util.Progress)
+local ToolAnim = require(script.Parent.Parent.Util.ToolAnim)
 local CarryService = require(script.Parent.CarryService)
 local DataService = require(script.Parent.DataService)
 local FishingService = require(script.Parent.FishingService)
@@ -38,16 +39,6 @@ local function alive(player: Player): boolean
 	return h ~= nil and h.Health > 0
 end
 
--- Plays the default tool swing for everyone (the Animate script reads a "toolanim" value in the tool).
-local function swingAnim(tool: Instance)
-	local v = Instance.new("StringValue")
-	v.Name = "toolanim"
-	v.Value = "Slash"
-	v.Parent = tool
-	task.delay(0.3, function()
-		v:Destroy()
-	end)
-end
 
 local function onSwing(player: Player)
 	local now = os.clock()
@@ -61,7 +52,7 @@ local function onSwing(player: Player)
 		return
 	end
 	lastSwing[player] = now
-	swingAnim(bat)
+	ToolAnim.play(bat, "Slash")
 	if inLobby(root.Position) then
 		return
 	end

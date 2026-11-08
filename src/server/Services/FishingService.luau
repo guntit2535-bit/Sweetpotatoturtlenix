@@ -22,6 +22,7 @@ local Remotes = require(Shared.Remotes)
 local Validate = require(Shared.Validate)
 local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
+local ToolAnim = require(script.Parent.Parent.Util.ToolAnim)
 local CarryService = require(script.Parent.CarryService)
 local DataService = require(script.Parent.DataService)
 local MovementService = require(script.Parent.MovementService)
@@ -143,8 +144,12 @@ local function onCast(player: Player, rawId: unknown)
 	sessions[player] = { wild = w, bar = bar, holding = false, sinceSnap = 0, beam = makeBeam(player, w) }
 	MovementService.setFactor(player, "fishing", 0)
 	player:SetAttribute("Fishing", w.id)
-	-- face the cat
+	-- face the cat and swing the rod (the reel pose follows from the "Fishing" attribute, PlayerAnimController)
 	root.CFrame = CFrame.lookAt(root.Position, Vector3.new(catPos.X, root.Position.Y, catPos.Z))
+	local rod = character:FindFirstChild("Rod")
+	if rod then
+		ToolAnim.play(rod, "Slash")
+	end
 	startRemote:FireClient(player, w.id, w.tier, FishingBar.snapshot(bar), data.RodLevel, easy)
 end
 

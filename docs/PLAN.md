@@ -67,7 +67,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.19 Developer products x7 (+20 slots in price steps, 4 cash packs by income, strength pack, luck x3 15 min, server luck 15 min + announcement, summon Mythical, starter pack once) + the one ProcessReceipt. Reuse: PSE `ProductService`, `shared/Products`, SP `DevProductService`
 - [x] 2.20 Robux store window + card images (GPT prompts). Reuse: PSE `Controllers/StoreUI`, BA `LivePrices`, `StoreController`
 - [x] 2.21 All 400 cat models in the approved style (+ Mythical / Secret effects). Reuse: PSE `CreatureModels`, art pipeline
-- [ ] 2.22 Animations: cats (idle, walk, struggle, carried), players (cast, reel, lift, run, swing, carry). Reuse: BA `client/CharacterAnims`, `CreatureAnimator`, SP `art/animations`
+- [x] 2.22 Animations: cats (idle, walk, struggle, carried), players (cast, reel, lift, run, swing, carry). Reuse: BA `client/CharacterAnims`, `CreatureAnimator`, SP `art/animations`
 - [ ] 2.23 Sound: sound module + sound list xlsx for the developer to pick ids (event music included). Reuse: SP `client/Sound`, `SoundController`, PSE `tools/gen/sounds_xlsx.luau`
 - [ ] 2.24 Game icon 512 + 3-5 thumbnails 1920x1080 (GPT prompts) + store description EN / TH
 - [ ] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
@@ -224,3 +224,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-08: 2.21 all 400 designs from `shared/Cats` built by `CatModel` with no mutation, Gold, Rainbow and
   Glow (Studio Edit, 1,600 builds): 0 failures, 47 parts on average, 63 at most. Gallery capture of every tier
   (Mythical halo / wings, Secret size) checked and removed.
+- 2026-11-08: 2.22 player animations without uploads: `shared/PlayerPoses` (carry = both arms up, reel = rod
+  arm out + reel arm turning) applied by `PlayerAnimController` on every client to every player within 160
+  studs from the "CarryingCat" / "Fishing" attributes, blended in / out in 0.25 s, for Motor6D and the newer
+  AnimationConstraint joints (the avatars here use AnimationConstraint: a Motor6D-only version did nothing);
+  cast = default tool "Slash" via `Util/ToolAnim` (bat swing moved to the same helper); lift / run stay the
+  default cheer / run. `Config.Carry.HeadOffset` 3.6 -> 2.6 so the cat rests on the raised hands (gap 1.13 ->
+  0.12 studs). Studio Play: reel pose while fishing, real catch -> arms up under the cat, !drop -> arms down.
+  Cats' clips were done in A7.

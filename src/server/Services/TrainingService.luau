@@ -86,7 +86,7 @@ local function upgrade(player: Player, index: number, which: string)
 	end
 	local isWeights = which == "Weights"
 	local level = if isWeights then data.WeightsLevel else data.TreadLevel
-	local cost = if isWeights then CatRules.weightsCost(level) else CatRules.treadCost(level)
+	local cost = if isWeights then CatRules.weightsCost(level, data.Rebirths) else CatRules.treadCost(level, data.Rebirths)
 	if not cost then
 		return
 	end
@@ -229,12 +229,12 @@ local function tick()
 			if training == "Weights" then
 				local gain = CatRules.weightsGain(data.WeightsLevel) * Bonus.strength(BonusCtx.of(player, data))
 				DataService.UpdateQuiet(player, function(d)
-					d.Strength += gain
+					d.Strength = CatRules.cap(d.Strength + gain)
 				end)
 			elseif training == "Treadmill" then
-				local gain = CatRules.treadGain(data.TreadLevel)
+				local gain = CatRules.treadGain(data.TreadLevel) * CatRules.rebirthSpeed(data.Rebirths)
 				DataService.UpdateQuiet(player, function(d)
-					d.Speed += gain
+					d.Speed = CatRules.cap(d.Speed + gain)
 				end)
 			end
 		end

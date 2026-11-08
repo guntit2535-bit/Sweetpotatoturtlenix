@@ -4,7 +4,7 @@
 -- tests/Bonus.spec.luau checks each rule alone and together.
 --
 --   Bonus.money(ctx)      rebirths x1.5 each, x2 Cash pass, VIP +10%, Golden Fish x2, book bonuses
---   Bonus.strength(ctx)   rebirths x1.5 each, x2 Strength pass
+--   Bonus.strength(ctx)   rebirths x3.95 each (R4), x2 Strength pass
 --   Bonus.luck(ctx)       rod level, Lucky pass x2, Lucky Treat x1.5, luck x3 product, server luck
 --   Bonus.easy(ctx)       Catnip active
 --   Bonus.walk(speedStat, ctx)  walk speed in studs/s
@@ -93,7 +93,9 @@ end
 
 function Bonus.walk(speedStat: number, ctx: Ctx): number
 	local w = Config.Walk
-	local stat = math.min(w.Max - w.Base, w.Bonus * math.log(1 + math.max(0, speedStat) / w.Scale))
+	-- R4: the Speed stat counts relative to the current life (it grows x SpeedMult per rebirth)
+	local relative = math.max(0, speedStat) / Config.Rebirth.SpeedMult ^ ctx.rebirths
+	local stat = math.min(w.Max - w.Base, w.Bonus * math.log(1 + relative / w.Scale))
 	local above = stat + Bonus.shoeSpeed(ctx.shoes)
 	if ctx.likeBuff then
 		above *= w.LikeBuff

@@ -82,7 +82,9 @@ local function scores(player: Player): { [string]: number }?
 	if not d then
 		return nil
 	end
-	return { Income = math.floor(PenService.incomeRate(player)), Cats = DataTemplate.catCount(d) }
+	-- R4: income can reach Sx, past what an OrderedDataStore holds: store it on a log scale
+	local income = math.max(0, PenService.incomeRate(player))
+	return { Income = math.floor(math.log10(1 + income) * Config.Leaderboards.LogScale), Cats = DataTemplate.catCount(d) }
 end
 
 local function write(player: Player)
@@ -106,7 +108,8 @@ local function read()
 			local rows = {}
 			for _, entry in pages:GetCurrentPage() do
 				local id = tonumber(entry.key)
-				table.insert(rows, { name = if id then nameOf(id) else entry.key, value = entry.value })
+				local value = if key == "Income" then 10 ^ (entry.value / Config.Leaderboards.LogScale) - 1 else entry.value
+				table.insert(rows, { name = if id then nameOf(id) else entry.key, value = value })
 			end
 			if boards[key] then
 				boards[key]:SetAttribute("Rows", HttpService:JSONEncode(rows))

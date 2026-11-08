@@ -3,6 +3,7 @@
 -- shown before buying) and the reveal: a short shake, then the real cat model turning in a frame with its
 -- name, tier, weight and mutation. The server already saved it (CrateResult comes after the save).
 
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
@@ -65,7 +66,8 @@ local function drawTab(list: ScrollingFrame)
 			chip.TextXAlignment = Enum.TextXAlignment.Left
 		end
 		local b = Kit.button(row, "Buy", C.green, UDim2.fromOffset(150, 50), UDim2.new(1, -162, 0.5, -27))
-		Kit.setButtonText(b, Lang.text("Buy", { cost = Format.short(crate.Cost) }))
+		local rb = Players.LocalPlayer:GetAttribute("Rebirths")
+		Kit.setButtonText(b, Lang.text("Buy", { cost = Format.short(Crates.cost(crate.Key, if type(rb) == "number" then rb else 0)) }))
 		b.Activated:Connect(function()
 			buyRemote:FireServer(crate.Key)
 		end)
@@ -115,7 +117,7 @@ local function showResult(key: string, kind: string, kg: number, mutation: strin
 	local t = Config.Tiers[design.Tier]
 	title.Text = Lang.text("CrateGot", { name = design.Name })
 	title.TextColor3 = Color3.fromHex(t.Color)
-	local line = `{Lang.text("Tier" .. t.Key)} · {Lang.text("CatKg", { kg = Format.rate(kg) })} · {Lang.text("CatIncome", { money = Format.money(CatRules.income(design.Tier, kg) * Mutation.money(mutation)) })}`
+	local line = `{Lang.text("Tier" .. t.Key)} · {Lang.text("CatKg", { kg = Format.money(kg) })} · {Lang.text("CatIncome", { money = Format.money(CatRules.income(design.Tier, kg) * Mutation.money(mutation)) })}`
 	if mutation ~= "" then
 		line = Lang.text("MutTag", { mutation = Lang.text("Mut" .. mutation), mult = Mutation.money(mutation) }) .. " · " .. line
 	end

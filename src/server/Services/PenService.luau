@@ -347,7 +347,8 @@ function PenService:Init()
 			kind = list[math.random(1, #list)]
 		end
 		local design = Cats.ById[kind :: string]
-		local kg = Commands.number(args[2]) or CatRules.rollKg(design.Tier, math.random())
+		local data = DataService.GetData(player)
+		local kg = Commands.number(args[2]) or CatRules.kgFor(CatRules.rollKg(design.Tier, math.random()), if data then data.Rebirths else 0)
 		local id = PenService.addCat(player, kind :: string, kg)
 		return if id then `{design.Name} ({design.TierKey}, {kg} kg) -> {id}` else "pen full or not loaded"
 	end)

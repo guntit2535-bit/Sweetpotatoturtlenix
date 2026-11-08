@@ -4,6 +4,7 @@
 --   Crates.get(key) -> crate config or nil
 --   Crates.odds(key) -> { { tier = index, percent = n } } in tier order (for the window)
 --   Crates.roll(key, u) -> tier index
+--   Crates.cost(key, rebirths) -> price: Cost x Config.Crates.CostRebirth ^ rebirths (R4: crate cats get heavier too)
 
 local Config = require(script.Parent.Config)
 local CatRules = require(script.Parent.CatRules)
@@ -17,6 +18,14 @@ function Crates.get(key: string): any
 		end
 	end
 	return nil
+end
+
+function Crates.cost(key: string, rebirths: number): number
+	local c = Crates.get(key)
+	if not c then
+		return 0
+	end
+	return math.floor(CatRules.cap(c.Cost * Config.Crates.CostRebirth ^ math.max(0, rebirths)))
 end
 
 function Crates.odds(key: string): { { tier: number, percent: number } }

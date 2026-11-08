@@ -19,14 +19,15 @@ function Commands.parse(message: string, prefix: string): (string?, { string })
 	return string.lower(name), words
 end
 
--- A number argument with an optional fraction and a K / M / B suffix ("1.5", "20k", "3M"), or nil.
-local SUFFIX = { k = 1e3, m = 1e6, b = 1e9 }
+-- A number argument with an optional fraction and a suffix ("1.5", "20k", "3M", "90Sx"), or nil.
+-- Suffixes: K M B T Qa Qi Sx (R4: numbers up to 99 Sx).
+local SUFFIX = { k = 1e3, m = 1e6, b = 1e9, t = 1e12, qa = 1e15, qi = 1e18, sx = 1e21 }
 function Commands.number(text: string?): number?
 	if text == nil then
 		return nil
 	end
-	local digits, suffix = string.match(string.lower(text), "^(%-?%d+%.?%d*)([kmb]?)$")
-	if digits == nil then
+	local digits, suffix = string.match(string.lower(text), "^(%-?%d+%.?%d*)(%a*)$")
+	if digits == nil or (suffix ~= "" and SUFFIX[suffix] == nil) then
 		return nil
 	end
 	local n = tonumber(digits)

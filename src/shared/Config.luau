@@ -27,14 +27,14 @@ Config.World = {
 	SkyCloudY = -60, -- the cloud sea under the Sky Islands
 	ClusterSpacing = 80, -- studs between prop clusters along a lane (zones 1-4)
 	-- 180-stud rings: at the start walk speed (16) the map edge is ~65 s from the plaza
-	-- Gate: enter with Strength >= Strength OR Rebirths >= Rebirths. Odds: tier key -> weight (%).
+	-- Gate: enter with Strength >= Strength x Rebirth.KgMult ^ rebirths (R4) OR Rebirths >= Rebirths. Odds: tier key -> weight (%).
 	-- KgSkew overrides Config.KgSkew (lower = heavier cats). Cats: wild cats kept in the zone at once.
 	Zones = {
 		{ Key = "Backyard", Inner = 150, Outer = 330, Strength = 0, Rebirths = 0, Cats = 18, Odds = { Basic = 90, Rare = 10 } },
-		{ Key = "TownMarket", Inner = 330, Outer = 510, Strength = 10, Rebirths = 1, Cats = 18, Odds = { Basic = 30, Rare = 60, Epic = 10 } },
-		{ Key = "Forest", Inner = 510, Outer = 690, Strength = 60, Rebirths = 2, Cats = 18, Odds = { Rare = 35, Epic = 55, Legendary = 10 } },
-		{ Key = "SnowMountain", Inner = 690, Outer = 870, Strength = 300, Rebirths = 4, Cats = 18, Odds = { Epic = 45, Legendary = 55 } },
-		{ Key = "SkyIslands", Inner = 870, Outer = 1050, Strength = 1500, Rebirths = 6, Cats = 18, Odds = { Epic = 20, Legendary = 80 }, KgSkew = 0.8 },
+		{ Key = "TownMarket", Inner = 330, Outer = 510, Strength = 100, Rebirths = 1, Cats = 18, Odds = { Basic = 30, Rare = 60, Epic = 10 } },
+		{ Key = "Forest", Inner = 510, Outer = 690, Strength = 1e4, Rebirths = 2, Cats = 18, Odds = { Rare = 35, Epic = 55, Legendary = 10 } },
+		{ Key = "SnowMountain", Inner = 690, Outer = 870, Strength = 1e6, Rebirths = 4, Cats = 18, Odds = { Epic = 45, Legendary = 55 } },
+		{ Key = "SkyIslands", Inner = 870, Outer = 1050, Strength = 1e7, Rebirths = 6, Cats = 18, Odds = { Epic = 20, Legendary = 80 }, KgSkew = 0.8 },
 	},
 	HideSpotsPerZone = { Min = 30, Max = 60 },
 }
@@ -64,6 +64,7 @@ Config.Data = {
 	StoreName = "Sweetpotato_PlayerData_v1",
 	StartMoney = 0,
 	StartStrength = 1, -- kg: enough for the lightest Basic cats (1 kg)
+	EconVersion = 1, -- R4: saves below this are converted once to the 99 Sx numbers (DataService)
 	SaveTimeout = 15, -- seconds DataService.SaveAsync waits before giving up (autosave still runs)
 	GetDataRate = { maxCalls = 2, window = 1 }, -- the client asks once on start
 	-- Studio only: Workspace attribute FreshSave = true gives every player a new in-memory save that is
@@ -83,29 +84,34 @@ Config.Pen = {
 	RestSeconds = { 3, 9 }, -- a pen cat rests this long between walks
 }
 
--- Cat tiers (blueprint §5): designs per tier, weight range, money per second per kg, catch difficulty.
--- Income of a cat = Rate x kg (x mutations / boosts later). Basic-Legendary are one size; Mythical
--- 1.3-2x and Secret 3-6x by weight (CatRules.size).
+-- Cat tiers (blueprint §5; R4 option B, docs/economy.md): designs per tier, BASE weight range on a log ladder
+-- (rolled min * (max / min) ^ (u ^ KgSkew)), money rate. A player sees and catches a cat at base kg x
+-- Rebirth.KgMult ^ their rebirths (the world gets heavier every rebirth). Income of a cat = Rate x kg ^
+-- Economy.IncomePower (x mutations / boosts). Basic-Legendary are one size; Mythical 1.3-2x and Secret 3-6x by
+-- weight inside the tier (CatRules.size).
 Config.Tiers = {
-	{ Key = "Basic", Count = 150, MinKg = 1, MaxKg = 10, Rate = 0.5, Color = "9aa7bd" },
-	{ Key = "Rare", Count = 110, MinKg = 10, MaxKg = 60, Rate = 0.8, Color = "3da5ff" },
-	{ Key = "Epic", Count = 70, MinKg = 60, MaxKg = 300, Rate = 1.2, Color = "a46bff" },
-	{ Key = "Legendary", Count = 45, MinKg = 300, MaxKg = 1500, Rate = 2, Color = "ffb020" },
-	{ Key = "Mythical", Count = 20, MinKg = 1500, MaxKg = 8000, Rate = 4, Color = "ff5fa2", SizeMin = 1.3, SizeMax = 2 },
-	{ Key = "Secret", Count = 5, MinKg = 10000, MaxKg = 50000, Rate = 8, Color = "18c9b9", SizeMin = 3, SizeMax = 6 },
+	{ Key = "Basic", Count = 150, MinKg = 1, MaxKg = 100, Rate = 0.5, Color = "9aa7bd" },
+	{ Key = "Rare", Count = 110, MinKg = 100, MaxKg = 1e4, Rate = 0.8, Color = "3da5ff" },
+	{ Key = "Epic", Count = 70, MinKg = 1e4, MaxKg = 1e6, Rate = 1.2, Color = "a46bff" },
+	{ Key = "Legendary", Count = 45, MinKg = 1e6, MaxKg = 1e8, Rate = 2, Color = "ffb020" },
+	{ Key = "Mythical", Count = 20, MinKg = 1e8, MaxKg = 1e9, Rate = 4, Color = "ff5fa2", SizeMin = 1.3, SizeMax = 2 },
+	{ Key = "Secret", Count = 5, MinKg = 1e9, MaxKg = 1.18e9, Rate = 8, Color = "18c9b9", SizeMin = 3, SizeMax = 6 },
 }
-Config.KgSkew = 2 -- kg = min + (max - min) * u^KgSkew: heavy cats of a tier are rarer
+Config.KgSkew = 2 -- base kg = min * (max / min) ^ (u ^ KgSkew): heavy cats of a tier are rarer
 
--- Economy (task 1.6, option B "Normal" in docs/economy.md; tools/sim/economy.luau).
+-- Economy (R4 option B "normal", docs/economy.md; tools/sim/economy_sx.luau). Every Money, Strength, Speed and
+-- kg value is capped at Max (99 Sx).
 Config.Economy = {
+	Max = 9.9e22, -- 99 Sx
+	IncomePower = 0.6, -- a cat earns Rate x kg ^ 0.6 per second (heavier cats earn more, slower than their weight)
 	SellSeconds = 120, -- selling a cat pays this many seconds of its income
 	IncomeTick = 1, -- seconds between pen income ticks
 }
 
--- Training (tasks 1.15 / 1.16): one rep / step every Tick seconds; level L gives Gain * Growth^(L-1);
--- the next level costs Cost * CostGrowth^(L-1) money.
-Config.Weights = { Levels = 25, Tick = 1, Gain = 0.1, Growth = 1.33, Cost = 100, CostGrowth = 2.5 }
-Config.Treadmill = { Levels = 25, Tick = 1, Gain = 0.2, Growth = 1.4, Cost = 40, CostGrowth = 1.85 }
+-- Training (tasks 1.15 / 1.16, R4): one rep / step every Tick seconds; level L gives Gain * Growth^(L-1) (x the
+-- rebirth multipliers); the next level costs Cost * CostGrowth^(L-1) * CostRebirth^rebirths money.
+Config.Weights = { Levels = 25, Tick = 1, Gain = 1, Growth = 1.6, Cost = 30, CostGrowth = 1.78, CostRebirth = 3 }
+Config.Treadmill = { Levels = 25, Tick = 1, Gain = 1, Growth = 1.6, Cost = 20, CostGrowth = 1.78, CostRebirth = 3 }
 -- Standing within StandRadius of your own pen's weights / treadmill trains; the gym looks change every
 -- LookEvery weights levels (dumbbell > barbell > bench > machine > giant barbell).
 Config.Gym = {
@@ -120,11 +126,13 @@ Config.Gym = {
 }
 -- Zone gates: a player inside a zone they may not enter yet is put back just outside it.
 Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
--- Walk speed from the Speed stat: Base + Bonus * ln(1 + Speed / Scale), at most Max (studs/s).
+-- Walk speed from the Speed stat: Base + Bonus * ln(1 + S / Scale), at most Max (studs/s), where S = Speed /
+-- Rebirth.SpeedMult ^ rebirths (R4: the stat grows to Sx, walking feels the same every life).
 -- The Speed stat's part is capped at Max; shoes add on top; the x2 Speed pass doubles everything above
 -- Base; Cap is the final limit.
-Config.Walk = { Base = 16, Bonus = 9, Scale = 10, Max = 60, Cap = 120, LikeBuff = 2, LikeBuffSeconds = 300 }
-Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 1.5 }
+Config.Walk = { Base = 16, Bonus = 9, Scale = 100, Max = 60, Cap = 120, LikeBuff = 2, LikeBuffSeconds = 300 }
+-- Each rebirth (R4): money x1.5, Strength gain x3.95, Speed gain x3.95, every cat in the world x3.6 heavier.
+Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.95, SpeedMult = 3.95, KgMult = 3.6 }
 
 -- Wild cats at the hiding spots (task 1.10).
 Config.WildCats = {
@@ -244,7 +252,7 @@ Config.Products = {
 		{ Key = "CashM", Id = 3729676128, Kind = "Cash", Base = 25000, Seconds = 3600 },
 		{ Key = "CashL", Id = 3729676205, Kind = "Cash", Base = 100000, Seconds = 4 * 3600 },
 		{ Key = "CashXL", Id = 3729676288, Kind = "Cash", Base = 400000, Seconds = 12 * 3600 },
-		{ Key = "Strength", Id = 3729676358, Kind = "Strength", Base = 500, Seconds = 3600 }, -- an hour of lifting
+		{ Key = "Strength", Id = 3729676358, Kind = "Strength", Base = 10000, Seconds = 3600 }, -- an hour of lifting
 		{ Key = "Luck3", Id = 3729676458, Kind = "Luck3" },
 		{ Key = "ServerLuck", Id = 3729676540, Kind = "ServerLuck" },
 		{ Key = "SummonMythical", Id = 3729676622, Kind = "Summon" },
@@ -311,7 +319,7 @@ Config.Mutations = {
 Config.Book = { TierBonus = 0.05, AllBonus = 0.25 }
 
 -- Rebirth (task 2.7): rebirth r + 1 needs Strength >= Strength * Growth^r.
-Config.RebirthNeed = { Strength = 1500, Growth = 2.2 }
+Config.RebirthNeed = { Strength = 1.5e8, Growth = 4 } -- R4 option B
 
 -- Extra systems (tasks 2.10 - 2.16). Money rewards = max(Base, Seconds of the player's income).
 Config.Offline = { MaxHours = 8, Share = 0.5, MinSeconds = 120 } -- income while away, at half rate
@@ -350,7 +358,9 @@ Config.Codes = { -- gift codes (upper case); each player once. Add new ones here
 }
 Config.Group = { Money = 10000, Treat = "Luck", TreatSeconds = 1800 } -- joining Config.GroupId
 Config.Leaderboards = {
-	Stores = { Income = "Sweetpotato_LB_Income_v1", Cats = "Sweetpotato_LB_Cats_v1" },
+	-- R4: Income is stored as log10(1 + income) x LogScale (OrderedDataStore holds integers up to ~9.2e18 only)
+	Stores = { Income = "Sweetpotato_LB_Income_v2", Cats = "Sweetpotato_LB_Cats_v1" },
+	LogScale = 1e6,
 	WriteEvery = 120, -- seconds between a player's score writes
 	ReadEvery = 120,
 	Show = 10,
@@ -377,6 +387,7 @@ Config.Crates = {
 	},
 	BuyRate = { maxCalls = 2, window = 1 },
 	RevealSeconds = 1.2,
+	CostRebirth = 3, -- R4: crate prices x3 per rebirth (their cats are x3.6 heavier)
 }
 
 -- Sound (task 2.23). Ids picked by the developer (docs/Sweetpotato_Sounds.xlsx, 2026-11-08; each checked in Studio:

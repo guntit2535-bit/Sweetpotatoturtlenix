@@ -17,6 +17,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.Shared
 local Cats = require(Shared.Cats)
 local Config = require(Shared.Config)
+local Crates = require(Shared.Crates)
 local Format = require(Shared.Format)
 local Rewards = require(Shared.Rewards)
 local Validate = require(Shared.Validate)
@@ -94,11 +95,8 @@ local function grant(player: Player, reward: any, treatSeconds: number?)
 	if reward.Crate then
 		if not CrateService.give(player, reward.Crate) then
 			-- pen full: the crate's value in money instead
-			for _, c in Config.Crates.List do
-				if c.Key == reward.Crate then
-					DataService.AddMoney(player, c.Cost)
-				end
-			end
+			local d = DataService.GetData(player)
+			DataService.AddMoney(player, Crates.cost(reward.Crate, if d then d.Rebirths else 0))
 		end
 	end
 	DataService.SaveAsync(player)

@@ -48,9 +48,21 @@ for tier, t in Config.Tiers do
 	end
 	check(CatRules.income(tier, t.MaxKg) > CatRules.income(tier, t.MinKg), `tier {tier}: heavier earns more`)
 end
-check(CatRules.size(1, 10) == 1 and CatRules.size(4, 1500) == 1, "Basic-Legendary one size")
-check(math.abs(CatRules.size(5, 1500) - 1.3) < 1e-9 and math.abs(CatRules.size(5, 8000) - 2) < 1e-9, "Mythical 1.3-2x")
-check(math.abs(CatRules.size(6, 10000) - 3) < 1e-9 and math.abs(CatRules.size(6, 50000) - 6) < 1e-9, "Secret 3-6x")
+local T = Config.Tiers
+check(CatRules.size(1, 10) == 1 and CatRules.size(4, 1e7) == 1, "Basic-Legendary one size")
+check(math.abs(CatRules.size(5, T[5].MinKg) - 1.3) < 1e-9 and math.abs(CatRules.size(5, T[5].MaxKg) - 2) < 1e-9, "Mythical 1.3-2x")
+check(math.abs(CatRules.size(6, T[6].MinKg) - 3) < 1e-9 and math.abs(CatRules.size(6, T[6].MaxKg) - 6) < 1e-9, "Secret 3-6x")
+-- R4: a rebirthed player's heavier cat keeps its size (the rebirth factor is taken out)
+local mid = T[6].MinKg * (T[6].MaxKg / T[6].MinKg) ^ 0.5
+check(math.abs(CatRules.size(6, mid * Config.Rebirth.KgMult ^ 7) - CatRules.size(6, mid)) < 1e-6, "Secret size ignores the rebirth factor")
+-- R4: weights per player, the 99 Sx cap
+check(CatRules.kgFor(50, 0) == 50, "no rebirth: base kg")
+check(math.abs(CatRules.kgFor(1e6, 2) - 1e6 * Config.Rebirth.KgMult ^ 2) < 1, "x KgMult per rebirth")
+check(CatRules.kgFor(T[6].MaxKg, 25) <= Config.Economy.Max and CatRules.kgFor(T[6].MaxKg, 25) > Config.Economy.Max * 0.9, "top Secret at 25 rebirths is about 99 Sx")
+check(CatRules.cap(1e30) == Config.Economy.Max, "cap at 99 Sx")
+check(CatRules.income(1, 100) > CatRules.income(1, 1) and CatRules.income(1, 100) < 100 * CatRules.income(1, 1), "income grows slower than weight")
+check(math.abs((CatRules.weightsCost(5, 2) :: number) - (CatRules.weightsCost(5, 0) :: number) * Config.Weights.CostRebirth ^ 2) <= Config.Weights.CostRebirth ^ 2, "weights cost x CostRebirth per rebirth")
+check(CatRules.walkSpeed(1000, nil, 3) < CatRules.walkSpeed(1000, nil, 0), "walking counts Speed relative to the current life")
 check(CatRules.strengthNeeded(50) == 50, "a 50 kg cat needs 50 Strength")
 
 -- zone odds pick only listed tiers
@@ -71,7 +83,9 @@ check(CatRules.walkSpeed(0) == Config.Walk.Base, "walk speed starts at the base"
 check(CatRules.walkSpeed(1e12) == Config.Walk.Max, "walk speed capped")
 check(CatRules.walkSpeed(100, 2) > CatRules.walkSpeed(100), "like buff makes you faster")
 check(CatRules.zoneOpen(1, 1, 0), "Backyard always open")
-check(not CatRules.zoneOpen(2, 5, 0) and CatRules.zoneOpen(2, 10, 0) and CatRules.zoneOpen(2, 1, 1), "Market: Strength 10 or 1 rebirth")
+local g2 = Config.World.Zones[2].Strength
+check(not CatRules.zoneOpen(2, g2 - 1, 0) and CatRules.zoneOpen(2, g2, 0) and CatRules.zoneOpen(2, 1, 1), "Market: its Strength or 1 rebirth")
+check(not CatRules.zoneOpen(3, Config.World.Zones[3].Strength, 1) and CatRules.zoneOpen(3, Config.World.Zones[3].Strength * Config.Rebirth.KgMult, 1), "gates x KgMult per rebirth (R4)")
 
 if failures > 0 then
 	error(`Cats: {failures} failure(s)`)

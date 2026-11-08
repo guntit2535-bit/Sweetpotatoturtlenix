@@ -130,8 +130,10 @@ local function onCast(player: Player, rawId: unknown)
 	if (catPos - root.Position).Magnitude > Config.Fishing.CastRange + 4 then
 		return
 	end
-	if data.Strength < CatRules.strengthNeeded(w.kg) then
-		Notify.send(player, "NeedStrength", { kg = Format.short(math.ceil(w.kg)) }, "bad")
+	-- R4: the world keeps the base weight; this player catches it at base x KgMult ^ their rebirths
+	local kg = CatRules.kgFor(w.kg, data.Rebirths)
+	if data.Strength < CatRules.strengthNeeded(kg) then
+		Notify.send(player, "NeedStrength", { kg = Format.short(math.ceil(kg)) }, "bad")
 		return
 	end
 	if w.state ~= "hooked" then
@@ -195,7 +197,7 @@ local function step(dt: number)
 				mutation = mutation,
 				name = if design then design.Name else "?",
 				tier = Config.Tiers[w.tier].Key,
-				kg = Format.rate(w.kg),
+				kg = Format.money(CatRules.kgFor(w.kg, (DataService.GetData(player) or { Rebirths = 0 } :: any).Rebirths)),
 			}, true)
 			CarryService.pickUp(player, w, mutation)
 		elseif result == "lose" then

@@ -76,7 +76,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R1 Bushes you can walk through: all 322 map bushes collide (cats do not); bushes CanCollide off in MapKit + patch the place
 - [x] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
 - [x] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
-- [ ] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
+- [x] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
 - [ ] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
 - [ ] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
 - [ ] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
@@ -318,3 +318,15 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-08: R4 step 1: `tools/sim/economy_sx.luau` + options A / B / C in `docs/economy.md` (log-ladder cat weights,
   x3.6 heavier cats per rebirth, income rate x kg^0.6, Strength x~3.95 per rebirth, rebirth need x4, 99 Sx cap).
   Waiting for the developer's pick before Config, migration and tests.
+- 2026-11-08: R4 option B (developer's pick) built: Config (log-ladder tier kg, zone gates 100 / 10K / 1M / 10M,
+  IncomePower 0.6, Weights / Treadmill Gain 1 Growth 1.6 with CostRebirth 3, Rebirth StrengthMult / SpeedMult 3.95,
+  KgMult 3.6, RebirthNeed 150M x 4^r, Economy.Max 99 Sx, Walk.Scale 100, crates CostRebirth 3, strength pack 10K);
+  CatRules kgFor / cap / log rollKg / income kg^0.6 / size without the rebirth factor / costs per rebirth / walk
+  relative to the life / gates x3.6^r; wild cats keep the base kg (models too), each player sees, needs and
+  delivers base x 3.6^rebirths (FishingService, CarryService, CrateService, WildCatTag, !givecat); DataService caps
+  Money / Strength / Speed at 99 Sx on every change; Commands parse T / Qa / Qi / Sx; money leaderboard stores
+  log10 x 1e6 (new store _v2); `shared/Migrate` converts EconVersion 0 saves once (tests/Migrate.spec). Studio Play:
+  the developer's save converted (Strength 78 -> 21.4K, Speed x10, cats remapped, money kept); with a test save
+  !money past 99 Sx caps at 9.9e22, rebirth 1 -> wild Basic 1 kg shows 3.6 kg + "Need 4 Strength", the server
+  refuses at Strength 1, catches at 10, the pen gets 3.6 kg, income 3.56/s as computed, weights +7.90/s, upgrade
+  $90; no errors. FreshSave removed again.

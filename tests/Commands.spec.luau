@@ -34,6 +34,8 @@ check(Commands.number("1.5") == 1.5, "number fraction")
 check(Commands.number("20k") == 20000, "number k")
 check(Commands.number("3M") == 3e6, "number M")
 check(Commands.number("x2") == nil, "number word")
+check(Commands.number("90Sx") == 9e22 and Commands.number("2qa") == 2e15 and Commands.number("5t") == 5e12, "number T / Qa / Sx (R4)")
+check(Commands.number("5zz") == nil, "unknown suffix")
 
 if failures > 0 then
 	error(`Commands: {failures} failure(s)`)

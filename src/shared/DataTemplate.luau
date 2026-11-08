@@ -52,6 +52,7 @@ export type Data = {
 	GroupClaimed: boolean, -- the group reward (task 2.16)
 	SlotBuys: number, -- +20 slot products bought (task 2.19)
 	StarterBought: boolean, -- the starter pack (once)
+	EconVersion: number, -- R4: 0 = numbers from before the 99 Sx economy (Migrate converts it once)
 	Settings: {
 		Language: string, -- "en" (default) or "th"
 		Music: boolean, -- music on (task 2.23)
@@ -98,6 +99,7 @@ DataTemplate.Template = {
 	GroupClaimed = false,
 	SlotBuys = 0,
 	StarterBought = false,
+	EconVersion = 0,
 	Settings = {
 		Language = "en",
 		Music = true,
@@ -172,6 +174,7 @@ function DataTemplate.sanitize(data: Data): number
 		set(key, whole((data :: any)[key], 0, math.huge, 0))
 	end
 	set("SlotBuys", whole(data.SlotBuys, 0, math.huge, 0))
+	set("EconVersion", whole(data.EconVersion, 0, math.huge, 0))
 	if type(data.StarterBought) ~= "boolean" then
 		set("StarterBought", false)
 	end

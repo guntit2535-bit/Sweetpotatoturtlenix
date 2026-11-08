@@ -111,7 +111,9 @@ local function refreshPrompts()
 					local isWeights = which == "Weights"
 					local level = me:GetAttribute(if isWeights then "WeightsLevel" else "TreadLevel")
 					local lv = if type(level) == "number" then level else 1
-					local cost = if isWeights then CatRules.weightsCost(lv) else CatRules.treadCost(lv)
+					local rb = me:GetAttribute("Rebirths")
+					local r = if type(rb) == "number" then rb else 0
+					local cost = if isWeights then CatRules.weightsCost(lv, r) else CatRules.treadCost(lv, r)
 					prompt.ObjectText = Lang.text(if isWeights then "WeightsName" else "TreadName", { level = lv })
 					prompt.ActionText = if cost then Lang.text("TrainUpgrade", { cost = Format.short(cost) }) else Lang.text("TrainMax")
 					if not cost then
@@ -176,7 +178,7 @@ function TrainingController.Start(_self: any)
 			lastSpeed = now
 		end
 	end)
-	for _, attr in { "WeightsLevel", "TreadLevel", "Money" } do
+	for _, attr in { "WeightsLevel", "TreadLevel", "Money", "Rebirths" } do
 		me:GetAttributeChangedSignal(attr):Connect(refreshPrompts)
 	end
 	Lang.changed:Connect(refreshPrompts)

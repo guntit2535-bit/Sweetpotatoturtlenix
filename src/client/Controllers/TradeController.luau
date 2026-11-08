@@ -48,7 +48,7 @@ local function catChip(parent: Instance, kind: string, kg: number, mutation: str
 	name.TextWrapped = true
 	name.Text = if design then design.Name else "?"
 	local info = Kit.text(b, "Info", UDim2.new(1, -6, 0.38, 0), UDim2.new(0, 3, 0.6, 0), 12, true)
-	info.Text = `{Format.rate(kg)} kg` .. (if mutation and mutation ~= "" then " · " .. Lang.text("Mut" .. mutation) else "")
+	info.Text = `{Format.money(kg)} kg` .. (if mutation and mutation ~= "" then " · " .. Lang.text("Mut" .. mutation) else "")
 	if onClick then
 		b.Activated:Connect(onClick)
 	end

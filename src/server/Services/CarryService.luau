@@ -11,6 +11,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.Shared
 local Config = require(Shared.Config)
 local Cats = require(Shared.Cats)
+local CatRules = require(Shared.CatRules)
 local Notify = require(script.Parent.Parent.Util.Notify)
 local DataService = require(script.Parent.DataService)
 local PenService = require(script.Parent.PenService)
@@ -126,7 +127,10 @@ local function deliver(player: Player, c: Carry)
 		end
 		return
 	end
-	local id = PenService.addCat(player, c.kind, c.kg, c.mutation)
+	-- R4: c.kg is the base weight; the pen keeps it at this player's scale
+	local data = DataService.GetData(player)
+	local kg = CatRules.kgFor(c.kg, if data then data.Rebirths else 0)
+	local id = PenService.addCat(player, c.kind, kg, c.mutation)
 	if not id then
 		return
 	end
@@ -134,7 +138,7 @@ local function deliver(player: Player, c: Carry)
 	if c.model.Parent then
 		c.model:Destroy()
 	end
-	deliveredEvent:Fire(player, c.kind, c.kg, c.event)
+	deliveredEvent:Fire(player, c.kind, kg, c.event)
 	task.spawn(function()
 		DataService.SaveAsync(player) -- saved before the toast (save before you show)
 		local design = Cats.ById[c.kind]

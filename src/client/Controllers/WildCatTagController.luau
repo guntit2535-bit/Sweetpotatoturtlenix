@@ -8,6 +8,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local CatRules = require(Shared:WaitForChild("CatRules"))
 local Config = require(Shared:WaitForChild("Config"))
 local Format = require(Shared:WaitForChild("Format"))
 local Lang = require(script.Parent.Parent.Lang)
@@ -20,14 +21,17 @@ local tags: { [Model]: BillboardGui } = {}
 
 local function update(m: Model, gui: BillboardGui)
 	local tier = m:GetAttribute("Tier")
-	local kg = m:GetAttribute("Kg")
-	if type(tier) ~= "number" or type(kg) ~= "number" then
+	local base = m:GetAttribute("Kg")
+	if type(tier) ~= "number" or type(base) ~= "number" then
 		return
 	end
+	-- R4: the model carries the base weight; I see it at my rebirths' scale
+	local rb = me:GetAttribute("Rebirths")
+	local kg = CatRules.kgFor(base, if type(rb) == "number" then rb else 0)
 	local t = Config.Tiers[tier]
 	local top = gui:FindFirstChild("Top") :: TextLabel
 	local need = gui:FindFirstChild("Need") :: TextLabel
-	top.Text = Lang.text("CatLabel", { tier = Lang.text("Tier" .. t.Key), kg = Format.rate(kg) })
+	top.Text = Lang.text("CatLabel", { tier = Lang.text("Tier" .. t.Key), kg = Format.money(kg) })
 	top.TextColor3 = Color3.fromHex(t.Color):Lerp(Color3.new(1, 1, 1), 0.15)
 	local strength = me:GetAttribute("Strength")
 	local tooHeavy = type(strength) == "number" and strength < kg
@@ -86,6 +90,7 @@ function WildCatTagController.Start(_self: any)
 	end)
 	CollectionService:GetInstanceRemovedSignal("WildCat"):Connect(remove)
 	me:GetAttributeChangedSignal("Strength"):Connect(updateAll)
+	me:GetAttributeChangedSignal("Rebirths"):Connect(updateAll)
 	Lang.changed:Connect(updateAll)
 	task.spawn(function()
 		while true do

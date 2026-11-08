@@ -81,7 +81,7 @@ local function redraw()
 		local info = Kit.text(row, "Info", UDim2.new(1, -250, 0, 24), UDim2.fromOffset(32, 38), 17)
 		info.TextXAlignment = Enum.TextXAlignment.Left
 		info.TextColor3 = C.muted
-		info.Text = `{Lang.text("Tier" .. r.design.TierKey)} · {Lang.text("CatKg", { kg = Format.rate(r.cat.Kg) })} · {Lang.text("CatIncome", { money = Format.money(r.income) })}`
+		info.Text = `{Lang.text("Tier" .. r.design.TierKey)} · {Lang.text("CatKg", { kg = Format.money(r.cat.Kg) })} · {Lang.text("CatIncome", { money = Format.money(r.income) })}`
 		if r.cat.Mutation and r.cat.Mutation ~= "" then
 			info.Text = Lang.text("MutTag", { mutation = Lang.text("Mut" .. r.cat.Mutation), mult = Mutation.money(r.cat.Mutation) }) .. " · " .. info.Text
 			info.TextColor3 = Color3.fromHex("c98a00")

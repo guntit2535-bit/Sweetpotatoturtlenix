@@ -20,6 +20,7 @@ local Guard = require(script.Parent.Parent.Util.Guard)
 local Shared = ReplicatedStorage.Shared
 local Config = require(Shared.Config)
 local DataTemplate = require(Shared.DataTemplate)
+local Migrate = require(Shared.Migrate)
 local Format = require(Shared.Format)
 local Remotes = require(Shared.Remotes)
 local Text = require(Shared.Text)
@@ -171,6 +172,9 @@ local function onPlayerAdded(player: Player)
 	if fixes > 0 then
 		log(`repaired {fixes} value(s) in {player.Name}'s save`)
 	end
+	if Migrate.econ(profile.Data) then
+		log(`converted {player.Name}'s save to the 99 Sx numbers (R4)`)
+	end
 
 	profile.OnSave:Connect(function()
 		profile.Data.LastOnline = os.time()
@@ -237,12 +241,27 @@ function DataService.IsLoaded(player: Player): boolean
 end
 
 -- Adds (or with a negative amount, removes) money; never below 0. False if not loaded / not finite.
+-- R4: Money, Strength and Speed never pass Config.Economy.Max (99 Sx).
+local function capStats(data: Data)
+	local max = Config.Economy.Max
+	if data.Money > max then
+		data.Money = max
+	end
+	if data.Strength > max then
+		data.Strength = max
+	end
+	if data.Speed > max then
+		data.Speed = max
+	end
+end
+
 function DataService.AddMoney(player: Player, amount: number): boolean
 	local data = dataOf(player)
 	if not data or not isFiniteNumber(amount) then
 		return false
 	end
 	data.Money = math.max(0, math.floor(data.Money + amount))
+	capStats(data)
 	markChanged(player)
 	return true
 end
@@ -259,6 +278,7 @@ function DataService.AddIncome(player: Player, amount: number): boolean
 	if wholeAmount > 0 then
 		data.MoneyFrac -= wholeAmount
 		data.Money += wholeAmount
+		capStats(data)
 		refreshPublic(player)
 	end
 	return true
@@ -287,6 +307,7 @@ function DataService.Update(player: Player, change: (data: Data) -> ()): boolean
 		return false
 	end
 	change(data)
+	capStats(data)
 	markChanged(player)
 	return true
 end
@@ -299,6 +320,7 @@ function DataService.UpdateQuiet(player: Player, change: (data: Data) -> ()): bo
 		return false
 	end
 	change(data)
+	capStats(data)
 	refreshPublic(player)
 	return true
 end

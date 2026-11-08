@@ -46,18 +46,18 @@ local function onBuy(player: Player, rawKey: unknown)
 	if not key or not data or busy[player] then
 		return
 	end
-	local crate = Crates.get(key)
 	if not PenService.hasRoom(player) then
 		Notify.send(player, "PenFull", { max = data.PenSlots }, "bad")
 		return
 	end
-	if not DataService.SpendMoney(player, crate.Cost) then
-		Notify.send(player, "NotEnoughMoney", { cost = Format.short(crate.Cost) }, "bad")
+	local cost = Crates.cost(key, data.Rebirths)
+	if not DataService.SpendMoney(player, cost) then
+		Notify.send(player, "NotEnoughMoney", { cost = Format.short(cost) }, "bad")
 		return
 	end
 	busy[player] = true
 	if not CrateService.give(player, key) then
-		DataService.AddMoney(player, crate.Cost) -- the pen filled up in between: money back
+		DataService.AddMoney(player, cost) -- the pen filled up in between: money back
 	end
 	busy[player] = nil
 	Progress.add(player, "Crate", 1)
@@ -72,7 +72,7 @@ function CrateService.give(player: Player, key: string): boolean
 	local tier = Crates.roll(key, rng:NextNumber())
 	local list = Cats.ByTier[tier]
 	local kind = list[rng:NextInteger(1, #list)]
-	local kg = CatRules.rollKg(tier, rng:NextNumber())
+	local kg = CatRules.kgFor(CatRules.rollKg(tier, rng:NextNumber()), data.Rebirths) -- R4: this player's scale
 	local mutation = Mutation.roll(tier, Bonus.luck(BonusCtx.of(player, data)), rng:NextNumber())
 	local id = PenService.addCat(player, kind, kg, mutation)
 	if not id then

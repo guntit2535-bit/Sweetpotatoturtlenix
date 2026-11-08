@@ -49,7 +49,10 @@ are starting values: they live in Config and are tuned after playtests (simulate
 
 ### Scope changes
 (Dated entries, each with "the client should be told" when it changes the blueprint.)
-- none yet
+- 2026-11-08, revision round 1 (the developer's 10 points, `docs/tasks/phase-3.md`): numbers grow to ~99 Sx
+  (money, Strength, Speed; cat weights and prices scale with them), so the blueprint §5 weight table and the
+  §8-12 prices change: **the client should be told**. Also new: training lock + jump to stop, money popups,
+  weights / treadmill looks every level, a 5 s crate animation, a new UI, items remodelled in Blender.
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,

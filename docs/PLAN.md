@@ -72,7 +72,22 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.24 Game icon 512 + 3-5 thumbnails 1920x1080 (GPT prompts) + store description EN / TH
 - [~] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
 
+## Phase 3 — revision round 1 (developer, 2026-11-08; spec `docs/tasks/phase-3.md`)
+- [ ] R1 Bushes you can walk through: all 322 map bushes collide (cats do not); bushes CanCollide off in MapKit + patch the place
+- [ ] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
+- [ ] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
+- [ ] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
+- [ ] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
+- [ ] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
+- [ ] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
+- [ ] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
+- [ ] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
+
 ## Plan changes
+- 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
+  animations now go through Blender with the developer's check before Studio (point 8), item models are
+  remade from GPT reference pictures (point 10), the UI is redesigned from GPT mockups (point 6). Numbers grow
+  to ~99 Sx (point 9): the blueprint's weight table and prices change, the client should be told.
 - 2026-11-08 (developer: the client threatens to cancel for slowness; "สร้างจริงบน roblox studio ได้เลย"): the map is
   built **now, straight in Studio** from anchored Parts by `src/server/MapTools` (MapKit props + BuildMap layout) in
   the A1 look, instead of Blender kits with renders first. No client summary page. Blender meshes can replace props
@@ -281,3 +296,5 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   for the developer (the group owner's account owns them). Cards now show each item's Creator Hub icon
   (IconImageAssetId from GetProductInfo; the coloured chip stays until the picture has loaded). Fixed: the
   Luck x3 card showed the Lucky Treat text ("x1.5 for 10 minutes"); new key ProductLuck3Desc.
+- 2026-11-08: phase 3 planned from the developer's 10-point list (`docs/tasks/phase-3.md`, R1-R9). Checked first:
+  wild cats are already non-colliding; the blocking comes from the bushes (322 / 322 collide).

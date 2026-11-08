@@ -74,7 +74,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 
 ## Phase 3 — revision round 1 (developer, 2026-11-08; spec `docs/tasks/phase-3.md`)
 - [x] R1 Bushes you can walk through: all 322 map bushes collide (cats do not); bushes CanCollide off in MapKit + patch the place
-- [ ] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
+- [x] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
 - [ ] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
 - [ ] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
 - [ ] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
@@ -306,3 +306,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-08: GPT prompt files for phase 3: `docs/gpt_ui_prompts.md` (cute-cat style board, 12 screens of the real
   game, 12 icons) and `docs/gpt_model_prompts.md` (20 reference sheets: rods x 5 sets, bat, shoes x 2, treats, crates,
   dumbbells x 5 sets, treadmills x 5 sets). The developer makes the pictures while R2-R4 are built.
+- 2026-11-08: R2 training lock: TrainingService checks the spots every 0.2 s; stepping on your own spot snaps the
+  character onto it facing the machine (walk speed factor 0, AutoRotate off, `Training` set); a jump (JumpRequest ->
+  StopTraining, rate limited) or a push 3 studs off releases it, and the spot grabs you again only after stepping
+  off. "Jump to stop" hint (EN / TH). `!train` shows the lock state. Studio Play: locked on treadmill and weights,
+  MoveTo away does nothing (0.00 studs), Space releases, landing back does not re-lock, walk off + back re-locks.

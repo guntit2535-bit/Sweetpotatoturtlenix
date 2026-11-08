@@ -12,6 +12,7 @@ local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Config = require(Shared:WaitForChild("Config"))
 local CatRules = require(Shared:WaitForChild("CatRules"))
 local Format = require(Shared:WaitForChild("Format"))
+local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
 
@@ -122,7 +123,30 @@ local function refreshPrompts()
 	end
 end
 
+-- R2: while locked on a spot, a jump (Space, the phone's jump button) asks the server to let go; a hint says so.
+local function setupJumpToStop()
+	local stop = Remotes.event("StopTraining")
+	local gui = Kit.screen("TrainingHint", 3)
+	local hint = Kit.text(gui, "Hint", UDim2.fromOffset(320, 34), UDim2.new(0.5, -160, 1, -150), 22, true)
+	hint.Visible = false
+	local function refresh()
+		hint.Visible = me:GetAttribute("Training") ~= nil
+		hint.Text = Lang.text("TrainingJumpHint")
+	end
+	me:GetAttributeChangedSignal("Training"):Connect(refresh)
+	Lang.changed:Connect(refresh)
+	refresh()
+	local last = 0
+	game:GetService("UserInputService").JumpRequest:Connect(function()
+		if me:GetAttribute("Training") ~= nil and os.clock() - last > 0.3 then
+			last = os.clock()
+			stop:FireServer()
+		end
+	end)
+end
+
 function TrainingController.Start(_self: any)
+	setupJumpToStop()
 	local s = me:GetAttribute("Strength")
 	lastStrength = if type(s) == "number" then s else 0
 	local v = me:GetAttribute("Speed")

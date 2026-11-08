@@ -88,6 +88,7 @@ Text.Lines = {
 
 	-- Training and zone gates (tasks 1.15 / 1.16)
 	TrainUpgrade = { en = "Upgrade ${cost}", th = "อัปเกรด ${cost}" },
+	TrainingJumpHint = { en = "Jump to stop", th = "กระโดดเพื่อหยุด" },
 	TrainMax = { en = "Max level", th = "เลเวลสูงสุด" },
 	WeightsName = { en = "Weights Lv {level}", th = "ยกเวท Lv {level}" },
 	TreadName = { en = "Treadmill Lv {level}", th = "ลู่วิ่ง Lv {level}" },

@@ -108,7 +108,16 @@ Config.Weights = { Levels = 25, Tick = 1, Gain = 0.1, Growth = 1.33, Cost = 100,
 Config.Treadmill = { Levels = 25, Tick = 1, Gain = 0.2, Growth = 1.4, Cost = 40, CostGrowth = 1.85 }
 -- Standing within StandRadius of your own pen's weights / treadmill trains; the gym looks change every
 -- LookEvery weights levels (dumbbell > barbell > bench > machine > giant barbell).
-Config.Gym = { StandRadius = 3.6, LookEvery = 5, UpgradeRate = { maxCalls = 3, window = 1 } }
+Config.Gym = {
+	StandRadius = 3.6,
+	LookEvery = 5,
+	UpgradeRate = { maxCalls = 3, window = 1 },
+	-- R2: stepping on the spot locks the player there (walk speed 0) until a jump (StopTraining)
+	CheckEvery = 0.2, -- seconds between spot checks
+	Slip = 3, -- studs past StandRadius before a locked player counts as pushed off
+	Face = { Weights = 0, Treadmill = 0 }, -- extra turn (degrees) from the stand's facing
+	StopRate = { maxCalls = 4, window = 1 },
+}
 -- Zone gates: a player inside a zone they may not enter yet is put back just outside it.
 Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
 -- Walk speed from the Speed stat: Base + Bonus * ln(1 + Speed / Scale), at most Max (studs/s).

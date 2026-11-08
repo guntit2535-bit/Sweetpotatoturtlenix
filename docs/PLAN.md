@@ -84,8 +84,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
 
 ## Phase 4 — revision round 2, the last free round (developer, 2026-11-09; spec `docs/tasks/phase-4.md`)
-- [ ] V1 ★ Cat style board in Blender: one original voxel cat in 3 options (Pixel / Brick / Mix), then the pick on 4 base shapes; the developer and the client approve
-- [ ] V2 Fishing pose matching the rod: right hand at the grip, left hand turning the reel handle on the rod
+- [~] V1 ★ Cat style board in Blender: one original voxel cat in 3 options (Pixel / Brick / Mix), then the pick on 4 base shapes; the developer and the client approve
+- [~] V2 Fishing pose matching the rod: right hand at the grip, left hand turning the reel handle on the rod
 - [ ] V3 Map detail pass: survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
 - [ ] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
 - [ ] V5 ★ All 400 cats in the approved style (region meshes coloured in game, same cat data), the developer imports
@@ -437,3 +437,12 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-09: revision round 2 from the developer (4 points + the client's 3 cat reference pictures, saved as
   `art/source/client_refs/`): plan V1-V5 in `docs/tasks/phase-4.md`. V1 goes first (approvals), V2-V4 meanwhile,
   V5 after V1. The tutorial (V4) is not in the blueprint; the cat pictures are from another game (direction only).
+- 2026-11-09: V1 style board (`art/blender/voxcat.py`, `art/preview/cats_v1/styles.png`): one original ginger tabby on a
+  voxel grid in A Pixel (0.125 voxels), B Brick (0.25 + studs), C Mix (0.16, big eyes with iris and shines),
+  flat-painted pixel face, Freestyle outline round the silhouette only. Sent; waiting for the developer / client.
+- 2026-11-09: V2: the rods' reel moved to the angler's left (items.py rod, Rods.fbx re-exported, ItemModelData
+  regenerated: the developer re-imports Rods.fbx); the rod gets a "Reel" attachment at the crank (radius on it);
+  reel pose: the rod hand in close by the belly, and on R15 the left hand is put on the crank and follows it
+  round (PlayerAnimController reachLeft: a two-bone solve from the rig's own rest arm, so slanted / small avatars
+  work; out of reach = stretched towards it); R6 keeps the old circling arm. Studio: the left hand stays on the
+  crank circle (0.6-0.8 from its centre, radius 0.64), no errors. Until the re-import the old meshes sit 0.63 off.

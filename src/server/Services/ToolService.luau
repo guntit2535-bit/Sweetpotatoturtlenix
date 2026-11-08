@@ -142,6 +142,14 @@ function ToolService.refreshRod(player: Player)
 			-- the rod's tip in Blender (art/blender/items.py rod): (0, -0.9, length) from the base, grip 0.4 up
 			tip.Position = ItemModels.point(Config.ItemModels.RodScale, 0, -0.9, 4.6 + 0.04 * level - 0.4)
 			tip.Parent = handle
+			-- V2: the crank of the reel (items.py rod: reel centre (0.42, 0, 1.45), the knob 0.42 further out on a
+			-- 0.53 circle round the reel's axis = the handle's X); the left hand turns it (PlayerAnimController)
+			local oldReel = handle:FindFirstChild("Reel")
+			local reel = if oldReel and oldReel:IsA("Attachment") then oldReel else Instance.new("Attachment")
+			reel.Name = "Reel"
+			reel.Position = ItemModels.point(Config.ItemModels.RodScale, 0.84, 0, 1.45 - 0.4)
+			reel:SetAttribute("Radius", 0.53 * Config.ItemModels.RodScale)
+			reel.Parent = handle
 			rod.Grip = CFrame.new(0, -0.3, 0) * CFrame.Angles(math.rad(Config.ItemModels.RodGrip), 0, 0)
 			rod:SetAttribute("Level", level)
 		elseif rod then

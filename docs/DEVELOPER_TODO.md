@@ -63,6 +63,11 @@
   4. ได้ Model ใหม่ใน Workspace ให้ลากไปใส่ใน `ReplicatedStorage > ItemModels`
   5. ทำซ้ำข้อ 3-4 กับอีก 5 ไฟล์: `Weights.fbx`, `Dumbbells.fbx`, `Rods.fbx`, `Gear.fbx`, `Crates.fbx`
   6. กด Save / Publish แล้วบอก Claude (Claude จะเปลี่ยนโค้ดให้ใช้โมเดลใหม่และตรวจในเกมเอง)
+- [ ] **นำเข้าเบ็ดใหม่ (V2 ท่าตกปลา):** ย้ายรอกไปฝั่งซ้ายของเบ็ดให้มือซ้ายหมุนได้จริง
+  1. GitHub Desktop: Fetch origin -> Pull origin
+  2. ใน Studio ลบ Model ชื่อ `Rods` ใน `ReplicatedStorage > ItemModels`
+  3. Import 3D ไฟล์ `art/export/Rods.fbx` (Creator = กลุ่ม Sweetpotatoturtlenix) แล้วลาก Model ที่ได้ไปใส่ใน `ItemModels`
+  4. Save / Publish แล้วบอก Claude
 - [ ] **บอกลูกค้า:** ตัวเลขเงิน / พลัง / ความเร็ว / น้ำหนักแมวจะใหญ่ขึ้นจนสูงสุดราว 99 Sx (เปลี่ยนจากตารางในพิมพ์เขียว)
 - [x] **อัปโหลดไอคอน UI 12 รูป (R9):** (ได้ครบ 12 เลข ใส่ในเกมแล้ว 2026-11-08) ใน Studio เปิด View -> Asset Manager -> Bulk Import (ปุ่มลูกศรขึ้น) เลือกไฟล์ทั้ง 12 ไฟล์ในโฟลเดอร์
   `art/export/ui_icons/` (P01_shop.png ถึง P12_event.png ไม่ต้องเลือก _review.png) ตอนอัปโหลดให้เลือกเจ้าของเป็น **กลุ่ม Sweetpotatoturtlenix**

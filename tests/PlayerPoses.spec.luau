@@ -31,7 +31,8 @@ end
 local c = PlayerPoses.arms("carry", 1.3)
 check(c.rx > 2.5 and c.lx > 2.5, "carry arms are up")
 local r = PlayerPoses.arms("reel", 0.7)
-check(r.rx > 1 and r.rx < 1.6, "reel rod arm is in front")
+check(r.rx > 0.3 and r.rx < 1.6 and (r.re or 0) > 0.8, "reel rod arm in front, elbow bent")
+check(r.crank ~= nil, "reel turns a crank (V2)")
 check(not PlayerPoses.has("dance"), "unknown pose")
 
 -- R6: the curl bends the elbows and the arms take turns (one up while the other is down)

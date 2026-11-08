@@ -27,6 +27,16 @@ Text.Lines = {
 	LanguageEnglish = { en = "English", th = "English" },
 	LanguageThai = { en = "ไทย (Thai)", th = "ไทย" },
 
+	-- Saves (task 1.2)
+	DataLoadFailed = {
+		en = "Could not load your data. Please rejoin.",
+		th = "โหลดข้อมูลไม่สำเร็จ กรุณาเข้าเกมใหม่อีกครั้ง",
+	},
+	DataSessionEnded = {
+		en = "Your data was opened in another server. Please rejoin.",
+		th = "ข้อมูลของคุณถูกเปิดในเซิร์ฟเวอร์อื่น กรุณาเข้าเกมใหม่อีกครั้ง",
+	},
+
 	-- Settings window (task 1.1)
 	SettingsButton = { en = "Settings", th = "ตั้งค่า" },
 	SettingsTitle = { en = "Settings", th = "ตั้งค่า" },
@@ -34,6 +44,10 @@ Text.Lines = {
 	SettingsLanguageNote = { en = "Every text in the game", th = "ข้อความทั้งหมดในเกม" },
 	Close = { en = "Close", th = "ปิด" },
 } :: { [string]: { en: string, th: string } }
+
+-- leaderstats column names are shared by every player in the server, so they stay in English.
+Text.StatMoney = "Money"
+Text.StatStrength = "Strength"
 
 function Text.isLang(value: unknown): boolean
 	return value == "en" or value == "th"

@@ -60,7 +60,26 @@ Config.Settings = {
 -- Saves (task 1.2). NEVER rename StoreName after launch: every player's progress would be lost.
 Config.Data = {
 	StoreName = "Sweetpotato_PlayerData_v1",
+	StartMoney = 0,
+	StartStrength = 1, -- kg: enough for the lightest Basic cats (1 kg)
+	SaveTimeout = 15, -- seconds DataService.SaveAsync waits before giving up (autosave still runs)
+	GetDataRate = { maxCalls = 2, window = 1 }, -- the client asks once on start
+	-- Studio only: Workspace attribute FreshSave = true gives every player a new in-memory save that is
+	-- never written (tests from zero without touching the developer's real save).
+	FreshSaveAttribute = "FreshSave",
+	LikeDaysKept = 2, -- likes given are remembered per pen owner for this many UTC days (task 1.9)
 }
+
+-- The player's pen (task 1.8).
+Config.Pen = {
+	StartSlots = 10,
+	MaxSlots = 60,
+}
+
+-- Training (tasks 1.15 / 1.16); costs and gains come from the economy pick (task 1.6).
+Config.Weights = { Levels = 25 }
+Config.Treadmill = { Levels = 25 }
+Config.Rebirth = { Max = 25 }
 
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
 Config.CatAnim = {

@@ -78,6 +78,14 @@ rojo build -o build/check.rbxlx
 ```
 Engine behaviour (physics, UI, DataStores, purchases, phones) can only be tested in Studio: say so.
 
+## Working mode
+- **Long-run mode since 2026-11-08** (developer: "ทำต่อเนื่อง ตรวจงานและแก้ไขเองได้เลย ไม่ต้องรอผมบอกว่าผ่าน"):
+  build the plan in order without waiting for "ผ่าน"; test every task yourself in Studio through the MCP
+  (Play, captures, Output, debug commands); at a fork pick the recommended option and log it under
+  "Decisions to review" in `docs/PLAN.md`; put every job only the developer can do in
+  `docs/DEVELOPER_TODO.md` and keep going; stop only when blocked on such a job. After every Studio
+  capture set the Edit camera back to `Fixed`.
+
 ## Rules
 - Talk to the developer in **Thai**, short, outcome first. Code, comments, commits and `docs/` in English.
 - **One task at a time.** After a task: mark `[~]`, Log line, commit, push, give numbered test steps

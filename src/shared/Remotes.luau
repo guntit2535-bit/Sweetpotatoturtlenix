@@ -19,8 +19,11 @@ local Remotes = {}
 -- The full list (checked for duplicates by tests/Remotes.spec.luau). Add new remotes here.
 Remotes.Events = {
 	"SetSetting", -- client -> server: (key, value), task 1.1
+	"PlayerData", -- server -> owner: data snapshot after changes, task 1.2
 }
-Remotes.Functions = {} :: { string }
+Remotes.Functions = {
+	"GetData", -- client -> server: the owner's data snapshot, task 1.2
+}
 
 local function getFolder(): Folder
 	local existing = ReplicatedStorage:FindFirstChild(FOLDER_NAME)

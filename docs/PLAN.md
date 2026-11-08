@@ -81,7 +81,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [ ] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
 - [ ] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
 - [ ] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
-- [~] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
+- [x] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
 
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
@@ -359,3 +359,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   real cat picture, details; FishingService sends the cat kind), toasts as round pills with a paw. Settings uses the
   new kit as built. Studio Play: catch -> Caught! card with Ginger Pumpkin, toast pill; no errors. R9 stays [~]
   for the developer's look check; the crate opening screen (mockup 12) comes with R8.
+- 2026-11-08: R9 approved by the developer ("ผ่าน"). The 20 item reference pictures for R5 arrived
+  (`art/source/gpt_models/M01-M20`): rods x 5 sets, bat, shoes 1-4 / 5-8, treats, crates, dumbbell racks x 5 sets,
+  treadmills x 5 sets (steps 1 / 3 / 5). R5 starts with the pilot sheet.

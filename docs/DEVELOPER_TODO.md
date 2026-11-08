@@ -3,8 +3,8 @@
 Claude keeps working while these wait. Tick them when done and tell Claude.
 
 ## Now (needed for the saves to work in Studio and live)
-- [ ] Game Settings -> Security -> **Enable Studio Access to API Services** = on, then Save.
-- [ ] Game Settings -> Places / Basic Info: **Max players = 8**.
+- [x] Game Settings -> Security -> **Enable Studio Access to API Services** = on, then Save. (checked 2026-11-08)
+- [ ] Game Settings -> Places / Basic Info: **Max players = 8** (a Studio Play still showed 60: please check and publish).
 - [ ] File -> Publish to Roblox once the milestone 1 test build is ready (the live game uses the published place).
 
 ## Later (milestone 2)

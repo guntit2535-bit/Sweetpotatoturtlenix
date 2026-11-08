@@ -11,4 +11,6 @@ Claude keeps working while these wait. Tick them when done and tell Claude.
 - [ ] Game passes and developer products in the group's experience; send the ids.
 - [ ] Sound ids (Claude sends a list to fill in).
 - [ ] Phone test of the HUD and the whole loop, and a test with 2+ players (Test tab -> Clients and Servers -> 2 players):
-  like the other player's pen sign -> toast + faster walking for 5 min; a second like the same day is refused.
+  like the other player's pen sign -> toast + faster walking for 5 min; a second like the same day is refused;
+  both fish the same cat (first full bar wins, the other is dropped); hit the carrier with the bat outside the
+  lobby -> the cat drops and they fly; no hits inside the lobby or on someone fishing.

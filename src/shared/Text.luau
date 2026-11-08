@@ -67,6 +67,25 @@ Text.Lines = {
 	TierMythical = { en = "Mythical", th = "Mythical" },
 	TierSecret = { en = "Secret", th = "Secret" },
 
+	-- Wild cats, fishing, carrying, bat (tasks 1.10 - 1.14)
+	CatLabel = { en = "{tier} · {kg} kg", th = "{tier} · {kg} กก." },
+	CatNeed = { en = "Need {kg} Strength", th = "ต้องมีพลัง {kg}" },
+	NeedStrength = { en = "You need {kg} Strength for this cat. Lift weights!", th = "ต้องมีพลัง {kg} ถึงจะตกแมวตัวนี้ได้ ไปยกเวทก่อนนะ!" },
+	FishNoCat = { en = "No cat in range. Walk closer!", th = "ไม่มีแมวในระยะ เดินเข้าไปใกล้อีกหน่อย!" },
+	FishHoldHint = { en = "Hold to keep the cat in the green zone!", th = "กดค้างให้แมวอยู่ในโซนสีเขียว!" },
+	FishHold = { en = "HOLD", th = "กดค้าง" },
+	FishGiveUp = { en = "Give up", th = "ยอมแพ้" },
+	FishCaught = { en = "You caught {name}! ({tier}, {kg} kg)", th = "ตกได้ {name}! ({tier}, {kg} กก.)" },
+	FishLost = { en = "{name} caught it first!", th = "{name} ตกได้ก่อน!" },
+	FishEscaped = { en = "The cat got away!", th = "แมวหนีไปแล้ว!" },
+	FishGaveUp = { en = "You stopped fishing", th = "เลิกตกแมวแล้ว" },
+	CatBusy = { en = "That cat can't be fished right now", th = "ตอนนี้ตกแมวตัวนี้ไม่ได้" },
+	CarryHint = { en = "Carry it to your pen! Watch out for bats!", th = "ถือกลับไปใส่คอก! ระวังโดนตี!" },
+	CatHome = { en = "{name} is in your pen!", th = "{name} เข้าคอกแล้ว!" },
+	BatDropped = { en = "{name} knocked your cat loose!", th = "{name} ตีแมวของคุณหลุดมือ!" },
+	BatHitCat = { en = "You knocked {name}'s cat loose! Catch it!", th = "คุณตีแมวของ {name} หลุดแล้ว! รีบตกเลย!" },
+	CaughtTitle = { en = "Caught!", th = "ตกได้แล้ว!" },
+
 	-- Settings window (task 1.1)
 	SettingsButton = { en = "Settings", th = "ตั้งค่า" },
 	SettingsTitle = { en = "Settings", th = "ตั้งค่า" },

@@ -110,6 +110,61 @@ Config.Treadmill = { Levels = 25, Tick = 1, Gain = 0.2, Growth = 1.4, Cost = 40,
 Config.Walk = { Base = 16, Bonus = 9, Scale = 10, Max = 60, LikeBuff = 2, LikeBuffSeconds = 300 }
 Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 1.5 }
 
+-- Wild cats at the hiding spots (task 1.10).
+Config.WildCats = {
+	RespawnMin = 30, -- a caught or escaped cat comes back at another spot after 30-90 s (blueprint §1)
+	RespawnMax = 90,
+	SizeBySpot = { roof = 1, bush = 0.8, rock = 1, bridge = 0.6 }, -- smaller where the spot is low
+	LabelRange = 70, -- studs: the tier / kg label shows this close
+}
+
+-- Fishing (task 1.11): the bar minigame, simulated on the server (shared/FishingBar), shown on the client.
+-- Per tier: Zone = green zone size (share of the bar), CatSpeed = bar lengths per second, Change = seconds
+-- between the cat's turns (min, max), Fill / Drain = meter per second inside / outside the zone.
+Config.Fishing = {
+	CastRange = 45, -- studs from the player to the cat
+	KeepRange = 70, -- walking further than this away ends the session
+	TickRate = 15, -- server steps per second
+	SnapshotEvery = 0.2, -- seconds between the server's bar snapshots to the client
+	StartMeter = 0.3,
+	Lift = 2.6, -- zone acceleration up while holding (bar lengths / s^2)
+	Gravity = 2.2, -- and down when released
+	MaxVel = 1.4,
+	Bounce = 0.35, -- zone speed kept when it hits an end
+	CastRate = { maxCalls = 3, window = 1 },
+	HoldRate = { maxCalls = 30, window = 1 },
+	Tiers = {
+		{ Zone = 0.34, CatSpeed = 0.35, Change = { 0.6, 1.4 }, Fill = 0.11, Drain = 0.07 }, -- Basic
+		{ Zone = 0.31, CatSpeed = 0.45, Change = { 0.5, 1.2 }, Fill = 0.085, Drain = 0.07 }, -- Rare
+		{ Zone = 0.28, CatSpeed = 0.48, Change = { 0.45, 1.1 }, Fill = 0.07, Drain = 0.07 }, -- Epic
+		{ Zone = 0.25, CatSpeed = 0.5, Change = { 0.5, 1.2 }, Fill = 0.06, Drain = 0.07 }, -- Legendary
+		{ Zone = 0.235, CatSpeed = 0.52, Change = { 0.45, 1.1 }, Fill = 0.058, Drain = 0.06 }, -- Mythical
+		{ Zone = 0.225, CatSpeed = 0.55, Change = { 0.4, 1.0 }, Fill = 0.052, Drain = 0.058 }, -- Secret: hardest
+	},
+	RodZonePerLevel = 0.006, -- milestone 2: each rod level widens the zone ...
+	RodFillPerLevel = 0.02, -- ... and fills the meter faster
+}
+
+-- Carrying a caught cat home (task 1.13) and the baseball bat (task 1.14).
+Config.Carry = {
+	HeadOffset = 3.6, -- studs above the head
+	Scale = 0.7, -- a carried cat is shown at this share of its size ...
+	MaxScale = 1.0, -- ... and never bigger than this model scale
+	DeliverRadius = 22, -- studs from the pen centre
+	CheckEvery = 0.25,
+	DroppedSeconds = 60, -- a knocked-loose cat nobody catches goes back into hiding (blueprint §4)
+}
+Config.Bat = {
+	Cooldown = 0.8,
+	Range = 9, -- studs in front of the swinger
+	Arc = 0.3, -- minimum dot product between the swinger's look and the target
+	Knock = 120, -- carrier knocked far: horizontal speed ...
+	KnockUp = 70, -- ... and up
+	SmallKnock = 45, -- a player not carrying a cat is only pushed
+	StunSeconds = 1.2,
+	SwingRate = { maxCalls = 4, window = 1 },
+}
+
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
 Config.CatAnim = {
 	Range = 160, -- only cats this close to the camera are animated (studs)

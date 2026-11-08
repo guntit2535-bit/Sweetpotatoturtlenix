@@ -23,6 +23,14 @@ Remotes.Events = {
 	"Notify", -- server -> client: (textKey, vars?, kind?) a toast, task 1.8
 	"SellCat", -- client -> server: (catId), task 1.8
 	"LockCat", -- client -> server: (catId, locked), task 1.8
+	"Cast", -- client -> server: (wildId) start fishing a wild cat, task 1.11
+	"FishHold", -- client -> server: (holding) the bar input, task 1.11
+	"FishGiveUp", -- client -> server: stop fishing, task 1.11
+	"FishStart", -- server -> client: (wildId, tier, snapshot, rodLevel), task 1.11
+	"FishState", -- server -> client: (wildId, snapshot), task 1.11
+	"FishEnd", -- server -> client: (textKey, vars, caught?), task 1.12
+	"Swing", -- client -> server: bat swing, task 1.14
+	"Knockback", -- server -> client: (velocity, stunSeconds), task 1.14
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

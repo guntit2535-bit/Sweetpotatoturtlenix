@@ -340,3 +340,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   level pills, cream speed / money pills, purple event pill, cat-ear Settings button. Studio Play: every window picks
   up the new kit (Shop checked), the HUD fits a short viewport without overlaps, no errors. Next: each window laid
   out like its mockup (Shop, Robux, My Cats, Book, Rewards, Rebirth, Trade, Settings, fishing, popups).
+- 2026-11-08: the developer uploaded the 12 UI icons to the group; ids in `Config.UIIcons` (checked: images, group,
+  load). HUD now shows them (menu buttons, Settings, Strength dumbbell, coin, Speed lightning, event cat, Rebirth /
+  Rewards buttons): Studio Play, 11 / 11 icons loaded, the layout fits a 746 x 531 view.

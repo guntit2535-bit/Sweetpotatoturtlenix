@@ -64,6 +64,11 @@ function RebirthController.Start(_self: any)
 	local gui = Kit.screen("RebirthButton", 2)
 	open = Kit.button(gui, "Open", C.purple, UDim2.fromOffset(150, 44), UDim2.new(1, -162, 0, 252))
 	local holder = open.Parent :: Frame
+	-- R9: the icon on the left, the label beside it
+	Kit.icon(open, "Rebirth", 40, UDim2.fromOffset(4, 2))
+	local openLabel = open:FindFirstChild("Label") :: TextLabel
+	openLabel.Position = UDim2.fromOffset(44, 0)
+	openLabel.Size = UDim2.new(1, -50, 1, 0)
 	local scale = Instance.new("UIScale")
 	scale.Parent = holder
 	-- right under the Strength panel (HudController: top 92, height 150, scaled the same way)

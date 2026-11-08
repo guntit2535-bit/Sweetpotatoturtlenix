@@ -202,18 +202,19 @@ Config.Events = {
 -- R9: UI icons from the developer's GPT pictures (art/export/ui_icons, 512 px), uploaded to the group; 0 = not
 -- uploaded yet (a white paw shows instead).
 Config.UIIcons = {
-	Shop = 0, -- P01
-	Speed2x = 0, -- P02
-	MyCats = 0, -- P03
-	Trade = 0, -- P04
-	Settings = 0, -- P05
-	Rebirth = 0, -- P06
-	Rewards = 0, -- P07
-	Book = 0, -- P08
-	Coin = 0, -- P09
-	Strength = 0, -- P10
-	Speed = 0, -- P11
-	Event = 0, -- P12
+	-- uploaded by the developer 2026-11-08 (Creator = the group, checked: images, load)
+	Shop = 130690060091234, -- P01
+	Speed2x = 85074984642927, -- P02
+	MyCats = 80489358719349, -- P03
+	Trade = 70871827771949, -- P04
+	Settings = 83256291221675, -- P05
+	Rebirth = 110591559112738, -- P06
+	Rewards = 113505826637733, -- P07
+	Book = 83000666035187, -- P08
+	Coin = 70656460824248, -- P09
+	Strength = 113897153531168, -- P10
+	Speed = 85724074076774, -- P11
+	Event = 104266026635909, -- P12
 }
 
 -- R3: "+$X" popups over your own pen cats every income tick, and "+$total" by the money pill.

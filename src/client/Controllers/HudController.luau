@@ -233,7 +233,8 @@ local function build()
 	bl.Parent = gui
 	fitScale(bl, 720)
 	local sp = pill(bl, "Speed", UDim2.fromOffset(190, 40), UDim2.fromOffset(0, 0), Vector2.zero)
-	speedLabel = Kit.text(sp, "Text", UDim2.new(1, -24, 1, 0), UDim2.fromOffset(16, 0), 22)
+	Kit.icon(sp, "Speed", 40, UDim2.fromOffset(2, 0))
+	speedLabel = Kit.text(sp, "Text", UDim2.new(1, -50, 1, 0), UDim2.fromOffset(44, 0), 22)
 	speedLabel.TextXAlignment = Enum.TextXAlignment.Left
 	speedLabel.TextColor3 = Color3.fromHex("1f7ad6")
 	local mo = pill(bl, "Money", UDim2.fromOffset(250, 54), UDim2.fromOffset(0, 48), Vector2.zero)

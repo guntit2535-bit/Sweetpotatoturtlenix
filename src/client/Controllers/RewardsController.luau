@@ -223,6 +223,11 @@ function RewardsController.Start(_self: any)
 	local gui = Kit.screen("RewardsButton", 2)
 	openButton = Kit.button(gui, "Open", C.green, UDim2.fromOffset(150, 44), UDim2.new())
 	local holder = openButton.Parent :: Frame
+	-- R9: the icon on the left, the label beside it
+	Kit.icon(openButton, "Rewards", 40, UDim2.fromOffset(4, 2))
+	local openLabel = openButton:FindFirstChild("Label") :: TextLabel
+	openLabel.Position = UDim2.fromOffset(44, 0)
+	openLabel.Size = UDim2.new(1, -50, 1, 0)
 	local scale = Instance.new("UIScale")
 	scale.Parent = holder
 	local camera = workspace.CurrentCamera

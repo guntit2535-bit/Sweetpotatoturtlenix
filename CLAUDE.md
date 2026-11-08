@@ -53,6 +53,10 @@ are starting values: they live in Config and are tuned after playtests (simulate
   (money, Strength, Speed; cat weights and prices scale with them), so the blueprint §5 weight table and the
   §8-12 prices change: **the client should be told**. Also new: training lock + jump to stop, money popups,
   weights / treadmill looks every level, a 5 s crate animation, a new UI, items remodelled in Blender.
+- 2026-11-09, revision round 2 = **the last free round** (`docs/tasks/phase-4.md`): fishing pose, cats restyled
+  as original voxel "pixel + LEGO" cats (the client's pictures are from another game: direction only), a map
+  detail pass, and a **new-player tutorial, which is not in the blueprint** (priced separately unless the
+  developer decides otherwise). **The client should be told** both.
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,

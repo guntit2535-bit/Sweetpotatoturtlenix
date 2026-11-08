@@ -83,6 +83,13 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
 - [x] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
 
+## Phase 4 — revision round 2, the last free round (developer, 2026-11-09; spec `docs/tasks/phase-4.md`)
+- [ ] V1 ★ Cat style board in Blender: one original voxel cat in 3 options (Pixel / Brick / Mix), then the pick on 4 base shapes; the developer and the client approve
+- [ ] V2 Fishing pose matching the rod: right hand at the grip, left hand turning the reel handle on the rod
+- [ ] V3 Map detail pass: survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
+- [ ] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
+- [ ] V5 ★ All 400 cats in the approved style (region meshes coloured in game, same cat data), the developer imports
+
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
   animations now go through Blender with the developer's check before Studio (point 8), item models are
@@ -427,3 +434,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-09: R8 approved ("ผ่าน"). Revision round 1 (phase 3, R1-R9) is done. Left (developer): Save / Publish the
   place (ItemModels moved in by Claude), a phone test of the new looks, tell the client about the numbers (R4),
   game icon + thumbnails, then 2.25 (launch checklist, delivery).
+- 2026-11-09: revision round 2 from the developer (4 points + the client's 3 cat reference pictures, saved as
+  `art/source/client_refs/`): plan V1-V5 in `docs/tasks/phase-4.md`. V1 goes first (approvals), V2-V4 meanwhile,
+  V5 after V1. The tutorial (V4) is not in the blueprint; the cat pictures are from another game (direction only).

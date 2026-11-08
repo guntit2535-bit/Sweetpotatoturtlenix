@@ -219,6 +219,7 @@ local function meowNearby()
 end
 
 function SoundController.Start(_self: any)
+	task.spawn(Sound.preload)
 	applySwitches()
 	me:GetAttributeChangedSignal("MusicOn"):Connect(applySwitches)
 	me:GetAttributeChangedSignal("SfxOn"):Connect(applySwitches)
@@ -249,9 +250,12 @@ function SoundController.Start(_self: any)
 		end
 	end)
 	Remotes.event("CrateResult").OnClientEvent:Connect(function(_key: unknown, kind: unknown)
-		Sound.play("crate_shake")
+		local shake = Sound.play("crate_shake")
 		local design = if type(kind) == "string" then Cats.ById[kind] else nil
 		task.delay(Config.Crates.RevealSeconds, function()
+			if shake and shake.Parent then
+				shake:Stop() -- the shake sound may be longer than the shake
+			end
 			Sound.play(if design and design.Tier >= 4 then "crate_rare" else "crate_reveal")
 		end)
 	end)

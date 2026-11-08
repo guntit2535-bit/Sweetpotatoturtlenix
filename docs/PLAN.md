@@ -253,3 +253,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   spots in each zone, Output clean except a "ContentId 203785492 ... type does not match" line that is not in
   the place, the code or the character (Studio's own). The Edit place has only Terrain, Camera and Map. Left
   [~]: the full-server / phone tests, Debug off, publish and the `.rbxl` are the developer's (checklist B-D).
+- 2026-11-08: sound ids from the developer's sheet (all 28) in `Config.Sounds` / `Config.Music`. Each checked in
+  Studio Edit: audio type, loads in this game, lengths 0.0-6.5 s (songs 102-165 s). `Sound.preload` loads every id
+  at start (the first click was not loaded yet); the crate shake sound (3.1 s) stops at the reveal (1.2 s). Studio
+  Play: Music_Lobby -> Music_Zones on leaving the lobby, click / open / meow play, 27 / 27 preloaded. Told the
+  developer which picks carry other games' names (deliver, drop, escape, rebirth): their call.

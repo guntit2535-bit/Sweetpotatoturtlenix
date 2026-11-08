@@ -37,6 +37,32 @@ local function idOf(key: string): number?
 	return if type(id) == "number" and id > 0 then id else nil
 end
 
+-- Loads every sound and song once when the game starts, so the first click / meow is not late or silent.
+-- The silent copies stay in SoundService.Preload to keep the audio cached.
+function Sound.preload()
+	local ContentProvider = game:GetService("ContentProvider")
+	local folder = Instance.new("Folder")
+	folder.Name = "Preload"
+	folder.Parent = SoundService
+	local seen: { [number]: boolean } = {}
+	local list: { Instance } = {}
+	for _, ids in { Config.Sounds :: any, Config.Music :: any } do
+		for _, id in ids do
+			if type(id) == "number" and id > 0 and not seen[id] then
+				seen[id] = true
+				local s = Instance.new("Sound")
+				s.SoundId = `rbxassetid://{id}`
+				s.Volume = 0
+				s.Parent = folder
+				table.insert(list, s)
+			end
+		end
+	end
+	pcall(function()
+		ContentProvider:PreloadAsync(list)
+	end)
+end
+
 function Sound.volumeOf(key: string): number
 	return (Config.SoundVolumes :: any)[key] or Config.SoundVolumes.default
 end

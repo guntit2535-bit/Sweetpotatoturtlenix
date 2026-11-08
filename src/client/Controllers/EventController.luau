@@ -1,8 +1,8 @@
 --!strict
 -- Events on this client (task 1.18): while a Mythical / Secret cat is out (workspace attribute LiveEvent),
 -- a big banner, an arrow over your head pointing at it, and a label on its light beam with the distance,
--- seen from anywhere. A Secret event also tints the sky and plays the event music (when the developer has
--- picked one: Config.Events.MusicId). The countdown itself is in the HUD (HudController).
+-- seen from anywhere. A Secret event also tints the sky. The event music is SoundController's (Config.Music
+-- Mythical / Secret, task 2.23). The countdown itself is in the HUD (HudController).
 
 local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
@@ -20,7 +20,6 @@ local me = Players.LocalPlayer
 local arrow: Model? = nil
 local banner: TextLabel
 local tint: ColorCorrectionEffect
-local music: Sound? = nil
 
 local function makeArrow(color: Color3): Model
 	local m = Instance.new("Model")
@@ -76,13 +75,6 @@ local function setLive(kind: string?)
 		TintColor = if secret then Color3.fromRGB(205, 185, 255) else Color3.new(1, 1, 1),
 		Saturation = if secret then 0.25 else 0,
 	}):Play()
-	if music then
-		if secret then
-			music:Play()
-		else
-			music:Stop()
-		end
-	end
 	if kind then
 		arrow = makeArrow(if secret then Color3.fromHex("18c9b9") else Color3.fromHex("ff5fa2"))
 		banner.Text = Lang.text(if secret then "EventOutSecret" else "EventOutMythical")
@@ -126,14 +118,6 @@ function EventController.Start(_self: any)
 	tint = Instance.new("ColorCorrectionEffect")
 	tint.Name = "EventTint"
 	tint.Parent = Lighting
-	if Config.Events.MusicId ~= 0 then
-		local s = Instance.new("Sound")
-		s.SoundId = `rbxassetid://{Config.Events.MusicId}`
-		s.Looped = true
-		s.Volume = 0.6
-		s.Parent = workspace
-		music = s
-	end
 	local gui = Kit.screen("EventBanner", 18)
 	banner = Kit.text(gui, "Banner", UDim2.new(0.76, 0, 0, 64), UDim2.new(0.12, 0, 0.24, 0), 44, true)
 	banner.TextScaled = true

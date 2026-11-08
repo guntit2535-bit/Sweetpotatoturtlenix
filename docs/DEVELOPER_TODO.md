@@ -11,7 +11,7 @@ Claude keeps working while these wait. Tick them when done and tell Claude.
 - [ ] Game passes (5) and developer products (12 entries in Config.Products.List: Slots1-3 at rising prices,
   CashS/M/L/XL, Strength, Luck3, ServerLuck, SummonMythical, Starter) in the group's experience; send the ids and
   the client's Robux prices. Claude puts them in Config and checks them from outside.
-- [ ] Sound ids (Claude sends a list to fill in), including the Secret event music (Config.Events.MusicId).
+- [ ] Sound ids: fill the yellow ID column of `docs/Sweetpotato_Sounds.xlsx` (24 sounds + 4 songs incl. the Mythical / Secret event music; Creator Store free audio, blank = silent) and send it back. Claude puts them in Config.Sounds / Config.Music.
 - [ ] Phone test of the HUD and the whole loop, and a test with 2+ players (Test tab -> Clients and Servers -> 2 players):
   like the other player's pen sign -> toast + faster walking for 5 min; a second like the same day is refused;
   both fish the same cat (first full bar wins, the other is dropped); hit the carrier with the bat outside the

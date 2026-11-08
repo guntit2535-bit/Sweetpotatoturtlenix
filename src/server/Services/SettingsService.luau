@@ -1,6 +1,7 @@
 --!strict
 -- Player settings (task 1.1). The Settings window asks SetSetting(key, value); the server checks it and
--- sets the player attribute the clients follow (Language = "en" | "th"; every text switches at once).
+-- sets the player attribute the clients follow (Language = "en" | "th"; every text switches at once;
+-- Music / Sfx = true | false -> MusicOn / SfxOn, task 2.23).
 -- Task 1.2 saves it in data.Settings and puts the saved value back on the attribute when the player joins.
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -12,7 +13,7 @@ local Guard = require(script.Parent.Parent.Util.Guard)
 
 local SettingsService = {}
 
-SettingsService.Keys = { "Language" }
+SettingsService.Keys = { "Language", "Music", "Sfx" }
 
 -- Called by DataService (task 1.2) after a change, to save it.
 SettingsService.onChanged = nil :: ((player: Player, key: string, value: any) -> ())?
@@ -24,6 +25,14 @@ local function onSet(player: Player, rawKey: unknown, rawValue: unknown)
 			return
 		end
 		player:SetAttribute("Language", rawValue)
+		if SettingsService.onChanged then
+			SettingsService.onChanged(player, key, rawValue)
+		end
+	elseif key == "Music" or key == "Sfx" then
+		if type(rawValue) ~= "boolean" then
+			return
+		end
+		player:SetAttribute(key .. "On", rawValue)
 		if SettingsService.onChanged then
 			SettingsService.onChanged(player, key, rawValue)
 		end

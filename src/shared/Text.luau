@@ -291,6 +291,12 @@ Text.Lines = {
 	SettingsTitle = { en = "Settings", th = "ตั้งค่า" },
 	SettingsLanguage = { en = "Language", th = "ภาษา" },
 	SettingsLanguageNote = { en = "Every text in the game", th = "ข้อความทั้งหมดในเกม" },
+	SettingsMusic = { en = "Music", th = "เพลง" },
+	SettingsMusicNote = { en = "Background music", th = "เพลงประกอบในเกม" },
+	SettingsSfx = { en = "Sound effects", th = "เสียงเอฟเฟกต์" },
+	SettingsSfxNote = { en = "Buttons, catching, bats, crates", th = "ปุ่ม การจับแมว ไม้เบสบอล กล่องสุ่ม" },
+	SettingOn = { en = "ON", th = "เปิด" },
+	SettingOff = { en = "OFF", th = "ปิด" },
 	Close = { en = "Close", th = "ปิด" },
 } :: { [string]: { en: string, th: string } }
 

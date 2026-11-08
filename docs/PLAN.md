@@ -68,7 +68,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.20 Robux store window + card images (GPT prompts). Reuse: PSE `Controllers/StoreUI`, BA `LivePrices`, `StoreController`
 - [x] 2.21 All 400 cat models in the approved style (+ Mythical / Secret effects). Reuse: PSE `CreatureModels`, art pipeline
 - [x] 2.22 Animations: cats (idle, walk, struggle, carried), players (cast, reel, lift, run, swing, carry). Reuse: BA `client/CharacterAnims`, `CreatureAnimator`, SP `art/animations`
-- [ ] 2.23 Sound: sound module + sound list xlsx for the developer to pick ids (event music included). Reuse: SP `client/Sound`, `SoundController`, PSE `tools/gen/sounds_xlsx.luau`
+- [x] 2.23 Sound: sound module + sound list xlsx for the developer to pick ids (event music included). Reuse: SP `client/Sound`, `SoundController`, PSE `tools/gen/sounds_xlsx.luau`
 - [ ] 2.24 Game icon 512 + 3-5 thumbnails 1920x1080 (GPT prompts) + store description EN / TH
 - [ ] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
 
@@ -232,3 +232,12 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   default cheer / run. `Config.Carry.HeadOffset` 3.6 -> 2.6 so the cat rests on the raised hands (gap 1.13 ->
   0.12 studs). Studio Play: reel pose while fishing, real catch -> arms up under the cat, !drop -> arms down.
   Cats' clips were done in A7.
+- 2026-11-08: 2.23 sound: `client/Sound` (SFX / Music groups, 3D roll-off), `SoundController` hooks existing
+  signals only (button clicks except HOLD, window open, toasts by key / kind, cast / swing via the tool's
+  toolanim for anyone near, reel loop, catch / escape, bat hit, training ticks, crate shake -> reveal / rare,
+  hidden cats meow near the camera every 8-16 s, music Lobby / Zones / Mythical / Secret with cross-fade,
+  event_start); Settings Music / Sound effects ON-OFF saved in data.Settings (MusicOn / SfxOn attributes);
+  `Config.Events.MusicId` folded into `Config.Music.Secret` (one music path, muted by the switch). All 28
+  ids are 0: `docs/Sweetpotato_Sounds.xlsx` + `docs/SOUNDS.md` (from `tools/gen/sounds_xlsx.py`) for the
+  developer. Studio Play with dummy ids (removed): buy, Music_Lobby -> Music_Zones, meow, cast, reel,
+  catch + meow, click, open, both switches mute the groups, Music OFF saved.

@@ -54,6 +54,8 @@ export type Data = {
 	StarterBought: boolean, -- the starter pack (once)
 	Settings: {
 		Language: string, -- "en" (default) or "th"
+		Music: boolean, -- music on (task 2.23)
+		Sfx: boolean, -- sound effects on
 	},
 	ReceiptIds: { string }, -- processed developer product receipts, newest last (milestone 2)
 	Stats: {
@@ -98,6 +100,8 @@ DataTemplate.Template = {
 	StarterBought = false,
 	Settings = {
 		Language = "en",
+		Music = true,
+		Sfx = true,
 	},
 	ReceiptIds = {},
 	Stats = {
@@ -233,6 +237,12 @@ function DataTemplate.sanitize(data: Data): number
 	if data.Settings.Language ~= "en" and data.Settings.Language ~= "th" then
 		data.Settings.Language = "en"
 		fixes += 1
+	end
+	for _, key in { "Music", "Sfx" } do
+		if type((data.Settings :: any)[key]) ~= "boolean" then
+			(data.Settings :: any)[key] = true
+			fixes += 1
+		end
 	end
 	return fixes
 end

@@ -179,7 +179,6 @@ Config.Events = {
 	SecretEvery = 2400,
 	EscapeSeconds = 180,
 	BeamHeight = 400,
-	MusicId = 0, -- the developer picks the Secret event music (milestone 2 sound list)
 }
 
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
@@ -363,5 +362,48 @@ Config.Crates = {
 	BuyRate = { maxCalls = 2, window = 1 },
 	RevealSeconds = 1.2,
 }
+
+-- Sound (task 2.23). The developer picks every id from the Creator Store (docs/Sweetpotato_Sounds.xlsx,
+-- docs/SOUNDS.md) and they go here; 0 = silent. Never pick ids for them.
+Config.Sounds = {
+	-- UI
+	click = 0, -- every button
+	open = 0, -- a window opens
+	error = 0, -- not enough money, locked, need Strength, pen full
+	toast = 0, -- small notices
+	claim = 0, -- rewards, daily login, gifts, quests, codes
+	buy = 0, -- shop purchases, upgrades, Robux purchases
+	coins = 0, -- selling a cat, money rewards, offline income
+	-- catching
+	cast = 0, -- the rod swings out (anyone near)
+	reel = 0, -- loop while your own minigame runs
+	catch = 0, -- you won the minigame
+	escape = 0, -- the cat got away
+	meow = 0, -- hidden cats now and then (a hint), a caught cat
+	-- carrying and the bat
+	swing = 0, -- a bat swing (anyone near)
+	bonk = 0, -- a bat hit lands
+	drop = 0, -- a carried cat is knocked loose
+	deliver = 0, -- a cat reaches your pen
+	-- training and progress
+	train = 0, -- each Strength / Speed gain (soft)
+	rebirth = 0,
+	like = 0, -- a like given or received
+	fanfare = 0, -- a Mythical / Secret cat caught
+	-- crates
+	crate_shake = 0,
+	crate_reveal = 0,
+	crate_rare = 0, -- Legendary or better
+	-- events
+	event_start = 0, -- a Mythical / Secret event or server luck starts
+}
+Config.SoundVolumes = { default = 0.5, reel = 0.3, train = 0.25, meow = 0.4, click = 0.4 }
+Config.SoundRange = 90 -- 3D sounds fade out by this distance (studs)
+Config.SoundMeow = { Every = { 8, 16 }, Range = 70 } -- a hidden cat near the camera meows every 8-16 s
+Config.SoundTrainGap = 0.3 -- seconds between two training sounds
+-- Music: Lobby in the lobby, Zones out in the zones, Mythical / Secret while that event is live.
+Config.Music = { Lobby = 0, Zones = 0, Mythical = 0, Secret = 0 }
+Config.MusicVolume = 0.35
+Config.MusicFade = 1.5 -- seconds of cross-fade
 
 return Config

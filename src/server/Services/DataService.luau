@@ -90,6 +90,8 @@ local function refreshPublic(player: Player)
 	setAttr(player, "CatCount", DataTemplate.catCount(data))
 	setAttr(player, "LikesReceived", data.LikesReceived)
 	setAttr(player, "Language", data.Settings.Language)
+	setAttr(player, "MusicOn", data.Settings.Music)
+	setAttr(player, "SfxOn", data.Settings.Sfx)
 	local leaderstats = player:FindFirstChild("leaderstats")
 	if leaderstats then
 		local money = leaderstats:FindFirstChild(Text.StatMoney)
@@ -355,6 +357,10 @@ function DataService:Init()
 		if key == "Language" then
 			DataService.Update(player, function(data)
 				data.Settings.Language = value
+			end)
+		elseif key == "Music" or key == "Sfx" then
+			DataService.Update(player, function(data)
+				(data.Settings :: any)[key] = value
 			end)
 		end
 	end

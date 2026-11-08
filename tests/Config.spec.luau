@@ -27,6 +27,17 @@ local mode = Config.Passes.Speed2x.Mode
 check(mode == "pass" or mode == "timed", "x2 Speed mode is pass or timed")
 check(Config.Passes.Speed2x.TimedMinutes > 0, "x2 Speed timed minutes > 0")
 check(type(Config.Shoes.Enabled) == "boolean", "Shoes.Enabled is a boolean")
+-- sound ids: whole numbers, 0 = not picked yet (task 2.23)
+for key, id in Config.Sounds :: any do
+	check(type(id) == "number" and id >= 0 and id == math.floor(id), `Sounds.{key} is a whole number`)
+end
+for key, id in Config.Music :: any do
+	check(type(id) == "number" and id >= 0 and id == math.floor(id), `Music.{key} is a whole number`)
+end
+for key, v in Config.SoundVolumes :: any do
+	check(key == "default" or (Config.Sounds :: any)[key] ~= nil, `SoundVolumes.{key} is a sound`)
+	check(type(v) == "number" and v > 0 and v <= 1, `SoundVolumes.{key} in (0, 1]`)
+end
 
 if failures > 0 then
 	error(`Config: {failures} failure(s)`)

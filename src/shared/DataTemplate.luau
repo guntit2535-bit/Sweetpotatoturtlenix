@@ -32,6 +32,11 @@ export type Data = {
 	LikesGiven: { [string]: number }, -- pen owner's UserId (string) -> UTC day number of the like (task 1.9)
 	LikesReceived: number,
 	LastOnline: number, -- os.time() at the last save
+	RodLevel: number, -- best rod owned, 1 .. Config.Rods.Levels (task 2.2)
+	Shoes: number, -- shoe pairs owned, 0 .. #Config.Shoes.List; the best is worn (task 2.3)
+	PenBuys: number, -- pen expansions bought with money (task 2.4)
+	Boosts: { [string]: number }, -- Luck / Money / Easy / Luck3 -> os.time() the boost ends (2.5, 2.19)
+	SpeedPassOn: boolean, -- the x2 Speed button switch (task 2.18)
 	Settings: {
 		Language: string, -- "en" (default) or "th"
 	},
@@ -59,6 +64,11 @@ DataTemplate.Template = {
 	LikesGiven = {},
 	LikesReceived = 0,
 	LastOnline = 0,
+	RodLevel = 1,
+	Shoes = 0,
+	PenBuys = 0,
+	Boosts = { Luck = 0, Money = 0, Easy = 0, Luck3 = 0 },
+	SpeedPassOn = true,
 	Settings = {
 		Language = "en",
 	},
@@ -117,6 +127,18 @@ function DataTemplate.sanitize(data: Data): number
 	set("Rebirths", whole(data.Rebirths, 0, Config.Rebirth.Max, 0))
 	set("PenSlots", whole(data.PenSlots, Config.Pen.StartSlots, Config.Pen.MaxSlots, Config.Pen.StartSlots))
 	set("LikesReceived", whole(data.LikesReceived, 0, math.huge, 0))
+	set("RodLevel", whole(data.RodLevel, 1, Config.Rods.Levels, 1))
+	set("Shoes", whole(data.Shoes, 0, #Config.Shoes.List, 0))
+	set("PenBuys", whole(data.PenBuys, 0, math.huge, 0))
+	for key, ends in data.Boosts do
+		if type(key) ~= "string" or not isFinite(ends) then
+			data.Boosts[key] = nil
+			fixes += 1
+		end
+	end
+	if type(data.SpeedPassOn) ~= "boolean" then
+		set("SpeedPassOn", true)
+	end
 
 	-- cats: drop broken entries; keep NextCatId above every id in use
 	local highest = 0

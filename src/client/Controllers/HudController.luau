@@ -18,6 +18,7 @@ local Format = require(Shared:WaitForChild("Format"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
 local Hud = require(script.Parent.Parent.UI.Hud)
+local ShopController = require(script.Parent.ShopController)
 local ToastController = require(script.Parent.ToastController)
 
 local HudController = {}
@@ -147,7 +148,7 @@ local function build()
 	local soon = function()
 		ToastController.show("ComingSoon", nil, "info")
 	end
-	Hud.leftButton("Shop", "ShopButton", C.coral, 1, soon)
+	Hud.leftButton("Shop", "ShopButton", C.coral, 1, ShopController.toggle)
 	local speed = Hud.leftButton("Speed2x", "Speed2xButton", C.sky, 2, soon)
 	local holder = speed.Parent :: Frame
 	holder.Size = UDim2.fromOffset(150, 74)

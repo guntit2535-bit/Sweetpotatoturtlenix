@@ -112,7 +112,9 @@ Config.Gym = { StandRadius = 3.6, LookEvery = 5, UpgradeRate = { maxCalls = 3, w
 -- Zone gates: a player inside a zone they may not enter yet is put back just outside it.
 Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
 -- Walk speed from the Speed stat: Base + Bonus * ln(1 + Speed / Scale), at most Max (studs/s).
-Config.Walk = { Base = 16, Bonus = 9, Scale = 10, Max = 60, LikeBuff = 2, LikeBuffSeconds = 300 }
+-- The Speed stat's part is capped at Max; shoes add on top; the x2 Speed pass doubles everything above
+-- Base; Cap is the final limit.
+Config.Walk = { Base = 16, Bonus = 9, Scale = 10, Max = 60, Cap = 120, LikeBuff = 2, LikeBuffSeconds = 300 }
 Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 1.5 }
 
 -- Wild cats at the hiding spots (task 1.10).
@@ -202,12 +204,59 @@ Config.Passes = {
 		TimedMinutes = 15, -- used only when Mode = "timed"
 		PriceRobux = 0, -- 0 = not decided; the client confirms every Robux price
 	},
+	Cash2x = { Id = 0 },
+	Strength2x = { Id = 0 },
+	Lucky = { Id = 0 }, -- rare finds x2 (luck)
+	VIP = { Id = 0, Money = 0.10 }, -- VIP tag + 10% money
+}
+
+-- Developer products (milestone 2, blueprint §13). Ids stay 0 until the developer makes them.
+Config.Products = {
+	ServerLuckMult = 2, -- server luck: everyone's luck x2 for 15 minutes
+	LuckSeconds = 900, -- luck x3 and server luck last 15 minutes
 }
 
 -- CLIENT PENDING: keep the 8 shoes next to the treadmill (both add speed), or drop the shoes.
--- Default until the client answers: keep them (blueprint §11).
+-- Default until the client answers: keep them (blueprint §11). Each pair adds walk speed (studs/s).
 Config.Shoes = {
 	Enabled = true,
+	List = {
+		{ Key = "Sneakers", Cost = 1500, Speed = 2 },
+		{ Key = "SportShoes", Cost = 6000, Speed = 4 },
+		{ Key = "RunningShoes", Cost = 25000, Speed = 6 },
+		{ Key = "BouncyBoots", Cost = 100000, Speed = 9 },
+		{ Key = "RocketShoes", Cost = 400000, Speed = 12 },
+		{ Key = "CloudSteppers", Cost = 1600000, Speed = 16 },
+		{ Key = "LightningBoots", Cost = 6500000, Speed = 20 },
+		{ Key = "CometKicks", Cost = 26000000, Speed = 25 },
+	},
 }
+
+-- Rods (task 2.2): 25 tiers, 5 per material, bought in order; the best one owned is used.
+-- Rod L costs Cost * CostGrowth^(L-2) (rod 1 is free). Fishing ease per level is in Config.Fishing.
+Config.Rods = {
+	Levels = 25,
+	PerMaterial = 5,
+	Materials = { "Wood", "Iron", "Gold", "Crystal", "Cosmic" },
+	Colors = { "c98a4a", "a9b0bf", "f5bf2e", "7fe3ff", "9a6bff" },
+	Cost = 400,
+	CostGrowth = 2.15,
+	LuckPerLevel = 0.04, -- +4% luck per level above 1
+}
+
+-- Pen expansion with money (task 2.4): +Step slots per purchase up to Config.Pen.MaxSlots.
+Config.PenUpgrade = { Step = 5, Cost = 2000, CostGrowth = 2.1 }
+
+-- Cat treats (task 2.5, blueprint §12): 10 minutes each; buying again adds 10 minutes. Price = the larger
+-- of Base and IncomeSeconds of the player's current income.
+Config.Treats = {
+	Seconds = 600,
+	List = {
+		{ Key = "Luck", Name = "LuckyTreat", Mult = 1.5, Base = 1500, IncomeSeconds = 180 },
+		{ Key = "Money", Name = "GoldenFish", Mult = 2, Base = 3000, IncomeSeconds = 300 },
+		{ Key = "Easy", Name = "Catnip", Mult = 1, Base = 1000, IncomeSeconds = 120 },
+	},
+}
+Config.Shop = { BuyRate = { maxCalls = 5, window = 1 } }
 
 return Config

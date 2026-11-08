@@ -1,22 +1,18 @@
 --!strict
--- Walk speed (tasks 1.9 / 1.16): Humanoid.WalkSpeed = CatRules.walkSpeed(Speed stat, like buff), set on the
--- server whenever the character spawns, the Speed stat changes or the like buff starts / ends.
+-- Walk speed (tasks 1.9 / 1.16, 2.3, 2.18): Humanoid.WalkSpeed = Bonus.walk(Speed stat, shoes, like buff,
+-- x2 Speed pass), set on the server when the character spawns or any of those change.
 -- Other services can slow a player down for a while: MovementService.setFactor(player, name, factor).
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Config = require(ReplicatedStorage.Shared.Config)
-local CatRules = require(ReplicatedStorage.Shared.CatRules)
+local Bonus = require(ReplicatedStorage.Shared.Bonus)
+local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
+local DataService = require(script.Parent.DataService)
 
 local MovementService = {}
 
 local factors: { [Player]: { [string]: number } } = {}
-
-local function buffOn(player: Player): boolean
-	local untilTime = player:GetAttribute("LikeBuffUntil")
-	return type(untilTime) == "number" and untilTime > workspace:GetServerTimeNow()
-end
 
 function MovementService.refresh(player: Player)
 	local character = player.Character
@@ -25,7 +21,7 @@ function MovementService.refresh(player: Player)
 		return
 	end
 	local speed = player:GetAttribute("Speed")
-	local walk = CatRules.walkSpeed(if type(speed) == "number" then speed else 0, if buffOn(player) then Config.Walk.LikeBuff else 1)
+	local walk = Bonus.walk(if type(speed) == "number" then speed else 0, BonusCtx.of(player, DataService.GetData(player)))
 	for _, f in factors[player] or {} do
 		walk *= f
 	end
@@ -63,6 +59,7 @@ local function hook(player: Player)
 end
 
 function MovementService:Start()
+	DataService.Changed:Connect(MovementService.refresh) -- shoes, the x2 Speed switch
 	Players.PlayerAdded:Connect(hook)
 	for _, player in Players:GetPlayers() do
 		hook(player)

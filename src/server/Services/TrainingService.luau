@@ -10,7 +10,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage.Shared
 local Config = require(Shared.Config)
+local Bonus = require(Shared.Bonus)
 local CatRules = require(Shared.CatRules)
+local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local Format = require(Shared.Format)
 local GymLooks = require(script.Parent.Parent.Util.GymLooks)
 local Notify = require(script.Parent.Parent.Util.Notify)
@@ -142,7 +144,7 @@ local function tick()
 				end
 			end
 			if training == "Weights" then
-				local gain = CatRules.weightsGain(data.WeightsLevel) * CatRules.rebirthStrength(data.Rebirths)
+				local gain = CatRules.weightsGain(data.WeightsLevel) * Bonus.strength(BonusCtx.of(player, data))
 				DataService.UpdateQuiet(player, function(d)
 					d.Strength += gain
 				end)

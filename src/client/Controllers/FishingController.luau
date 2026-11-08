@@ -324,11 +324,11 @@ function FishingController.Start(_self: any)
 		end
 	end)
 
-	Remotes.event("FishStart").OnClientEvent:Connect(function(id: unknown, tier: unknown, snap: unknown, rod: unknown)
+	Remotes.event("FishStart").OnClientEvent:Connect(function(id: unknown, tier: unknown, snap: unknown, rod: unknown, easy: unknown)
 		if type(id) ~= "string" or type(tier) ~= "number" or type(snap) ~= "table" then
 			return
 		end
-		local bar = FishingBar.new(0, FishingBar.params(tier, if type(rod) == "number" then rod else 1))
+		local bar = FishingBar.new(0, FishingBar.params(tier, if type(rod) == "number" then rod else 1, easy == true))
 		FishingBar.apply(bar, snap :: { number })
 		active = { id = id, bar = bar }
 		sentHold = false

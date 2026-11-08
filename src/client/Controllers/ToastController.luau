@@ -23,6 +23,24 @@ local COLORS: { [string]: Color3 } = {
 
 local list: Frame
 
+-- Vars may name other text lines: { nameKey = "RodName", nameVars = { materialKey = "MatWood", n = 1 } } becomes
+-- { name = "Wood Rod 1" } in this client's language (item names stay translatable inside toasts).
+local function resolve(vars: { [string]: any }?): { [string]: any }?
+	if not vars then
+		return nil
+	end
+	local out: { [string]: any } = {}
+	for k, v in vars do
+		if type(k) == "string" and string.sub(k, -3) == "Key" and type(v) == "string" then
+			local base = string.sub(k, 1, -4)
+			out[base] = Lang.text(v, resolve(vars[base .. "Vars"]))
+		elseif out[k] == nil then
+			out[k] = v
+		end
+	end
+	return out
+end
+
 function ToastController.show(key: string, vars: { [string]: any }?, kind: string?)
 	if not list then
 		return
@@ -46,7 +64,7 @@ function ToastController.show(key: string, vars: { [string]: any }?, kind: strin
 	Kit.corner(toast, 14)
 	Kit.stroke(toast, 3, nil, true)
 	local label = Kit.text(toast, "Text", UDim2.new(1, -20, 1, -6), UDim2.fromOffset(10, 3), 22, true)
-	label.Text = Lang.text(key, vars)
+	label.Text = Lang.text(key, resolve(vars))
 	label.TextScaled = true
 	local limit = Instance.new("UITextSizeConstraint")
 	limit.MaxTextSize = 22

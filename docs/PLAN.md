@@ -46,11 +46,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 1.21 Milestone 1 check: 2+ players and a phone test, fixes, play video + test notes for the client
 
 ## Milestone 2 — everything else (4,000 THB at full delivery)
-- [ ] 2.1 Shop window (in-game money), tabs Rods / Shoes / Pen / Treats / Crates. Reuse: SP `ShopService` + `UI/ShopPanel`, PSE `UpgradeService` + `UpgradesUI`
-- [ ] 2.2 Rods, 25 tiers (Wood / Iron / Gold / Crystal / Cosmic x 5): zone width, meter speed, luck, a look per tier. Reuse: SP `Items`, `ItemModels`, `ClubVisualService`
-- [ ] 2.3 Shoes, 8 pairs (CLIENT PENDING: keep or drop). Reuse: SP `Items`
-- [ ] 2.4 Pen expansion with money (10 -> 60). Reuse: PSE `UpgradeService` (corral expansion)
-- [ ] 2.5 Cat treats, 10 min: Lucky Treat (luck x1.5), Golden Fish (money x2), Catnip (easier minigame). Reuse: BA `shared/Buffs`, SP `shared/Boosts`
+- [x] 2.1 Shop window (in-game money), tabs Rods / Shoes / Pen / Treats / Crates. Reuse: SP `ShopService` + `UI/ShopPanel`, PSE `UpgradeService` + `UpgradesUI`
+- [x] 2.2 Rods, 25 tiers (Wood / Iron / Gold / Crystal / Cosmic x 5): zone width, meter speed, luck, a look per tier. Reuse: SP `Items`, `ItemModels`, `ClubVisualService`
+- [x] 2.3 Shoes, 8 pairs (CLIENT PENDING: keep or drop). Reuse: SP `Items`
+- [x] 2.4 Pen expansion with money (10 -> 60). Reuse: PSE `UpgradeService` (corral expansion)
+- [x] 2.5 Cat treats, 10 min: Lucky Treat (luck x1.5), Golden Fish (money x2), Catnip (easier minigame). Reuse: BA `shared/Buffs`, SP `shared/Boosts`
 - [ ] 2.6 Crates x4 (money): odds before buying, opening animation, no Secret, cat into the pen (saved before shown). Reuse: SP `CrateService`, `shared/Crates`, PSE `MysteryRevealUI`, BA `shared/Gacha`
 - [ ] 2.7 Rebirth x25: resets money / Strength / Speed / weights / treadmill, x1.5 money + x1.5 Strength permanent, opens zones; cats and items stay. Reuse: SP `RebirthService`, `shared/RebirthRules`
 - [ ] 2.8 Collection book, 400 cats, silhouettes, full-set bonus. Reuse: PSE `BookService`, `shared/Collection`, `Controllers/BookUI`, `UI/Portrait`
@@ -84,6 +84,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- 2.2 (2026-11-08): "luck" (rods, Lucky pass, Lucky Treat, luck x3, server luck) raises the mutation chance of
+  caught and crate cats (2.9); wild cats are shared by the server, so server luck also tilts the zone tier odds.
 - 1.17 (2026-11-08): the HUD uses the chunky bright button kit already in the game (no separate GPT UI board);
   the hotbar is Roblox's own backpack bar; tools are named "Bat" / "Rod" in English (the server finds them by name).
 - 1.18 (2026-11-08): an event cat that breaks free from a rod hides at a new random spot and the event goes on
@@ -178,3 +180,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-08: developer: 2-player test done and API Services on ("ทำแล้ว"). Checked here: ProfileStore says "data
   will be saved"; money 777 survived a stop + Play; the developer's save was reset to a new player afterwards.
   Milestone 1 counted as done. Studio Play still reports MaxPlayers 60: check Game Settings (8) in DEVELOPER_TODO.
+- 2026-11-08: milestone 2 starts (long-run mode). `docs/tasks/phase-2.md` written. 2.1-2.5: `shared/Bonus` (all
+  multipliers, spec), `Util/BonusCtx`, `shared/Shop` (prices, spec), `ShopService` (BuyItem: rods in order,
+  shoes, pen +5 up to 60, treats 10 min stacking), `ShopController` (tabs Rods / Shoes / Pen / Treats / Crates),
+  rod colour by material (`ToolService.refreshRod`), income / Strength / walk / fishing now go through Bonus;
+  toasts translate item names on the client. Studio Play (FreshSave): rod 3 before 2 refused, rod 2 bought,
+  shoes 16 -> 18 walk, pen 10 -> 15, Golden Fish income 120 -> 240/s; shop window screenshot.

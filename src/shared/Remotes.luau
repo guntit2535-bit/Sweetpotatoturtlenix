@@ -31,6 +31,7 @@ Remotes.Events = {
 	"FishEnd", -- server -> client: (textKey, vars, caught?), task 1.12
 	"Swing", -- client -> server: bat swing, task 1.14
 	"Knockback", -- server -> client: (velocity, stunSeconds), task 1.14
+	"BuyItem", -- client -> server: (category, id), tasks 2.1 - 2.5
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

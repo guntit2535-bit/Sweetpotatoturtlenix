@@ -5,6 +5,11 @@
 -- the server finds the held tool by name.
 
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Config = require(ReplicatedStorage.Shared.Config)
+local Shop = require(ReplicatedStorage.Shared.Shop)
+local DataService = require(script.Parent.DataService)
 
 local ToolService = {}
 
@@ -75,6 +80,27 @@ local function makeRod(): Tool
 	return tool
 end
 
+-- The rod's pole and tip take the colour of the best rod's material (task 2.2).
+function ToolService.refreshRod(player: Player)
+	local data = DataService.GetData(player)
+	local level = if data then data.RodLevel else 1
+	local m = Shop.rodMaterial(level)
+	local color = Color3.fromHex(Config.Rods.Colors[m])
+	for _, container in { player:FindFirstChild("Backpack"), player.Character } do
+		local rod = container and container:FindFirstChild("Rod")
+		if rod then
+			for _, name in { "Pole", "TipPart" } do
+				local p = rod:FindFirstChild(name)
+				if p and p:IsA("BasePart") then
+					p.Color = color
+					p.Material = if m >= 4 then Enum.Material.Neon else Enum.Material.SmoothPlastic
+				end
+			end
+			rod:SetAttribute("Level", level)
+		end
+	end
+end
+
 local function give(player: Player)
 	local backpack = player:WaitForChild("Backpack", 10)
 	if not backpack then
@@ -86,6 +112,7 @@ local function give(player: Player)
 	if not backpack:FindFirstChild("Rod") and not (player.Character and player.Character:FindFirstChild("Rod")) then
 		makeRod().Parent = backpack
 	end
+	ToolService.refreshRod(player)
 end
 
 function ToolService:Start()

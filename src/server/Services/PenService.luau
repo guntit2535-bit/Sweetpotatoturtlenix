@@ -18,7 +18,9 @@ local Shared = ReplicatedStorage.Shared
 local Config = require(Shared.Config)
 local Cats = require(Shared.Cats)
 local CatModel = require(Shared.CatModel)
+local Bonus = require(Shared.Bonus)
 local CatRules = require(Shared.CatRules)
+local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local Commands = require(Shared.Commands)
 local DataTemplate = require(Shared.DataTemplate)
 local Format = require(Shared.Format)
@@ -98,9 +100,7 @@ local function recountIncome(player: Player)
 			total += CatRules.income(design.Tier, cat.Kg)
 		end
 	end
-	total *= CatRules.rebirthMoney(data.Rebirths)
-	incomeOf[player] = total
-	player:SetAttribute("Income", total)
+	incomeOf[player] = total -- before multipliers (Bonus.money is applied every tick: boosts end on their own)
 end
 
 -- Rebuilds the cat models of a player's pen from the save.
@@ -220,7 +220,7 @@ local function onSell(player: Player, rawId: unknown)
 		return
 	end
 	local design = Cats.ById[cat.Kind]
-	local price = if design then math.floor(CatRules.sellPrice(design.Tier, cat.Kg) * CatRules.rebirthMoney(data.Rebirths)) else 0
+	local price = if design then math.floor(CatRules.sellPrice(design.Tier, cat.Kg) * Bonus.money(BonusCtx.of(player, data))) else 0
 	DataService.Update(player, function(d)
 		d.Cats[id] = nil
 		d.Money += price
@@ -378,9 +378,15 @@ function PenService:Start()
 	task.spawn(function()
 		while true do
 			task.wait(Config.Economy.IncomeTick)
-			for player, rate in incomeOf do
-				if rate > 0 and player.Parent == Players then
-					DataService.AddIncome(player, rate * Config.Economy.IncomeTick)
+			for player, base in incomeOf do
+				if player.Parent == Players then
+					local rate = base * Bonus.money(BonusCtx.of(player, DataService.GetData(player)))
+					if player:GetAttribute("Income") ~= rate then
+						player:SetAttribute("Income", rate)
+					end
+					if rate > 0 then
+						DataService.AddIncome(player, rate * Config.Economy.IncomeTick)
+					end
 				end
 			end
 		end

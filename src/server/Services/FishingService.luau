@@ -12,7 +12,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.Shared
 local Config = require(Shared.Config)
 local Cats = require(Shared.Cats)
+local Bonus = require(Shared.Bonus)
 local CatRules = require(Shared.CatRules)
+local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local FishingBar = require(Shared.FishingBar)
 local Format = require(Shared.Format)
 local Remotes = require(Shared.Remotes)
@@ -135,13 +137,14 @@ local function onCast(player: Player, rawId: unknown)
 		WildCatService.setState(w, "hooked")
 	end
 	local seed = math.random(1, 2 ^ 30)
-	local bar = FishingBar.new(seed, FishingBar.params(w.tier, 1))
+	local easy = Bonus.easy(BonusCtx.of(player, data))
+	local bar = FishingBar.new(seed, FishingBar.params(w.tier, data.RodLevel, easy))
 	sessions[player] = { wild = w, bar = bar, holding = false, sinceSnap = 0, beam = makeBeam(player, w) }
 	MovementService.setFactor(player, "fishing", 0)
 	player:SetAttribute("Fishing", w.id)
 	-- face the cat
 	root.CFrame = CFrame.lookAt(root.Position, Vector3.new(catPos.X, root.Position.Y, catPos.Z))
-	startRemote:FireClient(player, w.id, w.tier, FishingBar.snapshot(bar), 1)
+	startRemote:FireClient(player, w.id, w.tier, FishingBar.snapshot(bar), data.RodLevel, easy)
 end
 
 local function onHold(player: Player, raw: unknown)

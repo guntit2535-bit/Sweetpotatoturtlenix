@@ -6,14 +6,15 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Bonus = require(ReplicatedStorage.Shared.Bonus)
+local Book = require(ReplicatedStorage.Shared.Book)
 
 local BonusCtx = {}
 
 BonusCtx.PassNames = { "Speed", "Cash", "Strength", "Lucky", "VIP" }
 
--- Extra money share from the collection book (task 2.8 sets this hook).
-BonusCtx.bookMoney = function(_data: any): number
-	return 0
+-- Extra money share from the collection book (task 2.8).
+BonusCtx.bookMoney = function(data: any): number
+	return Book.money(data.Book or {})
 end
 
 function BonusCtx.of(player: Player, data: any): Bonus.Ctx

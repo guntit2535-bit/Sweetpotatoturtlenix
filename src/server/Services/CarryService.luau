@@ -16,7 +16,7 @@ local DataService = require(script.Parent.DataService)
 local PenService = require(script.Parent.PenService)
 local WildCatService = require(script.Parent.WildCatService)
 
-type Carry = { kind: string, kg: number, tier: number, model: Model, event: string?, lastFullNote: number }
+type Carry = { kind: string, kg: number, tier: number, model: Model, event: string?, mutation: string?, lastFullNote: number }
 
 local CarryService = {}
 
@@ -46,7 +46,7 @@ local function clear(player: Player)
 end
 
 -- The fishing winner takes the wild cat.
-function CarryService.pickUp(player: Player, w: WildCatService.Wild)
+function CarryService.pickUp(player: Player, w: WildCatService.Wild, mutation: string?)
 	local root = rootOf(player)
 	if not root or carrying[player] then
 		WildCatService.remove(w, "escaped")
@@ -75,7 +75,7 @@ function CarryService.pickUp(player: Player, w: WildCatService.Wild)
 		end
 	end
 	model.Parent = player.Character
-	carrying[player] = { kind = w.kind, kg = w.kg, tier = w.tier, model = model, event = w.event, lastFullNote = 0 }
+	carrying[player] = { kind = w.kind, kg = w.kg, tier = w.tier, model = model, event = w.event, mutation = mutation, lastFullNote = 0 }
 	player:SetAttribute("CarryingCat", w.kind)
 	player:SetAttribute("CarryingTier", w.tier)
 	Notify.send(player, "CarryHint", nil, "info")
@@ -103,7 +103,7 @@ function CarryService.drop(player: Player): WildCatService.Wild?
 			zone = i
 		end
 	end
-	local w = WildCatService.drop(c.kind, c.kg, CFrame.new(ground) * CFrame.Angles(0, math.random() * math.pi * 2, 0), c.event, zone)
+	local w = WildCatService.drop(c.kind, c.kg, CFrame.new(ground) * CFrame.Angles(0, math.random() * math.pi * 2, 0), c.event, zone, c.mutation)
 	droppedEvent:Fire(player, w.id)
 	return w
 end
@@ -126,7 +126,7 @@ local function deliver(player: Player, c: Carry)
 		end
 		return
 	end
-	local id = PenService.addCat(player, c.kind, c.kg)
+	local id = PenService.addCat(player, c.kind, c.kg, c.mutation)
 	if not id then
 		return
 	end

@@ -30,6 +30,7 @@ export type Look = {
 	accessory: string?, -- "bow" | "collar" | "scarf" | "hat" | "flowers" | "crown" | "wings" | "halo"
 	accessoryColor: string?,
 	aura: string?, -- "sparkle" | "gold" | "glow" | "rainbow"
+	mutation: string?, -- "Gold" | "Rainbow" | "Glow" (task 2.9)
 }
 
 type Shape = {
@@ -119,8 +120,9 @@ end
 
 function CatModel.build(look: Look, at: CFrame, size: number?): Model
 	local s = SHAPES[look.shape] or SHAPES.Loaf
-	local fur = hex(look.fur)
-	local second = hex(look.second)
+	local mutation = look.mutation
+	local fur = if mutation == "Gold" then hex("f6c945") else hex(look.fur)
+	local second = if mutation == "Gold" then hex("fff3c4") else hex(look.second)
 	local pattern = look.pattern or "solid"
 	local pc = if look.patternColor then hex(look.patternColor) else fur:Lerp(INK, 0.35)
 	local pc2 = if look.patternColor2 then hex(look.patternColor2) else pc
@@ -302,6 +304,25 @@ function CatModel.build(look: Look, at: CFrame, size: number?): Model
 		l.Range = 14
 		l.Brightness = 1.2
 		l.Parent = head
+	end
+
+	-- mutations (task 2.9): Gold = golden fur + sparkles, Rainbow = rainbow sparkles, Glow = glowing fur
+	if mutation == "Gold" and look.aura ~= "gold" then
+		sparkles(body, { GOLD, hex("fff2a8") }, 6, 0.45)
+	elseif mutation == "Rainbow" then
+		sparkles(body, { hex("ff5a5a"), hex("ffd23f"), hex("5ad67a"), hex("4fb6ff"), hex("b06bff") }, 10, 0.55)
+	elseif mutation == "Glow" then
+		for _, d in m:GetDescendants() do
+			if d:IsA("BasePart") and d.Color == fur then
+				d.Material = Enum.Material.Neon
+				d.Color = fur:Lerp(WHITE, 0.15)
+			end
+		end
+		local l = Instance.new("PointLight")
+		l.Color = fur
+		l.Range = 12
+		l.Brightness = 1.4
+		l.Parent = body
 	end
 
 	-- join the rig: a Joint part per bone, every bone part welded to it, a Motor6D to the parent bone

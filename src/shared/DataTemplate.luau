@@ -16,6 +16,7 @@ export type Cat = {
 	Kg: number, -- its rolled weight (decides income and the Strength needed)
 	Locked: boolean, -- favourite: cannot be sold or traded
 	Got: number, -- os.time() it was caught (sort order in My Cats)
+	Mutation: string?, -- "" / nil = none, "Gold" | "Rainbow" | "Glow" (task 2.9)
 }
 
 export type Data = {
@@ -31,6 +32,7 @@ export type Data = {
 	PenSlots: number, -- Config.Pen.StartSlots .. MaxSlots
 	LikesGiven: { [string]: number }, -- pen owner's UserId (string) -> UTC day number of the like (task 1.9)
 	LikesReceived: number,
+	Book: { [string]: boolean }, -- cat designs ever owned (collection book, task 2.8)
 	LastOnline: number, -- os.time() at the last save
 	RodLevel: number, -- best rod owned, 1 .. Config.Rods.Levels (task 2.2)
 	Shoes: number, -- shoe pairs owned, 0 .. #Config.Shoes.List; the best is worn (task 2.3)
@@ -63,6 +65,7 @@ DataTemplate.Template = {
 	PenSlots = Config.Pen.StartSlots,
 	LikesGiven = {},
 	LikesReceived = 0,
+	Book = {},
 	LastOnline = 0,
 	RodLevel = 1,
 	Shoes = 0,
@@ -151,6 +154,10 @@ function DataTemplate.sanitize(data: Data): number
 				cat.Locked = false
 				fixes += 1
 			end
+			if cat.Mutation ~= nil and cat.Mutation ~= "" and cat.Mutation ~= "Gold" and cat.Mutation ~= "Rainbow" and cat.Mutation ~= "Glow" then
+				cat.Mutation = nil
+				fixes += 1
+			end
 			if not isFinite(cat.Got) then
 				cat.Got = 0
 				fixes += 1
@@ -162,6 +169,13 @@ function DataTemplate.sanitize(data: Data): number
 		end
 	end
 	set("NextCatId", math.max(whole(data.NextCatId, 1, math.huge, 1), highest + 1))
+
+	for kind, seen in data.Book do
+		if type(kind) ~= "string" or seen ~= true then
+			data.Book[kind] = nil
+			fixes += 1
+		end
+	end
 
 	for owner, day in data.LikesGiven do
 		if type(owner) ~= "string" or not isFinite(day) then

@@ -272,6 +272,7 @@ local function showCard(vars: { [string]: any })
 	local tier = vars.tier
 	local tierText = if type(tier) == "string" then Lang.text("Tier" .. tier) else ""
 	;(card:FindFirstChild("Body") :: TextLabel).Text = Lang.text("FishCaught", { name = vars.name, tier = tierText, kg = vars.kg })
+		.. (if type(vars.mutation) == "string" and vars.mutation ~= "" then " · " .. Lang.text("Mut" .. vars.mutation) .. "!" else "")
 	card.Visible = true
 	local scale = card:FindFirstChildOfClass("UIScale") or Instance.new("UIScale")
 	scale.Parent = card

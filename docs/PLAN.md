@@ -51,10 +51,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.3 Shoes, 8 pairs (CLIENT PENDING: keep or drop). Reuse: SP `Items`
 - [x] 2.4 Pen expansion with money (10 -> 60). Reuse: PSE `UpgradeService` (corral expansion)
 - [x] 2.5 Cat treats, 10 min: Lucky Treat (luck x1.5), Golden Fish (money x2), Catnip (easier minigame). Reuse: BA `shared/Buffs`, SP `shared/Boosts`
-- [ ] 2.6 Crates x4 (money): odds before buying, opening animation, no Secret, cat into the pen (saved before shown). Reuse: SP `CrateService`, `shared/Crates`, PSE `MysteryRevealUI`, BA `shared/Gacha`
-- [ ] 2.7 Rebirth x25: resets money / Strength / Speed / weights / treadmill, x1.5 money + x1.5 Strength permanent, opens zones; cats and items stay. Reuse: SP `RebirthService`, `shared/RebirthRules`
-- [ ] 2.8 Collection book, 400 cats, silhouettes, full-set bonus. Reuse: PSE `BookService`, `shared/Collection`, `Controllers/BookUI`, `UI/Portrait`
-- [ ] 2.9 Mutations Gold / Rainbow / Glow, money x2-x10, Basic-Legendary only. Reuse: PSE `shared/Mutation`, `MutationFx`, `RainbowFx`
+- [x] 2.6 Crates x4 (money): odds before buying, opening animation, no Secret, cat into the pen (saved before shown). Reuse: SP `CrateService`, `shared/Crates`, PSE `MysteryRevealUI`, BA `shared/Gacha`
+- [x] 2.7 Rebirth x25: resets money / Strength / Speed / weights / treadmill, x1.5 money + x1.5 Strength permanent, opens zones; cats and items stay. Reuse: SP `RebirthService`, `shared/RebirthRules`
+- [x] 2.8 Collection book, 400 cats, silhouettes, full-set bonus. Reuse: PSE `BookService`, `shared/Collection`, `Controllers/BookUI`, `UI/Portrait`
+- [x] 2.9 Mutations Gold / Rainbow / Glow, money x2-x10, Basic-Legendary only. Reuse: PSE `shared/Mutation`, `MutationFx`, `RainbowFx`
 - [ ] 2.10 Offline income, max 8 hours, welcome-back window. Reuse: PSE `OfflineService`, `shared/Offline`, `WelcomeBackUI`
 - [ ] 2.11 Daily login, 7-day cycle, day 7 big reward. Reuse: BA `LoginService`, `shared/Login`, `RewardsService`
 - [ ] 2.12 Daily quests. Reuse: SP `QuestService`, `shared/Quests`, BA `QuestBoardService`
@@ -186,3 +186,13 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   rod colour by material (`ToolService.refreshRod`), income / Strength / walk / fishing now go through Bonus;
   toasts translate item names on the client. Studio Play (FreshSave): rod 3 before 2 refused, rod 2 bought,
   shoes 16 -> 18 walk, pen 10 -> 15, Golden Fish income 120 -> 240/s; shop window screenshot.
+- 2026-11-08: 2.6-2.9: `shared/Crates` + `CrateService` (money crates, odds before buying, no Secret, server roll,
+  saved before the reveal, full pen refused before paying, !crate) + `CrateController` (Crates tab with every chance,
+  reveal with the real cat turning in a ViewportFrame); `shared/Mutation` (Gold x2 / Rainbow x5 / Glow x10 at
+  4 / 1.5 / 0.5 % x luck, Basic-Legendary) rolled on catch (winner's luck; a knocked-loose cat keeps it) and in
+  crates, shown on the pen cat (gold fur / rainbow sparkles / glowing fur), in My Cats and the caught card;
+  `shared/Book` + `BookController` (400 cards, unseen = black "???", +5% money per full tier, +25% all);
+  `RebirthService` + `RebirthController` (Strength 1,500 x 2.2^r, resets money / Strength / Speed / levels, keeps
+  cats, rods, shoes, slots, book). Studio Play (FreshSave): 100,000 rolls per crate within 0.1% of the odds,
+  Diamond crate bought -> Legendary "Tabby Sesame" revealed and in the pen, rebirth refused at 1,000, done at
+  1,600: money / Strength reset, cat kept, income 600 -> 900/s.

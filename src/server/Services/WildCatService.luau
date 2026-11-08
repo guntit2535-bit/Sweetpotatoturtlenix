@@ -28,6 +28,7 @@ export type Wild = {
 	model: Model,
 	state: string,
 	event: string?, -- "Mythical" | "Secret" for event cats (task 1.18)
+	mutation: string?, -- kept by a knocked-loose cat (rolled once, when it was first caught)
 }
 
 local WildCatService = {}
@@ -180,8 +181,9 @@ end
 
 -- A knocked-loose cat lies where its carrier was hit (task 1.14): a new wild record, state "dropped",
 -- fishable by everyone; nobody catching it in Config.Carry.DroppedSeconds sends it back into hiding.
-function WildCatService.drop(kind: string, kg: number, at: CFrame, event: string?, zone: number?): Wild
+function WildCatService.drop(kind: string, kg: number, at: CFrame, event: string?, zone: number?, mutation: string?): Wild
 	local w = build(kind, kg, at, 1, 0)
+	w.mutation = mutation
 	w.event = event
 	w.model:SetAttribute("Event", event)
 	setState(w, "dropped")

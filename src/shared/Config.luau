@@ -259,4 +259,34 @@ Config.Treats = {
 }
 Config.Shop = { BuyRate = { maxCalls = 5, window = 1 } }
 
+-- Mutations (task 2.9, blueprint §14): rolled once when a cat is caught or comes out of a crate, Basic-
+-- Legendary only; Chance (%) x luck; Money multiplies the cat's income.
+Config.Mutations = {
+	List = {
+		{ Key = "Glow", Chance = 0.5, Money = 10 },
+		{ Key = "Rainbow", Chance = 1.5, Money = 5 },
+		{ Key = "Gold", Chance = 4, Money = 2 },
+	},
+	MaxTier = 4,
+}
+
+-- Collection book (task 2.8): every full tier adds TierBonus to money, the whole book adds AllBonus.
+Config.Book = { TierBonus = 0.05, AllBonus = 0.25 }
+
+-- Rebirth (task 2.7): rebirth r + 1 needs Strength >= Strength * Growth^r.
+Config.RebirthNeed = { Strength = 1500, Growth = 2.2 }
+
+-- Cat crates (task 2.6, blueprint §12): bought with in-game money, odds (%) shown before buying, no
+-- Secret. Costs set so a crate pays itself back in about 3 / 5 / 10 / 20 minutes of its average cat.
+Config.Crates = {
+	List = {
+		{ Key = "Paper", Cost = 2000, Color = "e8d6ab", Odds = { Basic = 75, Rare = 22, Epic = 3 } },
+		{ Key = "Wood", Cost = 25000, Color = "c98a4a", Odds = { Basic = 40, Rare = 40, Epic = 17, Legendary = 3 } },
+		{ Key = "Gold", Cost = 150000, Color = "f5bf2e", Odds = { Rare = 50, Epic = 38, Legendary = 12 } },
+		{ Key = "Diamond", Cost = 900000, Color = "7fe3ff", Odds = { Epic = 62, Legendary = 37.5, Mythical = 0.5 } },
+	},
+	BuyRate = { maxCalls = 2, window = 1 },
+	RevealSeconds = 1.2,
+}
+
 return Config

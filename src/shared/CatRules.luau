@@ -118,6 +118,15 @@ function CatRules.rebirthStrength(rebirths: number): number
 	return Config.Rebirth.StrengthMult ^ rebirths
 end
 
+-- Strength needed for rebirth number `rebirths + 1` (task 2.7); nil when all are done.
+function CatRules.rebirthNeed(rebirths: number): number?
+	if rebirths >= Config.Rebirth.Max then
+		return nil
+	end
+	local r = Config.RebirthNeed
+	return math.floor(r.Strength * r.Growth ^ rebirths)
+end
+
 -- A zone opens with enough Strength or enough rebirths (blueprint §1).
 function CatRules.zoneOpen(zone: number, strength: number, rebirths: number): boolean
 	local z = Config.World.Zones[zone]

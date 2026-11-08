@@ -24,6 +24,7 @@ local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local Commands = require(Shared.Commands)
 local DataTemplate = require(Shared.DataTemplate)
 local Format = require(Shared.Format)
+local Mutation = require(Shared.Mutation)
 local Validate = require(Shared.Validate)
 local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
@@ -77,7 +78,10 @@ local function catModel(index: number, id: string, cat: DataTemplate.Cat, owner:
 	if not design then
 		return
 	end
-	local m = CatModel.build(design.Look :: any, randomSpot(index), CatRules.size(design.Tier, cat.Kg))
+	local look = table.clone(design.Look) :: any
+	look.mutation = cat.Mutation
+	local m = CatModel.build(look, randomSpot(index), CatRules.size(design.Tier, cat.Kg))
+	m:SetAttribute("Mutation", cat.Mutation)
 	m.Name = id
 	m:SetAttribute("CatId", id)
 	m:SetAttribute("Kind", cat.Kind)
@@ -97,7 +101,7 @@ local function recountIncome(player: Player)
 	for _, cat in data.Cats do
 		local design = Cats.ById[cat.Kind]
 		if design then
-			total += CatRules.income(design.Tier, cat.Kg)
+			total += CatRules.income(design.Tier, cat.Kg) * Mutation.money(cat.Mutation)
 		end
 	end
 	incomeOf[player] = total -- before multipliers (Bonus.money is applied every tick: boosts end on their own)
@@ -188,14 +192,15 @@ end
 
 -- Puts a new cat in the player's pen (saved with the next save). Returns its id, or nil when the pen is
 -- full or the data is not loaded.
-function PenService.addCat(player: Player, kind: string, kg: number): string?
+function PenService.addCat(player: Player, kind: string, kg: number, mutation: string?): string?
 	if not Cats.ById[kind] or not PenService.hasRoom(player) then
 		return nil
 	end
 	local id: string? = nil
 	DataService.Update(player, function(data)
 		local newId = DataTemplate.newCatId(data)
-		data.Cats[newId] = { Kind = kind, Kg = kg, Locked = false, Got = os.time() }
+		data.Cats[newId] = { Kind = kind, Kg = kg, Locked = false, Got = os.time(), Mutation = if mutation ~= "" then mutation else nil }
+		data.Book[kind] = true -- the collection book (task 2.8)
 		data.Stats.Caught += 1
 		id = newId
 	end)
@@ -220,7 +225,7 @@ local function onSell(player: Player, rawId: unknown)
 		return
 	end
 	local design = Cats.ById[cat.Kind]
-	local price = if design then math.floor(CatRules.sellPrice(design.Tier, cat.Kg) * Bonus.money(BonusCtx.of(player, data))) else 0
+	local price = if design then math.floor(CatRules.sellPrice(design.Tier, cat.Kg) * Mutation.money(cat.Mutation) * Bonus.money(BonusCtx.of(player, data))) else 0
 	DataService.Update(player, function(d)
 		d.Cats[id] = nil
 		d.Money += price

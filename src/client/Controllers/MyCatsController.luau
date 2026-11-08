@@ -10,11 +10,13 @@ local Cats = require(Shared:WaitForChild("Cats"))
 local CatRules = require(Shared:WaitForChild("CatRules"))
 local Config = require(Shared:WaitForChild("Config"))
 local Format = require(Shared:WaitForChild("Format"))
+local Mutation = require(Shared:WaitForChild("Mutation"))
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local PlayerData = require(script.Parent.Parent.PlayerData)
 local Kit = require(script.Parent.Parent.UI.Kit)
 local Hud = require(script.Parent.Parent.UI.Hud)
+local BookController = require(script.Parent.BookController)
 
 local MyCatsController = {}
 
@@ -48,7 +50,7 @@ local function redraw()
 	for id, cat in cats :: { [string]: any } do
 		local design = Cats.ById[cat.Kind]
 		if design then
-			table.insert(rows, { id = id, cat = cat, design = design, income = CatRules.income(design.Tier, cat.Kg) })
+			table.insert(rows, { id = id, cat = cat, design = design, income = CatRules.income(design.Tier, cat.Kg) * Mutation.money(cat.Mutation) })
 		end
 	end
 	table.sort(rows, function(a, b)
@@ -80,6 +82,10 @@ local function redraw()
 		info.TextXAlignment = Enum.TextXAlignment.Left
 		info.TextColor3 = C.muted
 		info.Text = `{Lang.text("Tier" .. r.design.TierKey)} · {Lang.text("CatKg", { kg = Format.rate(r.cat.Kg) })} · {Lang.text("CatIncome", { money = Format.money(r.income) })}`
+		if r.cat.Mutation and r.cat.Mutation ~= "" then
+			info.Text = Lang.text("MutTag", { mutation = Lang.text("Mut" .. r.cat.Mutation), mult = Mutation.money(r.cat.Mutation) }) .. " · " .. info.Text
+			info.TextColor3 = Color3.fromHex("c98a00")
+		end
 		local lock = Kit.button(row, "Lock", if r.cat.Locked then C.purple else C.grey, UDim2.fromOffset(96, 44), UDim2.new(1, -210, 0.5, -24))
 		Kit.setButtonText(lock, Lang.text(if r.cat.Locked then "Locked" else "Lock"))
 		lock.Activated:Connect(function()
@@ -105,6 +111,15 @@ local function build()
 	window = Kit.window({ name = "MyCatsWindow", width = 620, height = 520, color = C.yellow })
 	countLabel = Kit.text(window.body, "Count", UDim2.new(1, 0, 0, 28), UDim2.new(), 22)
 	countLabel.TextXAlignment = Enum.TextXAlignment.Left
+	local book = Kit.button(window.body, "Book", C.purple, UDim2.fromOffset(120, 32), UDim2.new(1, -124, 0, -2))
+	Kit.setButtonText(book, Lang.text("BookButton"))
+	book.Activated:Connect(function()
+		window.setOpen(false)
+		BookController.toggle()
+	end)
+	Lang.changed:Connect(function()
+		Kit.setButtonText(book, Lang.text("BookButton"))
+	end)
 	list = Instance.new("ScrollingFrame")
 	list.Name = "List"
 	list.BackgroundTransparency = 1

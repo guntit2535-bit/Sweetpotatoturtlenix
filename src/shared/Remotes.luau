@@ -32,6 +32,9 @@ Remotes.Events = {
 	"Swing", -- client -> server: bat swing, task 1.14
 	"Knockback", -- server -> client: (velocity, stunSeconds), task 1.14
 	"BuyItem", -- client -> server: (category, id), tasks 2.1 - 2.5
+	"BuyCrate", -- client -> server: (crateKey), task 2.6
+	"CrateResult", -- server -> client: (crateKey, kind, kg, mutation) after the save, task 2.6
+	"Rebirth", -- client -> server: rebirth now, task 2.7
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

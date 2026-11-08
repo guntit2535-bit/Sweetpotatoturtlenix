@@ -16,6 +16,7 @@ local Bonus = require(Shared.Bonus)
 local CatRules = require(Shared.CatRules)
 local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local FishingBar = require(Shared.FishingBar)
+local Mutation = require(Shared.Mutation)
 local Format = require(Shared.Format)
 local Remotes = require(Shared.Remotes)
 local Validate = require(Shared.Validate)
@@ -183,12 +184,15 @@ local function step(dt: number)
 					finish(other, "FishLost", { name = winnerName })
 				end
 			end
+			-- a mutation is rolled once, with the winner's luck (a knocked-loose cat keeps its own)
+			local mutation = w.mutation or Mutation.roll(w.tier, Bonus.luck(BonusCtx.of(player, DataService.GetData(player))), math.random())
 			finish(player, "FishCaught", {
+				mutation = mutation,
 				name = if design then design.Name else "?",
 				tier = Config.Tiers[w.tier].Key,
 				kg = Format.rate(w.kg),
 			}, true)
-			CarryService.pickUp(player, w)
+			CarryService.pickUp(player, w, mutation)
 		elseif result == "lose" then
 			for other, os2 in sessions do
 				if other ~= player and os2.wild == w then

@@ -75,7 +75,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 ## Phase 3 — revision round 1 (developer, 2026-11-08; spec `docs/tasks/phase-3.md`)
 - [x] R1 Bushes you can walk through: all 322 map bushes collide (cats do not); bushes CanCollide off in MapKit + patch the place
 - [x] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
-- [ ] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
+- [x] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
 - [ ] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
 - [ ] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
 - [ ] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
@@ -311,3 +311,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   StopTraining, rate limited) or a push 3 studs off releases it, and the spot grabs you again only after stepping
   off. "Jump to stop" hint (EN / TH). `!train` shows the lock state. Studio Play: locked on treadmill and weights,
   MoveTo away does nothing (0.00 studs), Space releases, landing back does not re-lock, walk off + back re-locks.
+- 2026-11-08: R3 money popups: PenService puts `BaseRate` (income x mutation) on each pen cat and `IncomeMult` (every
+  money bonus) on the player; `IncomePopupController` shows "+$X" over each of your cats within 80 studs every tick
+  (one reused label per cat, random 0-0.35 s start) and "+$total" right of the money pill. Studio Play: 3 cats,
+  popups sum 27.94/s = Income 27.94, money +84 in 3 s; labels visible over the cats and by the pill.

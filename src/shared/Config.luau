@@ -191,6 +191,13 @@ Config.Events = {
 }
 
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
+-- R3: "+$X" popups over your own pen cats every income tick, and "+$total" by the money pill.
+Config.IncomePopup = {
+	Range = 80, -- only cats this close to the camera (studs)
+	Rise = 2.5, -- studs the label floats up
+	Seconds = 0.9, -- how long it shows
+	Spread = 0.35, -- popups start at random times inside this many seconds (not all at once)
+}
 Config.CatAnim = {
 	Range = 160, -- only cats this close to the camera are animated (studs)
 	RescanSeconds = 1, -- a cat whose joints have not all streamed in yet is looked up again this often

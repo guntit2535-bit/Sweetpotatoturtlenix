@@ -90,6 +90,8 @@ local function catModel(index: number, id: string, cat: DataTemplate.Cat, owner:
 	m:SetAttribute("Tier", design.Tier)
 	m:SetAttribute("PenIndex", index)
 	m:SetAttribute("OwnerId", owner.UserId)
+	-- R3: money per second before multipliers; the owner's client shows BaseRate x IncomeMult every tick
+	m:SetAttribute("BaseRate", CatRules.income(design.Tier, cat.Kg) * Mutation.money(cat.Mutation))
 	m.Parent = penFolder(index)
 end
 
@@ -392,9 +394,13 @@ function PenService:Start()
 			task.wait(Config.Economy.IncomeTick)
 			for player, base in incomeOf do
 				if player.Parent == Players then
-					local rate = base * Bonus.money(BonusCtx.of(player, DataService.GetData(player)))
+					local mult = Bonus.money(BonusCtx.of(player, DataService.GetData(player)))
+					local rate = base * mult
 					if player:GetAttribute("Income") ~= rate then
 						player:SetAttribute("Income", rate)
+					end
+					if player:GetAttribute("IncomeMult") ~= mult then
+						player:SetAttribute("IncomeMult", mult) -- R3 popups
 					end
 					if rate > 0 then
 						DataService.AddIncome(player, rate * Config.Economy.IncomeTick)

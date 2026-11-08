@@ -258,3 +258,5 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   at start (the first click was not loaded yet); the crate shake sound (3.1 s) stops at the reveal (1.2 s). Studio
   Play: Music_Lobby -> Music_Zones on leaving the lobby, click / open / meow play, 27 / 27 preloaded. Told the
   developer which picks carry other games' names (deliver, drop, escape, rebirth): their call.
+- 2026-11-08: the developer keeps the 4 sounds named after other games (deliver, drop, escape, rebirth) as they
+  are ("เก็บไว้ตามเดิม"). If Roblox removes one, only that sound goes silent; swap its id in Config.Sounds.

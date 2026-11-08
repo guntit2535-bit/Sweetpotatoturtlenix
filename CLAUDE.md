@@ -57,6 +57,12 @@ are starting values: they live in Config and are tuned after playtests (simulate
   as original voxel "pixel + LEGO" cats (the client's pictures are from another game: direction only), a map
   detail pass, and a **new-player tutorial, which is not in the blueprint** (priced separately unless the
   developer decides otherwise). **The client should be told** both.
+- 2026-11-09, round 2 cats (developer): 50 unique cat designs per tier (300, `docs/Sweetpotato_Cats.xlsx`) plus colour
+  variants to keep 400 cats; tier counts become Basic 100 / Rare 80 / Epic 70 / Legendary 50 / Mythical 50 /
+  Secret 50 (were 150 / 110 / 70 / 45 / 20 / 5). A unique model per design goes **beyond the blueprint** ("NOT
+  included: a unique body shape for every cat"): priced separately unless the developer decides otherwise.
+  **The client should be told.** Style: block cats with LEGO studs; Basic plain, Rare fashion, Epic costumes,
+  Legendary food / animal mixes, Mythical fantasy, Secret gods / cosmic.
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,
@@ -96,7 +102,7 @@ Engine behaviour (physics, UI, DataStores, purchases, phones) can only be tested
 ## Rules
 - Talk to the developer in **Thai**, short, outcome first. Code, comments, commits and `docs/` in English,
   except what the developer reads and fills in: `docs/DEVELOPER_TODO.md`, `docs/Sweetpotato_Sounds.xlsx` and
-  `docs/Sweetpotato_Robux.xlsx`
+  `docs/Sweetpotato_Robux.xlsx`, `docs/Sweetpotato_Cats.xlsx`
   are in Thai (developer, 2026-11-08: "ขอภาษาไทย").
 - **One task at a time.** After a task: mark `[~]`, Log line, commit, push, give numbered test steps
   starting with "GitHub Desktop: Fetch origin -> Pull origin", end with

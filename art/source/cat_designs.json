@@ -1,0 +1,3002 @@
+[
+ {
+  "tier": "Basic",
+  "n": 1,
+  "en": "Ginger Tabby",
+  "th": "แมวส้มลายเสือ",
+  "body": "Loaf",
+  "colours": "ส้ม / ส้มเข้ม",
+  "special": "ลายทางส้มเข้มบนหลังและหน้าผาก",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 2,
+  "en": "Tuxedo",
+  "th": "แมวทักซิโด้",
+  "body": "Slim",
+  "colours": "ดำ / ขาว",
+  "special": "ตัวดำ อกขาว ถุงเท้าขาว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 3,
+  "en": "Calico",
+  "th": "แมวสามสี",
+  "body": "Loaf",
+  "colours": "ขาว / ส้ม / ดำ",
+  "special": "ปื้นสีส้มและดำบนตัวขาว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 4,
+  "en": "Snowball",
+  "th": "แมวสโนว์บอล",
+  "body": "Fluffy",
+  "colours": "ขาว",
+  "special": "ขาวล้วน ตาฟ้า",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 5,
+  "en": "Midnight",
+  "th": "แมวมิดไนท์",
+  "body": "Slim",
+  "colours": "ดำ",
+  "special": "ดำล้วน ตาเหลือง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 6,
+  "en": "Grey Tabby",
+  "th": "แมวเทาลายเสือ",
+  "body": "Loaf",
+  "colours": "เทา / เทาเข้ม",
+  "special": "ลายทางเทาเข้ม",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 7,
+  "en": "Cream Puff",
+  "th": "แมวครีมพัฟ",
+  "body": "Fluffy",
+  "colours": "ครีม",
+  "special": "ขนฟูสีครีม แก้มฟู",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 8,
+  "en": "Tortie",
+  "th": "แมวกระดองเต่า",
+  "body": "Loaf",
+  "colours": "ดำ / ส้ม",
+  "special": "สีดำส้มผสมเป็นจุดๆ",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 9,
+  "en": "Siamese",
+  "th": "แมววิเชียรมาศ",
+  "body": "Slim",
+  "colours": "ครีม / น้ำตาลเข้ม",
+  "special": "หน้า หู ขา หาง สีน้ำตาลเข้ม ตาฟ้า",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 10,
+  "en": "Russian Blue",
+  "th": "แมวรัสเซียนบลู",
+  "body": "Slim",
+  "colours": "เทาฟ้า",
+  "special": "ขนเทาอมฟ้า ตาเขียว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 11,
+  "en": "Bengal",
+  "th": "แมวเบงกอล",
+  "body": "Slim",
+  "colours": "ส้มทอง / น้ำตาล",
+  "special": "ลายจุดแบบดอกกุหลาบ",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 12,
+  "en": "Persian",
+  "th": "แมวเปอร์เซีย",
+  "body": "Fluffy",
+  "colours": "ขาวครีม",
+  "special": "ขนฟูมาก หน้าแบน",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 13,
+  "en": "Maine Coon",
+  "th": "แมวเมนคูน",
+  "body": "Fluffy",
+  "colours": "น้ำตาลลายเสือ",
+  "special": "ตัวใหญ่ หูมีพู่ขน",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 14,
+  "en": "Sphynx",
+  "th": "แมวสฟิงซ์",
+  "body": "Slim",
+  "colours": "ชมพูอ่อน",
+  "special": "ไม่มีขน ผิวมีรอยย่น หูใหญ่",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 15,
+  "en": "Scottish Fold",
+  "th": "แมวหูพับ",
+  "body": "Loaf",
+  "colours": "เทาครีม",
+  "special": "หูพับลง หน้ากลม",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 16,
+  "en": "Ragdoll",
+  "th": "แมวแร็กดอลล์",
+  "body": "Fluffy",
+  "colours": "ขาว / น้ำตาล",
+  "special": "หน้ากากน้ำตาล ตาฟ้า ขนยาว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 17,
+  "en": "Munchkin",
+  "th": "แมวขาสั้น",
+  "body": "Loaf",
+  "colours": "ส้มขาว",
+  "special": "ขาสั้นจิ๋ว ตัวยาว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 18,
+  "en": "British Shorthair",
+  "th": "แมวบริติชช็อตแฮร์",
+  "body": "Loaf",
+  "colours": "เทา",
+  "special": "แก้มกลมยุ้ย ตาส้มโต",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 19,
+  "en": "Sock Cat",
+  "th": "แมวถุงเท้า",
+  "body": "Loaf",
+  "colours": "น้ำตาล / ขาว",
+  "special": "เท้าขาวทั้งสี่ข้าง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 20,
+  "en": "Spotty",
+  "th": "แมวลายจุด",
+  "body": "Slim",
+  "colours": "ขาว / ดำ",
+  "special": "จุดดำทั่วตัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 21,
+  "en": "Orange Loaf",
+  "th": "แมวขนมปังส้ม",
+  "body": "Loaf",
+  "colours": "ส้ม",
+  "special": "ส้มล้วน ตัวกลมแบนเหมือนขนมปัง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 22,
+  "en": "Smoky",
+  "th": "แมวควันเทา",
+  "body": "Fluffy",
+  "colours": "เทาเข้มไล่สี",
+  "special": "ขนไล่สีจากเข้มไปอ่อน",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 23,
+  "en": "Chocolate",
+  "th": "แมวช็อกโกแลต",
+  "body": "Slim",
+  "colours": "น้ำตาลเข้ม",
+  "special": "น้ำตาลเข้มล้วน ตาเหลือง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 24,
+  "en": "Lilac",
+  "th": "แมวไลแลค",
+  "body": "Slim",
+  "colours": "เทาอมม่วง",
+  "special": "ขนสีเทาอมม่วงอ่อน",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 25,
+  "en": "Cinnamon",
+  "th": "แมวอบเชย",
+  "body": "Loaf",
+  "colours": "น้ำตาลแดง",
+  "special": "สีอบเชย อกครีม",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 26,
+  "en": "Mackerel",
+  "th": "แมวลายปลาทู",
+  "body": "Slim",
+  "colours": "เทา / ดำ",
+  "special": "ลายทางยาวแบบปลาทู",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 27,
+  "en": "Masked",
+  "th": "แมวหน้ากาก",
+  "body": "Loaf",
+  "colours": "ขาว / ดำ",
+  "special": "รอบตาดำเหมือนใส่หน้ากาก",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 28,
+  "en": "Patchy",
+  "th": "แมวปะผ้า",
+  "body": "Loaf",
+  "colours": "ขาว / เทา",
+  "special": "ปื้นสีเทาใหญ่บนหลัง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 29,
+  "en": "Ginger Fluff",
+  "th": "แมวส้มขนฟู",
+  "body": "Fluffy",
+  "colours": "ส้ม",
+  "special": "ขนฟูสีส้ม หางพวง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 30,
+  "en": "Black Paws",
+  "th": "แมวอุ้งเท้าดำ",
+  "body": "Slim",
+  "colours": "ขาว / ดำ",
+  "special": "เท้าและหางสีดำ",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 31,
+  "en": "Golden Eyes",
+  "th": "แมวตาทอง",
+  "body": "Loaf",
+  "colours": "น้ำตาลอ่อน",
+  "special": "ตาสีทองโตเป็นพิเศษ",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 32,
+  "en": "Odd Eyes",
+  "th": "แมวตาสองสี",
+  "body": "Fluffy",
+  "colours": "ขาว",
+  "special": "ตาข้างฟ้า ข้างเหลือง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 33,
+  "en": "Sleepy",
+  "th": "แมวง่วงนอน",
+  "body": "Loaf",
+  "colours": "ส้มอ่อน",
+  "special": "ตาปรือ หาวตลอด",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 34,
+  "en": "Chubby",
+  "th": "แมวอ้วนกลม",
+  "body": "Fluffy",
+  "colours": "เทาครีม",
+  "special": "ตัวกลมมาก พุงย้อย",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 35,
+  "en": "Kitten",
+  "th": "ลูกแมว",
+  "body": "Loaf",
+  "colours": "ส้มขาว",
+  "special": "ตัวเล็ก หัวโต ตาโต",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 36,
+  "en": "Long Tail",
+  "th": "แมวหางยาว",
+  "body": "Slim",
+  "colours": "เทาเงิน",
+  "special": "หางยาวพิเศษ ม้วนปลาย",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 37,
+  "en": "Bobtail",
+  "th": "แมวหางสั้น",
+  "body": "Loaf",
+  "colours": "ขาว / ส้ม",
+  "special": "หางกุดเป็นปอม",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 38,
+  "en": "Curly Rex",
+  "th": "แมวขนหยิก",
+  "body": "Slim",
+  "colours": "ครีม",
+  "special": "ขนเป็นลอนหยิก",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 39,
+  "en": "Leopard Spot",
+  "th": "แมวลายเสือดาว",
+  "body": "Slim",
+  "colours": "เหลืองทอง / ดำ",
+  "special": "ลายจุดเสือดาว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 40,
+  "en": "Silver Tabby",
+  "th": "แมวเงินลายเสือ",
+  "body": "Loaf",
+  "colours": "เงิน / ดำ",
+  "special": "ลายทางดำบนพื้นเงิน",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 41,
+  "en": "Peach",
+  "th": "แมวพีช",
+  "body": "Loaf",
+  "colours": "ส้มอมชมพู",
+  "special": "สีพีชนุ่มๆ แก้มแดง",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 42,
+  "en": "Coal",
+  "th": "แมวถ่าน",
+  "body": "Slim",
+  "colours": "ดำ",
+  "special": "ดำสนิท จมูกชมพู",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 43,
+  "en": "Milk Tea",
+  "th": "แมวชานม",
+  "body": "Fluffy",
+  "colours": "น้ำตาลนม",
+  "special": "สีชานม อกขาว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 44,
+  "en": "Biscuit",
+  "th": "แมวบิสกิต",
+  "body": "Loaf",
+  "colours": "น้ำตาลทอง / ครีม",
+  "special": "สีบิสกิต อกครีม",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 45,
+  "en": "Mitten",
+  "th": "แมวถุงมือ",
+  "body": "Loaf",
+  "colours": "เทา / ขาว",
+  "special": "เท้าหน้าขาวเหมือนใส่ถุงมือ",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 46,
+  "en": "Tiger Stripe",
+  "th": "แมวลายพยัคฆ์",
+  "body": "Slim",
+  "colours": "ส้ม / ดำ",
+  "special": "ลายดำหนาเหมือนเสือ",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 47,
+  "en": "Pumpkin",
+  "th": "แมวฟักทอง",
+  "body": "Loaf",
+  "colours": "ส้มเข้ม",
+  "special": "ส้มเข้ม ตาเขียว",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 48,
+  "en": "Cloud",
+  "th": "แมวก้อนเมฆ",
+  "body": "Fluffy",
+  "colours": "ขาว / เทาอ่อน",
+  "special": "ขนฟูเป็นก้อนๆ เหมือนเมฆ",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 49,
+  "en": "Shadow",
+  "th": "แมวเงา",
+  "body": "Slim",
+  "colours": "เทาดำ",
+  "special": "สีเทาดำ ตาฟ้าใส",
+  "effect": "-"
+ },
+ {
+  "tier": "Basic",
+  "n": 50,
+  "en": "Honey",
+  "th": "แมวน้ำผึ้ง",
+  "body": "Loaf",
+  "colours": "เหลืองทอง",
+  "special": "สีน้ำผึ้งทั้งตัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 1,
+  "en": "Cap Cat",
+  "th": "แมวหมวกแก๊ป",
+  "body": "Loaf",
+  "colours": "ส้ม + หมวกแดง",
+  "special": "หมวกแก๊ปกลับหลัง",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 2,
+  "en": "Cool Shades",
+  "th": "แมวแว่นดำ",
+  "body": "Slim",
+  "colours": "เทา + แว่นดำ",
+  "special": "แว่นกันแดดเท่ๆ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 3,
+  "en": "Bow Tie",
+  "th": "แมวโบว์ไท",
+  "body": "Loaf",
+  "colours": "ขาว + โบว์แดง",
+  "special": "โบว์ไทที่คอ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 4,
+  "en": "Ribbon",
+  "th": "แมวโบว์ชมพู",
+  "body": "Fluffy",
+  "colours": "ขาว + โบว์ชมพู",
+  "special": "โบว์ชมพูใหญ่บนหัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 5,
+  "en": "Beanie",
+  "th": "แมวหมวกไหมพรม",
+  "body": "Loaf",
+  "colours": "น้ำตาล + หมวกเขียว",
+  "special": "หมวกไหมพรมมีปอม",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 6,
+  "en": "Scarf",
+  "th": "แมวผ้าพันคอ",
+  "body": "Slim",
+  "colours": "เทา + ผ้าลายทาง",
+  "special": "ผ้าพันคอลายทางยาวๆ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 7,
+  "en": "Nerd",
+  "th": "แมวเนิร์ด",
+  "body": "Loaf",
+  "colours": "ครีม + แว่นหนา",
+  "special": "แว่นหนาและเน็คไท",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 8,
+  "en": "Top Hat",
+  "th": "แมวหมวกทรงสูง",
+  "body": "Slim",
+  "colours": "ดำ + หมวกดำ",
+  "special": "หมวกทรงสูงและไม้เท้า",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 9,
+  "en": "Flower Crown",
+  "th": "แมวมงกุฎดอกไม้",
+  "body": "Fluffy",
+  "colours": "ขาว + ดอกไม้หลายสี",
+  "special": "มงกุฎดอกไม้บนหัว",
+  "effect": "กลีบดอกไม้ร่วง"
+ },
+ {
+  "tier": "Rare",
+  "n": 10,
+  "en": "Headphones",
+  "th": "แมวหูฟัง",
+  "body": "Loaf",
+  "colours": "ส้ม + หูฟังฟ้า",
+  "special": "หูฟังใหญ่ครอบหัว",
+  "effect": "โน้ตเพลงลอย"
+ },
+ {
+  "tier": "Rare",
+  "n": 11,
+  "en": "Hoodie",
+  "th": "แมวฮู้ดดี้",
+  "body": "Loaf",
+  "colours": "เทา + ฮู้ดม่วง",
+  "special": "เสื้อฮู้ดที่มีหูแมว",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 12,
+  "en": "Sweater",
+  "th": "แมวเสื้อไหมพรม",
+  "body": "Fluffy",
+  "colours": "ครีม + เสื้อลายสก็อต",
+  "special": "เสื้อไหมพรมลายสก็อต",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 13,
+  "en": "Raincoat",
+  "th": "แมวเสื้อกันฝน",
+  "body": "Loaf",
+  "colours": "ขาว + เหลือง",
+  "special": "เสื้อกันฝนและรองเท้าบูทเหลือง",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 14,
+  "en": "Sailor",
+  "th": "แมวกะลาสี",
+  "body": "Slim",
+  "colours": "ขาว + ฟ้า",
+  "special": "หมวกกะลาสีและปกเสื้อฟ้า",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 15,
+  "en": "Bandana",
+  "th": "แมวผ้าโพกหัว",
+  "body": "Loaf",
+  "colours": "ส้ม + ผ้าแดงลายจุด",
+  "special": "ผ้าโพกหัวลายจุด",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 16,
+  "en": "Party Hat",
+  "th": "แมวหมวกปาร์ตี้",
+  "body": "Loaf",
+  "colours": "ขาว + หมวกลายจุด",
+  "special": "หมวกกรวยปาร์ตี้",
+  "effect": "กระดาษสีโปรย"
+ },
+ {
+  "tier": "Rare",
+  "n": 17,
+  "en": "Beret",
+  "th": "แมวเบเร่ต์",
+  "body": "Slim",
+  "colours": "ดำ + หมวกแดง",
+  "special": "หมวกเบเร่ต์แบบศิลปิน",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 18,
+  "en": "Sunhat",
+  "th": "แมวหมวกปีกกว้าง",
+  "body": "Fluffy",
+  "colours": "ครีม + หมวกฟาง",
+  "special": "หมวกปีกกว้างผูกโบว์",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 19,
+  "en": "Jersey",
+  "th": "แมวเสื้อเบสบอล",
+  "body": "Loaf",
+  "colours": "ขาว + เสื้อน้ำเงิน",
+  "special": "เสื้อเบสบอลเบอร์ 1",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 20,
+  "en": "Bucket Hat",
+  "th": "แมวหมวกบักเก็ต",
+  "body": "Loaf",
+  "colours": "น้ำตาล + หมวกเขียวอ่อน",
+  "special": "หมวกบักเก็ต",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 21,
+  "en": "Monocle",
+  "th": "แมวแว่นเดี่ยว",
+  "body": "Slim",
+  "colours": "เทา + ทอง",
+  "special": "แว่นเลนส์เดียวและหนวดเรียว",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 22,
+  "en": "Pearls",
+  "th": "แมวสร้อยไข่มุก",
+  "body": "Fluffy",
+  "colours": "ขาว + ไข่มุก",
+  "special": "สร้อยไข่มุกหลายเส้น",
+  "effect": "ประกายเล็กๆ"
+ },
+ {
+  "tier": "Rare",
+  "n": 23,
+  "en": "Heart Glasses",
+  "th": "แมวแว่นหัวใจ",
+  "body": "Loaf",
+  "colours": "ชมพู + แว่นแดง",
+  "special": "แว่นรูปหัวใจ",
+  "effect": "หัวใจลอย"
+ },
+ {
+  "tier": "Rare",
+  "n": 24,
+  "en": "Star Glasses",
+  "th": "แมวแว่นดาว",
+  "body": "Slim",
+  "colours": "ม่วง + แว่นเหลือง",
+  "special": "แว่นรูปดาว",
+  "effect": "ดาวกระพริบ"
+ },
+ {
+  "tier": "Rare",
+  "n": 25,
+  "en": "Backpack",
+  "th": "แมวเป้นักเรียน",
+  "body": "Loaf",
+  "colours": "ส้ม + เป้ฟ้า",
+  "special": "สะพายเป้ ถือดินสอ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 26,
+  "en": "Bowler Hat",
+  "th": "แมวหมวกโบว์เลอร์",
+  "body": "Slim",
+  "colours": "ครีม + หมวกน้ำตาล",
+  "special": "หมวกโบว์เลอร์และไท",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 27,
+  "en": "Earmuffs",
+  "th": "แมวที่ปิดหู",
+  "body": "Fluffy",
+  "colours": "ขาว + ชมพู",
+  "special": "ที่ปิดหูขนปุย",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 28,
+  "en": "Tutu",
+  "th": "แมวกระโปรงบัลเลต์",
+  "body": "Slim",
+  "colours": "ขาว + ชมพู",
+  "special": "กระโปรงตูตู",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 29,
+  "en": "Overalls",
+  "th": "แมวเอี๊ยม",
+  "body": "Loaf",
+  "colours": "ส้ม + ยีนส์",
+  "special": "ชุดเอี๊ยมยีนส์",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 30,
+  "en": "Leather Jacket",
+  "th": "แมวแจ็คเก็ตหนัง",
+  "body": "Slim",
+  "colours": "เทา + ดำ",
+  "special": "แจ็คเก็ตหนังเท่ๆ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 31,
+  "en": "Hawaiian",
+  "th": "แมวเสื้อฮาวาย",
+  "body": "Loaf",
+  "colours": "ครีม + ลายดอก",
+  "special": "เสื้อฮาวายและพวงมาลัย",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 32,
+  "en": "Pajamas",
+  "th": "แมวชุดนอน",
+  "body": "Fluffy",
+  "colours": "ฟ้า + ลายดาว",
+  "special": "ชุดนอนและหมวกนอน",
+  "effect": "Zzz ลอย"
+ },
+ {
+  "tier": "Rare",
+  "n": 33,
+  "en": "Office Tie",
+  "th": "แมวพนักงาน",
+  "body": "Slim",
+  "colours": "เทา + เน็คไทน้ำเงิน",
+  "special": "เสื้อเชิ้ตและเน็คไท",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 34,
+  "en": "Sneakerhead",
+  "th": "แมวรองเท้าผ้าใบ",
+  "body": "Loaf",
+  "colours": "ขาว + รองเท้าสี",
+  "special": "รองเท้าผ้าใบสีสดสี่ข้าง",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 35,
+  "en": "Cherry Clip",
+  "th": "แมวกิ๊บเชอร์รี่",
+  "body": "Fluffy",
+  "colours": "ขาว + แดง",
+  "special": "กิ๊บเชอร์รี่ที่หู",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 36,
+  "en": "Tennis",
+  "th": "แมวนักเทนนิส",
+  "body": "Slim",
+  "colours": "ขาว + เขียว",
+  "special": "ที่คาดผม สายรัดข้อมือ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 37,
+  "en": "Snow Goggles",
+  "th": "แมวแว่นสกี",
+  "body": "Fluffy",
+  "colours": "ขาว + แว่นส้ม",
+  "special": "แว่นสกีบนหัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 38,
+  "en": "Gold Chain",
+  "th": "แมวสร้อยทอง",
+  "body": "Loaf",
+  "colours": "ดำ + ทอง",
+  "special": "สร้อยทองเส้นใหญ่",
+  "effect": "ประกายทอง"
+ },
+ {
+  "tier": "Rare",
+  "n": 39,
+  "en": "Graduate",
+  "th": "แมวรับปริญญา",
+  "body": "Slim",
+  "colours": "ดำ + หมวกครุย",
+  "special": "หมวกบัณฑิตและม้วนปริญญา",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 40,
+  "en": "Cheerleader",
+  "th": "แมวเชียร์ลีดเดอร์",
+  "body": "Loaf",
+  "colours": "ขาว + แดง",
+  "special": "พู่เชียร์สองมือ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 41,
+  "en": "Bunny Ears",
+  "th": "แมวหูกระต่าย",
+  "body": "Fluffy",
+  "colours": "ขาว + ชมพู",
+  "special": "ที่คาดหูกระต่าย",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 42,
+  "en": "Antlers",
+  "th": "แมวเขากวาง",
+  "body": "Loaf",
+  "colours": "น้ำตาล + เขากวาง",
+  "special": "เขากวางคริสต์มาส จมูกแดง",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 43,
+  "en": "Santa Hat",
+  "th": "แมวซานต้า",
+  "body": "Fluffy",
+  "colours": "ขาว + แดง",
+  "special": "หมวกซานต้า",
+  "effect": "หิมะโปรย"
+ },
+ {
+  "tier": "Rare",
+  "n": 44,
+  "en": "Spooky Hat",
+  "th": "แมวหมวกฮาโลวีน",
+  "body": "Slim",
+  "colours": "ดำ + ม่วง",
+  "special": "หมวกแม่มดเล็กๆ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 45,
+  "en": "Leaf Hat",
+  "th": "แมวหมวกใบไม้",
+  "body": "Loaf",
+  "colours": "เขียว + ใบไม้",
+  "special": "หมวกใบไม้ใหญ่",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 46,
+  "en": "Mushroom Hat",
+  "th": "แมวหมวกเห็ด",
+  "body": "Fluffy",
+  "colours": "ครีม + เห็ดแดงจุดขาว",
+  "special": "หมวกเห็ด",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 47,
+  "en": "Fruit Hat",
+  "th": "แมวหมวกผลไม้",
+  "body": "Loaf",
+  "colours": "ส้ม + ผลไม้",
+  "special": "หมวกตะกร้าผลไม้",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 48,
+  "en": "Paper Crown",
+  "th": "แมวมงกุฎกระดาษ",
+  "body": "Loaf",
+  "colours": "ส้ม + เหลือง",
+  "special": "มงกุฎกระดาษ",
+  "effect": "-"
+ },
+ {
+  "tier": "Rare",
+  "n": 49,
+  "en": "Diamond Collar",
+  "th": "แมวปลอกคอเพชร",
+  "body": "Slim",
+  "colours": "ขาว + เพชร",
+  "special": "ปลอกคอเพชรวิบวับ",
+  "effect": "ประกายเพชร"
+ },
+ {
+  "tier": "Rare",
+  "n": 50,
+  "en": "Pigtails",
+  "th": "แมววิกผมแกละ",
+  "body": "Fluffy",
+  "colours": "ครีม + วิกน้ำตาล",
+  "special": "วิกผมแกละผูกโบว์",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 1,
+  "en": "Pirate",
+  "th": "แมวโจรสลัด",
+  "body": "Loaf",
+  "colours": "ส้ม + ดำแดง",
+  "special": "หมวกสามเหลี่ยม ผ้าปิดตา ดาบไม้ แผนที่",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 2,
+  "en": "Ninja",
+  "th": "แมวนินจา",
+  "body": "Slim",
+  "colours": "ดำ + ผ้าคาดแดง",
+  "special": "ชุดนินจา ดาวกระจาย",
+  "effect": "ควันฟุ้ง"
+ },
+ {
+  "tier": "Epic",
+  "n": 3,
+  "en": "Wizard",
+  "th": "แมวพ่อมด",
+  "body": "Fluffy",
+  "colours": "ม่วง + ดาว",
+  "special": "หมวกกรวยลายดาว ไม้กายสิทธิ์",
+  "effect": "ประกายเวทมนตร์"
+ },
+ {
+  "tier": "Epic",
+  "n": 4,
+  "en": "Knight",
+  "th": "แมวอัศวิน",
+  "body": "Loaf",
+  "colours": "เงิน + ฟ้า",
+  "special": "เกราะ หมวกเหล็ก ดาบ โล่",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 5,
+  "en": "Astronaut",
+  "th": "แมวนักบินอวกาศ",
+  "body": "Loaf",
+  "colours": "ขาว + ส้ม",
+  "special": "ชุดอวกาศ หมวกครอบใส",
+  "effect": "ดาวลอย"
+ },
+ {
+  "tier": "Epic",
+  "n": 6,
+  "en": "Cowboy",
+  "th": "แมวคาวบอย",
+  "body": "Slim",
+  "colours": "น้ำตาล",
+  "special": "หมวกคาวบอย ผ้าพันคอ เชือกบ่วง",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 7,
+  "en": "Firefighter",
+  "th": "แมวนักดับเพลิง",
+  "body": "Loaf",
+  "colours": "แดง + เหลือง",
+  "special": "หมวกดับเพลิง สายฉีดน้ำ",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 8,
+  "en": "Police",
+  "th": "แมวตำรวจ",
+  "body": "Slim",
+  "colours": "น้ำเงิน",
+  "special": "หมวกตำรวจ ตราดาว นกหวีด",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 9,
+  "en": "Doctor",
+  "th": "แมวหมอ",
+  "body": "Loaf",
+  "colours": "ขาว + ฟ้า",
+  "special": "เสื้อกาวน์ หูฟังหมอ",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 10,
+  "en": "Chef",
+  "th": "แมวเชฟ",
+  "body": "Fluffy",
+  "colours": "ขาว",
+  "special": "หมวกเชฟ ตะหลิว",
+  "effect": "ไอร้อนลอย"
+ },
+ {
+  "tier": "Epic",
+  "n": 11,
+  "en": "Samurai",
+  "th": "แมวซามูไร",
+  "body": "Slim",
+  "colours": "แดง + ดำ",
+  "special": "เกราะซามูไร ดาบคาตานะไม้",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 12,
+  "en": "Viking",
+  "th": "แมวไวกิ้ง",
+  "body": "Fluffy",
+  "colours": "น้ำตาล + เงิน",
+  "special": "หมวกมีเขา ขวาน โล่กลม",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 13,
+  "en": "Pharaoh",
+  "th": "แมวฟาโรห์",
+  "body": "Slim",
+  "colours": "ทอง + น้ำเงิน",
+  "special": "ผ้าโพกฟาโรห์ คทา",
+  "effect": "ประกายทอง"
+ },
+ {
+  "tier": "Epic",
+  "n": 14,
+  "en": "Detective",
+  "th": "แมวนักสืบ",
+  "body": "Loaf",
+  "colours": "น้ำตาล",
+  "special": "หมวกนักสืบ แว่นขยาย",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 15,
+  "en": "Painter",
+  "th": "แมวจิตรกร",
+  "body": "Slim",
+  "colours": "ขาว + เปื้อนสี",
+  "special": "เบเร่ต์ พู่กัน จานสี",
+  "effect": "สีกระเซ็น"
+ },
+ {
+  "tier": "Epic",
+  "n": 16,
+  "en": "Rock Star",
+  "th": "แมวร็อกสตาร์",
+  "body": "Slim",
+  "colours": "ดำ + ม่วง",
+  "special": "กีตาร์ไฟฟ้า แจ็คเก็ต",
+  "effect": "สายฟ้าเล็กๆ"
+ },
+ {
+  "tier": "Epic",
+  "n": 17,
+  "en": "DJ",
+  "th": "แมวดีเจ",
+  "body": "Loaf",
+  "colours": "ม่วง + นีออน",
+  "special": "หูฟัง แผ่นเสียง",
+  "effect": "ไฟนีออน"
+ },
+ {
+  "tier": "Epic",
+  "n": 18,
+  "en": "Football Star",
+  "th": "แมวนักฟุตบอล",
+  "body": "Slim",
+  "colours": "เขียว + ขาว",
+  "special": "ชุดบอล ลูกฟุตบอล",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 19,
+  "en": "Boxer",
+  "th": "แมวนักมวย",
+  "body": "Loaf",
+  "colours": "แดง",
+  "special": "นวมมวย กางเกงมวย",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 20,
+  "en": "Diver",
+  "th": "แมวนักประดาน้ำ",
+  "body": "Loaf",
+  "colours": "เหลือง + ฟ้า",
+  "special": "หน้ากากดำน้ำ ตีนกบ ถังออกซิเจน",
+  "effect": "ฟองอากาศ"
+ },
+ {
+  "tier": "Epic",
+  "n": 21,
+  "en": "Pilot",
+  "th": "แมวนักบิน",
+  "body": "Slim",
+  "colours": "น้ำตาล + ทอง",
+  "special": "หมวกนักบิน แว่น ผ้าพันคอ",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 22,
+  "en": "Builder",
+  "th": "แมวช่างก่อสร้าง",
+  "body": "Loaf",
+  "colours": "เหลือง + ส้ม",
+  "special": "หมวกนิรภัย ค้อน",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 23,
+  "en": "Farmer",
+  "th": "แมวชาวนา",
+  "body": "Loaf",
+  "colours": "ส้ม + ฟาง",
+  "special": "หมวกฟาง คราด ฟักทอง",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 24,
+  "en": "Magician",
+  "th": "แมวนักมายากล",
+  "body": "Slim",
+  "colours": "ดำ + แดง",
+  "special": "หมวกทรงสูง ไม้เท้า กระต่ายโผล่",
+  "effect": "ประกายมายากล"
+ },
+ {
+  "tier": "Epic",
+  "n": 25,
+  "en": "Circus Star",
+  "th": "แมวนักแสดงละครสัตว์",
+  "body": "Loaf",
+  "colours": "แดง + ทอง",
+  "special": "ชุดละครสัตว์ ลูกบอลโยน",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 26,
+  "en": "Princess",
+  "th": "แมวเจ้าหญิง",
+  "body": "Fluffy",
+  "colours": "ชมพู + ทอง",
+  "special": "มงกุฎเล็ก ชุดกระโปรงฟู",
+  "effect": "ประกายชมพู"
+ },
+ {
+  "tier": "Epic",
+  "n": 27,
+  "en": "Prince",
+  "th": "แมวเจ้าชาย",
+  "body": "Slim",
+  "colours": "ฟ้า + ทอง",
+  "special": "มงกุฎ ผ้าคลุมแดง",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 28,
+  "en": "Archer",
+  "th": "แมวนักธนู",
+  "body": "Slim",
+  "colours": "เขียว",
+  "special": "หมวกขนนก คันธนู",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 29,
+  "en": "Explorer",
+  "th": "แมวนักสำรวจ",
+  "body": "Loaf",
+  "colours": "กากี",
+  "special": "หมวกสำรวจ กล้องส่องทางไกล",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 30,
+  "en": "Scientist",
+  "th": "แมวนักวิทยาศาสตร์",
+  "body": "Fluffy",
+  "colours": "ขาว + เขียว",
+  "special": "เสื้อแล็บ แว่น หลอดทดลอง",
+  "effect": "ฟองเขียวลอย"
+ },
+ {
+  "tier": "Epic",
+  "n": 31,
+  "en": "Mail Cat",
+  "th": "แมวบุรุษไปรษณีย์",
+  "body": "Loaf",
+  "colours": "น้ำเงิน + แดง",
+  "special": "หมวกไปรษณีย์ กระเป๋าจดหมาย",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 32,
+  "en": "Skater",
+  "th": "แมวสเก็ตบอร์ด",
+  "body": "Slim",
+  "colours": "ส้ม + เขียว",
+  "special": "สเก็ตบอร์ด หมวกกันน็อก",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 33,
+  "en": "Surfer",
+  "th": "แมวนักโต้คลื่น",
+  "body": "Slim",
+  "colours": "ฟ้า + เหลือง",
+  "special": "กระดานโต้คลื่น",
+  "effect": "ละอองน้ำ"
+ },
+ {
+  "tier": "Epic",
+  "n": 34,
+  "en": "Ski Racer",
+  "th": "แมวนักสกี",
+  "body": "Fluffy",
+  "colours": "ขาว + แดง",
+  "special": "สกี ไม้ค้ำ แว่นสกี",
+  "effect": "หิมะกระจาย"
+ },
+ {
+  "tier": "Epic",
+  "n": 35,
+  "en": "Ballerina",
+  "th": "แมวนักบัลเลต์",
+  "body": "Slim",
+  "colours": "ชมพู",
+  "special": "ชุดบัลเลต์ รองเท้าบัลเลต์",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 36,
+  "en": "Superhero",
+  "th": "แมวซูเปอร์ฮีโร่",
+  "body": "Loaf",
+  "colours": "แดง + น้ำเงิน",
+  "special": "ผ้าคลุม หน้ากาก โลโก้อุ้งเท้า",
+  "effect": "ผ้าคลุมพลิ้ว"
+ },
+ {
+  "tier": "Epic",
+  "n": 37,
+  "en": "Royal Guard",
+  "th": "แมวทหารองครักษ์",
+  "body": "Slim",
+  "colours": "แดง + ดำ",
+  "special": "หมวกขนสูง กลอง",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 38,
+  "en": "Kung Fu",
+  "th": "แมวกังฟู",
+  "body": "Slim",
+  "colours": "เหลือง + ดำ",
+  "special": "ชุดกังฟู สายคาด",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 39,
+  "en": "Sumo",
+  "th": "แมวซูโม่",
+  "body": "Fluffy",
+  "colours": "ครีม + ผ้าขาว",
+  "special": "ตัวอ้วน ผ้าคาดซูโม่",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 40,
+  "en": "Racer",
+  "th": "แมวนักแข่งรถ",
+  "body": "Slim",
+  "colours": "แดง + ขาว",
+  "special": "ชุดแข่ง หมวกกันน็อก ธงตาหมากรุก",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 41,
+  "en": "Gardener",
+  "th": "แมวคนสวน",
+  "body": "Loaf",
+  "colours": "เขียว + น้ำตาล",
+  "special": "หมวกสวน บัวรดน้ำ",
+  "effect": "ใบไม้ปลิว"
+ },
+ {
+  "tier": "Epic",
+  "n": 42,
+  "en": "Fisher",
+  "th": "แมวชาวประมง",
+  "body": "Loaf",
+  "colours": "เหลือง + น้ำเงิน",
+  "special": "หมวกกันฝน คันเบ็ด ปลา",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 43,
+  "en": "Lumberjack",
+  "th": "แมวคนตัดไม้",
+  "body": "Fluffy",
+  "colours": "แดงลายสก็อต",
+  "special": "เสื้อลายสก็อต ขวานไม้",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 44,
+  "en": "Barista",
+  "th": "แมวบาริสต้า",
+  "body": "Slim",
+  "colours": "น้ำตาล + ครีม",
+  "special": "ผ้ากันเปื้อน แก้วกาแฟ",
+  "effect": "ไอร้อน"
+ },
+ {
+  "tier": "Epic",
+  "n": 45,
+  "en": "Baker",
+  "th": "แมวคนทำขนมปัง",
+  "body": "Fluffy",
+  "colours": "ขาว + น้ำตาล",
+  "special": "หมวกเชฟ ขนมปังฝรั่งเศส",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 46,
+  "en": "Teacher",
+  "th": "แมวคุณครู",
+  "body": "Slim",
+  "colours": "เทา + เขียว",
+  "special": "แว่น ไม้ชี้ กระดานเล็ก",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 47,
+  "en": "Hula Dancer",
+  "th": "แมวนักเต้นฮูลา",
+  "body": "Loaf",
+  "colours": "ส้ม + ดอกไม้",
+  "special": "กระโปรงหญ้า พวงมาลัย",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 48,
+  "en": "Ranger",
+  "th": "แมวผู้พิทักษ์ป่า",
+  "body": "Slim",
+  "colours": "เขียวเข้ม",
+  "special": "หมวกปีกกว้าง กระบอกน้ำ",
+  "effect": "-"
+ },
+ {
+  "tier": "Epic",
+  "n": 49,
+  "en": "Treasure Hunter",
+  "th": "แมวล่าสมบัติ",
+  "body": "Loaf",
+  "colours": "น้ำตาล + ทอง",
+  "special": "แผนที่ พลั่ว หีบสมบัติเล็ก",
+  "effect": "ประกายทอง"
+ },
+ {
+  "tier": "Epic",
+  "n": 50,
+  "en": "Thai Dancer",
+  "th": "แมวนางรำ",
+  "body": "Slim",
+  "colours": "ทอง + แดง",
+  "special": "ชฎา ชุดไทย",
+  "effect": "ประกายทอง"
+ },
+ {
+  "tier": "Legendary",
+  "n": 1,
+  "en": "Strawberry Cat",
+  "th": "แมวสตรอว์เบอร์รี",
+  "body": "Loaf",
+  "colours": "แดง + เขียว",
+  "special": "ตัวเป็นสตรอว์เบอร์รี จุดเมล็ด ใบบนหัว",
+  "effect": "กลิ่นหอมลอยเป็นหัวใจ"
+ },
+ {
+  "tier": "Legendary",
+  "n": 2,
+  "en": "Banana Cat",
+  "th": "แมวกล้วย",
+  "body": "Slim",
+  "colours": "เหลือง",
+  "special": "ใส่ชุดเปลือกกล้วยปอกครึ่ง",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 3,
+  "en": "Watermelon Cat",
+  "th": "แมวแตงโม",
+  "body": "Fluffy",
+  "colours": "เขียว + แดง",
+  "special": "ตัวลายแตงโม ท้องสีแดงมีเมล็ด",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 4,
+  "en": "Avocado Cat",
+  "th": "แมวอะโวคาโด",
+  "body": "Loaf",
+  "colours": "เขียว + เหลือง",
+  "special": "ท้องเป็นเนื้ออะโวคาโด มีเมล็ดกลม",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 5,
+  "en": "Cherry Cat",
+  "th": "แมวเชอร์รี",
+  "body": "Loaf",
+  "colours": "แดงเข้ม",
+  "special": "เชอร์รีคู่บนหัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 6,
+  "en": "Pineapple Cat",
+  "th": "แมวสับปะรด",
+  "body": "Fluffy",
+  "colours": "เหลือง + เขียว",
+  "special": "ตัวลายสับปะรด ใบแหลมบนหัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 7,
+  "en": "Orange Cat",
+  "th": "แมวส้มผลไม้",
+  "body": "Loaf",
+  "colours": "ส้ม",
+  "special": "ตัวกลมเหมือนผลส้ม ใบเขียว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 8,
+  "en": "Grape Cat",
+  "th": "แมวองุ่น",
+  "body": "Fluffy",
+  "colours": "ม่วง",
+  "special": "ขนเป็นพวงองุ่นกลมๆ",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 9,
+  "en": "Mango Cat",
+  "th": "แมวมะม่วง",
+  "body": "Slim",
+  "colours": "เหลืองส้ม",
+  "special": "ตัวลายมะม่วง ใบเขียวที่หาง",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 10,
+  "en": "Coconut Cat",
+  "th": "แมวมะพร้าว",
+  "body": "Loaf",
+  "colours": "น้ำตาล + ขาว",
+  "special": "หัวเป็นลูกมะพร้าว หลอดดูด",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 11,
+  "en": "Cupcake Cat",
+  "th": "แมวคัพเค้ก",
+  "body": "Fluffy",
+  "colours": "ชมพู + ครีม",
+  "special": "นั่งในถ้วยคัพเค้ก ครีมบนหัว",
+  "effect": "เม็ดน้ำตาลหลากสี"
+ },
+ {
+  "tier": "Legendary",
+  "n": 12,
+  "en": "Donut Cat",
+  "th": "แมวโดนัท",
+  "body": "Loaf",
+  "colours": "น้ำตาล + ชมพู",
+  "special": "ห่วงโดนัทรอบตัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 13,
+  "en": "Ice Cream Cat",
+  "th": "แมวไอศกรีม",
+  "body": "Fluffy",
+  "colours": "ชมพู + ฟ้า + โคน",
+  "special": "หัวเป็นไอศกรีมสามสกู๊ป",
+  "effect": "หยดละลาย"
+ },
+ {
+  "tier": "Legendary",
+  "n": 14,
+  "en": "Cake Cat",
+  "th": "แมวเค้ก",
+  "body": "Loaf",
+  "colours": "ขาว + แดง",
+  "special": "ตัวเป็นเค้กหลายชั้น เทียนบนหัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 15,
+  "en": "Sushi Cat",
+  "th": "แมวซูชิ",
+  "body": "Loaf",
+  "colours": "ขาว + ส้ม + ดำ",
+  "special": "นอนบนข้าว ห่อสาหร่าย",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 16,
+  "en": "Burger Cat",
+  "th": "แมวเบอร์เกอร์",
+  "body": "Fluffy",
+  "colours": "น้ำตาล + เขียว",
+  "special": "ขนมปังบนล่าง ผักชีส",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 17,
+  "en": "Pizza Cat",
+  "th": "แมวพิซซ่า",
+  "body": "Slim",
+  "colours": "เหลือง + แดง",
+  "special": "ตัวเป็นชิ้นพิซซ่า หน้าเปปเปอโรนี",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 18,
+  "en": "Taco Cat",
+  "th": "แมวทาโก้",
+  "body": "Loaf",
+  "colours": "เหลือง + เขียว",
+  "special": "อยู่ในแผ่นทาโก้",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 19,
+  "en": "Hotdog Cat",
+  "th": "แมวฮอตดอก",
+  "body": "Slim",
+  "colours": "น้ำตาล + แดง",
+  "special": "อยู่ในขนมปังฮอตดอก ซอสบนหลัง",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 20,
+  "en": "Popcorn Cat",
+  "th": "แมวป๊อปคอร์น",
+  "body": "Fluffy",
+  "colours": "ขาว + แดงขาว",
+  "special": "ขนเป็นป๊อปคอร์น ถังลายทาง",
+  "effect": "ป๊อปคอร์นเด้ง"
+ },
+ {
+  "tier": "Legendary",
+  "n": 21,
+  "en": "Boba Cat",
+  "th": "แมวชานมไข่มุก",
+  "body": "Loaf",
+  "colours": "น้ำตาลนม",
+  "special": "อยู่ในแก้วชานม ไข่มุกดำ หลอดใหญ่",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 22,
+  "en": "Mochi Cat",
+  "th": "แมวโมจิ",
+  "body": "Fluffy",
+  "colours": "ขาว + ชมพู",
+  "special": "ตัวนุ่มยืดเหมือนโมจิ",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 23,
+  "en": "Macaron Cat",
+  "th": "แมวมาการง",
+  "body": "Loaf",
+  "colours": "พาสเทลหลายสี",
+  "special": "หัวเป็นมาการงซ้อน",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 24,
+  "en": "Lollipop Cat",
+  "th": "แมวอมยิ้ม",
+  "body": "Slim",
+  "colours": "ชมพูขาวเกลียว",
+  "special": "หางเป็นอมยิ้มเกลียว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 25,
+  "en": "Cookie Cat",
+  "th": "แมวคุกกี้",
+  "body": "Loaf",
+  "colours": "น้ำตาลทอง",
+  "special": "ตัวเป็นคุกกี้ช็อกชิพ",
+  "effect": "เศษคุกกี้"
+ },
+ {
+  "tier": "Legendary",
+  "n": 26,
+  "en": "Whale Cat",
+  "th": "แมววาฬ",
+  "body": "Fluffy",
+  "colours": "น้ำเงิน + ขาว",
+  "special": "หางวาฬ ครีบ พ่นน้ำจากหัว",
+  "effect": "น้ำพุ่ง"
+ },
+ {
+  "tier": "Legendary",
+  "n": 27,
+  "en": "Shark Cat",
+  "th": "แมวฉลาม",
+  "body": "Slim",
+  "colours": "เทาฟ้า",
+  "special": "ใส่ชุดฉลาม ครีบบนหลัง ฟันน่ารัก",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 28,
+  "en": "Gorilla Cat",
+  "th": "แมวกอริลลา",
+  "body": "Fluffy",
+  "colours": "ดำ + เทา",
+  "special": "ตัวใหญ่ แขนยาวแบบกอริลลา ทุบอก",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 29,
+  "en": "Panda Cat",
+  "th": "แมวแพนด้า",
+  "body": "Fluffy",
+  "colours": "ขาว + ดำ",
+  "special": "รอบตาดำ หูดำ ถือไผ่",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 30,
+  "en": "Bee Cat",
+  "th": "แมวผึ้ง",
+  "body": "Loaf",
+  "colours": "เหลือง + ดำ",
+  "special": "ลายผึ้ง ปีกใส หนวด",
+  "effect": "ปีกกระพือ"
+ },
+ {
+  "tier": "Legendary",
+  "n": 31,
+  "en": "Frog Cat",
+  "th": "แมวกบ",
+  "body": "Loaf",
+  "colours": "เขียว",
+  "special": "ใส่หมวกกบ ตาโปน",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 32,
+  "en": "Penguin Cat",
+  "th": "แมวเพนกวิน",
+  "body": "Loaf",
+  "colours": "ดำ + ขาว + ส้ม",
+  "special": "ชุดเพนกวิน ปากส้ม",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 33,
+  "en": "Bunny Cat",
+  "th": "แมวกระต่าย",
+  "body": "Fluffy",
+  "colours": "ขาว + ชมพู",
+  "special": "หูกระต่ายยาว หางปุย",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 34,
+  "en": "Owl Cat",
+  "th": "แมวนกฮูก",
+  "body": "Fluffy",
+  "colours": "น้ำตาล + ครีม",
+  "special": "ปีกนก ตาโต ขนหูแหลม",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 35,
+  "en": "Turtle Cat",
+  "th": "แมวเต่า",
+  "body": "Loaf",
+  "colours": "เขียว + น้ำตาล",
+  "special": "แบกกระดองเต่า",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 36,
+  "en": "Fox Cat",
+  "th": "แมวจิ้งจอก",
+  "body": "Slim",
+  "colours": "ส้ม + ขาว",
+  "special": "หางพวงใหญ่ หน้าแหลม",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 37,
+  "en": "Bear Cat",
+  "th": "แมวหมี",
+  "body": "Fluffy",
+  "colours": "น้ำตาล",
+  "special": "หูกลมแบบหมี ถือโหลน้ำผึ้ง",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 38,
+  "en": "Lion Cat",
+  "th": "แมวสิงโต",
+  "body": "Fluffy",
+  "colours": "ทอง + แผงคอส้ม",
+  "special": "แผงคอใหญ่",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 39,
+  "en": "Bat Cat",
+  "th": "แมวค้างคาว",
+  "body": "Slim",
+  "colours": "ม่วงเข้ม",
+  "special": "ปีกค้างคาวน่ารัก ห้อยหัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 40,
+  "en": "Octopus Cat",
+  "th": "แมวปลาหมึก",
+  "body": "Fluffy",
+  "colours": "ชมพูม่วง",
+  "special": "หนวดปลาหมึกแทนขา",
+  "effect": "หมึกพ่น"
+ },
+ {
+  "tier": "Legendary",
+  "n": 41,
+  "en": "Crab Cat",
+  "th": "แมวปู",
+  "body": "Loaf",
+  "colours": "แดง",
+  "special": "ก้ามปูใหญ่สองข้าง",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 42,
+  "en": "Duck Cat",
+  "th": "แมวเป็ด",
+  "body": "Loaf",
+  "colours": "เหลือง + ส้ม",
+  "special": "ปากเป็ด ห่วงยาง",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 43,
+  "en": "Sheep Cat",
+  "th": "แมวแกะ",
+  "body": "Fluffy",
+  "colours": "ขาวปุย",
+  "special": "ขนแกะปุยๆ เขาม้วน",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 44,
+  "en": "Deer Cat",
+  "th": "แมวกวาง",
+  "body": "Slim",
+  "colours": "น้ำตาลจุดขาว",
+  "special": "เขากวาง ลายจุด",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 45,
+  "en": "Elephant Cat",
+  "th": "แมวช้าง",
+  "body": "Fluffy",
+  "colours": "เทา",
+  "special": "งวงสั้น หูใหญ่",
+  "effect": "พ่นน้ำ"
+ },
+ {
+  "tier": "Legendary",
+  "n": 46,
+  "en": "Koala Cat",
+  "th": "แมวโคอาล่า",
+  "body": "Fluffy",
+  "colours": "เทา + ขาว",
+  "special": "หูปุยใหญ่ จมูกดำโต กอดกิ่งไม้",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 47,
+  "en": "Axolotl Cat",
+  "th": "แมวแอกโซลอเติล",
+  "body": "Slim",
+  "colours": "ชมพู",
+  "special": "เหงือกฟูข้างหัว หางแบน",
+  "effect": "ฟองอากาศ"
+ },
+ {
+  "tier": "Legendary",
+  "n": 48,
+  "en": "Peacock Cat",
+  "th": "แมวนกยูง",
+  "body": "Slim",
+  "colours": "ฟ้าเขียว",
+  "special": "หางนกยูงรำแพน",
+  "effect": "ประกายสีรุ้ง"
+ },
+ {
+  "tier": "Legendary",
+  "n": 49,
+  "en": "Snail Cat",
+  "th": "แมวหอยทาก",
+  "body": "Loaf",
+  "colours": "ครีม + น้ำตาล",
+  "special": "แบกเปลือกหอยเกลียว",
+  "effect": "-"
+ },
+ {
+  "tier": "Legendary",
+  "n": 50,
+  "en": "Ladybug Cat",
+  "th": "แมวเต่าทอง",
+  "body": "Loaf",
+  "colours": "แดงจุดดำ",
+  "special": "ปีกเต่าทองจุดดำ",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 1,
+  "en": "Dragon Cat",
+  "th": "แมวมังกร",
+  "body": "Slim",
+  "colours": "เขียว + ทอง",
+  "special": "ปีกมังกร เขา หางมีหนาม",
+  "effect": "ไฟพ่นเล็กๆ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 2,
+  "en": "Fire Dragon Cat",
+  "th": "แมวมังกรไฟ",
+  "body": "Slim",
+  "colours": "แดง + ส้ม",
+  "special": "ปีกเปลวไฟ เกล็ดแดง",
+  "effect": "เปลวไฟรอบตัว"
+ },
+ {
+  "tier": "Mythical",
+  "n": 3,
+  "en": "Ice Dragon Cat",
+  "th": "แมวมังกรน้ำแข็ง",
+  "body": "Slim",
+  "colours": "ฟ้าอ่อน + ขาว",
+  "special": "ปีกผลึกน้ำแข็ง",
+  "effect": "เกล็ดหิมะ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 4,
+  "en": "Phoenix Cat",
+  "th": "แมวฟีนิกซ์",
+  "body": "Slim",
+  "colours": "ส้ม + เหลือง",
+  "special": "ปีกขนนกไฟ หางยาวพลิ้ว",
+  "effect": "ขนนกไฟร่วง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 5,
+  "en": "Unicorn Cat",
+  "th": "แมวยูนิคอร์น",
+  "body": "Fluffy",
+  "colours": "ขาว + รุ้ง",
+  "special": "เขาเกลียวทอง แผงคอสีรุ้ง",
+  "effect": "ดาวสีรุ้ง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 6,
+  "en": "Pegasus Cat",
+  "th": "แมวเพกาซัส",
+  "body": "Slim",
+  "colours": "ขาว + ฟ้า",
+  "special": "ปีกขนนกขาวใหญ่",
+  "effect": "ขนนกลอย"
+ },
+ {
+  "tier": "Mythical",
+  "n": 7,
+  "en": "Griffin Cat",
+  "th": "แมวกริฟฟิน",
+  "body": "Fluffy",
+  "colours": "ทอง + น้ำตาล",
+  "special": "หัวนกอินทรี ปีก",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 8,
+  "en": "Mermaid Cat",
+  "th": "แมวเงือก",
+  "body": "Slim",
+  "colours": "ฟ้าเขียว + ชมพู",
+  "special": "หางปลาเงือก เปลือกหอย",
+  "effect": "ฟองน้ำ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 9,
+  "en": "Kraken Cat",
+  "th": "แมวคราเคน",
+  "body": "Fluffy",
+  "colours": "ม่วงเข้ม",
+  "special": "หนวดยักษ์ ตาเรือง",
+  "effect": "น้ำวน"
+ },
+ {
+  "tier": "Mythical",
+  "n": 10,
+  "en": "Yeti Cat",
+  "th": "แมวเยติ",
+  "body": "Fluffy",
+  "colours": "ขาว + ฟ้า",
+  "special": "ขนยาวหนา ตัวใหญ่",
+  "effect": "หิมะตก"
+ },
+ {
+  "tier": "Mythical",
+  "n": 11,
+  "en": "Stone Golem Cat",
+  "th": "แมวโกเลมหิน",
+  "body": "Loaf",
+  "colours": "เทาหิน + เขียวมอส",
+  "special": "ตัวเป็นก้อนหินต่อกัน ตาเรือง",
+  "effect": "ฝุ่นหิน"
+ },
+ {
+  "tier": "Mythical",
+  "n": 12,
+  "en": "Crystal Cat",
+  "th": "แมวคริสตัล",
+  "body": "Slim",
+  "colours": "ฟ้าใส",
+  "special": "ตัวเป็นผลึกเหลี่ยม",
+  "effect": "แสงสะท้อนวิบวับ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 13,
+  "en": "Fairy Cat",
+  "th": "แมวนางฟ้าน้อย",
+  "body": "Slim",
+  "colours": "ชมพู + เขียวอ่อน",
+  "special": "ปีกผีเสื้อใส ไม้กายสิทธิ์ดอกไม้",
+  "effect": "ฝุ่นนางฟ้า"
+ },
+ {
+  "tier": "Mythical",
+  "n": 14,
+  "en": "Elf Cat",
+  "th": "แมวเอลฟ์",
+  "body": "Slim",
+  "colours": "เขียว + ทอง",
+  "special": "หูแหลมยาว ชุดเอลฟ์ ธนู",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 15,
+  "en": "Vampire Cat",
+  "th": "แมววอมไพร์",
+  "body": "Slim",
+  "colours": "ดำ + แดง",
+  "special": "ผ้าคลุมปกตั้ง เขี้ยวน่ารัก",
+  "effect": "ค้างคาวบิน"
+ },
+ {
+  "tier": "Mythical",
+  "n": 16,
+  "en": "Werewolf Cat",
+  "th": "แมวมนุษย์หมาป่า",
+  "body": "Fluffy",
+  "colours": "เทาเข้ม",
+  "special": "ขนฟูแบบหมาป่า หอนใส่พระจันทร์",
+  "effect": "พระจันทร์ลอย"
+ },
+ {
+  "tier": "Mythical",
+  "n": 17,
+  "en": "Zombie Cat",
+  "th": "แมวซอมบี้",
+  "body": "Loaf",
+  "colours": "เขียวซีด",
+  "special": "ผ้าพันแผล ตาไม่เท่ากัน (น่ารัก ไม่น่ากลัว)",
+  "effect": "ควันเขียว"
+ },
+ {
+  "tier": "Mythical",
+  "n": 18,
+  "en": "Ghost Cat",
+  "th": "แมวผี",
+  "body": "Fluffy",
+  "colours": "ขาวโปร่ง",
+  "special": "ตัวโปร่งแสง ลอยได้",
+  "effect": "ลอยขึ้นลง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 19,
+  "en": "Mummy Cat",
+  "th": "แมวมัมมี่",
+  "body": "Slim",
+  "colours": "ครีม",
+  "special": "ผ้าพันทั้งตัว ตาโผล่",
+  "effect": "ทรายลอย"
+ },
+ {
+  "tier": "Mythical",
+  "n": 20,
+  "en": "Mech Cat",
+  "th": "แมวจักรกล",
+  "body": "Loaf",
+  "colours": "เงิน + ฟ้านีออน",
+  "special": "ตัวเหล็ก ข้อต่อ เสาอากาศ",
+  "effect": "ไฟกระพริบ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 21,
+  "en": "Cyborg Cat",
+  "th": "แมวไซบอร์ก",
+  "body": "Slim",
+  "colours": "ขาว + น้ำเงิน",
+  "special": "ครึ่งตัวกลไก ตาเลเซอร์",
+  "effect": "เส้นแสงสแกน"
+ },
+ {
+  "tier": "Mythical",
+  "n": 22,
+  "en": "Alien Cat",
+  "th": "แมวเอเลี่ยน",
+  "body": "Slim",
+  "colours": "เขียวมะนาว",
+  "special": "หัวโต ตาดำใหญ่ หนวดเสาอากาศ",
+  "effect": "แสงเขียว"
+ },
+ {
+  "tier": "Mythical",
+  "n": 23,
+  "en": "UFO Cat",
+  "th": "แมวจานบิน",
+  "body": "Loaf",
+  "colours": "เงิน + ม่วง",
+  "special": "นั่งในจานบิน",
+  "effect": "ลำแสงดูด"
+ },
+ {
+  "tier": "Mythical",
+  "n": 24,
+  "en": "Pumpkin King Cat",
+  "th": "แมวราชาฟักทอง",
+  "body": "Fluffy",
+  "colours": "ส้ม + ดำ",
+  "special": "หัวฟักทองแกะสลัก มงกุฎ",
+  "effect": "ไฟในฟักทอง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 25,
+  "en": "Witch Cat",
+  "th": "แมวแม่มด",
+  "body": "Slim",
+  "colours": "ม่วง + ดำ",
+  "special": "หมวกแม่มด ไม้กวาด หม้อยา",
+  "effect": "ฟองยาลอย"
+ },
+ {
+  "tier": "Mythical",
+  "n": 26,
+  "en": "Snow Spirit Cat",
+  "th": "แมววิญญาณหิมะ",
+  "body": "Fluffy",
+  "colours": "ขาว + ฟ้า",
+  "special": "ตัวเป็นหิมะ มงกุฎน้ำแข็ง",
+  "effect": "พายุหิมะเล็ก"
+ },
+ {
+  "tier": "Mythical",
+  "n": 27,
+  "en": "Thunderbird Cat",
+  "th": "แมวนกสายฟ้า",
+  "body": "Slim",
+  "colours": "น้ำเงิน + เหลือง",
+  "special": "ปีกสายฟ้า",
+  "effect": "สายฟ้าแลบ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 28,
+  "en": "Kitsune Cat",
+  "th": "แมวคิตสึเนะ",
+  "body": "Slim",
+  "colours": "ขาว + แดง",
+  "special": "หางเก้าหาง หน้ากากจิ้งจอก",
+  "effect": "ไฟจิ้งจอกสีฟ้า"
+ },
+ {
+  "tier": "Mythical",
+  "n": 29,
+  "en": "Naga Cat",
+  "th": "แมวพญานาค",
+  "body": "Slim",
+  "colours": "เขียวทอง",
+  "special": "หงอนพญานาค เกล็ดทอง หางงู",
+  "effect": "ประกายน้ำ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 30,
+  "en": "Garuda Cat",
+  "th": "แมวครุฑ",
+  "body": "Fluffy",
+  "colours": "แดง + ทอง",
+  "special": "ปีกครุฑ ปากนก มงกุฎไทย",
+  "effect": "ขนนกทอง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 31,
+  "en": "Cerberus Cat",
+  "th": "แมวสามหัว",
+  "body": "Fluffy",
+  "colours": "ดำ + แดง",
+  "special": "สามหัวน่ารัก ปลอกคอหนาม",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 32,
+  "en": "Hydra Cat",
+  "th": "แมวไฮดรา",
+  "body": "Slim",
+  "colours": "เขียวน้ำทะเล",
+  "special": "หางเป็นงูหลายหัว",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 33,
+  "en": "Treant Cat",
+  "th": "แมวต้นไม้เดินได้",
+  "body": "Loaf",
+  "colours": "น้ำตาลไม้ + เขียว",
+  "special": "ตัวเป็นไม้ มีใบไม้งอก",
+  "effect": "ใบไม้ปลิว"
+ },
+ {
+  "tier": "Mythical",
+  "n": 34,
+  "en": "Mushroom Spirit Cat",
+  "th": "แมววิญญาณเห็ด",
+  "body": "Fluffy",
+  "colours": "แดงจุด + ครีม",
+  "special": "หมวกเห็ดเรืองแสง",
+  "effect": "สปอร์เรืองแสง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 35,
+  "en": "Lava Cat",
+  "th": "แมวลาวา",
+  "body": "Loaf",
+  "colours": "ดำ + ส้มลาวา",
+  "special": "ตัวหินดำมีรอยแตกลาวา",
+  "effect": "ประกายไฟ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 36,
+  "en": "Cloud Dragon Cat",
+  "th": "แมวมังกรเมฆ",
+  "body": "Slim",
+  "colours": "ขาว + ฟ้าอ่อน",
+  "special": "ตัวยาวเป็นเมฆ หนวดมังกร",
+  "effect": "เมฆลอย"
+ },
+ {
+  "tier": "Mythical",
+  "n": 37,
+  "en": "Sea Serpent Cat",
+  "th": "แมวงูทะเล",
+  "body": "Slim",
+  "colours": "น้ำเงิน + เขียว",
+  "special": "ครีบหลัง ตัวยาว",
+  "effect": "คลื่นเล็ก"
+ },
+ {
+  "tier": "Mythical",
+  "n": 38,
+  "en": "Gargoyle Cat",
+  "th": "แมวการ์กอยล์",
+  "body": "Loaf",
+  "colours": "เทาหิน",
+  "special": "ปีกหิน เขาเล็ก",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 39,
+  "en": "Genie Cat",
+  "th": "แมวจีนี่",
+  "body": "Slim",
+  "colours": "ฟ้า + ทอง",
+  "special": "ครึ่งล่างเป็นควันจากตะเกียง",
+  "effect": "ควันวิเศษ"
+ },
+ {
+  "tier": "Mythical",
+  "n": 40,
+  "en": "Dark Knight Cat",
+  "th": "แมวอัศวินดำ",
+  "body": "Slim",
+  "colours": "ดำ + ม่วง",
+  "special": "เกราะดำ ดาบเรือง",
+  "effect": "ออร่าม่วง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 41,
+  "en": "Oni Cat",
+  "th": "แมวยักษ์โอนิ",
+  "body": "Fluffy",
+  "colours": "แดง",
+  "special": "เขาเล็กสองข้าง กระบอง (น่ารัก)",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 42,
+  "en": "Toy Soldier Cat",
+  "th": "แมวทหารของเล่น",
+  "body": "Slim",
+  "colours": "แดง + น้ำเงิน",
+  "special": "กุญแจไขลานที่หลัง",
+  "effect": "เดินแบบของเล่น"
+ },
+ {
+  "tier": "Mythical",
+  "n": 43,
+  "en": "Teddy Bear Cat",
+  "th": "แมวตุ๊กตาหมี",
+  "body": "Fluffy",
+  "colours": "น้ำตาลอ่อน",
+  "special": "รอยเย็บ กระดุมตา",
+  "effect": "-"
+ },
+ {
+  "tier": "Mythical",
+  "n": 44,
+  "en": "Slime Cat",
+  "th": "แมวสไลม์",
+  "body": "Loaf",
+  "colours": "เขียวใส",
+  "special": "ตัวเป็นวุ้นใส เด้งดึ๋ง",
+  "effect": "เด้งไปมา"
+ },
+ {
+  "tier": "Mythical",
+  "n": 45,
+  "en": "Candy Monster Cat",
+  "th": "แมวปีศาจขนม",
+  "body": "Fluffy",
+  "colours": "ชมพู + ฟ้า",
+  "special": "ตัวเป็นสายไหม ลูกอมเป็นเขา",
+  "effect": "ลูกอมลอย"
+ },
+ {
+  "tier": "Mythical",
+  "n": 46,
+  "en": "Clockwork Cat",
+  "th": "แมวไขลาน",
+  "body": "Loaf",
+  "colours": "ทองเหลือง",
+  "special": "เฟืองหมุนบนตัว",
+  "effect": "เฟืองหมุน"
+ },
+ {
+  "tier": "Mythical",
+  "n": 47,
+  "en": "Steam Mech Cat",
+  "th": "แมวจักรกลไอน้ำ",
+  "body": "Fluffy",
+  "colours": "ทองแดง + เหล็ก",
+  "special": "ท่อไอน้ำ หมวกนักบิน",
+  "effect": "ไอน้ำพุ่ง"
+ },
+ {
+  "tier": "Mythical",
+  "n": 48,
+  "en": "Pixel Glitch Cat",
+  "th": "แมวพิกเซลกลิตช์",
+  "body": "Loaf",
+  "colours": "ม่วง + ฟ้านีออน",
+  "special": "ตัวพิกเซลแตกๆ",
+  "effect": "กระตุกแบบกลิตช์"
+ },
+ {
+  "tier": "Mythical",
+  "n": 49,
+  "en": "Neon Cyber Cat",
+  "th": "แมวไซเบอร์นีออน",
+  "body": "Slim",
+  "colours": "ดำ + ชมพูนีออน",
+  "special": "เส้นนีออนทั่วตัว แว่นไซเบอร์",
+  "effect": "แสงนีออน"
+ },
+ {
+  "tier": "Mythical",
+  "n": 50,
+  "en": "Bubble Cat",
+  "th": "แมวฟองสบู่",
+  "body": "Fluffy",
+  "colours": "ใสสีรุ้ง",
+  "special": "อยู่ในฟองสบู่ลอย",
+  "effect": "ฟองสบู่ลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 1,
+  "en": "Cat God",
+  "th": "แมวเทพเจ้า",
+  "body": "Fluffy",
+  "colours": "ทอง + ขาว",
+  "special": "มงกุฎทอง รัศมีหลังศีรษะ ปีกทอง",
+  "effect": "ลำแสงจากฟ้า"
+ },
+ {
+  "tier": "Secret",
+  "n": 2,
+  "en": "Sun God Cat",
+  "th": "แมวเทพพระอาทิตย์",
+  "body": "Fluffy",
+  "colours": "ทอง + ส้ม",
+  "special": "จานพระอาทิตย์หลังตัว",
+  "effect": "แสงอาทิตย์เปล่ง"
+ },
+ {
+  "tier": "Secret",
+  "n": 3,
+  "en": "Moon Goddess Cat",
+  "th": "แมวเทพีพระจันทร์",
+  "body": "Slim",
+  "colours": "ขาวเงิน + น้ำเงิน",
+  "special": "พระจันทร์เสี้ยวบนหัว",
+  "effect": "ดาวระยิบ"
+ },
+ {
+  "tier": "Secret",
+  "n": 4,
+  "en": "Star Emperor Cat",
+  "th": "แมวจักรพรรดิดวงดาว",
+  "body": "Slim",
+  "colours": "น้ำเงินเข้ม + ทอง",
+  "special": "เสื้อคลุมลายดาว คทาดาว",
+  "effect": "ดาวหมุนรอบ"
+ },
+ {
+  "tier": "Secret",
+  "n": 5,
+  "en": "Galaxy Cat",
+  "th": "แมวกาแล็กซี",
+  "body": "Fluffy",
+  "colours": "ม่วง + ชมพู + ดาว",
+  "special": "ตัวเป็นลายจักรวาล",
+  "effect": "เนบิวลาเรืองแสง"
+ },
+ {
+  "tier": "Secret",
+  "n": 6,
+  "en": "Black Hole Cat",
+  "th": "แมวหลุมดำ",
+  "body": "Loaf",
+  "colours": "ดำ + ม่วงเรือง",
+  "special": "วงแหวนหลุมดำรอบตัว",
+  "effect": "แสงถูกดูดเข้า"
+ },
+ {
+  "tier": "Secret",
+  "n": 7,
+  "en": "Time Keeper Cat",
+  "th": "แมวผู้คุมเวลา",
+  "body": "Slim",
+  "colours": "ทอง + ฟ้า",
+  "special": "นาฬิกาทรายและหน้าปัดนาฬิกาลอย",
+  "effect": "เข็มนาฬิกาหมุน"
+ },
+ {
+  "tier": "Secret",
+  "n": 8,
+  "en": "Thunder God Cat",
+  "th": "แมวเทพสายฟ้า",
+  "body": "Fluffy",
+  "colours": "ขาว + เหลือง",
+  "special": "ค้อนสายฟ้า ผ้าคลุมแดง",
+  "effect": "สายฟ้ารอบตัว"
+ },
+ {
+  "tier": "Secret",
+  "n": 9,
+  "en": "Ocean God Cat",
+  "th": "แมวเทพมหาสมุทร",
+  "body": "Slim",
+  "colours": "น้ำเงิน + ทอง",
+  "special": "สามง่าม มงกุฎปะการัง",
+  "effect": "คลื่นหมุนรอบ"
+ },
+ {
+  "tier": "Secret",
+  "n": 10,
+  "en": "Earth Titan Cat",
+  "th": "แมวไททันแผ่นดิน",
+  "body": "Fluffy",
+  "colours": "น้ำตาล + เขียว",
+  "special": "ภูเขาเล็กบนหลัง ต้นไม้งอก",
+  "effect": "หินลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 11,
+  "en": "Fire Emperor Cat",
+  "th": "แมวจักรพรรดิไฟ",
+  "body": "Fluffy",
+  "colours": "แดง + ทอง",
+  "special": "มงกุฎเปลวไฟ",
+  "effect": "พายุไฟ"
+ },
+ {
+  "tier": "Secret",
+  "n": 12,
+  "en": "Ice Queen Cat",
+  "th": "แมวราชินีน้ำแข็ง",
+  "body": "Slim",
+  "colours": "ฟ้าอ่อน + ขาว",
+  "special": "มงกุฎน้ำแข็ง ชุดผลึก",
+  "effect": "เกล็ดน้ำแข็งหมุน"
+ },
+ {
+  "tier": "Secret",
+  "n": 13,
+  "en": "Wind Spirit Cat",
+  "th": "แมววิญญาณลม",
+  "body": "Slim",
+  "colours": "เขียวมิ้นต์ใส",
+  "special": "ตัวเป็นสายลมม้วน",
+  "effect": "ใบไม้หมุน"
+ },
+ {
+  "tier": "Secret",
+  "n": 14,
+  "en": "Angel Cat",
+  "th": "แมวเทวดา",
+  "body": "Fluffy",
+  "colours": "ขาว + ทอง",
+  "special": "ปีกขาวคู่ใหญ่ วงแหวนทอง",
+  "effect": "ขนนกขาวร่วง"
+ },
+ {
+  "tier": "Secret",
+  "n": 15,
+  "en": "Shadow King Cat",
+  "th": "แมวราชาเงา",
+  "body": "Slim",
+  "colours": "ดำ + ม่วง",
+  "special": "มงกุฎเงา ตาม่วงเรือง (ไม่น่ากลัว)",
+  "effect": "เงาพลิ้ว"
+ },
+ {
+  "tier": "Secret",
+  "n": 16,
+  "en": "Rainbow Spirit Cat",
+  "th": "แมววิญญาณสายรุ้ง",
+  "body": "Fluffy",
+  "colours": "สีรุ้ง",
+  "special": "ขนไล่สีรุ้ง",
+  "effect": "สายรุ้งตามตัว"
+ },
+ {
+  "tier": "Secret",
+  "n": 17,
+  "en": "Crystal Titan Cat",
+  "th": "แมวไททันคริสตัล",
+  "body": "Fluffy",
+  "colours": "ฟ้าใส + ม่วง",
+  "special": "ผลึกยักษ์งอกทั่วตัว",
+  "effect": "แสงหักเหสีรุ้ง"
+ },
+ {
+  "tier": "Secret",
+  "n": 18,
+  "en": "Celestial Dragon Cat",
+  "th": "แมวมังกรสวรรค์",
+  "body": "Slim",
+  "colours": "ขาว + ทอง",
+  "special": "ตัวยาวแบบมังกรจีน",
+  "effect": "เมฆทองลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 19,
+  "en": "Cosmic Whale Cat",
+  "th": "แมววาฬอวกาศ",
+  "body": "Fluffy",
+  "colours": "น้ำเงินเข้ม + ดาว",
+  "special": "ตัวลายจักรวาล หางวาฬ",
+  "effect": "ดาวพ่นจากหัว"
+ },
+ {
+  "tier": "Secret",
+  "n": 20,
+  "en": "Nebula Cat",
+  "th": "แมวเนบิวลา",
+  "body": "Slim",
+  "colours": "ชมพู + ฟ้า",
+  "special": "ขนเป็นกลุ่มหมอกอวกาศ",
+  "effect": "หมอกเรืองแสง"
+ },
+ {
+  "tier": "Secret",
+  "n": 21,
+  "en": "Comet Rider Cat",
+  "th": "แมวขี่ดาวหาง",
+  "body": "Slim",
+  "colours": "ฟ้า + ขาว",
+  "special": "นั่งบนดาวหาง",
+  "effect": "หางดาวหาง"
+ },
+ {
+  "tier": "Secret",
+  "n": 22,
+  "en": "Planet Cat",
+  "th": "แมวดาวเคราะห์",
+  "body": "Loaf",
+  "colours": "ส้ม + วงแหวน",
+  "special": "ตัวกลมมีวงแหวนดาวเสาร์",
+  "effect": "วงแหวนหมุน"
+ },
+ {
+  "tier": "Secret",
+  "n": 23,
+  "en": "Aurora Cat",
+  "th": "แมวแสงเหนือ",
+  "body": "Fluffy",
+  "colours": "เขียว + ม่วง",
+  "special": "ขนพลิ้วเป็นแสงเหนือ",
+  "effect": "ม่านแสงพลิ้ว"
+ },
+ {
+  "tier": "Secret",
+  "n": 24,
+  "en": "Dream Weaver Cat",
+  "th": "แมวทอฝัน",
+  "body": "Fluffy",
+  "colours": "ม่วงอ่อน + ขาว",
+  "special": "หมวกนอนดาว เส้นไหมฝัน",
+  "effect": "ฟองฝันลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 25,
+  "en": "Void Walker Cat",
+  "th": "แมวเดินมิติ",
+  "body": "Slim",
+  "colours": "ดำ + ฟ้านีออน",
+  "special": "ประตูมิติที่เท้า",
+  "effect": "รอยแยกมิติ"
+ },
+ {
+  "tier": "Secret",
+  "n": 26,
+  "en": "AI God Cat",
+  "th": "แมวเทพปัญญาประดิษฐ์",
+  "body": "Loaf",
+  "colours": "ขาว + ฟ้านีออน",
+  "special": "ตัวเป็นวงจร จอแสดงหน้า",
+  "effect": "โค้ดลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 27,
+  "en": "Mecha Titan Cat",
+  "th": "แมวไททันจักรกล",
+  "body": "Fluffy",
+  "colours": "เหล็ก + ทอง",
+  "special": "หุ่นยนต์ยักษ์ ปีกเจ็ต",
+  "effect": "ไอพ่น"
+ },
+ {
+  "tier": "Secret",
+  "n": 28,
+  "en": "Diamond Emperor Cat",
+  "th": "แมวจักรพรรดิเพชร",
+  "body": "Fluffy",
+  "colours": "เพชรใส + ทอง",
+  "special": "ตัวเพชรเจียระไน",
+  "effect": "ประกายเพชร"
+ },
+ {
+  "tier": "Secret",
+  "n": 29,
+  "en": "Bastet Cat",
+  "th": "แมวบาสเตต",
+  "body": "Slim",
+  "colours": "ทอง + ดำ",
+  "special": "เครื่องประดับอียิปต์ทอง",
+  "effect": "ทรายทองหมุน"
+ },
+ {
+  "tier": "Secret",
+  "n": 30,
+  "en": "Zodiac Cat",
+  "th": "แมวจักรราศี",
+  "body": "Fluffy",
+  "colours": "น้ำเงิน + ทอง",
+  "special": "วงล้อ 12 ราศีหลังตัว",
+  "effect": "สัญลักษณ์ราศีลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 31,
+  "en": "Elemental Cat",
+  "th": "แมวธาตุทั้งสี่",
+  "body": "Fluffy",
+  "colours": "แดง ฟ้า เขียว น้ำตาล",
+  "special": "ลูกแก้วธาตุสี่ลูกลอยรอบ",
+  "effect": "ธาตุหมุนรอบ"
+ },
+ {
+  "tier": "Secret",
+  "n": 32,
+  "en": "Phoenix Emperor Cat",
+  "th": "แมวจักรพรรดิฟีนิกซ์",
+  "body": "Slim",
+  "colours": "ทอง + แดง",
+  "special": "ปีกไฟใหญ่ มงกุฎขนนก",
+  "effect": "เพลิงทอง"
+ },
+ {
+  "tier": "Secret",
+  "n": 33,
+  "en": "Kraken Lord Cat",
+  "th": "แมวเจ้าแห่งคราเคน",
+  "body": "Fluffy",
+  "colours": "ม่วง + ทอง",
+  "special": "หนวดยักษ์ มงกุฎปะการัง",
+  "effect": "พายุน้ำ"
+ },
+ {
+  "tier": "Secret",
+  "n": 34,
+  "en": "World Tree Cat",
+  "th": "แมวต้นไม้โลก",
+  "body": "Fluffy",
+  "colours": "เขียว + ทอง",
+  "special": "ต้นไม้ใหญ่งอกจากหลัง",
+  "effect": "ใบไม้เรืองแสง"
+ },
+ {
+  "tier": "Secret",
+  "n": 35,
+  "en": "Sky Whale Cat",
+  "th": "แมววาฬฟ้า",
+  "body": "Fluffy",
+  "colours": "ฟ้า + ขาว",
+  "special": "วาฬบินได้ มีเมฆเกาะ",
+  "effect": "เมฆลอยตาม"
+ },
+ {
+  "tier": "Secret",
+  "n": 36,
+  "en": "Thunder Dragon King Cat",
+  "th": "แมวราชามังกรสายฟ้า",
+  "body": "Slim",
+  "colours": "น้ำเงิน + ทอง",
+  "special": "เขาสายฟ้า ปีกใหญ่",
+  "effect": "สายฟ้าฟาด"
+ },
+ {
+  "tier": "Secret",
+  "n": 37,
+  "en": "Infinity Cat",
+  "th": "แมวอนันต์",
+  "body": "Slim",
+  "colours": "ขาว + รุ้ง",
+  "special": "สัญลักษณ์อนันต์ลอยเหนือหัว",
+  "effect": "แสงวนไม่สิ้นสุด"
+ },
+ {
+  "tier": "Secret",
+  "n": 38,
+  "en": "Game God Cat",
+  "th": "แมวเทพเกมเมอร์",
+  "body": "Loaf",
+  "colours": "ม่วง + เขียวนีออน",
+  "special": "จอยเกม หูฟังเทพ",
+  "effect": "พิกเซลลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 39,
+  "en": "Candy Queen Cat",
+  "th": "แมวราชินีขนม",
+  "body": "Fluffy",
+  "colours": "ชมพู + ขาว",
+  "special": "มงกุฎลูกอม คทาอมยิ้ม",
+  "effect": "ฝนลูกอม"
+ },
+ {
+  "tier": "Secret",
+  "n": 40,
+  "en": "Music Goddess Cat",
+  "th": "แมวเทพีดนตรี",
+  "body": "Slim",
+  "colours": "ทอง + ม่วง",
+  "special": "พิณทอง โน้ตเพลงรอบตัว",
+  "effect": "โน้ตเพลงลอย"
+ },
+ {
+  "tier": "Secret",
+  "n": 41,
+  "en": "Four Seasons Cat",
+  "th": "แมวสี่ฤดู",
+  "body": "Fluffy",
+  "colours": "ชมพู เขียว ส้ม ขาว",
+  "special": "ขนสี่สีสี่ฤดู",
+  "effect": "ดอกไม้ ใบไม้ หิมะ วนรอบ"
+ },
+ {
+  "tier": "Secret",
+  "n": 42,
+  "en": "Sakura Goddess Cat",
+  "th": "แมวเทพีซากุระ",
+  "body": "Slim",
+  "colours": "ชมพู + ขาว",
+  "special": "กิ่งซากุระบนหัว กิโมโน",
+  "effect": "กลีบซากุระร่วง"
+ },
+ {
+  "tier": "Secret",
+  "n": 43,
+  "en": "Lotus Spirit Cat",
+  "th": "แมววิญญาณดอกบัว",
+  "body": "Fluffy",
+  "colours": "ชมพู + เขียว",
+  "special": "นั่งบนดอกบัวเรืองแสง",
+  "effect": "แสงบัวเปล่ง"
+ },
+ {
+  "tier": "Secret",
+  "n": 44,
+  "en": "Starfall Knight Cat",
+  "th": "แมวอัศวินดาวตก",
+  "body": "Slim",
+  "colours": "เงิน + น้ำเงิน",
+  "special": "เกราะดาว ดาบดาวตก",
+  "effect": "ดาวตกรอบตัว"
+ },
+ {
+  "tier": "Secret",
+  "n": 45,
+  "en": "Eclipse Cat",
+  "th": "แมวสุริยุปราคา",
+  "body": "Loaf",
+  "colours": "ดำ + ทอง",
+  "special": "วงแหวนสุริยุปราคาด้านหลัง",
+  "effect": "แสงขอบทอง"
+ },
+ {
+  "tier": "Secret",
+  "n": 46,
+  "en": "Prism Cat",
+  "th": "แมวปริซึม",
+  "body": "Slim",
+  "colours": "ใสสะท้อนรุ้ง",
+  "special": "ตัวเป็นปริซึมแยกแสง",
+  "effect": "แสงรุ้งพาดผ่าน"
+ },
+ {
+  "tier": "Secret",
+  "n": 47,
+  "en": "Golden Paw Cat",
+  "th": "แมวอุ้งเท้าทองคำ",
+  "body": "Loaf",
+  "colours": "ทองคำ",
+  "special": "ทั้งตัวเป็นทองคำ อุ้งเท้ายักษ์",
+  "effect": "เหรียญทองโปรย"
+ },
+ {
+  "tier": "Secret",
+  "n": 48,
+  "en": "Quantum Cat",
+  "th": "แมวควอนตัม",
+  "body": "Slim",
+  "colours": "ฟ้า + ม่วง",
+  "special": "ตัวแยกเป็นสองร่างซ้อน",
+  "effect": "ร่างกระพริบ"
+ },
+ {
+  "tier": "Secret",
+  "n": 49,
+  "en": "Creator Cat",
+  "th": "แมวผู้สร้างโลก",
+  "body": "Fluffy",
+  "colours": "ขาว + ทุกสี",
+  "special": "ถือพู่กันวาดโลก",
+  "effect": "ดาวเกิดใหม่รอบตัว"
+ },
+ {
+  "tier": "Secret",
+  "n": 50,
+  "en": "Sweetpotato Legend",
+  "th": "แมวตำนานมันหวาน",
+  "body": "Fluffy",
+  "colours": "ม่วงมันหวาน + ทอง",
+  "special": "แมวประจำเกม หมวกมันหวาน มงกุฎทอง",
+  "effect": "ออร่าทองม่วง"
+ }
+]

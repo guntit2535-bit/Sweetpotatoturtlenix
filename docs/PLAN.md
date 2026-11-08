@@ -479,3 +479,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   distance when it is off screen, a pointing hand on the Shop / hold button; the banner shows the step number, a
   title, one short line and progress dots (new texts TutT1-7, TutHold). Studio: 1 -> 2 after 5 s, chevrons along
   the road, cat outlined + arrow, hand on Shop, 7 -> done after 5 s; no errors (art/preview/v4/v2_*).
+- 2026-11-09: V1 try 2 not approved ("the tiers look too alike"). The developer wants plain cats at the bottom,
+  fashion higher up, fantasy at the top (dragon, gorilla, god, alien, strawberry, banana, whale, zombie, mech
+  cats...) and 50 unique designs per tier, keeping 400 cats in all (their pick: 50 unique per tier + colour
+  variants). Design table first (`tools/gen/cat_designs.py` -> `docs/Sweetpotato_Cats.xlsx` in Thai +
+  `art/source/cat_designs.json`): 300 designs with EN / TH names, base body, colours, what is special, effect;
+  tier counts 100 / 80 / 70 / 50 / 50 / 50. Next after "ผ่าน": one Blender model per tier, then all of them.

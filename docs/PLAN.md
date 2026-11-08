@@ -66,7 +66,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.18 Game passes x5 (x2 Speed button: blink, then on/off toggle; x2 Cash, x2 Strength, Lucky, VIP tag + 10%). Reuse: PSE `PassService`, `shared/Passes`, `VipTagController`, SP `GamePassService`
 - [x] 2.19 Developer products x7 (+20 slots in price steps, 4 cash packs by income, strength pack, luck x3 15 min, server luck 15 min + announcement, summon Mythical, starter pack once) + the one ProcessReceipt. Reuse: PSE `ProductService`, `shared/Products`, SP `DevProductService`
 - [x] 2.20 Robux store window + card images (GPT prompts). Reuse: PSE `Controllers/StoreUI`, BA `LivePrices`, `StoreController`
-- [ ] 2.21 All 400 cat models in the approved style (+ Mythical / Secret effects). Reuse: PSE `CreatureModels`, art pipeline
+- [x] 2.21 All 400 cat models in the approved style (+ Mythical / Secret effects). Reuse: PSE `CreatureModels`, art pipeline
 - [ ] 2.22 Animations: cats (idle, walk, struggle, carried), players (cast, reel, lift, run, swing, carry). Reuse: BA `client/CharacterAnims`, `CreatureAnimator`, SP `art/animations`
 - [ ] 2.23 Sound: sound module + sound list xlsx for the developer to pick ids (event music included). Reuse: SP `client/Sound`, `SoundController`, PSE `tools/gen/sounds_xlsx.luau`
 - [ ] 2.24 Game icon 512 + 3-5 thumbnails 1920x1080 (GPT prompts) + store description EN / TH
@@ -221,3 +221,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   x2 Speed button = switch for owners, else the pass prompt), `VipTagController`. Studio Play (FreshSave):
   Cash pass income 40 -> 80/s, Speed pass walk 37.6 -> 59.2 and the switch back to 37.6, all 7 products granted
   through the receipt path with 7 receipts kept. **Real purchases need the ids (DEVELOPER_TODO).**
+- 2026-11-08: 2.21 all 400 designs from `shared/Cats` built by `CatModel` with no mutation, Gold, Rainbow and
+  Glow (Studio Edit, 1,600 builds): 0 failures, 47 parts on average, 63 at most. Gallery capture of every tier
+  (Mythical halo / wings, Secret size) checked and removed.

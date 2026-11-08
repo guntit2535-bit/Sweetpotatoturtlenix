@@ -277,3 +277,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   149 / 299 / 249 / 199 / 149 and 49 / 99 / 199 / 25 / 79 / 199 / 449 / 99 / 49 / 199 / 149 / 49 (Studio shows the
   developer's regional prices, lower). `launch_check` now fails only on Debug (switched off on launch day).
   `rojo serve` had stopped and Config was missing from the Studio place; restarted it.
+- 2026-11-08: Robux tab checked in Studio Play with the real ids: 15 rows with regional prices, passes "Owned"
+  for the developer (the group owner's account owns them). Cards now show each item's Creator Hub icon
+  (IconImageAssetId from GetProductInfo; the coloured chip stays until the picture has loaded). Fixed: the
+  Luck x3 card showed the Lucky Treat text ("x1.5 for 10 minutes"); new key ProductLuck3Desc.

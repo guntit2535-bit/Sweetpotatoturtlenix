@@ -1,6 +1,6 @@
 --!strict
 -- The Robux store (task 2.20): the Shop window's Robux tab lists the 5 game passes and the products, with the
--- price Roblox gives this player (regional) and the icon set in the Creator Dashboard. Buying opens Roblox's
+-- price Roblox gives this player (regional) and the icon set in the Creator Dashboard (shown on the card). Buying opens Roblox's
 -- own purchase prompt; the server grants (PassService / ProductService). Items whose id is still 0 say
 -- "Not on sale yet". Also the x2 Speed button: owners switch it on / off, others get the pass prompt.
 
@@ -24,6 +24,7 @@ local StoreController = {}
 local C = Kit.Colors
 local me = Players.LocalPlayer
 local prices: { [string]: string } = {} -- "pass:id" / "product:id" -> "R$ 99"
+local icons: { [string]: number } = {} -- the same keys -> the icon set in Creator Hub (0 = none yet)
 local PASSES = { { "Speed", "Speed2x" }, { "Cash", "Cash2x" }, { "Strength", "Strength2x" }, { "Lucky", "Lucky" }, { "VIP", "VIP" } }
 
 local function price(kind: string, id: number): string
@@ -37,12 +38,13 @@ local function price(kind: string, id: number): string
 			return MarketplaceService:GetProductInfo(id, if kind == "pass" then Enum.InfoType.GamePass else Enum.InfoType.Product)
 		end)
 		prices[key] = if ok and info and info.PriceInRobux then `R$ {info.PriceInRobux}` else "R$ ?"
+		icons[key] = if ok and info and type(info.IconImageAssetId) == "number" then info.IconImageAssetId else 0
 		ShopController.redraw()
 	end)
 	return prices[key]
 end
 
-local function card(list: ScrollingFrame, order: number, title: string, line: string, color: Color3): Frame
+local function card(list: ScrollingFrame, order: number, title: string, line: string, color: Color3, iconKey: string?): Frame
 	local row = Instance.new("Frame")
 	row.LayoutOrder = order
 	row.Size = UDim2.new(1, -12, 0, 72)
@@ -57,6 +59,28 @@ local function card(list: ScrollingFrame, order: number, title: string, line: st
 	chip.Parent = row
 	Kit.corner(chip, 12)
 	Kit.stroke(chip, 3, nil, true)
+	local icon = if iconKey then icons[iconKey] else nil
+	if icon and icon ~= 0 then
+		-- the item's own picture from Creator Hub, a bit bigger than the chip. The coloured chip stays until the
+		-- picture has loaded (a new icon can stay unloaded for a while during Roblox's review).
+		local img = Instance.new("ImageLabel")
+		img.BackgroundTransparency = 1
+		img.Size = UDim2.fromOffset(60, 60)
+		img.Position = UDim2.fromOffset(-7, -7)
+		img.Image = `rbxassetid://{icon}`
+		img.Parent = chip
+		local function shown()
+			if img.IsLoaded then
+				chip.BackgroundTransparency = 1
+				local s = chip:FindFirstChildOfClass("UIStroke")
+				if s then
+					s.Enabled = false
+				end
+			end
+		end
+		img:GetPropertyChangedSignal("IsLoaded"):Connect(shown)
+		shown()
+	end
 	local name = Kit.text(row, "Name", UDim2.new(1, -240, 0, 28), UDim2.fromOffset(70, 8), 22)
 	name.TextXAlignment = Enum.TextXAlignment.Left
 	name.Text = title
@@ -82,7 +106,10 @@ local function drawRobux(list: ScrollingFrame)
 		order += 1
 		local name, key = p[1], p[2]
 		local id = (Config.Passes :: any)[key].Id
-		local row = card(list, order, Lang.text("Pass" .. name), Lang.text("Pass" .. name .. "Desc"), C.sky)
+		if id ~= 0 then
+			price("pass", id) -- also loads the icon of an owned pass
+		end
+		local row = card(list, order, Lang.text("Pass" .. name), Lang.text("Pass" .. name .. "Desc"), C.sky, `pass:{id}`)
 		if me:GetAttribute(`Pass{name}`) == true then
 			action(row, Lang.text("Owned2"), C.purple)
 		elseif id == 0 then
@@ -121,11 +148,14 @@ local function drawRobux(list: ScrollingFrame)
 			line = Lang.text("ProductStarterDesc")
 			show = not data.StarterBought
 		elseif p.Kind == "Luck3" then
-			line = Lang.text("TreatLuckyTreatDesc")
+			line = Lang.text("ProductLuck3Desc")
 		end
 		if show then
 			order += 1
-			local row = card(list, order, title, line, C.yellow)
+			if p.Id ~= 0 then
+				price("product", p.Id)
+			end
+			local row = card(list, order, title, line, C.yellow, `product:{p.Id}`)
 			if p.Id == 0 then
 				action(row, Lang.text("NotOnSaleYet"), C.grey)
 			else

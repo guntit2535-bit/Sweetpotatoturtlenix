@@ -273,6 +273,7 @@ Text.Lines = {
 	ProductStrength = { en = "Strength Pack", th = "แพ็กพลัง" },
 	ProductStrengthDesc = { en = "+{kg} kg Strength now", th = "พลัง +{kg} กก. ทันที" },
 	ProductLuck3 = { en = "Luck x3 (15 min)", th = "โชค x3 (15 นาที)" },
+	ProductLuck3Desc = { en = "x3 luck for 15 minutes: more Gold, Rainbow and Glow cats", th = "โชค x3 นาน 15 นาที: ได้แมวทอง สีรุ้ง เรืองแสงบ่อยขึ้น" },
 	ProductServerLuck = { en = "Server Luck (15 min)", th = "โชคทั้งเซิร์ฟเวอร์ (15 นาที)" },
 	ProductServerLuckDesc = { en = "Everyone here gets x2 luck, with your name announced", th = "ทุกคนในเซิร์ฟเวอร์ได้โชค x2 และประกาศชื่อคุณ" },
 	ProductSummonMythical = { en = "Summon a Mythical Cat", th = "เรียกแมว Mythical" },

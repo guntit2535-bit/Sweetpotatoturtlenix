@@ -18,13 +18,14 @@ local Kit = require(script.Parent.Parent.UI.Kit)
 local ShopController = {}
 
 local C = Kit.Colors
-local TABS = { "Rods", "Shoes", "Pen", "Treats", "Crates" }
+local TABS = { "Rods", "Shoes", "Pen", "Treats", "Crates", "Robux" }
 local window: Kit.Window
 local list: ScrollingFrame
 local tabButtons: { [string]: TextButton } = {}
 local current = "Rods"
 local buyRemote: RemoteEvent
 local cratesBuilder: ((list: ScrollingFrame) -> ())? = nil
+local robuxBuilder: ((list: ScrollingFrame) -> ())? = nil
 
 local function card(order: number, title: string, line: string, color: Color3): Frame
 	local row = Instance.new("Frame")
@@ -159,11 +160,24 @@ local function redraw()
 		drawTreats(data)
 	elseif current == "Crates" and cratesBuilder then
 		cratesBuilder(list)
+	elseif current == "Robux" and robuxBuilder then
+		robuxBuilder(list)
 	end
 end
 
 function ShopController.setCratesBuilder(builder: (list: ScrollingFrame) -> ())
 	cratesBuilder = builder
+end
+
+function ShopController.setRobuxBuilder(builder: (list: ScrollingFrame) -> ())
+	robuxBuilder = builder
+end
+
+-- Opens the window on a tab (the x2 Speed button opens Robux).
+function ShopController.openTab(tab: string)
+	current = tab
+	redraw()
+	window.setOpen(true)
 end
 
 function ShopController.redraw()
@@ -182,7 +196,7 @@ function ShopController.toggle()
 end
 
 local function build()
-	window = Kit.window({ name = "ShopWindow", width = 680, height = 540, color = C.coral })
+	window = Kit.window({ name = "ShopWindow", width = 690, height = 540, color = C.coral })
 	local tabs = Instance.new("Frame")
 	tabs.Name = "Tabs"
 	tabs.BackgroundTransparency = 1
@@ -197,7 +211,7 @@ local function build()
 		if tab == "Shoes" and not Config.Shoes.Enabled then
 			continue
 		end
-		local b = Kit.button(tabs, tab, C.grey, UDim2.fromOffset(116, 42), UDim2.new())
+		local b = Kit.button(tabs, tab, C.grey, UDim2.fromOffset(100, 42), UDim2.new())
 		;(b.Parent :: Frame).LayoutOrder = i
 		b.Activated:Connect(function()
 			current = tab

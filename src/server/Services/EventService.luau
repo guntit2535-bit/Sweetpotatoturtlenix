@@ -130,6 +130,16 @@ function EventService.start(kind: string): string
 	return `{kind}: {Cats.ById[catKind].Name} ({kg} kg) at {math.floor(at.Position.X)}, {math.floor(at.Position.Z)}`
 end
 
+-- The "summon a Mythical cat" product: now, or right after the event that is live.
+function EventService.summon(kind: string)
+	if live then
+		(nextAt :: any)[kind] = math.min((nextAt :: any)[kind], now())
+		publish()
+		return
+	end
+	EventService.start(kind)
+end
+
 function EventService:Init()
 	DebugService.register("mythical", "!mythical  start a Mythical event now", function()
 		return EventService.start("Mythical")

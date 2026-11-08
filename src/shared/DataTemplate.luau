@@ -50,6 +50,8 @@ export type Data = {
 	Quests: { Quest },
 	CodesUsed: { [string]: boolean }, -- gift codes redeemed (task 2.15)
 	GroupClaimed: boolean, -- the group reward (task 2.16)
+	SlotBuys: number, -- +20 slot products bought (task 2.19)
+	StarterBought: boolean, -- the starter pack (once)
 	Settings: {
 		Language: string, -- "en" (default) or "th"
 	},
@@ -92,6 +94,8 @@ DataTemplate.Template = {
 	Quests = {},
 	CodesUsed = {},
 	GroupClaimed = false,
+	SlotBuys = 0,
+	StarterBought = false,
 	Settings = {
 		Language = "en",
 	},
@@ -162,6 +166,10 @@ function DataTemplate.sanitize(data: Data): number
 	set("LoginStep", whole(data.LoginStep, 1, #Config.Login, 1))
 	for _, key in { "LoginDay", "PlayDay", "PlaySeconds", "PlayClaimed", "QuestDay" } do
 		set(key, whole((data :: any)[key], 0, math.huge, 0))
+	end
+	set("SlotBuys", whole(data.SlotBuys, 0, math.huge, 0))
+	if type(data.StarterBought) ~= "boolean" then
+		set("StarterBought", false)
 	end
 	if type(data.GroupClaimed) ~= "boolean" then
 		set("GroupClaimed", false)

@@ -63,9 +63,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.15 Gift codes. Reuse: BA `CodeService`
 - [x] 2.16 Group reward (needs Config.GroupId). Reuse: BA `GroupChestService`
 - [~] 2.17 Trading: request / accept, up to 6 cats each, Ready + 5 s countdown (any change resets), confirm, server re-checks ownership + pen room + locks, one-step swap, both saves, trade log, leave = cancel, duplicate-proof. Reuse: BA `TradeService`, `shared/Trade`, `TradeController` (minus capsules)
-- [ ] 2.18 Game passes x5 (x2 Speed button: blink, then on/off toggle; x2 Cash, x2 Strength, Lucky, VIP tag + 10%). Reuse: PSE `PassService`, `shared/Passes`, `VipTagController`, SP `GamePassService`
-- [ ] 2.19 Developer products x7 (+20 slots in price steps, 4 cash packs by income, strength pack, luck x3 15 min, server luck 15 min + announcement, summon Mythical, starter pack once) + the one ProcessReceipt. Reuse: PSE `ProductService`, `shared/Products`, SP `DevProductService`
-- [ ] 2.20 Robux store window + card images (GPT prompts). Reuse: PSE `Controllers/StoreUI`, BA `LivePrices`, `StoreController`
+- [x] 2.18 Game passes x5 (x2 Speed button: blink, then on/off toggle; x2 Cash, x2 Strength, Lucky, VIP tag + 10%). Reuse: PSE `PassService`, `shared/Passes`, `VipTagController`, SP `GamePassService`
+- [x] 2.19 Developer products x7 (+20 slots in price steps, 4 cash packs by income, strength pack, luck x3 15 min, server luck 15 min + announcement, summon Mythical, starter pack once) + the one ProcessReceipt. Reuse: PSE `ProductService`, `shared/Products`, SP `DevProductService`
+- [x] 2.20 Robux store window + card images (GPT prompts). Reuse: PSE `Controllers/StoreUI`, BA `LivePrices`, `StoreController`
 - [ ] 2.21 All 400 cat models in the approved style (+ Mythical / Secret effects). Reuse: PSE `CreatureModels`, art pipeline
 - [ ] 2.22 Animations: cats (idle, walk, struggle, carried), players (cast, reel, lift, run, swing, carry). Reuse: BA `client/CharacterAnims`, `CreatureAnimator`, SP `art/animations`
 - [ ] 2.23 Sound: sound module + sound list xlsx for the developer to pick ids (event music included). Reuse: SP `client/Sound`, `SoundController`, PSE `tools/gen/sounds_xlsx.luau`
@@ -213,3 +213,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   both offers, tap-to-add, Ready / countdown / Cancel); HUD Trade button opens it. Studio Play (one player):
   window opens, "Nobody else is in this server", self-request and stray offers ignored, no errors. **The real
   2-player trade is in DEVELOPER_TODO.**
+- 2026-11-08: 2.18-2.20: `PassService` (5 passes -> PassX attributes read by Bonus, ToggleSpeed saved, !pass),
+  `ProductService` (the one ProcessReceipt: NotProcessedYet when not loaded / unknown, receipt recorded with the
+  grant, saved before PurchaseGranted; +20 slots in 3 price steps capped at 60, 4 cash packs by income, strength
+  pack, luck x3, server luck with announcement, summon Mythical via EventService.summon, starter pack once; !buy),
+  `StoreController` (Shop's Robux tab, regional prices from GetProductInfo, "Not on sale yet" while ids are 0;
+  x2 Speed button = switch for owners, else the pass prompt), `VipTagController`. Studio Play (FreshSave):
+  Cash pass income 40 -> 80/s, Speed pass walk 37.6 -> 59.2 and the switch back to 37.6, all 7 products granted
+  through the receipt path with 7 receipts kept. **Real purchases need the ids (DEVELOPER_TODO).**

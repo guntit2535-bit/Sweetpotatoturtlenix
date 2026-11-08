@@ -210,10 +210,27 @@ Config.Passes = {
 	VIP = { Id = 0, Money = 0.10 }, -- VIP tag + 10% money
 }
 
--- Developer products (milestone 2, blueprint §13). Ids stay 0 until the developer makes them.
+-- Developer products (milestone 2, blueprint §13). Ids stay 0 until the developer makes them; the client
+-- confirms every price. Money packs pay Seconds of the buyer's income (at least Base).
 Config.Products = {
 	ServerLuckMult = 2, -- server luck: everyone's luck x2 for 15 minutes
 	LuckSeconds = 900, -- luck x3 and server luck last 15 minutes
+	SlotsStep = 20, -- +20 pen slots per purchase (never past Config.Pen.MaxSlots)
+	List = {
+		{ Key = "Slots1", Id = 0, Kind = "Slots" }, -- 1st +20 slots
+		{ Key = "Slots2", Id = 0, Kind = "Slots" }, -- 2nd, a higher price
+		{ Key = "Slots3", Id = 0, Kind = "Slots" }, -- 3rd, higher again
+		{ Key = "CashS", Id = 0, Kind = "Cash", Base = 5000, Seconds = 600 },
+		{ Key = "CashM", Id = 0, Kind = "Cash", Base = 25000, Seconds = 3600 },
+		{ Key = "CashL", Id = 0, Kind = "Cash", Base = 100000, Seconds = 4 * 3600 },
+		{ Key = "CashXL", Id = 0, Kind = "Cash", Base = 400000, Seconds = 12 * 3600 },
+		{ Key = "Strength", Id = 0, Kind = "Strength", Base = 500, Seconds = 3600 }, -- an hour of lifting
+		{ Key = "Luck3", Id = 0, Kind = "Luck3" },
+		{ Key = "ServerLuck", Id = 0, Kind = "ServerLuck" },
+		{ Key = "SummonMythical", Id = 0, Kind = "Summon" },
+		{ Key = "Starter", Id = 0, Kind = "Starter", Money = 10000, Rod = 6, Treats = { "Luck", "Money" } },
+	},
+	ReceiptsKept = 100,
 }
 
 -- CLIENT PENDING: keep the 8 shoes next to the treadmill (both add speed), or drop the shoes.

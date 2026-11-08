@@ -44,6 +44,7 @@ Remotes.Events = {
 	"TradeCancel", -- client -> server
 	"TradeInvite", -- server -> client: (fromUserId, name)
 	"TradeState", -- server -> client: (state table or nil when it ends)
+	"ToggleSpeed", -- client -> server: the x2 Speed switch (owners of the pass), task 2.18
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

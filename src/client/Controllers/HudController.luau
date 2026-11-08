@@ -19,6 +19,7 @@ local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
 local Hud = require(script.Parent.Parent.UI.Hud)
 local ShopController = require(script.Parent.ShopController)
+local StoreController = require(script.Parent.StoreController)
 local ToastController = require(script.Parent.ToastController)
 local TradeController = require(script.Parent.TradeController)
 
@@ -150,7 +151,7 @@ local function build()
 		ToastController.show("ComingSoon", nil, "info")
 	end
 	Hud.leftButton("Shop", "ShopButton", C.coral, 1, ShopController.toggle)
-	local speed = Hud.leftButton("Speed2x", "Speed2xButton", C.sky, 2, soon)
+	local speed = Hud.leftButton("Speed2x", "Speed2xButton", C.sky, 2, StoreController.speedButton)
 	local holder = speed.Parent :: Frame
 	holder.Size = UDim2.fromOffset(150, 74)
 	local glow = Instance.new("UIStroke")
@@ -159,8 +160,23 @@ local function build()
 	glow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 	glow.Parent = holder:FindFirstChild("Lip")
 	RunService.RenderStepped:Connect(function()
-		glow.Transparency = 0.35 + 0.35 * math.sin(os.clock() * 3)
+		if me:GetAttribute("PassSpeed") == true then
+			glow.Transparency = 1
+		else
+			glow.Transparency = 0.35 + 0.35 * math.sin(os.clock() * 3)
+		end
 	end)
+	local function speedText()
+		if me:GetAttribute("PassSpeed") == true then
+			local d = require(script.Parent.Parent.PlayerData).get()
+			Kit.setButtonText(speed, Lang.text(if d and d.SpeedPassOn == false then "SpeedOff" else "SpeedOn"))
+			Kit.setButtonColor(speed, if d and d.SpeedPassOn == false then C.grey else C.green)
+		end
+	end
+	me:GetAttributeChangedSignal("PassSpeed"):Connect(speedText)
+	require(script.Parent.Parent.PlayerData).changed:Connect(speedText)
+	Lang.changed:Connect(speedText)
+	speedText()
 	Hud.leftButton("Trade", "TradeButton", C.purple, 4, TradeController.toggle)
 
 	-- right: Strength panel under the gear

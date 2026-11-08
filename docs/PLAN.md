@@ -69,7 +69,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.21 All 400 cat models in the approved style (+ Mythical / Secret effects). Reuse: PSE `CreatureModels`, art pipeline
 - [x] 2.22 Animations: cats (idle, walk, struggle, carried), players (cast, reel, lift, run, swing, carry). Reuse: BA `client/CharacterAnims`, `CreatureAnimator`, SP `art/animations`
 - [x] 2.23 Sound: sound module + sound list xlsx for the developer to pick ids (event music included). Reuse: SP `client/Sound`, `SoundController`, PSE `tools/gen/sounds_xlsx.luau`
-- [ ] 2.24 Game icon 512 + 3-5 thumbnails 1920x1080 (GPT prompts) + store description EN / TH
+- [x] 2.24 Game icon 512 + 3-5 thumbnails 1920x1080 (GPT prompts) + store description EN / TH
 - [ ] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
 
 ## Plan changes
@@ -241,3 +241,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   ids are 0: `docs/Sweetpotato_Sounds.xlsx` + `docs/SOUNDS.md` (from `tools/gen/sounds_xlsx.py`) for the
   developer. Studio Play with dummy ids (removed): buy, Music_Lobby -> Music_Zones, meow, cast, reel,
   catch + meow, click, open, both switches mute the groups, Music OFF saved.
+- 2026-11-08: 2.24 `docs/gpt_store_prompts.md`: Thai how-to, icon + 4 thumbnail prompts in English (smooth blocky
+  style, no studs, only what the game does: rod catch, carry over head, bat bonk with cartoon stars, Mythical halo
+  / wings, Gold / Rainbow / Glow, 400 cats, weights + Secret giant; Roblox rules in every prompt) and the store
+  description EN / TH. Style references for ChatGPT: `art/preview/cats_lineup.jpg` (Studio render of real cats)
+  and `art/preview/carry_ingame.jpg`. Making the pictures and uploading = DEVELOPER_TODO.

@@ -19,3 +19,7 @@ Claude keeps working while these wait. Tick them when done and tell Claude.
 - [ ] 2-player trade test (milestone 2): Trade -> Ask -> the other taps Accept; put cats in; both Ready -> after 5 s
   the cats swap and stay after rejoining; changing an offer clears Ready; a locked cat cannot be added; leaving
   mid-trade cancels it.
+- [ ] Game icon + thumbnails: follow `docs/gpt_store_prompts.md` in ChatGPT (attach the 3 pictures it names), put
+  `icon` and `thumb1`-`thumb4` in `art/source/gpt_store/` and tell Claude (Claude sizes them to 512 x 512 and
+  1920 x 1080). Then upload them in the Creator Dashboard and paste the store description (EN, and TH under
+  Localization) from the same file.

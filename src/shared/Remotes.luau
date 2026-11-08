@@ -37,6 +37,13 @@ Remotes.Events = {
 	"Rebirth", -- client -> server: rebirth now, task 2.7
 	"ClaimReward", -- client -> server: (kind "Login" | "Playtime" | "Quest" | "Group", index), tasks 2.11 - 2.16
 	"RedeemCode", -- client -> server: (code), task 2.15
+	"TradeRequest", -- client -> server: (userId), task 2.17
+	"TradeRespond", -- client -> server: (userId, accept)
+	"TradeSet", -- client -> server: (catIds) my offer
+	"TradeReady", -- client -> server: (ready)
+	"TradeCancel", -- client -> server
+	"TradeInvite", -- server -> client: (fromUserId, name)
+	"TradeState", -- server -> client: (state table or nil when it ends)
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

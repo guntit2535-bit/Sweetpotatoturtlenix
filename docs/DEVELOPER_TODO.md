@@ -14,3 +14,6 @@ Claude keeps working while these wait. Tick them when done and tell Claude.
   like the other player's pen sign -> toast + faster walking for 5 min; a second like the same day is refused;
   both fish the same cat (first full bar wins, the other is dropped); hit the carrier with the bat outside the
   lobby -> the cat drops and they fly; no hits inside the lobby or on someone fishing.
+- [ ] 2-player trade test (milestone 2): Trade -> Ask -> the other taps Accept; put cats in; both Ready -> after 5 s
+  the cats swap and stay after rejoining; changing an offer clears Ready; a locked cat cannot be added; leaving
+  mid-trade cancels it.

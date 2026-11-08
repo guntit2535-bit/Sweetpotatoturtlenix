@@ -320,6 +320,15 @@ Config.Leaderboards = {
 }
 Config.Rewards = { ClaimRate = { maxCalls = 4, window = 1 }, CodeRate = { maxCalls = 2, window = 3 } }
 
+-- Trading (task 2.17, blueprint §15): same server, up to 6 cats a side, both Ready -> 5 s -> swap.
+Config.Trade = {
+	MaxCats = 6,
+	CountdownSeconds = 5,
+	RequestSeconds = 20, -- an invite expires after this
+	LogStore = "Sweetpotato_TradeLog_v1",
+	Rate = { maxCalls = 8, window = 1 },
+}
+
 -- Cat crates (task 2.6, blueprint §12): bought with in-game money, odds (%) shown before buying, no
 -- Secret. Costs set so a crate pays itself back in about 3 / 5 / 10 / 20 minutes of its average cat.
 Config.Crates = {

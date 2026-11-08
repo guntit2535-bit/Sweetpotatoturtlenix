@@ -20,6 +20,7 @@ local Kit = require(script.Parent.Parent.UI.Kit)
 local Hud = require(script.Parent.Parent.UI.Hud)
 local ShopController = require(script.Parent.ShopController)
 local ToastController = require(script.Parent.ToastController)
+local TradeController = require(script.Parent.TradeController)
 
 local HudController = {}
 
@@ -160,7 +161,7 @@ local function build()
 	RunService.RenderStepped:Connect(function()
 		glow.Transparency = 0.35 + 0.35 * math.sin(os.clock() * 3)
 	end)
-	Hud.leftButton("Trade", "TradeButton", C.purple, 4, soon)
+	Hud.leftButton("Trade", "TradeButton", C.purple, 4, TradeController.toggle)
 
 	-- right: Strength panel under the gear
 	local gui = Kit.screen("HudStats", 2)

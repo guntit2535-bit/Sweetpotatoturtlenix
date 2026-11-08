@@ -62,7 +62,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] 2.14 Leaderboards: money per second + cat count (OrderedDataStore + lobby boards). Reuse: SP `LeaderboardService` + `tools/lib/BuildLeaderboard`, BA `LeaderboardService`
 - [x] 2.15 Gift codes. Reuse: BA `CodeService`
 - [x] 2.16 Group reward (needs Config.GroupId). Reuse: BA `GroupChestService`
-- [ ] 2.17 Trading: request / accept, up to 6 cats each, Ready + 5 s countdown (any change resets), confirm, server re-checks ownership + pen room + locks, one-step swap, both saves, trade log, leave = cancel, duplicate-proof. Reuse: BA `TradeService`, `shared/Trade`, `TradeController` (minus capsules)
+- [~] 2.17 Trading: request / accept, up to 6 cats each, Ready + 5 s countdown (any change resets), confirm, server re-checks ownership + pen room + locks, one-step swap, both saves, trade log, leave = cancel, duplicate-proof. Reuse: BA `TradeService`, `shared/Trade`, `TradeController` (minus capsules)
 - [ ] 2.18 Game passes x5 (x2 Speed button: blink, then on/off toggle; x2 Cash, x2 Strength, Lucky, VIP tag + 10%). Reuse: PSE `PassService`, `shared/Passes`, `VipTagController`, SP `GamePassService`
 - [ ] 2.19 Developer products x7 (+20 slots in price steps, 4 cash packs by income, strength pack, luck x3 15 min, server luck 15 min + announcement, summon Mythical, starter pack once) + the one ProcessReceipt. Reuse: PSE `ProductService`, `shared/Products`, SP `DevProductService`
 - [ ] 2.20 Robux store window + card images (GPT prompts). Reuse: PSE `Controllers/StoreUI`, BA `LivePrices`, `StoreController`
@@ -207,3 +207,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   `RewardsController` (Daily / Gifts / Quests / Codes / Group, button under Rebirth). Studio Play (FreshSave):
   login 500, second claim refused, code MEOW once (then "already used"), unknown code refused, group 10K + treat,
   gifts 1-4 (gift 4 = a Wood crate cat), gift 5 refused at 31 min, quest "open 2 crates" paid, board row written.
+- 2026-11-08: 2.17 `shared/Trade` (offer / room checks, one-step swap with renumbered ids; spec proves no cat is
+  copied or lost), `TradeService` (invite 20 s, offers up to 6, any change clears Ready, both Ready -> 5 s ->
+  re-check + swap + both saves + TradeLog store, cancel on leave), `TradeController` (players list, invite popup,
+  both offers, tap-to-add, Ready / countdown / Cancel); HUD Trade button opens it. Studio Play (one player):
+  window opens, "Nobody else is in this server", self-request and stray offers ignored, no errors. **The real
+  2-player trade is in DEVELOPER_TODO.**

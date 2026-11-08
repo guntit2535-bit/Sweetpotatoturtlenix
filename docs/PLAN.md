@@ -267,3 +267,5 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   with the English name / description to paste into Creator Hub, a suggested price (client confirms), yellow
   columns for the client's price and the id. Decision to review: "luck" (Lucky pass, Luck x3, Server Luck) raises
   only the Gold / Rainbow / Glow chance, as built in 2.8; the descriptions say so.
+- 2026-11-08: `docs/gpt_item_prompts.md` (Thai how-to, English prompts): 15 pictures for the 5 passes and 12
+  products (the 3 slot products share one), smooth blocky style, transparent 1024 px, kept inside the pass circle.

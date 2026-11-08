@@ -80,7 +80,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
 - [x] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
 - [x] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
-- [~] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
+- [x] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
 - [x] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
 
 ## Plan changes
@@ -424,3 +424,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   after 12 s. Timeline in Config.Crates.Open; a plain box stands in when the meshes are missing. Studio Play
   (CrateResult fired to the client, no save touched): Paper / Wood / Gold (Legendary) / Diamond (Mythical, Gold
   mutation), skip and close, no errors (`art/preview/r8/`).
+- 2026-11-09: R8 approved ("ผ่าน"). Revision round 1 (phase 3, R1-R9) is done. Left (developer): Save / Publish the
+  place (ItemModels moved in by Claude), a phone test of the new looks, tell the client about the numbers (R4),
+  game icon + thumbnails, then 2.25 (launch checklist, delivery).

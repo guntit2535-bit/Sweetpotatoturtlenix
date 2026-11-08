@@ -19,11 +19,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 
 ### Map and models first (developer 2026-11-08, "1A 2A 3B 4A")
 - [x] A1 ★ Art direction with GPT: prompt file `docs/gpt_map_prompts.md`; the developer makes 2 lobby style options (A / B), picks one, then the 5 zones in the same chat; pictures in `art/source/gpt_map/`
-- [~] A2 ★ Map layout plan (top-down, sizes in studs): lobby safe circle, ring of 8 pens, training spot per pen, the 5 ring widths, zone gates, hiding-spot kinds and counts per zone, walk times at start speed, streaming decision for phones; numbers in `Config.World` (developer 2026-11-08: build it straight in Studio, no page)
-- [~] A3 Lobby in the approved look (built from Studio parts by `src/server/MapTools`, see Plan changes): plaza, 8 pens + signs, weights (5 looks: dumbbell > barbell > bench > machine > giant barbell) + treadmill per pen, safe-zone edge; renders first, then export with box colliders, the developer imports under the group, a builder places it. Reuse: PSE `server/Util/MapKit`, `art/world2_export.py`, art kit
-- [~] A4 Backyard zone as the template: renders first, export + import, 30-60 tagged hiding spots (roof / bush / rock / bridge), zone gate. Reuse: PSE `MapKit`, SP `tools/lib/WorldKit`
-- [~] A5 The other 4 zones in the approved Backyard standard, one batch: Town Market, Forest, Snow Mountain, Sky Islands (each its own theme, 30-60 hiding spots, gates)
-- [ ] A6 ★ Cat look prototype: 2-3 base shapes x colour / pattern / accessory as Blender renders, one cat per tier, Mythical / Secret sizes; the approved style is used for all 400 in milestone 2 (2.21). Reuse: PSE `CreatureModels`, art kit
+- [x] A2 ★ Map layout plan (top-down, sizes in studs): lobby safe circle, ring of 8 pens, training spot per pen, the 5 ring widths, zone gates, hiding-spot kinds and counts per zone, walk times at start speed, streaming decision for phones; numbers in `Config.World` (developer 2026-11-08: build it straight in Studio, no page)
+- [x] A3 Lobby in the approved look (built from Studio parts by `src/server/MapTools`, see Plan changes): plaza, 8 pens + signs, weights (5 looks: dumbbell > barbell > bench > machine > giant barbell) + treadmill per pen, safe-zone edge; renders first, then export with box colliders, the developer imports under the group, a builder places it. Reuse: PSE `server/Util/MapKit`, `art/world2_export.py`, art kit
+- [x] A4 Backyard zone as the template: renders first, export + import, 30-60 tagged hiding spots (roof / bush / rock / bridge), zone gate. Reuse: PSE `MapKit`, SP `tools/lib/WorldKit`
+- [x] A5 The other 4 zones in the approved Backyard standard, one batch: Town Market, Forest, Snow Mountain, Sky Islands (each its own theme, 30-60 hiding spots, gates)
+- [~] A6 ★ Cat look prototype: 3 base shapes (Loaf, Slim, Fluffy) x colour / pattern / accessory built from Studio parts (`src/shared/CatModel`), preview `Workspace.CatPreview`, one cat per tier, Mythical / Secret sizes; the approved style is used for all 400 in milestone 2 (2.21). Reuse: PSE `CreatureModels`, art kit
 
 ### Code
 - [ ] 1.1 Project base: Remotes (all created at start, typed, rate limited), Guard / RateLimiter / Validate, client Lang, number Format (K/M/B/T), Settings button + language switch EN/TH (saved in 1.2). Reuse: PSE `shared/Remotes`, `shared/Validate`, `shared/Format`, `server/Util/Guard`, `RateLimiter`, `client/Lang`, `Controllers/SettingsUI`, `SettingsService`
@@ -105,3 +105,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   with 32 gates, Backyard / Town Market / Forest / Snow Mountain clusters, Sky Islands (56 + 28 islands, rope bridges,
   clouds, 2 rainbows), lighting; 300 hiding spots (55-60 per zone). Checked by Studio captures of every zone; not yet
   walked in Play or on a phone.
+- 2026-11-08: A2-A5 passed ("ผ่าน"). Next: A6 cat look prototype (blocky Studio-part cats to match the map).
+- 2026-11-08: A6 built: `src/shared/CatModel` (3 shapes, patterns tabby / patches / socks / tuxedo / spots, accessories
+  bow / collar / scarf / hat / flowers / crown / wings / halo, tier effects sparkle / gold / glow / rainbow, sizes by
+  multiplier) and `MapTools/CatPreview` (one cat per tier + 6 variants on the lobby road at 270 degrees). Checked by
+  Studio captures; waiting for the developer's look approval.

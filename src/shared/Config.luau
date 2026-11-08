@@ -49,6 +49,12 @@ Config.Data = {
 	StoreName = "Sweetpotato_PlayerData_v1",
 }
 
+-- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
+Config.CatAnim = {
+	Range = 160, -- only cats this close to the camera are animated (studs)
+	RescanSeconds = 1, -- a cat whose joints have not all streamed in yet is looked up again this often
+}
+
 -- Languages: English is the default for every player, Thai is picked in Settings and saved.
 Config.Language = {
 	Default = "en",

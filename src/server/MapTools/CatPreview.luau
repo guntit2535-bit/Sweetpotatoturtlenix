@@ -52,14 +52,20 @@ function Preview.build()
 		CFrame.new(-11, 0.3, -66),
 		CFrame.new(10, 0.3, -98),
 	}
+	-- each cat shows one clip in Play (CatAnimController): idle, walk, struggle, carried, sleep
+	-- "showcase" = every clip in turn, looping (developer 2026-11-08: for the client video)
+	local tierAnims = table.create(6, "showcase")
+	local variantAnims = table.create(6, "showcase")
 	for i, t in Preview.Tiers do
 		local cat = CatModel.build(t.look, spots[i] * face, t.size)
 		cat.Name = t.tier
+		cat:SetAttribute("Anim", tierAnims[i])
 		cat.Parent = f
 	end
 	for i, look in Preview.Variants do
 		local cat = CatModel.build(look, CFrame.new(-27.5 + i * 7.8, 0.6, -28) * face, 0.85)
 		cat.Name = `Variant{i}`
+		cat:SetAttribute("Anim", variantAnims[i])
 		cat.Parent = f
 	end
 	print(`[Sweetpotato] cat preview: {#f:GetChildren()} cats`)

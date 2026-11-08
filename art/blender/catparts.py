@@ -615,15 +615,19 @@ def wings(m, A, cols, kind="feather", span=1.0, up=0.5, emit=0.0, alpha=1.0):
 
 
 def shell(m, A, col, col2=None, spiral=False):
+    """A shell on the back, big enough to show over the head (turtle) or a spiral standing up (snail)."""
     a = G(A)
+    col2 = col2 or shade(C(col), 0.8)
     if spiral:
-        for k in range(4):
-            r = 1.2 - k * 0.25
-            box(m, (0, a.by + 0.4 - k * 0.1, a.btop + 0.6 + k * 0.35), (0.9, 2 * r, 2 * r * 0.75), col if k % 2 == 0 else col2 or shade(C(col), 0.8),
-                "B", "Shell", fr=about((0, a.by + 0.4, a.btop + 0.6), R(k * 0.25, "X")))
+        c = (0, a.by + 0.7, a.btop + 1.1)
+        for k in range(5):
+            r = 1.65 - k * 0.3
+            box(m, (0, (1.65 - r) * 0.3, (1.65 - r) * 0.25), (1.5 - k * 0.05, 2 * r, 2 * r * 0.8), col if k % 2 == 0 else col2, "B", "Shell",
+                fr=T(*c) @ R(k * 0.35, "X"))
     else:
-        stack(m, (0, a.by + 0.2, a.btop - 0.05), a.bw + 0.5, a.bw * 0.5, 1.2, 3, [col, col2 or shade(C(col), 0.85), col], "B", "Shell",
-              d0=a.bl + 0.4, d1=a.bl * 0.5)
+        stack(m, (0, a.by + 0.45, a.btop - 0.1), a.bw + 0.8, a.bw * 0.55, 1.9, 4, [col, col2, col, col2], "B", "Shell",
+              d0=a.bl + 0.6, d1=a.bl * 0.45)
+        plate(m, (0, a.by + 0.45, a.btop - 0.1), (a.bw + 1.0, a.bl + 0.8, 0.2), col2, "B", "Shell")
 
 
 def tail_swap(m, A, build):

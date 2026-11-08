@@ -94,6 +94,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
     - [x] V5b Basic: all 50 built (`art/preview/cats_v1/tier_basic.png`), approved 2026-11-09
     - [~] V5c Rare: all 50 (`tier_rare.png`), self-checked (developer: "build every tier, check them yourself"), for the morning check
     - [~] V5d Epic: all 50 costumes (`tier_epic.png`), self-checked, for the morning check
+    - [~] V5e Legendary: all 50 food / animal cats (`tier_legendary.png`), self-checked, for the morning check
   - [ ] V5h into the game: an exporter writes every design as block data per bone (size, offset, colour, studs, glow) to a Luau module; CatModel builds the cat from Parts on the same rig (Body, Head, Tail1/2, legs, wings) so CatAnims moves it; the studs come from one MaterialVariant (a studs normal map the developer uploads), so no extra parts; effects from a small library (orbiting block objects + particle styles) keyed by effectKey; Cats data: 400 cats (100/80/70/50/50/50), names from the table
   - [ ] V5i Studio checks: pens with many cats on a phone, book, trade, crate opening, the Caught! card
 
@@ -522,3 +523,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-09 V5d Epic: `cats_epic.py` = 49 costume designs (hat + clothes + a held thing each; boards and skis under the
   paws). Self-check: white-on-white cats recoloured (Doctor, Chef, Baker, Scientist), fishing rod turned outwards.
   39-79 parts per cat (average 53), all rig cleanly.
+- 2026-11-09 V5e Legendary: `cats_legendary.py` = 49 food / animal designs (the body becomes the thing: peel, shell,
+  bun, cup, tentacles in place of legs, new ears and tails). Self-check: turtle / snail shells made bigger and moved
+  back (they hid behind the head), banana peel and donut ring made readable, octopus tentacles bigger.
+  28-85 parts per cat (average 50), all rig cleanly.

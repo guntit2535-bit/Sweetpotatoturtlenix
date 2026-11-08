@@ -15,26 +15,33 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 
 ## Milestone 1 — the core loop (4,000 THB when the test passes)
 - [x] 1.0 Project setup: repo, Rojo 7.7.1 + Lune, ProfileStore, bootstrap loaders, Config / Text skeleton, check script, CLAUDE.md, BLUEPRINT, PLAN
+- [ ] 1.4 Developer (alongside A1 / A2, needed before the first import in A3): Roblox group (client's or ours, pending) + experience, place published, API Services on, max players 8
+
+### Map and models first (developer 2026-11-08, "1A 2A 3B 4A")
+- [~] A1 ★ Art direction with GPT: prompt file `docs/gpt_map_prompts.md`; the developer makes 2 lobby style options (A / B), picks one, then the 5 zones in the same chat; pictures in `art/source/gpt_map/`
+- [ ] A2 ★ Map layout plan (top-down, sizes in studs): lobby safe circle, ring of 8 pens, training spot per pen, the 5 ring widths, zone gates, hiding-spot kinds and counts per zone, walk times at start speed, streaming decision for phones; a private page for approval (replaces the box blockout)
+- [ ] A3 Lobby in Blender in the approved look: plaza, 8 pens + signs, weights (5 looks: dumbbell > barbell > bench > machine > giant barbell) + treadmill per pen, safe-zone edge; renders first, then export with box colliders, the developer imports under the group, a builder places it. Reuse: PSE `server/Util/MapKit`, `art/world2_export.py`, art kit
+- [ ] A4 Backyard zone as the template: renders first, export + import, 30-60 tagged hiding spots (roof / bush / rock / bridge), zone gate. Reuse: PSE `MapKit`, SP `tools/lib/WorldKit`
+- [ ] A5 The other 4 zones in the approved Backyard standard, one batch: Town Market, Forest, Snow Mountain, Sky Islands (each its own theme, 30-60 hiding spots, gates)
+- [ ] A6 ★ Cat look prototype: 2-3 base shapes x colour / pattern / accessory as Blender renders, one cat per tier, Mythical / Secret sizes; the approved style is used for all 400 in milestone 2 (2.21). Reuse: PSE `CreatureModels`, art kit
+
+### Code
 - [ ] 1.1 Project base: Remotes (all created at start, typed, rate limited), Guard / RateLimiter / Validate, client Lang, number Format (K/M/B/T), Settings button + language switch EN/TH (saved in 1.2). Reuse: PSE `shared/Remotes`, `shared/Validate`, `shared/Format`, `server/Util/Guard`, `RateLimiter`, `client/Lang`, `Controllers/SettingsUI`, `SettingsService`
 - [ ] 1.2 Saves: ProfileStore `Sweetpotato_PlayerData_v1`, DataTemplate (money, Strength, Speed, levels, cats by unique id, slots, likes, settings, receipts), leaderstats, client data copy, `Workspace.FreshSave` test profile. Reuse: PSE `DataService` + `shared/DataTemplate`, BA `DataService` (FreshSave)
 - [ ] 1.3 Debug commands (Studio + admins): money, strength, speed, give cat, spawn event, reset, fresh save. Reuse: PSE `DebugService` + `shared/Commands`, BA `DebugService`
-- [ ] 1.4 Developer: Roblox group (client's or ours, pending) + experience, place published, API Services on, max players 8
 - [ ] 1.5 Cat data, 400 cats: generator from base shapes x colours x patterns x accessories, 6 tiers with the blueprint counts and weight ranges, weight roll, size rule (Mythical 1.3-2x, Secret 3-6x by weight), income from weight; pure module + spec. Reuse: PSE `tools/gen/species.luau`, `shared/Creatures`, `shared/Income`
 - [ ] 1.6 Economy simulation: income per kg by tier, weights / treadmill curves (25 levels), upgrade prices, zone gates (Strength / Rebirth), pen sell price; 2-3 options table, the developer picks. Reuse: PSE `tools/sim/economy.luau`, `speed.luau`, `docs/economy.md`
-- [ ] 1.7 ★ Map blockout (boxes) for an early playtest: lobby in the centre (safe zone, 8 pens in a ring), 5 ring zones with gates, 30-60 tagged hiding spots per zone (roof / bush / rock / bridge), streaming decision for phones. Reuse: PSE `server/Util/MapKit`, `WorldBuilder`, SP `tools/lib/WorldKit`
 - [ ] 1.8 Pens: one per player on join, spawn at it, freed on leave; 10 slots (max 60), cats wander, money every second straight into the wallet; My Cats window (view, sell, lock). Reuse: PSE `CorralService`, `FarmService`, `Controllers/CorralLife`, `CreaturesUI`, HR `PenService`
 - [ ] 1.9 Pen sign + likes: owner name, like count, Like button; liker gets x2 speed 5 min; one like per pen per day (saved). Reuse: PSE `Controllers/FarmSignController`, HR `PenService` (signs), BA `FarmSignController`
-- [ ] 1.10 Wild cats: spawn by zone odds at hiding spots, respawn at another spot in 30-90 s, tier / weight label, "need X Strength" message. Reuse: PSE `SpawnService`, `shared/Spawning`, `Controllers/CreatureTagController`
-- [ ] 1.11 Rod + bar minigame: cast at a cat in range, hooked cat struggles, hold to move the green zone, meter fills / drains; the server simulates the cat and the bar from the player's hold input (seeded, rate limited) and decides the result; rarer = faster cat + smaller zone; rod tier hook for milestone 2. Reuse: PSE `CaptureService`, `shared/Contest`, `Controllers/ContestUI`, `CaptureController`
+- [ ] 1.10 Wild cats: spawn by zone odds at the hiding spots tagged in A4 / A5, respawn at another spot in 30-90 s, tier / weight label, "need X Strength" message. Reuse: PSE `SpawnService`, `shared/Spawning`, `Controllers/CreatureTagController`
+- [ ] 1.11 Rod + bar minigame: cast at a cat in range, hooked cat struggles, hold to move the green zone, meter fills / drains; the server simulates the cat and the bar from the player's hold input (seeded, rate limited) and decides the result; rarer = faster cat + smaller zone; rod tier hook for milestone 2; the Wood rod model (Blender) is made in this task. Reuse: PSE `CaptureService`, `shared/Contest`, `Controllers/ContestUI`, `CaptureController`
 - [ ] 1.12 Fighting over a cat: several players fish the same cat, the first full meter wins, the others drop out at once; caught card (name, tier, weight). Reuse: PSE `CaptureService` (multi-catcher, first to 100 wins)
 - [ ] 1.13 Carry home: the winner holds the cat over the head with a floating cat icon, walks into the lobby to the own pen, the cat goes in and starts earning. Reuse: HR `GrabService` (carry over the head), PSE `TrainService` / `shared/Escape` (delivery on entering the town)
-- [ ] 1.14 Baseball bat: hotbar tool next to the rod, short cooldown, server hit check (range, facing), no hits in the lobby or on players fishing; a hit carrier drops the cat where hit and is knocked far; the dropped cat is fishable by all, 60 s then back to hiding. Reuse: HR `BatService`, `Controllers/BatSwingController`, `KnockbackController`
+- [ ] 1.14 Baseball bat: hotbar tool next to the rod, short cooldown, server hit check (range, facing), no hits in the lobby or on players fishing; a hit carrier drops the cat where hit and is knocked far; the dropped cat is fishable by all, 60 s then back to hiding; the bat model (Blender) is made in this task. Reuse: HR `BatService`, `Controllers/BatSwingController`, `KnockbackController`
 - [ ] 1.15 Weights, 25 levels: stand at the spot = auto lift, Strength per rep by level, upgrade sign (money), 5 looks (dumbbell > barbell > bench > machine > giant barbell). Reuse: PSE `TreadmillService`, `shared/Treadmill`, `Controllers/TreadmillController`, `TreadmillTierUI`, `StandController`
 - [ ] 1.16 Treadmill, 25 levels next to the weights: stand = auto run, Speed, upgrade with money; walk speed from Speed. Reuse: PSE `TreadmillService`, `shared/Speed`, `SpeedTrail`
 - [ ] 1.17 ★ HUD (phone first): left Shop / x2 Speed (blink) / My Cats / Trade, right Strength + weights / treadmill levels, bottom-left Speed + money, bottom-centre hotbar (bat + rod), bottom-right event countdown, Settings; UI look options first (GPT style board). Reuse: PSE `client/UI/Style`, `Window`, `Icons`, `Controllers/HudController`, BA `client/Ui/HudLayout`, `Kit`
 - [ ] 1.18 Events: Mythical every 10-20 min, Secret every 40 min; server-wide announcement, light beam, arrow, bottom-right countdown, 3 min then it escapes; Secret: bigger announcement, sky colour change, event music hook; caught event cats are carried home like others. Reuse: PSE `MythicEventService`, `GoldenEventService`, `Controllers/ZoneFx`, BA `LightingController`, SP `EventService`
-- [ ] 1.19 ★ Map art: style options (renders / GPT) -> lobby, pens, weights / treadmill area and the 5 themed zones in the approved style (checkered grass, Japanese-garden style gates, blossoms, bamboo, waterfalls ...), colliders as boxes. Reuse: PSE `MapKit` + `art/world2_export.py` (box colliders), skill `art-pipeline`
-- [ ] 1.20 ★ Cat look prototype: 2-3 base shapes x colour / pattern / accessory as Blender renders, one per tier, Mythical / Secret size; the approved style is used for all 400 in milestone 2. Reuse: PSE `CreatureModels`, art kit
 - [ ] 1.21 Milestone 1 check: 2+ players and a phone test, fixes, play video + test notes for the client
 
 ## Milestone 2 — everything else (4,000 THB at full delivery)
@@ -65,14 +72,21 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [ ] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
 
 ## Plan changes
-- none yet
+- 2026-11-08 (developer, "1A 2A 3B 4A"): **map and models first**, code after. The box blockout (old
+  1.7) is dropped; the top-down layout plan A2 is approved before modelling instead. Old 1.19 (map art)
+  and 1.20 (cat prototype) became A1-A6. The developer's Roblox setup (1.4) moves up: the first import
+  (A3) needs the group. The bat and the Wood rod models are made with their code tasks (1.14, 1.11).
+  All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
-- 1.0: streaming is left to the map task (1.7): the 360 map may be big for phones (Tamer Academy lesson).
-- 1.0: the map is a box blockout first (1.7) and the art pass comes after the core loop plays well
-  (Pet Storm Escape lesson: "เกมเฉย ๆ" found only at the first playtest).
+- 1.0: streaming is decided in A2 (the 360 map may be big for phones, Tamer Academy lesson).
+- A2: with no box blockout the core loop is first played on the real map; the layout plan (sizes,
+  walk times) is the guard against a "เกมเฉย ๆ" redesign (Pet Storm Escape lesson).
 
 ## Log
 - 2026-11-08: 1.0 project set up at `D:\Roblox\Sweetpotatoturtlenix` (Rojo 7.7.1, Lune 0.10.4,
   ProfileStore from Pet Storm Escape), CLAUDE.md, BLUEPRINT (English copy of the approved blueprint),
   PLAN with the reuse map. `lune run scripts/check.luau` and `rojo build` pass.
+- 2026-11-08: plan reordered (developer "1A 2A 3B 4A"): map and models first (A1-A6), code after.
+- 2026-11-08: A1 `docs/gpt_map_prompts.md` written (2 lobby styles A / B, then 5 zones in the picked
+  style); waiting for the developer's GPT pictures in `art/source/gpt_map/`.

@@ -3,6 +3,46 @@
 Each task: what to build, the files, what to reuse, "Done when". Numbers go in `Config`, words in
 `Text`. Every new client -> server remote: arguments typed as `unknown`, checked, rate limited.
 Repo tags (PSE, BA, HR, SP) are explained at the top of `docs/PLAN.md`.
+Order (developer 2026-11-08): 1.4, then the map and models A1-A6, then the code tasks 1.1 onwards.
+
+## A1 Art direction (GPT)
+- Build: `docs/gpt_map_prompts.md` (Thai how-to, English prompts, one picture per prompt): 2 lobby
+  style options (A / B, same layout, different finish), then the 5 zones in the picked style in the same
+  chat, each showing its hiding places (roof, bush, rock, bridge) with a cat peeking out.
+- The developer saves the files as `art/source/gpt_map/<code>.png` (keep .webp if GPT sends it).
+- Done when: the developer picked A or B and has 5 zone pictures they like.
+
+## A2 Map layout plan
+- Build: a top-down plan in studs as a private page: lobby safe circle radius, ring of 8 pens (pen
+  size for 60 cats), each pen's weights + treadmill spot, 5 ring widths and where each zone's gate is,
+  the hiding-spot kinds and counts per zone (30-60), walk times at the start speed and at a high speed,
+  where Mythical / Secret spawn, part / triangle budget and the StreamingEnabled decision. Numbers go
+  into `Config.World`.
+- Done when: the developer approves the plan ("ผ่าน" or "1A ...").
+
+## A3 Lobby
+- Build: Blender kit for the lobby in the A1 look: checkered-grass plaza, safe-zone edge, 8 pens with
+  sign boards, the weights in 5 looks and the treadmill per pen. Renders first (2-4 angles); after
+  "ผ่าน" export FBX + box colliders (`<Kit>Data.luau`), the developer imports under the group, a
+  `tools/lib` builder places it.
+- Reuse: PSE `server/Util/MapKit`, `art/world2_export.py`, skill `references/art-pipeline.md`.
+- Done when: the lobby stands in Studio as in the renders and a player walks through it without
+  invisible walls.
+
+## A4 Backyard (template zone)
+- Build: the first ring zone in Blender (houses, fences, roofs, bushes, rocks, a small bridge), 30-60
+  hiding spots exported as tagged points with their kind, the gate to the next zone. Renders first.
+- Done when: the developer passes it as the standard for the other zones; the spot count is printed.
+
+## A5 The other 4 zones
+- Build: Town Market, Forest, Snow Mountain, Sky Islands in the A4 standard, one batch, renders first;
+  each its own theme (e.g. red gates, pink blossom trees, bamboo, waterfalls), 30-60 spots, gates.
+- Done when: the developer walks from the lobby to Sky Islands; spot counts are inside 30-60.
+
+## A6 Cat look prototype
+- Build: Blender renders of 2-3 base shapes with colour / pattern / accessory variants, one cat per
+  tier, Mythical / Secret at their sizes.
+- Done when: the developer approves the style used for all 400 cats (2.21).
 
 ## 1.1 Project base
 - Build: `shared/Remotes` (every remote created by the server at start; the client waits with a
@@ -52,15 +92,6 @@ Repo tags (PSE, BA, HR, SP) are explained at the top of `docs/PLAN.md`.
 - Reuse: PSE `tools/sim/economy.luau`, `speed.luau`, `docs/economy.md`.
 - Done when: the developer picked an option ("1A ...") and Config holds it.
 
-## 1.7 Map blockout
-- Build: `tools/lib/MapBuilder.luau` (Command Bar) for a box map: the lobby circle in the centre (safe
-  zone part, 8 pens in a ring, weights + treadmill spots), 5 ring zones with gates that show what is
-  missing, 30-60 hiding spots per zone as tagged parts (type: roof / bush / rock / bridge). Decide
-  StreamingEnabled for phones (measure the part count).
-- Reuse: PSE `server/Util/MapKit`, `WorldBuilder`, SP `tools/lib/WorldKit`.
-- Done when: the developer walks from the lobby to Sky Islands in Studio; gates stop a weak player;
-  spot counts per zone are printed and inside 30-60.
-
 ## 1.8 Pens
 - Build: `Services/PenService`: a free pen on join (spawn there), freed on leave; slots 10 (max 60);
   cats in the pen wander; money every second into the wallet (`DataService.AddMoney`); My Cats window
@@ -85,7 +116,8 @@ Repo tags (PSE, BA, HR, SP) are explained at the top of `docs/PLAN.md`.
 - Build: `shared/FishingBar` (pure: cat movement from a seed + tier, green zone size, fill / drain per
   tick, rod bonuses), `Services/FishingService` (cast in range + Strength check, session per player,
   ticks the bar on the server from the player's hold on / off messages, rate limited; result decided
-  on the server), `Controllers/FishingUI` (the bar, hold button for phone + mouse / space).
+  on the server), `Controllers/FishingUI` (the bar, hold button for phone + mouse / space), the Wood
+  rod model in Blender (renders first).
 - Reuse: PSE `CaptureService`, `shared/Contest`, `Controllers/ContestUI`, `CaptureController`.
 - Done when: a spec checks the bar math (rarer = harder, wider zone = easier); in Studio a Basic cat is
   caught by holding well and escapes when not.
@@ -107,7 +139,7 @@ Repo tags (PSE, BA, HR, SP) are explained at the top of `docs/PLAN.md`.
 - Build: `Services/BatService`: a bat Tool for everyone next to the rod, cooldown, the server checks
   range and facing; no hits inside the lobby and on players fishing; a carrier hit drops the cat at the
   spot (fishable by all, the hitter too) and is knocked far; a dropped cat nobody catches in 60 s goes
-  back to hiding.
+  back to hiding. The bat model in Blender (renders first).
 - Reuse: HR `BatService`, `Controllers/BatSwingController`, `KnockbackController`.
 - Done when: with two Studio players a hit carrier drops the cat and flies; no hit in the lobby or on a
   fishing player; the 60 s return works.
@@ -140,18 +172,6 @@ Repo tags (PSE, BA, HR, SP) are explained at the top of `docs/PLAN.md`.
   cats are carried home and can be knocked loose like any cat.
 - Reuse: PSE `MythicEventService`, `GoldenEventService`, `Controllers/ZoneFx`, BA `LightingController`.
 - Done when: `!mythical` / `!secret` run the whole flow; the timers keep their intervals.
-
-## 1.19 Map art
-- Build: style options first (renders / GPT pictures) for the lobby and one zone; after approval the
-  lobby, pens, training area and 5 themed zones in Blender, exported with box colliders, imported by the
-  developer under the group.
-- Reuse: PSE `MapKit`, `art/world2_export.py`, skill `references/art-pipeline.md`.
-- Done when: the developer approves the look; the map plays the same as the blockout.
-
-## 1.20 Cat look prototype
-- Build: Blender renders of 2-3 base shapes with colour / pattern / accessory variants, one cat per
-  tier, Mythical / Secret at their sizes; after approval the in-game cat models for milestone 1 use it.
-- Done when: the developer approves the style for the 400.
 
 ## 1.21 Milestone 1 check
 - 2+ players and a phone test of the whole loop, fixes, a play video and test notes for the client.

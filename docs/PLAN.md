@@ -485,3 +485,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   variants). Design table first (`tools/gen/cat_designs.py` -> `docs/Sweetpotato_Cats.xlsx` in Thai +
   `art/source/cat_designs.json`): 300 designs with EN / TH names, base body, colours, what is special, effect;
   tier counts 100 / 80 / 70 / 50 / 50 / 50. Next after "ผ่าน": one Blender model per tier, then all of them.
+- 2026-11-09: design table approved ("ผ่าน"). One Blender model per tier (`art/blender/blockcat.py`: base cat with attach
+  points + a function per design; `blockcat_sheet.py` -> `art/preview/cats_v1/tier_sample.png`): Ginger Tabby (Basic,
+  plain), Cool Shades (Rare, sunglasses), Pirate (Epic: tricorn hat with a paw badge, eye patch, striped shirt,
+  wooden cutlass, earring), Strawberry Cat (Legendary: red with seeds, a big leaf crown and stem, cream, hearts),
+  Dragon Cat (Mythical: gold horns, back and tail spikes, belly plates, bat wings with bones, a fire puff), Cat God
+  (Secret: golden, crown with gems, halo, gold armour and sash, wings, glowing eyes, floating gems, a light ring).
+  Sent for approval; after "ผ่าน" the other 294.

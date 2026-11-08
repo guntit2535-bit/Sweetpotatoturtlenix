@@ -1,6 +1,6 @@
-"""V1 second try: block cats with LEGO studs, one per tier look. Run:
+"""One block cat per tier from the approved design table. Run:
 blender -b --factory-startup -P art/blender/blockcat_sheet.py -- <pillow path>
-Writes art/preview/cats_v1/blockcats.png.
+Writes art/preview/cats_v1/tier_sample.png.
 """
 import os
 import sys
@@ -18,36 +18,45 @@ import kit  # noqa: E402
 OUT = os.path.join(HERE, "..", "preview", "cats_v1")
 os.makedirs(OUT, exist_ok=True)
 JOBS = [
-    ("Basic: ginger tabby", 1, dict(shape="Loaf", fur="ffa04a", second="fff0d8", pattern="tabby", patternColor="d9681f", eyes="3c96ff")),
-    ("Rare: tuxedo", 2, dict(shape="Slim", fur="3a3f52", second="ffffff", pattern="tuxedo", eyes="7ad957")),
-    ("Epic: lavender fluff", 3, dict(shape="Fluffy", fur="b9a2ff", second="f6f0ff", pattern="patches", patternColor="8a6ae8", eyes="ffd23f")),
-    ("Legendary: golden", 5, dict(shape="Loaf", fur="ffd36b", second="fff6dc", pattern="spots", patternColor="f0a830", eyes="ff8a3c")),
+    ("Basic", "แมวส้มลายเสือ", "Ginger Tabby"),
+    ("Rare", "แมวแว่นดำ", "Cool Shades"),
+    ("Epic", "แมวโจรสลัด", "Pirate"),
+    ("Legendary", "แมวสตรอว์เบอร์รี", "Strawberry Cat"),
+    ("Mythical", "แมวมังกร", "Dragon Cat"),
+    ("Secret", "แมวเทพเจ้า", "Cat God"),
 ]
+TIER_COLOURS = {"Basic": (154, 167, 189), "Rare": (61, 165, 255), "Epic": (164, 107, 255), "Legendary": (255, 176, 32),
+                "Mythical": (255, 95, 162), "Secret": (24, 201, 185)}
 files = []
-for label, tier, look in JOBS:
+for tier, th, name in JOBS:
     sc = kit.new_scene()
     sc.cycles.samples = 40
     sc.render.film_transparent = True
     bpy.data.objects.remove(bpy.data.objects["Ground"])
-    m = blockcat.cat(look, tier)
-    p = os.path.join(OUT, f"_b{len(files)}.png")
-    kit.frame_camera(m.objects, p, direction=(-1.0, -0.75, 0.45), res=520, pad=1.04)
-    files.append((label, p))
-    print("rendered", label)
+    m = blockcat.build(name)
+    p = os.path.join(OUT, f"_t{len(files)}.png")
+    kit.frame_camera(m.objects, p, direction=(-0.95, -0.85, 0.42), res=520, pad=1.04)
+    files.append((tier, th, name, p))
+    print("rendered", name, len(m.objects), "parts")
 
 from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 
-cell = 520
-sheet = Image.new("RGB", (cell * len(files), cell + 50), (236, 240, 247))
+cell, cols = 520, 3
+rows = (len(files) + cols - 1) // cols
+sheet = Image.new("RGB", (cell * cols, rows * (cell + 70)), (236, 240, 247))
 d = ImageDraw.Draw(sheet)
 try:
-    font = ImageFont.truetype("arialbd.ttf", 28)
+    big = ImageFont.truetype("tahomabd.ttf", 28)
+    small = ImageFont.truetype("tahoma.ttf", 24)
 except OSError:
-    font = ImageFont.load_default()
-for i, (label, p) in enumerate(files):
+    big = small = ImageFont.load_default()
+for i, (tier, th, name, p) in enumerate(files):
+    x, y = (i % cols) * cell, (i // cols) * (cell + 70)
     im = Image.open(p).convert("RGBA")
-    sheet.paste(im, (i * cell, 0), im)
-    d.text((i * cell + 14, cell + 9), label, fill=(40, 44, 70), font=font)
+    sheet.paste(im, (x, y), im)
+    d.rounded_rectangle((x + 12, y + cell + 6, x + 12 + 150, y + cell + 42), 14, fill=TIER_COLOURS[tier])
+    d.text((x + 24, y + cell + 9), tier, fill=(255, 255, 255), font=big)
+    d.text((x + 175, y + cell + 10), f"{name} · {th}", fill=(40, 44, 70), font=small)
     os.remove(p)
-sheet.save(os.path.join(OUT, "blockcats.png"))
+sheet.save(os.path.join(OUT, "tier_sample.png"))
 print("sheet written")

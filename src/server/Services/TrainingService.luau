@@ -7,6 +7,8 @@
 -- R2: stepping on your own spot locks you there: the server snaps the character onto the spot facing the
 -- machine, walk speed 0 and no turning, until a jump (the client asks StopTraining) or a push off the spot.
 -- After that the spot only grabs you again once you have stepped off it.
+-- R6: while lifting, the dumbbell of your weights level (mesh Dumbbell1..25) is welded into each hand; the
+-- clients pose the two-hand curl (PlayerAnimController).
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -18,6 +20,7 @@ local CatRules = require(Shared.CatRules)
 local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local Format = require(Shared.Format)
 local GymLooks = require(script.Parent.Parent.Util.GymLooks)
+local ItemModels = require(Shared.ItemModels)
 local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
 local Progress = require(script.Parent.Parent.Util.Progress)
@@ -158,6 +161,56 @@ local function attrOf(which: string?): string?
 	return if which == "Weights" then "weights" elseif which == "Treadmill" then "treadmill" else nil
 end
 
+-- R6: a dumbbell in each hand while lifting (nothing when the meshes are not imported).
+local HANDS = { { "RightHand", "Right Arm" }, { "LeftHand", "Left Arm" } }
+
+local function dropDumbbells(player: Player)
+	local character = player.Character
+	local old = character and character:FindFirstChild("Dumbbells")
+	if old then
+		old:Destroy()
+	end
+end
+
+local function holdDumbbells(player: Player)
+	local character = player.Character
+	local data = DataService.GetData(player)
+	if not character or not data then
+		return
+	end
+	local level = data.WeightsLevel
+	local id = "Dumbbell" .. level
+	local old = character:FindFirstChild("Dumbbells")
+	if old and old:GetAttribute("Id") == id then
+		return
+	end
+	dropDumbbells(player)
+	if not ItemModels.has(id) then
+		return
+	end
+	local scale = Config.ItemModels.DumbbellScale * (1 + 0.06 * (level - 1)) ^ (Config.ItemModels.WeightsGrowth - 1)
+	local folder = Instance.new("Folder")
+	folder.Name = "Dumbbells"
+	folder:SetAttribute("Id", id)
+	for _, names in HANDS do
+		local hand = character:FindFirstChild(names[1]) or character:FindFirstChild(names[2])
+		local model = ItemModels.build(id, scale)
+		if hand and hand:IsA("BasePart") and model then
+			-- the bar across the fist (along the hand's X), a little below the hand's middle
+			local grip = if hand.Name == names[1] then -hand.Size.Y * 0.2 else -hand.Size.Y / 2
+			model:PivotTo(hand.CFrame * CFrame.new(0, grip, 0))
+			local w = Instance.new("WeldConstraint")
+			w.Part0 = hand
+			w.Part1 = model.PrimaryPart
+			w.Parent = model
+			model.Parent = folder
+		elseif model then
+			model:Destroy()
+		end
+	end
+	folder.Parent = character
+end
+
 local function lockOn(player: Player, which: string, stand: BasePart, root: BasePart, humanoid: Humanoid)
 	local look = stand.CFrame.LookVector
 	local flat = Vector3.new(look.X, 0, look.Z)
@@ -173,6 +226,9 @@ local function lockOn(player: Player, which: string, stand: BasePart, root: Base
 	locked[player] = which
 	MovementService.setFactor(player, "training", 0)
 	player:SetAttribute("Training", attrOf(which))
+	if which == "Weights" then
+		holdDumbbells(player)
+	end
 end
 
 local function unlock(player: Player, mustLeave: boolean)
@@ -187,6 +243,7 @@ local function unlock(player: Player, mustLeave: boolean)
 		humanoid.AutoRotate = true
 	end
 	player:SetAttribute("Training", nil)
+	dropDumbbells(player)
 end
 
 -- Locks players who step on their own spot; lets go of anyone pushed off or dead.
@@ -283,6 +340,9 @@ function TrainingService:Start()
 		local index = PenService.penIndex(player)
 		if index then
 			refreshLook(index) -- no-op unless the look band changed
+		end
+		if locked[player] == "Weights" then
+			holdDumbbells(player) -- no-op unless the weights level changed
 		end
 	end)
 	local function hook(player: Player)

@@ -1,6 +1,7 @@
 --!strict
 -- Training on this client (tasks 1.15 / 1.16): while the server says "Training" (weights / treadmill),
--- the character plays a default Roblox animation in place (cheer = lifting, run = treadmill) and every gain
+-- the character plays a default Roblox animation in place (run = treadmill; lifting = the two-hand curl of
+-- PlayerAnimController on R15, Roblox's cheer on R6) and every gain
 -- floats up as "+0.1 kg" / "+0.2". The Upgrade prompts at your own pen show the next cost and level in your
 -- language; prompts at other pens are hidden for you.
 
@@ -43,6 +44,9 @@ local function playFor(kind: string?)
 	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
 	if not kind or not humanoid or not animator then
 		return
+	end
+	if kind == "weights" and humanoid.RigType == Enum.HumanoidRigType.R15 then
+		return -- R6 task: the curl pose (PlayerAnimController) with a dumbbell in each hand (server)
 	end
 	local set = if humanoid.RigType == Enum.HumanoidRigType.R6 then ANIMS.R6 else ANIMS.R15
 	local anim = Instance.new("Animation")

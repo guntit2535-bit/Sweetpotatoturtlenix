@@ -77,8 +77,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
 - [x] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
 - [x] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
-- [~] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
-- [ ] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
+- [x] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
+- [~] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
 - [ ] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
 - [ ] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
 - [x] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
@@ -99,6 +99,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- R6 (2026-11-08): the curl is a code pose (shared/PlayerPoses "curl", shoulders + elbows each frame, like the
+  carry / reel poses) instead of an uploaded Blender animation: nothing to publish, every avatar works, and it
+  plays only near the camera. R6-rig avatars (no elbows) keep Roblox's cheer. The dumbbells grow like the rack
+  (WeightsGrowth 0.5: level 25 = 1.56x level 1).
 - R5 (2026-11-08): the left foot wears the same (right) shoe mesh (Roblox cannot mirror a MeshPart; the shoes are
   nearly symmetric); the rack's own growth is softened at the pens (Config.ItemModels.WeightsGrowth 0.5: level 25
   is 1.56x level 1 instead of 2.44x, so it fits the pen corner); with the meshes the rod is held leaning up and
@@ -393,3 +397,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   mesh in a ViewportFrame (UI/ItemPortrait). Debug `!gear rod|shoes N`. Studio Play: treadmill Lv4 / Lv25 lock and
   run on the belt, rack Lv25, rod 25 + bat in the hand, Bouncy Boots on both feet, every shop tab drawn; no errors.
   The developer's save was put back as it was (rod 1, shoes 0, treadmill 4, weights 2, Speed 2623.04).
+- 2026-11-08: R5 approved ("ผ่าน"). R6: standing two-hand dumbbell curl, the arms taking turns (1.2 s a rep):
+  PlayerPoses "curl" (elbows re / le) + PlayerAnimController bends RightElbow / LeftElbow (Motor6D or
+  AnimationConstraint); TrainingController no longer plays the cheer on R15; TrainingService welds the mesh
+  Dumbbell<level> into each hand while you lift (Config.ItemModels.DumbbellScale 0.9), swaps it when the level
+  changes, drops it when you leave. The 25 rack looks came with R5. Tests: PlayerPoses.spec curl checks. Studio
+  Play: lock at the weights -> a dumbbell in each hand, right then left arm up (`art/preview/r6/`), level 25 =
+  cosmic dumbbells; leaving drops them; no errors. The developer's save was put back (weights 2, Strength 21386.6).

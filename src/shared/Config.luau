@@ -137,6 +137,7 @@ Config.ItemModels = {
 	WeightsScale = 1.6, -- the rack at the pens (level 1)
 	WeightsGrowth = 0.5, -- keep this power of the meshes' own growth (6 % a level: level 25 = 2.44 -> 1.56x)
 	ShoeScale = 0.85, -- on each foot (R15)
+	DumbbellScale = 0.9, -- R6 task: one in each hand while lifting (grows with WeightsGrowth like the rack)
 }
 -- Zone gates: a player inside a zone they may not enter yet is put back just outside it.
 Config.Gates = { CheckEvery = 0.5, PushBack = 8 }

@@ -42,6 +42,14 @@ function Format.short(value: number): string
 	return text .. UNITS[unit]
 end
 
+-- Money amounts and rates for labels: one decimal below 1,000 ("2.5"), short above ("1.2K").
+function Format.money(value: number): string
+	if value < 1000 then
+		return Format.rate(value)
+	end
+	return Format.short(value)
+end
+
 -- Seconds as a clock, rounded up: 65.2 -> "1:06", 9 -> "0:09".
 function Format.clock(seconds: number): string
 	local s = math.max(0, math.ceil(seconds))

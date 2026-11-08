@@ -76,6 +76,11 @@ Config.Data = {
 Config.Pen = {
 	StartSlots = 10,
 	MaxSlots = 60,
+	SellRate = { maxCalls = 4, window = 1 },
+	LockRate = { maxCalls = 6, window = 1 },
+	LikeCooldown = 2, -- seconds between Like prompts per player (any pen)
+	WanderSpeed = 3, -- studs/s a pen cat walks (client side)
+	RestSeconds = { 3, 9 }, -- a pen cat rests this long between walks
 }
 
 -- Cat tiers (blueprint §5): designs per tier, weight range, money per second per kg, catch difficulty.

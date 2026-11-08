@@ -27,6 +27,9 @@ check(Format.rate(2000) == "2,000", "rate whole")
 check(Format.clock(65.2) == "1:06", "clock rounds up")
 check(Format.clock(180) == "3:00", "clock 3 minutes (event escape)")
 
+check(Format.money(2.5) == "2.5", "money small with a decimal")
+check(Format.money(1234) == "1.2K", "money big short")
+
 if failures > 0 then
 	error(`Format: {failures} failure(s)`)
 end

@@ -20,6 +20,9 @@ local Remotes = {}
 Remotes.Events = {
 	"SetSetting", -- client -> server: (key, value), task 1.1
 	"PlayerData", -- server -> owner: data snapshot after changes, task 1.2
+	"Notify", -- server -> client: (textKey, vars?, kind?) a toast, task 1.8
+	"SellCat", -- client -> server: (catId), task 1.8
+	"LockCat", -- client -> server: (catId, locked), task 1.8
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

@@ -1,12 +1,13 @@
 --!strict
 -- New-player tutorial (task V4, revision round 2; not in the blueprint). Saved step data.TutorialStep:
---   1 Welcome            -> the client's "Next" (ack)
+--   1 Welcome            -> by itself after Config.Tutorial.WelcomeSeconds (round 2: every step moves on alone)
 --   2 Walk to the Backyard -> the server sees the player leave the lobby (Config.World.LobbyRadius)
 --   3 Catch a cat        -> the server sees CarryingCat (a cat caught and carried)
 --   4 Carry it home      -> CarryService.Delivered (a cat knocked loose sends the player back to 3)
 --   5 Train at the weights -> a training tick (Progress "Train")
 --   6 Open the Shop      -> the client's ack (nothing to win by faking it)
---   7 All done           -> the client's ack: Config.Tutorial.Reward money the first time only, then Done
+--   7 All done           -> by itself after Config.Tutorial.DoneSeconds: Config.Tutorial.Reward money the
+--                           first time only, then Done
 -- Skip -> Done (no reward); Replay (Settings) -> 1. Player attribute "Tutorial" = the step while it runs.
 -- Saves from before V4 are marked done by Migrate.tutorial (anyone who ever had a cat).
 
@@ -28,6 +29,7 @@ local WELCOME, ZONE, CATCH, CARRY, TRAIN, SHOP, FINISH = 1, 2, 3, 4, 5, 6, 7
 local ACKABLE = { [WELCOME] = true, [SHOP] = true, [FINISH] = true }
 
 local lostSince: { [Player]: number } = {} -- step 4: when the carried cat was lost
+local since: { [Player]: { step: number, at: number } } = {} -- when the current step started (timed steps)
 
 local function stepOf(player: Player): number
 	local data = DataService.GetData(player)
@@ -37,6 +39,10 @@ end
 local function show(player: Player)
 	local step = stepOf(player)
 	player:SetAttribute("Tutorial", if step >= 1 and step < T.Done then step else nil)
+	local s = since[player]
+	if not s or s.step ~= step then
+		since[player] = { step = step, at = os.clock() }
+	end
 end
 
 local function setStep(player: Player, step: number)
@@ -87,6 +93,15 @@ local function poll()
 	local now = os.clock()
 	for _, player in Players:GetPlayers() do
 		local step = stepOf(player)
+		local s = since[player]
+		local held = if s and s.step == step then now - s.at else 0
+		if step == WELCOME and held >= T.WelcomeSeconds then
+			advance(player, WELCOME)
+			continue
+		elseif step == FINISH and held >= T.DoneSeconds then
+			finish(player)
+			continue
+		end
 		if step < ZONE or step > CARRY then
 			continue
 		end
@@ -146,6 +161,7 @@ function TutorialService:Start()
 	end)
 	Players.PlayerRemoving:Connect(function(player)
 		lostSince[player] = nil
+		since[player] = nil
 	end)
 	task.spawn(function()
 		while true do

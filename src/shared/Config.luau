@@ -65,6 +65,8 @@ Config.Tutorial = {
 	Done = 99,
 	Reward = 1000,
 	CheckEvery = 0.5, -- seconds between the server's step checks
+	WelcomeSeconds = 5, -- the welcome step moves on by itself
+	DoneSeconds = 5, -- so does the last one (with the reward)
 	Rate = { maxCalls = 4, window = 1 },
 }
 

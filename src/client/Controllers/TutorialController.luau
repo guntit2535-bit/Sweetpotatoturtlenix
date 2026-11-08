@@ -1,9 +1,13 @@
 --!strict
--- New-player tutorial on this client (task V4). The server owns the step (player attribute "Tutorial",
--- TutorialService); this draws it: a bubble at the bottom with the step's text (EN / TH), a Next / Let's go
--- button on the info steps, Skip, and a guide to the target: a light beam from the player plus a bouncing
--- marker over it (the Backyard, the nearest cat you can catch, your pen, your weights), or a pulsing ring on
--- the Shop button. Opening the Shop on step 6 tells the server.
+-- New-player tutorial on this client (task V4, redone in round 2: "arrows first, moves on by itself"). The
+-- server owns the step (player attribute "Tutorial", TutorialService) and moves it on when the player does it;
+-- this draws the guide:
+--   * a banner at the bottom: the step number, a title, one short line, progress dots, a small Skip
+--   * yellow arrow chevrons on the ground flowing from the player to the target
+--   * a big bouncing 3D arrow over the target, and the target outlined (Highlight)
+--   * an arrow at the screen edge (with the distance) while the target is off screen
+--   * a pointing hand on the button to press (the Shop button; the hold button while fishing)
+-- Targets: the Backyard, the nearest cat you can catch, your pen, your weights, the Shop button.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -21,20 +25,28 @@ local TutorialController = {}
 local C = Kit.Colors
 local me = Players.LocalPlayer
 local remote: RemoteEvent
-local TEXT = { "TutWelcome", "TutZone", "TutCatch", "TutCarry", "TutTrain", "TutShop", "TutDone" }
-local ACK = { [1] = "TutNext", [7] = "TutGo" }
+local STEPS = 7
+local TITLE = { "TutT1", "TutT2", "TutT3", "TutT4", "TutT5", "TutT6", "TutT7" }
+local BODY = { "TutWelcome", "TutZone", "TutCatch", "TutCarry", "TutTrain", "TutShop", "TutDone" }
+local YELLOW = Color3.fromHex("ffd23f")
+local CHEVRONS = 14
+local SPACING = 5
 
-local panel: Frame
+local banner: Frame
+local title: TextLabel
 local body: TextLabel
 local stepLabel: TextLabel
-local nextButton: TextButton
+local dots: { Frame } = {}
 local skipButton: TextButton
-local ring: Frame
-local beam: Beam
-local from: Attachment
-local to: Attachment
-local marker: BillboardGui
-local anchor: Part
+local edge: TextLabel
+local edgeDist: TextLabel -- (not inside the arrow: it would turn with it)
+local hand: TextLabel
+local guide: Folder
+local chevrons: { Model } = {}
+local arrow: Model
+local highlight: Highlight
+local rayParams = RaycastParams.new()
+rayParams.FilterType = Enum.RaycastFilterType.Exclude
 
 local function step(): number?
 	local s = me:GetAttribute("Tutorial")
@@ -56,7 +68,7 @@ local function myPen(): Model?
 end
 
 -- The nearest wild cat this player can catch (Strength >= its kg); any wild cat if none.
-local function nearestCat(root: BasePart): Vector3?
+local function nearestCat(root: BasePart): Model?
 	local folder = workspace:FindFirstChild("WildCats")
 	if not folder then
 		return nil
@@ -65,155 +77,212 @@ local function nearestCat(root: BasePart): Vector3?
 	local best, bestD, any, anyD = nil, math.huge, nil, math.huge
 	for _, m in folder:GetChildren() do
 		if m:IsA("Model") and m.PrimaryPart then
-			local pos = m.PrimaryPart.Position
-			local d = (pos - root.Position).Magnitude
+			local d = (m.PrimaryPart.Position - root.Position).Magnitude
 			local kg = m:GetAttribute("Kg")
 			local ok = type(kg) == "number" and type(strength) == "number" and kg <= strength
 			if ok and d < bestD then
-				best, bestD = pos, d
+				best, bestD = m, d
 			end
 			if d < anyD then
-				any, anyD = pos, d
+				any, anyD = m, d
 			end
 		end
 	end
 	return best or any
 end
 
-local function target(s: number, root: BasePart): Vector3?
+-- The target of a step: a world position and, when there is one, the model to outline.
+local function target(s: number, root: BasePart): (Vector3?, Instance?)
 	if s == 2 then
-		-- straight out from the plaza to the Backyard
 		local flat = Vector3.new(root.Position.X, 0, root.Position.Z)
 		local dir = if flat.Magnitude > 1 then flat.Unit else Vector3.new(0, 0, -1)
-		return dir * (Config.World.LobbyRadius + 24) + Vector3.new(0, 3, 0)
+		return dir * (Config.World.LobbyRadius + 24), nil
 	elseif s == 3 then
-		return nearestCat(root)
+		if me:GetAttribute("Fishing") ~= nil then
+			return nil, nil -- reeling: the hand points at the hold button instead
+		end
+		local cat = nearestCat(root)
+		return if cat and cat.PrimaryPart then cat.PrimaryPart.Position else nil, cat
 	elseif s == 4 then
 		local pen = myPen()
 		local spawnPart = pen and pen:FindFirstChild("Spawn")
-		return if spawnPart and spawnPart:IsA("BasePart") then spawnPart.Position else (pen and pen:GetPivot().Position)
+		return if spawnPart and spawnPart:IsA("BasePart") then spawnPart.Position else (pen and pen:GetPivot().Position), nil
 	elseif s == 5 then
 		local pen = myPen()
 		local w = pen and pen:FindFirstChild("Weights")
 		local stand = w and w:FindFirstChild("Stand")
-		return if stand and stand:IsA("BasePart") then stand.Position else nil
+		return if stand and stand:IsA("BasePart") then stand.Position else nil, w
+	end
+	return nil, nil
+end
+
+-- The button the hand points at (screen), if any.
+local function pointAt(s: number): GuiObject?
+	if s == 6 then
+		local gui = me.PlayerGui:FindFirstChild("HudLeft")
+		local b = gui and gui:FindFirstChild("Shop", true)
+		return if b and b:IsA("GuiObject") then b else nil
+	elseif s == 3 and me:GetAttribute("Fishing") ~= nil then
+		local gui = me.PlayerGui:FindFirstChild("FishingGui")
+		local b = gui and gui:FindFirstChild("Hold")
+		return if b and b:IsA("GuiObject") and b.Visible then b else nil
 	end
 	return nil
 end
 
-local function shopButton(): GuiObject?
-	local gui = me.PlayerGui:FindFirstChild("HudLeft")
-	local b = gui and gui:FindFirstChild("Shop", true)
-	return if b and b:IsA("GuiObject") then b else nil
+local function texts(): (string, string)
+	local s = step() or 1
+	local key = BODY[s] or "TutWelcome"
+	if s == 3 and me:GetAttribute("Fishing") ~= nil then
+		key = "TutHold"
+	end
+	return Lang.text(TITLE[s] or "TutT1"), Lang.text(key, { money = Format.short(Config.Tutorial.Reward) })
 end
 
 local function refresh()
 	local s = step()
-	panel.Visible = s ~= nil
+	banner.Visible = s ~= nil
 	if not s then
-		ring.Visible = false
 		return
 	end
-	local key = TEXT[s] or "TutWelcome"
-	body.Text = Lang.text(key, { money = Format.short(Config.Tutorial.Reward) })
-	stepLabel.Text = Lang.text("TutStep", { n = s, max = #TEXT })
-	nextButton.Parent.Visible = ACK[s] ~= nil
-	if ACK[s] then
-		Kit.setButtonText(nextButton, Lang.text(ACK[s]))
+	local t, b = texts()
+	title.Text = t
+	body.Text = b
+	stepLabel.Text = Lang.text("TutStep", { n = s, max = STEPS })
+	for i, d in dots do
+		d.BackgroundColor3 = if i < s then C.green elseif i == s then YELLOW else C.grey
+		d.Size = if i == s then UDim2.fromOffset(22, 22) else UDim2.fromOffset(14, 14)
 	end
 	Kit.setButtonText(skipButton, Lang.text("TutSkip"))
-	skipButton.Parent.Visible = s < #TEXT
+	;(skipButton.Parent :: GuiObject).Visible = s < STEPS
 end
 
-local function build()
+local function neon(parent: Instance, size: Vector3, cf: CFrame, wedge: boolean?): BasePart
+	local p: BasePart = if wedge then Instance.new("WedgePart") else Instance.new("Part")
+	p.Size = size
+	p.CFrame = cf
+	p.Color = YELLOW
+	p.Material = Enum.Material.Neon
+	p.Anchored = true
+	p.CanCollide = false
+	p.CanQuery = false
+	p.CanTouch = false
+	p.CastShadow = false
+	p.Parent = parent
+	return p
+end
+
+local function buildWorld()
+	guide = Instance.new("Folder")
+	guide.Name = "TutorialGuide"
+	-- ground chevrons: ">" made of two bars, pointing along their -Z
+	for _ = 1, CHEVRONS do
+		local m = Instance.new("Model")
+		m.Name = "Chevron"
+		local root = neon(m, Vector3.new(0.1, 0.1, 0.1), CFrame.new())
+		root.Transparency = 1
+		m.PrimaryPart = root
+		for _, side in { -1, 1 } do
+			neon(m, Vector3.new(0.7, 0.15, 2.8), CFrame.new(side * 0.9, 0, 0.8) * CFrame.Angles(0, side * math.rad(-40), 0))
+		end
+		m.Parent = guide
+		table.insert(chevrons, m)
+	end
+	-- the big arrow over the target: a shaft and a head pointing down
+	arrow = Instance.new("Model")
+	arrow.Name = "Arrow"
+	local root = neon(arrow, Vector3.new(0.1, 0.1, 0.1), CFrame.new())
+	root.Transparency = 1
+	arrow.PrimaryPart = root
+	neon(arrow, Vector3.new(1.1, 2.6, 1.1), CFrame.new(0, 2.6, 0))
+	for _, side in { -1, 1 } do
+		-- two wedges back to back make a triangle pointing down
+		neon(arrow, Vector3.new(1.1, 1.8, 1.4), CFrame.new(side * 0.7, 0.6, 0) * CFrame.Angles(0, side * math.pi / 2, math.pi), true)
+	end
+	arrow.Parent = guide
+	highlight = Instance.new("Highlight")
+	highlight.FillColor = YELLOW
+	highlight.FillTransparency = 0.75
+	highlight.OutlineColor = YELLOW
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Enabled = false
+	highlight.Parent = guide
+end
+
+local function buildGui()
 	local gui = Kit.screen("Tutorial", 12)
-	panel = Instance.new("Frame")
-	panel.Name = "Bubble"
-	panel.AnchorPoint = Vector2.new(0.5, 1)
-	panel.Position = UDim2.new(0.5, 0, 1, -84) -- bottom centre above the hotbar (toasts use the top)
-	panel.Size = UDim2.fromOffset(520, 118)
-	panel.BackgroundColor3 = C.panel
-	panel.Visible = false
-	panel.Parent = gui
-	Kit.corner(panel, 22)
-	Kit.stroke(panel, 4, nil, true)
-	Kit.ears(panel, 22, { 0.1, 0.9 }, C.panel, C.pink)
+	banner = Instance.new("Frame")
+	banner.Name = "Bubble"
+	banner.AnchorPoint = Vector2.new(0.5, 1)
+	banner.Position = UDim2.new(0.5, 0, 1, -84) -- above the hotbar; toasts use the top
+	banner.Size = UDim2.fromOffset(560, 116)
+	banner.BackgroundColor3 = C.panel
+	banner.Visible = false
+	banner.Parent = gui
+	Kit.corner(banner, 22)
+	Kit.stroke(banner, 4, nil, true)
+	Kit.ears(banner, 22, { 0.08, 0.92 }, C.panel, C.pink)
 	local fit = Instance.new("UIScale")
-	fit.Parent = panel
-	Kit.paw(panel, 40, UDim2.fromOffset(12, 14), C.pink, 0)
-	stepLabel = Kit.text(panel, "Step", UDim2.fromOffset(60, 22), UDim2.fromOffset(4, 62), 16)
-	stepLabel.TextColor3 = C.muted
-	body = Kit.text(panel, "Body", UDim2.new(1, -210, 1, -16), UDim2.fromOffset(66, 8), 20)
+	fit.Parent = banner
+	-- the step number in a yellow circle
+	local pill = Instance.new("Frame")
+	pill.Size = UDim2.fromOffset(72, 72)
+	pill.Position = UDim2.fromOffset(14, 16)
+	pill.BackgroundColor3 = YELLOW
+	pill.Parent = banner
+	Kit.corner(pill, 36)
+	Kit.stroke(pill, 3, nil, true)
+	stepLabel = Kit.text(pill, "Step", UDim2.fromScale(1, 1), UDim2.new(), 24, true)
+	title = Kit.text(banner, "Title", UDim2.new(1, -224, 0, 34), UDim2.fromOffset(98, 8), 28, true)
+	title.TextXAlignment = Enum.TextXAlignment.Left
+	title.TextColor3 = Color3.fromHex("8a4dd6")
+	body = Kit.text(banner, "Body", UDim2.new(1, -224, 0, 46), UDim2.fromOffset(98, 42), 20)
 	body.TextXAlignment = Enum.TextXAlignment.Left
 	body.TextScaled = true
 	local sizer = Instance.new("UITextSizeConstraint")
-	sizer.MaxTextSize = 22
+	sizer.MaxTextSize = 21
 	sizer.Parent = body
-	nextButton = Kit.button(panel, "Next", C.green, UDim2.fromOffset(128, 48), UDim2.new(1, -138, 0, 10))
-	skipButton = Kit.button(panel, "Skip", C.grey, UDim2.fromOffset(128, 36), UDim2.new(1, -138, 1, -46))
-	nextButton.Activated:Connect(function()
-		local s = step()
-		if s and ACK[s] then
-			remote:FireServer("ack", s)
-		end
-	end)
+	-- progress dots
+	local row = Instance.new("Frame")
+	row.BackgroundTransparency = 1
+	row.Position = UDim2.fromOffset(98, 88)
+	row.Size = UDim2.fromOffset(240, 24)
+	row.Parent = banner
+	local list = Instance.new("UIListLayout")
+	list.FillDirection = Enum.FillDirection.Horizontal
+	list.VerticalAlignment = Enum.VerticalAlignment.Center
+	list.Padding = UDim.new(0, 8)
+	list.Parent = row
+	for i = 1, STEPS do
+		local d = Instance.new("Frame")
+		d.LayoutOrder = i
+		d.Size = UDim2.fromOffset(14, 14)
+		d.Parent = row
+		Kit.corner(d, 11)
+		Kit.stroke(d, 2, nil, true)
+		table.insert(dots, d)
+	end
+	skipButton = Kit.button(banner, "Skip", C.grey, UDim2.fromOffset(104, 40), UDim2.new(1, -116, 0.5, -22))
 	skipButton.Activated:Connect(function()
 		remote:FireServer("skip")
 	end)
-	-- the ring on the Shop button (step 6)
-	ring = Instance.new("Frame")
-	ring.Name = "Ring"
-	ring.BackgroundTransparency = 1
-	ring.AnchorPoint = Vector2.new(0.5, 0.5)
-	ring.Visible = false
-	ring.Parent = gui
-	local rc = Instance.new("UICorner")
-	rc.CornerRadius = UDim.new(0.5, 0)
-	rc.Parent = ring
-	local rs = Instance.new("UIStroke")
-	rs.Thickness = 5
-	rs.Color = C.yellow
-	rs.Parent = ring
-	-- the beam + marker (world)
-	anchor = Instance.new("Part")
-	anchor.Name = "TutorialTarget"
-	anchor.Anchored = true
-	anchor.CanCollide = false
-	anchor.CanQuery = false
-	anchor.CanTouch = false
-	anchor.Transparency = 1
-	anchor.Size = Vector3.new(0.2, 0.2, 0.2)
-	to = Instance.new("Attachment")
-	to.Parent = anchor
-	from = Instance.new("Attachment")
-	from.Name = "TutorialFrom"
-	beam = Instance.new("Beam")
-	beam.Attachment0 = from
-	beam.Attachment1 = to
-	beam.Color = ColorSequence.new(Color3.fromHex("ffd23f"))
-	beam.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.2), NumberSequenceKeypoint.new(1, 0.55) })
-	beam.Width0 = 0.7
-	beam.Width1 = 0.7
-	beam.FaceCamera = true
-	beam.LightEmission = 0.6
-	beam.Segments = 20
-	beam.Parent = anchor
-	marker = Instance.new("BillboardGui")
-	marker.Name = "Marker"
-	marker.Size = UDim2.fromOffset(70, 80)
-	marker.AlwaysOnTop = true
-	marker.LightInfluence = 0
-	marker.Adornee = anchor
-	marker.Parent = anchor
-	local arrow = Kit.text(marker, "Arrow", UDim2.fromScale(1, 0.55), UDim2.fromScale(0, 0.45), 46, true)
-	arrow.Text = "▼"
-	arrow.TextColor3 = Color3.fromHex("ffd23f")
-	Kit.paw(marker, 40, UDim2.new(0.5, -20, 0, 0), C.pink, 0)
-	-- a phone-sized bubble
+	-- the edge arrow and the pointing hand
+	edge = Kit.text(gui, "Edge", UDim2.fromOffset(84, 84), UDim2.new(), 56, true)
+	edge.AnchorPoint = Vector2.new(0.5, 0.5)
+	edge.Text = "➤"
+	edge.TextColor3 = YELLOW
+	edge.Visible = false
+	edgeDist = Kit.text(gui, "EdgeDist", UDim2.fromOffset(90, 26), UDim2.new(), 22, true)
+	edgeDist.AnchorPoint = Vector2.new(0.5, 0)
+	edgeDist.Visible = false
+	hand = Kit.text(gui, "Hand", UDim2.fromOffset(70, 70), UDim2.new(), 54, true)
+	hand.AnchorPoint = Vector2.new(0.5, 0.5)
+	hand.Text = "👈"
+	hand.Visible = false
 	local function rescale()
 		local cam = workspace.CurrentCamera
 		local size = cam and cam.ViewportSize or Vector2.new(1000, 700)
-		fit.Scale = math.clamp(math.min((size.X - 240) / 560, size.Y / 760), 0.55, 1)
+		fit.Scale = math.clamp(math.min((size.X - 240) / 600, size.Y / 760), 0.55, 1)
 	end
 	rescale()
 	if workspace.CurrentCamera then
@@ -221,64 +290,125 @@ local function build()
 	end
 end
 
+local function ground(p: Vector3): Vector3
+	local hit = workspace:Raycast(p + Vector3.new(0, 40, 0), Vector3.new(0, -120, 0), rayParams)
+	return if hit then hit.Position else Vector3.new(p.X, 0, p.Z)
+end
+
 local function update()
 	local s = step()
 	local character = me.Character
 	local root = character and character:FindFirstChild("HumanoidRootPart")
-	local pos = if s and root and root:IsA("BasePart") then target(s, root) else nil
-	if pos and root and root:IsA("BasePart") then
-		if from.Parent ~= root then
-			from.Parent = root
-		end
-		anchor.Position = pos + Vector3.new(0, 1.5, 0)
-		local bob = math.sin(os.clock() * 4) * 0.12
-		marker.StudsOffsetWorldSpace = Vector3.new(0, 2.5 + bob * 4, 0)
-		if anchor.Parent ~= workspace then
-			anchor.Parent = workspace
-		end
-	elseif anchor.Parent then
-		anchor.Parent = nil
+	local now = os.clock()
+	local pos: Vector3?, model: Instance? = nil, nil
+	if s and root and root:IsA("BasePart") then
+		pos, model = target(s, root)
 	end
-	-- the Shop ring
-	local b = if s == 6 then shopButton() else nil
-	if b then
-		local size = math.max(b.AbsoluteSize.X, b.AbsoluteSize.Y) * (1.25 + math.sin(os.clock() * 5) * 0.08)
-		ring.Position = UDim2.fromOffset(b.AbsolutePosition.X + b.AbsoluteSize.X / 2, b.AbsolutePosition.Y + b.AbsoluteSize.Y / 2)
-		ring.Size = UDim2.fromOffset(size, size)
-		ring.Visible = true
+	if pos and root and root:IsA("BasePart") and character then
+		if guide.Parent ~= workspace then
+			guide.Parent = workspace
+		end
+		rayParams.FilterDescendantsInstances = { guide, character }
+		-- chevrons flowing along the ground towards the target
+		local from = Vector3.new(root.Position.X, 0, root.Position.Z)
+		local to = Vector3.new(pos.X, 0, pos.Z)
+		local flat = to - from
+		local len = flat.Magnitude
+		local dir = if len > 0.1 then flat.Unit else Vector3.new(0, 0, -1)
+		local phase = (now * 6) % SPACING
+		for i, c in chevrons do
+			local d = 3 + (i - 1) * SPACING + phase
+			if d < len - 2 then
+				local p = ground(from + dir * d) + Vector3.new(0, 0.18, 0)
+				c:PivotTo(CFrame.lookAt(p, p + dir))
+				local fade = math.clamp(math.min(d - 3, len - 2 - d) / 4, 0, 1)
+				for _, part in c:GetChildren() do
+					if part:IsA("BasePart") and part ~= c.PrimaryPart then
+						part.Transparency = 1 - 0.85 * fade
+					end
+				end
+			else
+				c:PivotTo(CFrame.new(0, -500, 0))
+			end
+		end
+		-- the big arrow bouncing over the target, and its outline
+		local bob = math.abs(math.sin(now * 3)) * 1.4
+		local topY = pos.Y
+		if model and model:IsA("Model") then
+			local cf, size = model:GetBoundingBox()
+			topY = math.max(topY, cf.Position.Y + size.Y / 2)
+		end
+		arrow:PivotTo(CFrame.new(pos.X, topY + 1.5 + bob, pos.Z) * CFrame.Angles(0, now * 2, 0))
+		highlight.Adornee = model
+		highlight.Enabled = model ~= nil
+		-- the edge arrow while the target is off screen
+		local cam = workspace.CurrentCamera
+		local sp, on = cam:WorldToViewportPoint(pos + Vector3.new(0, 2, 0))
+		local size = cam.ViewportSize
+		if on and sp.X > 40 and sp.X < size.X - 40 and sp.Y > 40 and sp.Y < size.Y - 40 then
+			edge.Visible = false
+			edgeDist.Visible = false
+		else
+			local c2 = Vector2.new(size.X / 2, size.Y / 2)
+			local v = Vector2.new(sp.X, sp.Y) - c2
+			if sp.Z < 0 then
+				v = -v
+			end
+			if v.Magnitude < 1 then
+				v = Vector2.new(0, -1)
+			end
+			local p = c2 + v.Unit * math.min(size.X, size.Y) * 0.38
+			edge.Position = UDim2.fromOffset(p.X, p.Y)
+			edge.Rotation = math.deg(math.atan2(v.Y, v.X))
+			edge.Visible = true
+			edgeDist.Position = UDim2.fromOffset(p.X, p.Y + 30)
+			edgeDist.Text = `{math.floor(len)} m`
+			edgeDist.Visible = true
+		end
 	else
-		ring.Visible = false
+		if guide.Parent then
+			guide.Parent = nil
+		end
+		highlight.Enabled = false
+		edge.Visible = false
+		edgeDist.Visible = false
+	end
+	-- the hand pointing at a button
+	local b = if s then pointAt(s) else nil
+	if b then
+		local nudge = math.sin(now * 6) * 8
+		local cx = b.AbsolutePosition.Y + b.AbsoluteSize.Y / 2 -- the button's middle (same screen space as the hand)
+		if b.AbsolutePosition.X > workspace.CurrentCamera.ViewportSize.X / 2 then
+			hand.Position = UDim2.fromOffset(b.AbsolutePosition.X - 34 - nudge, cx)
+			hand.Text = "👉"
+		else
+			hand.Position = UDim2.fromOffset(b.AbsolutePosition.X + b.AbsoluteSize.X + 34 + nudge, cx)
+			hand.Text = "👈"
+		end
+		hand.Visible = true
+	else
+		hand.Visible = false
 	end
 end
 
 function TutorialController.Start(_self: any)
 	remote = Remotes.event("Tutorial")
-	build()
+	buildWorld()
+	buildGui()
 	refresh()
 	me:GetAttributeChangedSignal("Tutorial"):Connect(refresh)
+	me:GetAttributeChangedSignal("Fishing"):Connect(refresh)
 	Lang.changed:Connect(refresh)
 	RunService.RenderStepped:Connect(update)
 	-- step 6: opening the Shop window counts
 	task.spawn(function()
 		local shop = me.PlayerGui:WaitForChild("ShopWindow", 30)
-		if not shop then
-			return
-		end
-		local function check()
-			if step() == 6 and (shop :: any).Enabled ~= false then
-				local p = shop:FindFirstChild("Panel")
-				if p and p:IsA("GuiObject") and p.Visible then
+		if shop and shop:IsA("ScreenGui") then
+			shop:GetPropertyChangedSignal("Enabled"):Connect(function()
+				if step() == 6 and shop.Enabled then
 					remote:FireServer("ack", 6)
 				end
-			end
-		end
-		for _, d in shop:GetDescendants() do
-			if d:IsA("GuiObject") and d.Name == "Panel" then
-				d:GetPropertyChangedSignal("Visible"):Connect(check)
-			end
-		end
-		if shop:IsA("ScreenGui") then
-			shop:GetPropertyChangedSignal("Enabled"):Connect(check)
+			end)
 		end
 	end)
 end

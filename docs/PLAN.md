@@ -468,3 +468,14 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   PlayerPoses reel holds with the left arm (hx / hz / he), PlayerAnimController puts the right hand on the crank
   (the arm solve now works for either arm). Studio: handle 0.36 from the left hand, right hand on the crank circle,
   grip back to the right hand after. (2) Hotbar 1 = rod, 2 = bat (tools given rod first).
+- 2026-11-09: V1 try 2 (`art/blender/blockcat.py`, `art/preview/cats_v1/blockcats.png`): the try-1 voxel cats were not
+  approved; the developer's new pictures show chunky block creatures covered in LEGO studs, stacked plates, block
+  faces, glow on rare ones. Block cats (head / muzzle / ears / body / legs / tail blocks, studs on every face, flat
+  plate stripes, Fluffy fur plates) with tier extras: Rare collar + bell, Epic crystals, Legendary gold armour,
+  crown, wings, sparkles. In the game: Roblox Parts (as CatModel now) with a tiled studs texture. Sent.
+- 2026-11-09: V4 redone (developer: arrows first, every step moves on by itself): welcome and the last step move on
+  after 5 s (no Next button), the shop step when the Shop opens; the guide is yellow chevrons flowing along the
+  ground to the target, a big bouncing 3D arrow over it, the target outlined (Highlight), an edge arrow with the
+  distance when it is off screen, a pointing hand on the Shop / hold button; the banner shows the step number, a
+  title, one short line and progress dots (new texts TutT1-7, TutHold). Studio: 1 -> 2 after 5 s, chevrons along
+  the road, cat outlined + arrow, hand on Shop, 7 -> done after 5 s; no errors (art/preview/v4/v2_*).

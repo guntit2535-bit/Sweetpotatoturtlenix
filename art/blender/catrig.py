@@ -13,10 +13,13 @@ from kit import R
 
 HEAD_NAMES = {"Head", "Ear", "EarIn", "Muzzle", "Nose", "Mouth", "Eye", "Iris", "Shine", "Blush", "Cheek", "Frame", "Lens",
               "Glint", "Arm", "HatBrim", "HatTop", "HatCorner", "Trim", "Badge", "Toe", "Patch", "Strap", "Earring", "Horn",
-              "Crown", "CrownTip", "Halo", "Glow", "Fire", "Stem", "Leaf"}
+              "Crown", "CrownTip", "Halo", "Glow", "Fire", "Stem", "Leaf", "HeadStripe", "HeadMark", "HeadCurl", "HeadWrinkle",
+              "Mask", "Lid", "Fluff"}
+# blocks on the body's top that the height rule below would otherwise give to the head
+BODY_NAMES = {"Body", "Chest", "Stripe", "Mark", "Belly", "Ruff", "Puff", "Rib", "Curl", "Wrinkle"}
 FX_NAMES = {"Sparkle", "FxFlame", "Aura", "Heart"}
 WING_NAMES = {"Wing", "WingBone", "WingSkin", "Feather"}
-LEG_NAMES = {"Leg", "Paw", "Anklet", "Hilt", "Guard", "Blade"}
+LEG_NAMES = {"Leg", "Paw", "Sock", "Anklet", "Hilt", "Guard", "Blade"}
 CHILDREN = ["Head", "Tail1", "LegFL", "LegFR", "LegBL", "LegBR", "WingL", "WingR"]
 
 
@@ -61,6 +64,8 @@ class Rig:
             return ("LegF" if front else "LegB") + ("L" if c.x < 0 else "R")
         if n in ("Tail", "TailSpike"):
             return "Tail1" if c.z < A["bz"] + 0.5 else "Tail2"
+        if n in BODY_NAMES:
+            return "Body"
         if n in HEAD_NAMES or (c.z > A["leg"] + A["bh"] - 0.05 and c.y < A["hy"] + A["hd"] / 2 + 1.2):
             return "Head"
         return "Body"

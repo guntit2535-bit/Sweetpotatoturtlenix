@@ -104,66 +104,366 @@ SHAPES = {
     "Slim": dict(leg=1.3, bw=2.0, bl=3.4, bh=1.6, hw=2.5, hd=2.1, hh=2.3),
     "Fluffy": dict(leg=0.8, bw=3.0, bl=3.1, bh=2.2, hw=3.2, hd=2.5, hh=2.7),
 }
+MARK_T = 0.14  # thickness of a colour patch laid on a face
+MARK_O = 0.04  # how far its centre sits outside the face
+
+
+def patch(m, box, face, uv, size, color, name="Mark", studs=True, lift=0.0):
+    """A colour patch on one face of a box (box = (centre, size)). face: top / left / right / front / back;
+    uv = where on that face (-0.5 .. 0.5 of its two sides), size = the patch's two sides. Clamped to the face.
+    lift: a little extra height, so overlapping patches do not fight."""
+    (cx, cy, cz), (sx, sy, sz) = box
+    o = MARK_O + lift
+    if face == "top":
+        lu, lv = sx, sy
+    elif face in ("left", "right"):
+        lu, lv = sy, sz
+    else:
+        lu, lv = sx, sz
+    su, sv = min(size[0], lu), min(size[1], lv)
+    u = max(-(lu - su) / 2, min((lu - su) / 2, uv[0] * lu))
+    v = max(-(lv - sv) / 2, min((lv - sv) / 2, uv[1] * lv))
+    if face == "top":
+        c, s = (cx + u, cy + v, cz + sz / 2 + o), (su, sv, MARK_T)
+    elif face in ("left", "right"):
+        k = -1 if face == "left" else 1
+        c, s = (cx + k * (sx / 2 + o), cy + u, cz + v), (MARK_T, su, sv)
+    else:
+        k = -1 if face == "front" else 1
+        c, s = (cx + u, cy + k * (sy / 2 + o), cz + v), (su, MARK_T, sv)
+    if studs:
+        return block(m, c, s, color, name=name)
+    return flat(m, c, s, color, name=name)
+
+
+def wrap(m, box, y, length, color, down=0.6, width=None, name="Mark", sides=(-1, 1), top=True):
+    """A band across the top of a box at y (a stripe or a patch) that runs down its sides by `down` of the height."""
+    (cx, cy, cz), (sx, sy, sz) = box
+    u = (y - cy) / sy
+    if top:
+        patch(m, box, "top", (0, u), (width or sx, length), color, name=name)
+    for k in sides:
+        patch(m, box, "left" if k < 0 else "right", (u, 0.5 - down / 2), (length, sz * down), color, name=name)
 
 
 def base(m, look):
-    """The plain cat. Returns its attach points."""
+    """The plain cat with its breed traits (all from `look`). Returns its attach points.
+    look: shape, fur, second, patternColor, third, eyes, eyes2, nose, pattern, ears, tail, eyeStyle, seed, and the
+    flags big, kitten, chubby, loafy, shortLegs, cheeks, flatFace, ruff, hairless, curly, cloud, yawn, blush,
+    bigNose, pinkPaws, glowEyes."""
     shape = look.get("shape", "Loaf")
+    P = dict(SHAPES[shape])
+    if look.get("big"):
+        P = {k: v * 1.12 for k, v in P.items()}
+    if look.get("kitten"):
+        P.update(leg=P["leg"] * 0.7, bw=P["bw"] * 0.8, bl=P["bl"] * 0.7, bh=P["bh"] * 0.8, hw=P["hw"] * 1.04,
+                 hd=P["hd"] * 1.02, hh=P["hh"] * 1.04)
+    if look.get("chubby"):
+        P.update(bw=P["bw"] + 0.8, bh=P["bh"] + 0.45, bl=P["bl"] + 0.2, leg=P["leg"] * 0.75)
+    if look.get("loafy"):
+        P.update(leg=0.42, bw=P["bw"] + 0.35, bh=P["bh"] + 0.25)
+    if look.get("shortLegs"):
+        P.update(leg=0.45, bl=P["bl"] + 0.9)
     fur = hexrgb(look.get("fur"), (255, 170, 80))
     second = hexrgb(look.get("second"), (255, 240, 220))
     pat = hexrgb(look.get("patternColor"), shade(fur, 0.78))
+    third = hexrgb(look.get("third"), (58, 52, 64))
     eye = hexrgb(look.get("eyes"), (70, 160, 255))
+    eye2 = hexrgb(look.get("eyes2"), eye)
+    nose = hexrgb(look.get("nose"), PINK)
     pattern = look.get("pattern", "solid")
-    P = SHAPES[shape]
+    rnd = random.Random(look.get("seed", 7))
     leg, bw, bl, bh = P["leg"], P["bw"], P["bl"], P["bh"]
     hw, hd, hh = P["hw"], P["hd"], P["hh"]
     bz, by = leg + bh / 2, 0.35
-    sock = pattern in ("socks", "tuxedo")
+    top_z = leg + bh
+
+    # colours of each part, set by the pattern
+    sock = {"socks": second, "tuxedo": second, "blackpaws": pat, "mitted": second}.get(pattern)
+    sock_legs = [0, 1, 2, 3]
+    if pattern == "mittens":
+        sock, sock_legs = second, [0, 2]
+    leg_c = pat if pattern in ("points", "mitted") else fur
+    ear_c = [fur, fur]
+    tail_c = fur
+    muzzle_c = second
+    if pattern in ("points", "mitted"):
+        ear_c, tail_c, muzzle_c = [pat, pat], pat, pat
+    elif pattern == "calico":
+        ear_c = [pat, third]
+    elif pattern == "masked":
+        ear_c = [pat, pat]
+
+    # legs and paws (order: (-x, front), (-x, back), (+x, front), (+x, back))
     paws = []
     for x in (-1, 1):
         for y in (-1, 1):
+            i = len(paws)
             lc = (x * (bw / 2 - 0.45), by + y * (bl / 2 - 0.5), leg / 2 + 0.05)
-            block(m, lc, (0.85, 0.85, leg + 0.1), fur, name="Leg")
-            block(m, (lc[0], lc[1] - 0.06, 0.18), (0.95, 1.0, 0.36), second if sock else shade(fur, 0.9), name="Paw", sides="top")
+            block(m, lc, (0.85, 0.85, leg + 0.1), leg_c, name="Leg")
+            paw_c = shade(leg_c, 0.9)
+            if sock and i in sock_legs:
+                h = max(0.36, leg * 0.6)
+                block(m, (lc[0], lc[1] - 0.02, h / 2 + 0.02), (1.03, 1.04, h), sock, name="Sock")
+                paw_c = sock
+            if look.get("pinkPaws"):
+                paw_c = (255, 160, 190)
+            block(m, (lc[0], lc[1] - 0.06, 0.18), (1.05, 1.08, 0.36), paw_c, name="Paw", sides="top")
             paws.append(Vector(lc))
-    block(m, (0, by, bz), (bw, bl, bh), fur, name="Body")
-    flat(m, (0, by - bl / 2 - 0.05, bz - 0.15), (bw * 0.62, 0.12, bh * 0.66), second, name="Chest")
+
+    # body: one block, or layers from the bottom up
+    layers = [(1.0, fur)]
+    if pattern == "tuxedo":
+        layers = [(0.42, second), (0.58, fur)]
+    elif pattern in ("bicolor", "mitted"):
+        layers = [(0.45, second), (0.55, fur)]
+    elif pattern == "smoke":
+        layers = [(0.34, shade(fur, 1.55)), (0.33, shade(fur, 1.25)), (0.33, fur)]
+    elif look.get("loafy"):
+        layers = [(0.72, fur), (0.28, pat)]
+    z0 = leg
+    for k, (f, col) in enumerate(layers):
+        block(m, (0, by, z0 + bh * f / 2), (bw, bl, bh * f + (0.002 if k else 0)), col, name="Body")
+        z0 += bh * f
+    BODY = ((0, by, bz), (bw, bl, bh))
+    chest, chest_z = (bw * 0.62, 0.12, bh * 0.66), bz - 0.15
+    if pattern == "bib":
+        chest, chest_z = (bw * 0.8, 0.12, bh * 0.85), bz - bh * 0.075 + 0.05
+    flat(m, (0, by - bl / 2 - 0.05, chest_z), chest, second, name="Chest")
+    if look.get("chubby"):
+        block(m, (0, by - 0.1, leg - 0.02), (bw * 0.72, bl * 0.62, 0.42), second, name="Belly")
+
+    # body patterns
     if pattern == "tabby":
         for k in (-1, 0, 1):
             block(m, (0, by + k * 0.85, bz + bh / 2 + 0.06), (bw * 0.9, 0.36, 0.14), pat, name="Stripe")
-    tail = [(0, by + bl / 2 + 0.35, bz + 0.2), (0, by + bl / 2 + 0.8, bz + 0.85), (0, by + bl / 2 + 0.95, bz + 1.6)]
-    for i, c in enumerate(tail):
-        col = second if i == 2 and pattern != "solid" else (pat if pattern == "tabby" and i == 1 else fur)
-        block(m, c, (0.6, 0.6, 0.85), col, name="Tail")
-    hz = leg + bh + hh / 2 - 0.35
+    elif pattern == "mackerel":
+        n = 6
+        for k in range(n):
+            y = by - bl / 2 + 0.45 + k * (bl - 0.7) / (n - 1)
+            wrap(m, BODY, y, 0.22, pat, down=0.7, name="Stripe")
+        patch(m, BODY, "top", (0, 0), (0.3, bl - 0.3), pat, name="Stripe")
+    elif pattern == "tiger":
+        for k in range(4):
+            y = by - bl / 2 + 0.55 + k * (bl - 0.9) / 3
+            wrap(m, BODY, y, 0.42, pat, down=0.55, name="Stripe")
+            for s in ("left", "right"):
+                patch(m, BODY, s, ((y - by) / bl + 0.06, -0.18), (0.3, bh * 0.35), pat, name="Stripe")
+    elif pattern == "classic":
+        for k in (-1, 0, 1):
+            patch(m, BODY, "top", (k * 0.3, 0), (0.32, bl * 0.85), pat, name="Stripe")
+        for s in ("left", "right"):
+            # the bullseye swirl on each side
+            for u, v, w, h in ((0.12, 0.25, 1.3, 0.24), (0.12, -0.22, 1.3, 0.24), (-0.12, 0.02, 0.24, 0.9), (0.36, 0.02, 0.24, 0.9)):
+                patch(m, BODY, s, (u, v), (w, h), pat, name="Stripe", studs=False)
+            patch(m, BODY, s, (0.12, 0.02), (0.36, 0.3), pat, name="Stripe", studs=False)
+    elif pattern == "calico":
+        wrap(m, BODY, by - bl * 0.18, 1.2, pat, down=0.75, width=bw * 0.55, sides=(-1,), top=False)
+        patch(m, BODY, "top", (-0.22, -0.18), (bw * 0.55, 1.2), pat)
+        wrap(m, BODY, by + bl * 0.25, 1.1, third, down=0.7, sides=(1,), top=False)
+        patch(m, BODY, "top", (0.22, 0.25), (bw * 0.55, 1.1), third)
+        patch(m, BODY, "top", (-0.2, 0.42), (0.9, 0.6), third)
+    elif pattern == "tortie":
+        for k in range(16):
+            face = rnd.choice(("top", "top", "left", "right"))
+            patch(m, BODY, face, (rnd.uniform(-0.45, 0.45), rnd.uniform(-0.45, 0.45)),
+                  (rnd.uniform(0.45, 0.9), rnd.uniform(0.45, 0.9)), pat if rnd.random() < 0.7 else shade(pat, 1.2), lift=k * 0.012)
+    elif pattern in ("spots", "rosettes", "leopard"):
+        n = {"spots": 10, "rosettes": 12, "leopard": 22}[pattern]
+        sz = {"spots": 0.75, "rosettes": 0.62, "leopard": 0.34}[pattern]
+        cells = [(f, i, j) for f in ("top", "left", "right") for i in range(4) for j in range(3)]
+        rnd.shuffle(cells)
+        for f, i, j in cells[:n]:
+            uv = (-0.38 + i * 0.25 + rnd.uniform(-0.05, 0.05), -0.32 + j * 0.32 + rnd.uniform(-0.05, 0.05))
+            o = patch(m, BODY, f, uv, (sz, sz), pat, studs=pattern == "spots")
+            if pattern == "rosettes":
+                cx, cy, cz = [sum(v.co[a] for v in o.data.vertices) / len(o.data.vertices) for a in range(3)]
+                out = {"top": (0, 0, 0.05), "left": (-0.05, 0, 0), "right": (0.05, 0, 0)}[f]
+                s2 = {"top": (0.3, 0.3, 0.06), "left": (0.06, 0.3, 0.3), "right": (0.06, 0.3, 0.3)}[f]
+                flat(m, (cx + out[0], cy + out[1], cz + out[2]), s2, tuple((a + b) // 2 for a, b in zip(fur, pat)), name="Mark")
+    elif pattern == "patch":
+        wrap(m, BODY, by + bl * 0.08, bl * 0.5, pat, down=0.55, width=bw)
+    elif pattern == "ribs":
+        for s in ("left", "right"):
+            for u in (-0.3, -0.1, 0.1, 0.3):
+                patch(m, BODY, s, (u, 0), (0.16, bh * 0.85), pat, studs=False, name="Rib")
+        for u in (-0.2, 0.2):
+            patch(m, BODY, "top", (u, 0), (0.16, bl * 0.9), pat, studs=False, name="Rib")
+    elif pattern == "dorsal":
+        patch(m, BODY, "top", (0, 0), (0.7, bl * 0.95), pat, name="Stripe")
+    if look.get("hairless"):
+        for s in ("left", "right"):
+            for v in (0.1, -0.12):
+                patch(m, BODY, s, (-0.15, v), (bl * 0.4, 0.07), shade(fur, 0.82), studs=False, name="Wrinkle")
+    curl_c = hexrgb(look.get("patternColor"), shade(fur, 0.9))
+    if look.get("curly"):
+        for i in range(4):
+            for j in range(3):
+                patch(m, BODY, "top", (-0.36 + i * 0.24 + (j % 2) * 0.1, -0.33 + j * 0.33), (0.42, 0.42), curl_c, name="Curl")
+        for s in ("left", "right"):
+            for i in range(4):
+                patch(m, BODY, s, (-0.36 + i * 0.24, 0.2 - (i % 2) * 0.3), (0.42, 0.42), curl_c, name="Curl")
+    if look.get("cloud"):
+        puff = hexrgb(look.get("patternColor"), (225, 232, 245))
+        for x, y, z, s in ((-1, -0.25, 0.35, 1.1), (1, 0.15, 0.3, 1.2), (-1, 0.35, -0.1, 0.9), (1, -0.35, -0.15, 0.85)):
+            block(m, (x * (bw / 2 + 0.1), by + y * bl, bz + z * bh), (s * 0.7, s, s * 0.85), puff if s < 1 else WHITE, name="Puff")
+        block(m, (0.3, by + 0.3, top_z + 0.25), (1.3, 1.2, 0.6), WHITE, name="Puff")
+        block(m, (-0.4, by + 0.9, top_z + 0.15), (0.9, 0.8, 0.45), puff, name="Puff")
+    if look.get("ruff"):
+        block(m, (0, by - bl / 2 - 0.25, top_z - 0.55), (bw * 0.85, 0.6, 1.0), second, name="Ruff")
+        block(m, (0, by - bl / 2 - 0.4, top_z - 1.2), (bw * 0.55, 0.45, 0.7), second, name="Ruff")
+
+    # tail
+    style = look.get("tail", "normal")
+    t0 = by + bl / 2
+    if style == "long":
+        tail = [(0, t0 + 0.35, bz + 0.2), (0, t0 + 0.85, bz + 0.75), (0, t0 + 1.2, bz + 1.45), (0, t0 + 1.35, bz + 2.2),
+                (0, t0 + 1.15, bz + 2.85)]
+        sizes = [(0.55, 0.55, 0.85)] * 4 + [(0.55, 0.95, 0.55)]
+    elif style == "bob":
+        tail = [(0, t0 + 0.4, bz + 0.45), (0, t0 + 0.4, bz + 0.45)]
+        sizes = [(1.0, 0.8, 0.9), None]
+    elif style == "fluffy":
+        tail = [(0, t0 + 0.45, bz + 0.25), (0, t0 + 0.9, bz + 0.95), (0, t0 + 1.05, bz + 1.8)]
+        sizes = [(0.85, 0.85, 0.95), (1.0, 1.0, 1.0), (1.05, 1.05, 1.0)]
+    elif style == "thin":
+        tail = [(0, t0 + 0.3, bz + 0.2), (0, t0 + 0.75, bz + 0.85), (0, t0 + 0.95, bz + 1.6)]
+        sizes = [(0.38, 0.38, 0.85)] * 3
+    else:
+        tail = [(0, t0 + 0.35, bz + 0.2), (0, t0 + 0.8, bz + 0.85), (0, t0 + 0.95, bz + 1.6)]
+        sizes = [(0.6, 0.6, 0.85)] * 3
+    for i, (c, s) in enumerate(zip(tail, sizes)):
+        if not s:
+            continue
+        last = i == len(tail) - 1
+        col = tail_c
+        if last and pattern in ("tabby", "socks", "tuxedo", "calico", "bicolor", "mitted", "patch", "mittens"):
+            col = second
+        if last and pattern in ("blackpaws", "masked", "tips", "spots"):
+            col = pat
+        if last and pattern == "smoke":
+            col = shade(fur, 1.25)
+        if pattern == "tabby" and i == 1:
+            col = pat
+        if pattern in ("mackerel", "tiger", "classic", "leopard", "rosettes") and i % 2 == 1:
+            col = pat
+        block(m, c, s, col, name="Tail")
+
+    # head
+    hz = top_z + hh / 2 - 0.35
     hy = by - bl / 2 + 0.2
     block(m, (0, hy, hz), (hw, hd, hh), fur, name="Head")
+    HEAD = ((0, hy, hz), (hw, hd, hh))
     front = hy - hd / 2
-    if pattern == "tabby":
+    if pattern in ("tabby", "mackerel", "tiger", "classic"):
+        w = 0.4 if pattern == "tiger" else 0.26
         for x in (-0.45, 0, 0.45):
-            flat(m, (x, hy - 0.2, hz + hh / 2 + 0.06), (0.26, hd * 0.6, 0.12), pat, name="Stripe")
+            flat(m, (x * (1.15 if pattern == "tiger" else 1), hy - 0.2, hz + hh / 2 + 0.06), (w, hd * 0.6, 0.12), pat, name="HeadStripe")
         for x in (-1, 1):
             for k in (0, 1):
-                flat(m, (x * (hw / 2 + 0.03), hy - 0.3 - k * 0.45, hz - 0.1), (0.08, 0.22, 0.5), pat, name="Cheek")
+                flat(m, (x * (hw / 2 + 0.03), hy - 0.3 - k * 0.45, hz - 0.1), (0.08, 0.22 if pattern != "tiger" else 0.3, 0.5), pat, name="Cheek")
+        if pattern in ("tiger", "mackerel"):
+            for x in (-0.3, 0, 0.3):
+                flat(m, (x, front - 0.03, hz + hh * 0.36), (0.16, 0.08, 0.42 if x == 0 else 0.3), pat, name="HeadStripe")
+    elif pattern in ("points", "mitted"):
+        flat(m, (0, front - 0.03, hz - hh * 0.08), (hw * 0.66, 0.08, hh * 0.66), pat, name="Mask")
+    elif pattern == "masked":
+        flat(m, (0, front - 0.03, hz + hh * 0.08), (hw * 0.96, 0.08, 1.05), pat, name="Mask")
+    elif pattern == "calico":
+        patch(m, HEAD, "top", (-0.25, 0), (hw * 0.5, hd), pat, name="HeadMark")
+        patch(m, HEAD, "left", (0, 0.2), (hd, hh * 0.6), pat, name="HeadMark")
+        flat(m, (-hw * 0.3, front - 0.03, hz + hh * 0.22), (hw * 0.38, 0.08, hh * 0.5), pat, name="HeadMark")
+    elif pattern == "tortie":
+        for k, face in enumerate(("top", "right")):
+            patch(m, HEAD, face, (rnd.uniform(-0.3, 0.3), rnd.uniform(0.0, 0.3)), (0.9, 0.7), pat, name="HeadMark", lift=k * 0.012)
+        flat(m, (hw * 0.25, front - 0.03, hz + hh * 0.3), (0.7, 0.08, 0.5), pat, name="HeadMark")
+    elif pattern in ("spots", "leopard", "rosettes"):
+        for u, v in ((-0.3, -0.2), (0.25, 0.25)):
+            patch(m, HEAD, "top", (u, v), (0.45, 0.45) if pattern == "spots" else (0.3, 0.3), pat, name="HeadMark", studs=False)
+        if pattern == "spots":
+            flat(m, (hw * 0.3, front - 0.03, hz + hh * 0.3), (0.6, 0.08, 0.55), pat, name="HeadMark")
+    elif pattern == "patch":
+        flat(m, (hw * 0.27, front - 0.03, hz + hh * 0.12), (hw * 0.42, 0.08, hh * 0.55), pat, name="HeadMark")
+        patch(m, HEAD, "top", (0.25, 0), (hw * 0.45, hd), pat, name="HeadMark")
+    elif pattern == "bicolor":
+        flat(m, (0, front - 0.03, hz - hh * 0.2), (hw * 0.6, 0.08, hh * 0.5), second, name="HeadMark")
+        flat(m, (0, front - 0.03, hz + hh * 0.18), (0.4, 0.08, hh * 0.5), second, name="HeadMark")
+    elif pattern == "tuxedo":
+        flat(m, (0, front - 0.03, hz - hh * 0.25), (hw * 0.5, 0.08, hh * 0.4), second, name="HeadMark")
+    elif pattern == "dorsal":
+        patch(m, HEAD, "top", (0, 0.1), (0.6, hd * 0.8), pat, name="HeadStripe")
+    elif pattern == "smoke":
+        patch(m, HEAD, "top", (0, 0), (hw, hd), shade(fur, 0.8), name="HeadMark")
+    if look.get("hairless"):
+        for k in range(3):
+            flat(m, (0, front - 0.03, hz + hh * 0.3 + k * 0.17), (0.9 - k * 0.15, 0.07, 0.06), shade(fur, 0.82), name="HeadWrinkle")
+    if look.get("curly"):
+        for x in (-0.25, 0.25):
+            patch(m, HEAD, "top", (x, 0.1), (0.5, 0.5), curl_c, name="HeadCurl")
+    if look.get("cheeks"):
+        for x in (-1, 1):
+            block(m, (x * (hw / 2 + 0.18), hy - 0.15, hz - hh * 0.22), (0.55, hd * 0.65, hh * 0.42),
+                  second if pattern in ("bicolor", "tuxedo") else fur, name="Fluff")
+
+    # ears
     ears = []
-    for x in (-1, 1):
-        ex = x * (hw / 2 - 0.55)
-        block(m, (ex, hy + 0.15, hz + hh / 2 + 0.3), (0.95, 0.55, 0.6), fur, name="Ear")
-        block(m, (ex + x * 0.08, hy + 0.15, hz + hh / 2 + 0.78), (0.55, 0.45, 0.45), fur, name="Ear")
-        flat(m, (ex, hy - 0.16, hz + hh / 2 + 0.38), (0.5, 0.1, 0.42), PINK, name="EarIn")
-        ears.append(Vector((ex, hy + 0.15, hz + hh / 2 + 0.3)))
+    ear = look.get("ears", "normal")
+    for i, x in enumerate((-1, 1)):
+        ec = ear_c[i]
+        if ear == "fold":
+            ex = x * (hw / 2 - 0.6)
+            fr = T(ex, hy - 0.05, hz + hh / 2 + 0.12) @ R(0.55, "X")
+            block(m, (0, -0.15, 0), (1.0, 0.85, 0.32), ec, frame=fr, name="Ear")
+            ears.append(Vector((ex, hy, hz + hh / 2 + 0.2)))
+            continue
+        k = {"big": 1.25, "small": 0.72}.get(ear, 1.0)
+        ex = x * (hw / 2 - 0.55 * min(k, 1.0))
+        z1 = hz + hh / 2 + 0.3 * k
+        block(m, (ex, hy + 0.15, z1), (0.95 * k, 0.55, 0.6 * k), ec, name="Ear")
+        z2 = z1 + 0.48 * k
+        block(m, (ex + x * 0.08 * k, hy + 0.15, z2), (0.55 * k, 0.45, 0.45 * k), pat if pattern == "tips" else ec, name="Ear")
+        flat(m, (ex, hy - 0.16, z1 + 0.08 * k), (0.5 * k, 0.1, 0.42 * k), PINK, name="EarIn")
+        if ear == "tufts":
+            block(m, (ex + x * 0.14, hy + 0.15, z2 + 0.45), (0.22, 0.22, 0.55), shade(pat, 0.75), name="Ear")
+        ears.append(Vector((ex, hy + 0.15, z1)))
+
+    # face
     mz = hz - hh * 0.22
-    block(m, (0, front - 0.22, mz), (1.3, 0.45, 0.75), second, name="Muzzle")
-    flat(m, (0, front - 0.47, mz + 0.22), (0.36, 0.12, 0.2), PINK, name="Nose")
-    flat(m, (0, front - 0.47, mz - 0.12), (0.5, 0.1, 0.07), INK, name="Mouth")
+    if look.get("flatFace"):
+        block(m, (0, front - 0.1, mz), (1.15, 0.2, 0.6), muzzle_c, name="Muzzle", sides="none")
+        nf = front - 0.24
+    else:
+        block(m, (0, front - 0.22, mz), (1.3, 0.45, 0.75), muzzle_c, name="Muzzle")
+        nf = front - 0.47
+    big_nose = look.get("bigNose")
+    flat(m, (0, nf, mz + 0.22), (0.5 if big_nose else 0.36, 0.12, 0.28 if big_nose else 0.2), nose, name="Nose")
+    if look.get("yawn"):
+        flat(m, (0, nf, mz - 0.14), (0.5, 0.1, 0.36), (90, 30, 50), name="Mouth")
+        flat(m, (0, nf - 0.02, mz - 0.24), (0.34, 0.08, 0.14), (255, 130, 150), name="Mouth")
+    else:
+        flat(m, (0, nf, mz - 0.12), (0.5, 0.1, 0.07), INK, name="Mouth")
+    estyle = look.get("eyeStyle", "normal")
     eyes = []
-    for x in (-1, 1):
+    for i, x in enumerate((-1, 1)):
         ex, ez = x * hw * 0.27, hz + hh * 0.08
-        if not look.get("noEyes"):
+        iris = eye if i == 0 else eye2
+        if estyle == "sleepy":
+            flat(m, (ex, front - 0.06, ez - 0.12), (0.62, 0.14, 0.4), INK, name="Eye")
+            flat(m, (ex, front - 0.13, ez - 0.2), (0.5, 0.08, 0.18), iris, name="Iris")
+            flat(m, (ex, front - 0.09, ez + 0.1), (0.7, 0.14, 0.12), shade(fur, 0.8), name="Lid")
+        elif estyle == "big":
+            flat(m, (ex, front - 0.06, ez), (0.76, 0.14, 0.95), INK, name="Eye")
+            flat(m, (ex, front - 0.13, ez - 0.17), (0.62, 0.08, 0.42), iris, name="Iris", emit=0.35 if look.get("glowEyes") else 0.0)
+            flat(m, (ex - 0.15, front - 0.15, ez + 0.2), (0.26, 0.06, 0.26), WHITE, name="Shine", emit=0.5)
+            flat(m, (ex + 0.17, front - 0.15, ez - 0.28), (0.12, 0.06, 0.12), WHITE, name="Shine", emit=0.5)
+        else:
             flat(m, (ex, front - 0.06, ez), (0.62, 0.14, 0.78), INK, name="Eye")
-            flat(m, (ex, front - 0.13, ez - 0.17), (0.5, 0.08, 0.3), eye, name="Iris")
+            flat(m, (ex, front - 0.13, ez - 0.17), (0.5, 0.08, 0.3), iris, name="Iris")
             flat(m, (ex - 0.12, front - 0.15, ez + 0.17), (0.2, 0.06, 0.2), WHITE, name="Shine", emit=0.5)
-        flat(m, (x * hw * 0.42, front - 0.06, mz + 0.05), (0.4, 0.08, 0.18), (255, 175, 195), name="Blush")
+        if look.get("blush"):
+            flat(m, (x * hw * 0.42, front - 0.06, mz + 0.05), (0.56, 0.08, 0.28), (255, 130, 160), name="Blush")
+        else:
+            flat(m, (x * hw * 0.42, front - 0.06, mz + 0.05), (0.4, 0.08, 0.18), (255, 175, 195), name="Blush")
         eyes.append(Vector((ex, front, ez)))
     return dict(shape=shape, fur=fur, second=second, pat=pat, eye=eye, leg=leg, bw=bw, bl=bl, bh=bh, bz=bz, by=by,
                 hw=hw, hd=hd, hh=hh, hz=hz, hy=hy, front=front, mz=mz, eyes=eyes, ears=ears, paws=paws,
@@ -331,6 +631,73 @@ DESIGNS = {
     "Dragon Cat": (d_dragon, dict(shape="Slim", fur="4fbf5a", second="fff2c4", pattern="solid", eyes="ffb020")),
     "Cat God": (d_cat_god, dict(shape="Fluffy", fur="ffe08a", second="fffaf0", pattern="solid", eyes="5ec4ff")),
 }
+
+
+
+# --------------------------------------------------------------------------------------------------
+# Basic tier (round 2): plain cats with no clothes. Each design is its own breed, colours, pattern and shape.
+def d_plain(m, A):  # Basic: nothing on top of the cat itself
+    pass
+
+
+BASIC_LOOKS = {
+    "Ginger Tabby": dict(shape="Loaf", fur="ffa04a", second="fff0d8", pattern="tabby", patternColor="d9681f", eyes="3c96ff"),
+    "Tuxedo": dict(shape="Slim", fur="2e2a36", second="ffffff", pattern="tuxedo", eyes="7ed957", nose="ff9ab8"),
+    "Calico": dict(shape="Loaf", fur="ffffff", second="ffffff", pattern="calico", patternColor="ff9a3c", third="3a3440", eyes="ffb020"),
+    "Snowball": dict(shape="Fluffy", fur="ffffff", second="f2f5ff", eyes="3c96ff", cheeks=True, ruff=True, tail="fluffy"),
+    "Midnight": dict(shape="Slim", fur="2b2733", second="3d3846", eyes="ffd23c", eyeStyle="big", glowEyes=True, ears="big", nose="5a4c60"),
+    "Grey Tabby": dict(shape="Loaf", fur="aab0bc", second="f2f3f6", pattern="tabby", patternColor="6a7080", eyes="7ed957", seed=2),
+    "Cream Puff": dict(shape="Fluffy", fur="ffe6bc", second="fffaf0", eyes="5ab0ff", cheeks=True, tail="fluffy", blush=True, ears="small"),
+    "Tortie": dict(shape="Loaf", fur="3a3440", second="ffb070", pattern="tortie", patternColor="ff8a2a", eyes="ffd23c", seed=4),
+    "Siamese": dict(shape="Slim", fur="fff0d8", second="fff0d8", pattern="points", patternColor="5a3a2a", eyes="3ca0ff", ears="big"),
+    "Russian Blue": dict(shape="Slim", fur="8797b2", second="a3b0c6", eyes="52d273", ears="big", nose="8a90a8", tail="thin"),
+    "Bengal": dict(shape="Slim", fur="f0a640", second="fff0d0", pattern="rosettes", patternColor="5a3a20", eyes="7ed957", seed=3),
+    "Persian": dict(shape="Fluffy", fur="fff3e2", second="ffffff", flatFace=True, ears="small", cheeks=True, tail="fluffy",
+                    eyes="ff9a2a", eyeStyle="big"),
+    "Maine Coon": dict(shape="Fluffy", big=True, fur="a8784a", second="f0e0c8", pattern="tabby", patternColor="6a4628", ears="tufts",
+                       ruff=True, tail="fluffy", eyes="ffc040"),
+    "Sphynx": dict(shape="Slim", fur="f6c4be", second="f6c4be", hairless=True, ears="big", tail="thin", eyes="70d6a0", eyeStyle="big"),
+    "Scottish Fold": dict(shape="Loaf", fur="b9b4ae", second="f0ece6", ears="fold", eyeStyle="big", eyes="ffb020", cheeks=True),
+    "Ragdoll": dict(shape="Fluffy", fur="fbf6ee", second="ffffff", pattern="mitted", patternColor="8a6248", eyes="3ca0ff", tail="fluffy",
+                    ruff=True),
+    "Munchkin": dict(shape="Loaf", shortLegs=True, fur="ffb066", second="ffffff", pattern="bicolor", eyes="3c96ff"),
+    "British Shorthair": dict(shape="Loaf", fur="8c95a8", second="a4adbd", cheeks=True, ears="small", eyes="ff9a20", eyeStyle="big",
+                              nose="7a8296"),
+    "Sock Cat": dict(shape="Loaf", fur="9a6a44", second="fff4e8", pattern="socks", eyes="7ed957"),
+    "Spotty": dict(shape="Slim", fur="ffffff", second="ffffff", pattern="spots", patternColor="2f2a36", eyes="3c96ff", seed=5),
+    "Orange Loaf": dict(shape="Loaf", loafy=True, fur="ff9a3c", second="fff0d8", patternColor="cc6a1e", eyes="52d273"),
+    "Smoky": dict(shape="Fluffy", fur="545866", second="c8ccd6", pattern="smoke", eyes="ffb020", tail="fluffy"),
+    "Chocolate": dict(shape="Slim", fur="6a4030", second="8a5a44", eyes="ffd23c", nose="9a5a48"),
+    "Lilac": dict(shape="Slim", fur="c4aecb", second="e6daea", eyes="ffb050", nose="dc9ab8", ears="big"),
+    "Cinnamon": dict(shape="Loaf", fur="c0663a", second="ffe8cc", pattern="bib", eyes="ffb020"),
+    "Mackerel": dict(shape="Slim", fur="a4a8b2", second="e8eaee", pattern="mackerel", patternColor="34353e", eyes="7ed957"),
+    "Masked": dict(shape="Loaf", fur="ffffff", second="ffffff", pattern="masked", patternColor="3a3542", eyes="ffd23c"),
+    "Patchy": dict(shape="Loaf", fur="ffffff", second="ffffff", pattern="patch", patternColor="8e94a2", eyes="3c96ff"),
+    "Ginger Fluff": dict(shape="Fluffy", fur="ff9440", second="fff0d8", tail="fluffy", ruff=True, eyes="52d273", cheeks=True),
+    "Black Paws": dict(shape="Slim", fur="ffffff", second="ffffff", pattern="blackpaws", patternColor="2f2a36", eyes="3c96ff"),
+    "Golden Eyes": dict(shape="Loaf", fur="d6b48a", second="f6e8d4", eyeStyle="big", glowEyes=True, eyes="ffc21e"),
+    "Odd Eyes": dict(shape="Fluffy", fur="ffffff", second="ffffff", eyeStyle="big", eyes="3c96ff", eyes2="ffd23c", ears="big"),
+    "Sleepy": dict(shape="Loaf", fur="ffc890", second="fff4e8", eyeStyle="sleepy", yawn=True, eyes="9a6a3a"),
+    "Chubby": dict(shape="Fluffy", chubby=True, fur="d8cfc0", second="fffaf2", eyes="52d273", cheeks=True, ears="small"),
+    "Kitten": dict(shape="Loaf", kitten=True, fur="ffb066", second="ffffff", pattern="bib", eyeStyle="big", eyes="3c96ff", blush=True),
+    "Long Tail": dict(shape="Slim", fur="c8ccd4", second="f0f2f6", tail="long", eyes="3cb0ff"),
+    "Bobtail": dict(shape="Loaf", fur="ffffff", second="ffffff", pattern="patch", patternColor="ff9a3c", tail="bob", eyes="52d273"),
+    "Curly Rex": dict(shape="Slim", fur="f2e0bc", second="fff6e6", curly=True, patternColor="dcc08c", ears="big", eyes="7ed957"),
+    "Leopard Spot": dict(shape="Slim", fur="f2c040", second="fff2cc", pattern="leopard", patternColor="2f2a26", eyes="52d273", seed=6),
+    "Silver Tabby": dict(shape="Loaf", fur="d4d8de", second="ffffff", pattern="classic", patternColor="2f3038", eyes="52d273"),
+    "Peach": dict(shape="Loaf", fur="ffb894", second="fff0e8", blush=True, eyes="3c96ff", nose="ff7a9a"),
+    "Coal": dict(shape="Slim", fur="25222b", second="34303b", eyes="7ed957", nose="ff8fb0", bigNose=True, pinkPaws=True),
+    "Milk Tea": dict(shape="Fluffy", fur="c8a07a", second="ffffff", pattern="bib", tail="fluffy", eyes="3c96ff"),
+    "Biscuit": dict(shape="Loaf", fur="d89a4a", second="fff0d0", pattern="bicolor", eyes="52d273"),
+    "Mitten": dict(shape="Loaf", fur="9aa0ac", second="ffffff", pattern="mittens", eyes="ffd23c"),
+    "Tiger Stripe": dict(shape="Slim", fur="ff8a2a", second="fff0d8", pattern="tiger", patternColor="2a2228", eyes="52d273"),
+    "Pumpkin": dict(shape="Loaf", fur="e8661a", second="ffd8a8", pattern="ribs", patternColor="c04e10", eyes="52d273"),
+    "Cloud": dict(shape="Fluffy", fur="dfe7f2", second="ffffff", cloud=True, patternColor="f4f7fc", eyes="5ab0ff", tail="fluffy"),
+    "Shadow": dict(shape="Slim", fur="4a4652", second="5e5a66", pattern="dorsal", patternColor="2a2730", eyes="8ad8ff", eyeStyle="big"),
+    "Honey": dict(shape="Loaf", fur="ffbf3a", second="fff0c0", pattern="tips", patternColor="d98a10", eyes="d98a10"),
+}
+for _name, _look in BASIC_LOOKS.items():
+    DESIGNS.setdefault(_name, (d_plain, _look))
 
 
 def build(name):

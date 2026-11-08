@@ -91,6 +91,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] V5 ★ All 400 cats as approved: block cats with LEGO studs, 50 unique designs per tier (docs/Sweetpotato_Cats.xlsx), bones + walk / idle animation, a unique effect round every Mythical / Secret cat
   - [x] V5a design table (300) + one Blender cat per tier + bones / walk preview (art/preview/cats_v1/walk.gif)
   - [ ] V5b-g the other 294 in Blender, one tier at a time, a sheet per tier for approval (Basic, Rare, Epic, Legendary, Mythical, Secret)
+    - [~] V5b Basic: all 50 built (`art/preview/cats_v1/tier_basic.png`), waiting for the developer's check
   - [ ] V5h into the game: an exporter writes every design as block data per bone (size, offset, colour, studs, glow) to a Luau module; CatModel builds the cat from Parts on the same rig (Body, Head, Tail1/2, legs, wings) so CatAnims moves it; the studs come from one MaterialVariant (a studs normal map the developer uploads), so no extra parts; effects from a small library (orbiting block objects + particle styles) keyed by effectKey; Cats data: 400 cats (100/80/70/50/50/50), names from the table
   - [ ] V5i Studio checks: pens with many cats on a phone, book, trade, crate opening, the Caught! card
 
@@ -503,3 +504,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   body bob, head nod, tail sway, wing flap, effects orbit / flicker) rendered as `art/preview/cats_v1/walk.gif`.
   Also (developer): the pens' inside decorations removed (red and pink discs, 2 flower patches each) in MapKit and
   in the place, only the house and the green floor left.
+- 2026-11-09 V5b Basic cats: the base cat (`art/blender/blockcat.py`) now takes breed traits from its look: 18 patterns
+  (tabby, mackerel, tiger, classic swirl, calico, tortie, colourpoint, mitted, spots, rosettes, leopard, patch,
+  socks, mittens, black paws, tuxedo, bicolour, smoke, ...), ear types (fold, tufts, big, small), tails (long curl,
+  bob pompom, fluffy, thin), eyes (big, sleepy, odd colours, glow), and kitten / chubby / loaf / short legs / big,
+  cheeks, flat face, ruff, hairless wrinkles, curls, cloud puffs, yawn, blush. `BASIC_LOOKS` = the 50 Basic designs
+  from the table (31-61 blocks each); `art/blender/blockcat_tier.py` renders a tier on one sheet at the same
+  scale. All 50 rig cleanly (catrig: new head / body / sock names).

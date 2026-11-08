@@ -111,6 +111,7 @@ def build_xlsx(path):
         cell.fill = HEAD
         cell.border = BOX
         cell.alignment = Alignment(vertical="center", wrap_text=True)
+    ws.row_dimensions[4].height = 34
 
     # grey example row
     example = ["ตัวอย่าง", "ปุ่มและหน้าต่าง", "click", "ตัวอย่าง: กดปุ่มทุกปุ่ม", "button click", "ไม่", 1234567890, "ตัวอย่าง"]
@@ -141,7 +142,7 @@ def build_xlsx(path):
     ws.cell(row=last + 2, column=6, value="กรอกแล้ว").font = Font(bold=True)
     ws.cell(row=last + 2, column=7, value=f'=COUNT(G{first}:G{last})&" / {len(rows)}"').font = Font(bold=True)
 
-    widths = [8, 18, 16, 50, 36, 10, 16, 14]
+    widths = [9, 24, 20, 62, 40, 11, 16, 16]
     for c, w in enumerate(widths, 1):
         ws.column_dimensions[chr(64 + c)].width = w
     ws.freeze_panes = "A5"

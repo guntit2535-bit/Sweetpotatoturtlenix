@@ -9,6 +9,8 @@
 -- After that the spot only grabs you again once you have stepped off it.
 -- R6: while lifting, the dumbbell of your weights level (mesh Dumbbell1..25) is welded into each hand; the
 -- clients pose the two-hand curl (PlayerAnimController).
+-- R7: while running, speed lines stream back from the runner, more and faster with the treadmill level
+-- (Config.TreadmillFx; the client also speeds up the run animation).
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -211,6 +213,89 @@ local function holdDumbbells(player: Player)
 	folder.Parent = character
 end
 
+-- R7: speed sparkles on the belt: an invisible strip across the belt in front of the runner's feet (welded to
+-- the root) sends sparkles sliding back along the belt under the runner, more and faster with each level, in
+-- the treadmill family's colour (thin streaks were tried first: too faint from the camera behind).
+local function dropLines(player: Player)
+	local character = player.Character
+	local old = character and character:FindFirstChild("SpeedLines")
+	if old then
+		old:Destroy()
+	end
+end
+
+local function speedLines(player: Player)
+	local character = player.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	local data = DataService.GetData(player)
+	if not character or not root or not root:IsA("BasePart") or not data then
+		return
+	end
+	local level = data.TreadLevel
+	local model = character:FindFirstChild("SpeedLines")
+	if model and model:GetAttribute("Level") == level then
+		return
+	end
+	if not model then
+		local m = Instance.new("Model")
+		m.Name = "SpeedLines"
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		local feet = (if humanoid then humanoid.HipHeight else 2) + root.Size.Y / 2
+		for _, side in { 0 } do
+			local pp = Instance.new("Part")
+			pp.Name = "Strip"
+			pp.Size = Vector3.new(2.6, 0.2, 0.2)
+			pp.Transparency = 1
+			pp.CanCollide = false
+			pp.CanTouch = false
+			pp.CanQuery = false
+			pp.Massless = true
+			pp.CFrame = root.CFrame * CFrame.new(side, -feet + 0.25, -1.6)
+			local w = Instance.new("WeldConstraint")
+			w.Part0 = root
+			w.Part1 = pp
+			w.Parent = pp
+			local e = Instance.new("ParticleEmitter")
+			e.Name = "Lines"
+			e.Enabled = false -- switched on below once fully set (the defaults live 5-10 s: a white haze)
+			e.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+			e.EmissionDirection = Enum.NormalId.Back
+			e.Shape = Enum.ParticleEmitterShape.Box
+			e.ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume
+			e.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 1.2), NumberSequenceKeypoint.new(1, 0.5) })
+			e.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.75, 0.2), NumberSequenceKeypoint.new(1, 1) })
+			e.Lifetime = NumberRange.new(0.45, 0.6)
+			e.Rotation = NumberRange.new(0, 360)
+			e.RotSpeed = NumberRange.new(-180, 180)
+			e.SpreadAngle = Vector2.new(4, 4)
+			e.LightEmission = 0.6
+			e.Parent = pp
+			pp.Parent = m
+		end
+		m.Parent = character
+		model = m
+	end
+	local fx = Config.TreadmillFx
+	local t = (level - 1) / math.max(Config.Treadmill.Levels - 1, 1)
+	local rate = fx.LineRate[1] + (fx.LineRate[2] - fx.LineRate[1]) * t
+	local v = fx.LineSpeed[1] + (fx.LineSpeed[2] - fx.LineSpeed[1]) * t
+	local color = ColorSequence.new(Color3.fromHex(fx.Colors[math.clamp(math.floor((level - 1) / 5) + 1, 1, #fx.Colors)]))
+	-- they fade out at the back end of the belt (the belt is 2.1 x level growth x scale behind the stand; the
+	-- strip starts 1.6 ahead), never reaching the camera
+	local travel = 2.1 * (1 + 0.02 * (level - 1)) * Config.ItemModels.TreadmillScale + 1.2
+	for _, d in (model :: Instance):GetDescendants() do
+		if d:IsA("ParticleEmitter") then
+			d.Rate = rate
+			d.Speed = NumberRange.new(v * 0.85, v * 1.15)
+			local life = math.max(0.35, travel / v) -- (very short lives showed as a white haze in Studio)
+			d.Lifetime = NumberRange.new(life * 0.85, life)
+			d.Enabled = true
+			d.Color = color
+		end
+	end
+	;(model :: Instance):SetAttribute("Level", level)
+end
+
 local function lockOn(player: Player, which: string, stand: BasePart, root: BasePart, humanoid: Humanoid)
 	local look = stand.CFrame.LookVector
 	local flat = Vector3.new(look.X, 0, look.Z)
@@ -228,6 +313,8 @@ local function lockOn(player: Player, which: string, stand: BasePart, root: Base
 	player:SetAttribute("Training", attrOf(which))
 	if which == "Weights" then
 		holdDumbbells(player)
+	elseif which == "Treadmill" then
+		speedLines(player)
 	end
 end
 
@@ -244,6 +331,7 @@ local function unlock(player: Player, mustLeave: boolean)
 	end
 	player:SetAttribute("Training", nil)
 	dropDumbbells(player)
+	dropLines(player)
 end
 
 -- Locks players who step on their own spot; lets go of anyone pushed off or dead.
@@ -343,6 +431,8 @@ function TrainingService:Start()
 		end
 		if locked[player] == "Weights" then
 			holdDumbbells(player) -- no-op unless the weights level changed
+		elseif locked[player] == "Treadmill" then
+			speedLines(player) -- no-op unless the treadmill level changed
 		end
 	end)
 	local function hook(player: Player)

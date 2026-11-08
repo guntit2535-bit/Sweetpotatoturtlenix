@@ -78,8 +78,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
 - [x] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
 - [x] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
-- [~] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
-- [ ] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
+- [x] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
+- [~] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
 - [ ] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
 - [x] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
 
@@ -404,3 +404,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   changes, drops it when you leave. The 25 rack looks came with R5. Tests: PlayerPoses.spec curl checks. Studio
   Play: lock at the weights -> a dumbbell in each hand, right then left arm up (`art/preview/r6/`), level 25 =
   cosmic dumbbells; leaving drops them; no errors. The developer's save was put back (weights 2, Strength 21386.6).
+- 2026-11-08: R6 approved ("ผ่าน"). R7: the 25 treadmill looks, +2 % size a level and the Stand moving onto the belt
+  came with R5; now the run gets faster with the level: the run animation plays 1x .. 1.9x (TrainingController,
+  Config.TreadmillFx.RunSpeed) and sparkles race back along the belt under the runner, 5 .. 34 a second at
+  8 .. 24 studs/s, in the treadmill family's colour, fading at the belt's end (TrainingService speedLines: an
+  invisible strip welded in front of the feet, seen by everyone, removed when you leave). Thin streaks were
+  tried first: too faint from the camera behind. Studio Play: levels 4 / 13 / 25 (), no errors;
+  the developer's save was put back (treadmill 4, Speed 2623.04).

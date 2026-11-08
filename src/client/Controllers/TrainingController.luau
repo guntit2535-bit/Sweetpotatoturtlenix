@@ -59,6 +59,13 @@ local function playFor(kind: string?)
 		t.Priority = Enum.AnimationPriority.Action
 		t:Play(0.2)
 		track = t
+		if kind == "treadmill" then
+			-- R7: a higher treadmill level runs faster
+			local level = me:GetAttribute("TreadLevel")
+			local u = ((if type(level) == "number" then level else 1) - 1) / math.max(Config.Treadmill.Levels - 1, 1)
+			local r = Config.TreadmillFx.RunSpeed
+			t:AdjustSpeed(r[1] + (r[2] - r[1]) * math.clamp(u, 0, 1))
+		end
 	end
 end
 
@@ -163,6 +170,11 @@ function TrainingController.Start(_self: any)
 	end)
 	me.CharacterAdded:Connect(function()
 		track = nil
+	end)
+	me:GetAttributeChangedSignal("TreadLevel"):Connect(function()
+		if me:GetAttribute("Training") == "treadmill" then
+			playFor("treadmill") -- R7: the new level's run speed
+		end
 	end)
 	me:GetAttributeChangedSignal("Strength"):Connect(function()
 		local now = me:GetAttribute("Strength")

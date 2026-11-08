@@ -112,6 +112,15 @@ Config.Economy = {
 -- rebirth multipliers); the next level costs Cost * CostGrowth^(L-1) * CostRebirth^rebirths money.
 Config.Weights = { Levels = 25, Tick = 1, Gain = 1, Growth = 1.6, Cost = 30, CostGrowth = 1.78, CostRebirth = 3 }
 Config.Treadmill = { Levels = 25, Tick = 1, Gain = 1, Growth = 1.6, Cost = 20, CostGrowth = 1.78, CostRebirth = 3 }
+-- R7: running on the treadmill gets faster with its level: the run animation plays RunSpeed[1] .. [2] times as
+-- fast (level 1 .. 25), and sparkles race back along the belt (rate and speed level 1 .. 25), in the
+-- colour of the treadmill's family (basic, sport, neon, gold, cosmic: 5 levels each).
+Config.TreadmillFx = {
+	RunSpeed = { 1, 1.9 },
+	LineRate = { 5, 34 },
+	LineSpeed = { 8, 24 },
+	Colors = { "9be86a", "6fb8ff", "4ff0ff", "ffd84a", "ff8ef0" },
+}
 -- Standing within StandRadius of your own pen's weights / treadmill trains; the gym looks change every
 -- LookEvery weights levels (dumbbell > barbell > bench > machine > giant barbell).
 Config.Gym = {

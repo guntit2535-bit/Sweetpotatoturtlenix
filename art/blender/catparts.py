@@ -752,6 +752,8 @@ def fx_item(m, kind, c, s, col, emit, rnd):
         ring(m, (0, 0, 0), s * 0.5, 10, (s * 0.2, s * 0.12, s * 0.2), col, "Fx", "Portal", fr=f @ R(math.pi / 2, "X"), emit=emit)
     elif kind == "sweetpotato":
         m.blob((s * 0.3, s * 0.3, s * 0.55), (170, 90, 190), f @ R(1.2, "Y"), e1=1.0, e2=1.0, nu=12, nv=8, name="Fx_Potato", emit=emit * 0.3)
+    elif kind == "flower":
+        flower(m, (0, 0, 0), s, col, (255, 230, 90), bone="Fx", fr=f)
     elif kind == "fish":
         box(m, (0, 0, 0), (s * 0.6, s * 0.18, s * 0.35), col, "Fx", "Fish", fr=f, studs=False, emit=emit)
         wedge(m, (-s * 0.42, 0, 0), (s * 0.18, s * 0.3, s * 0.35), col, "Fx", "Fish", fr=f @ R(math.pi / 2, "Z"))

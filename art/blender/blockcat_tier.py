@@ -66,7 +66,7 @@ cols = 10
 rows = (len(files) + cols - 1) // cols
 LAB = 52
 HEAD = 70
-sheet = Image.new("RGB", (cols * CELL, HEAD + rows * (CELL + LAB)), (236, 240, 247))
+sheet = Image.new("RGB", (cols * CELL, HEAD + rows * (CELL + LAB)), (212, 220, 234))
 dr = ImageDraw.Draw(sheet)
 try:
     title = ImageFont.truetype("tahomabd.ttf", 34)

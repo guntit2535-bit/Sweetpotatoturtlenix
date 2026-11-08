@@ -447,7 +447,9 @@ def base(m, look):
     for i, x in enumerate((-1, 1)):
         ex, ez = x * hw * 0.27, hz + hh * 0.08
         iris = eye if i == 0 else eye2
-        if estyle == "sleepy":
+        if look.get("noEyes"):
+            pass
+        elif estyle == "sleepy":
             flat(m, (ex, front - 0.06, ez - 0.12), (0.62, 0.14, 0.4), INK, name="Eye")
             flat(m, (ex, front - 0.13, ez - 0.2), (0.5, 0.08, 0.18), iris, name="Iris")
             flat(m, (ex, front - 0.09, ez + 0.1), (0.7, 0.14, 0.12), shade(fur, 0.8), name="Lid")

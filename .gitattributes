@@ -1,0 +1,8 @@
+* text=auto
+*.png binary
+*.jpg binary
+*.fbx binary
+*.blend binary
+*.rbxm binary
+*.rbxl binary
+*.xlsx binary

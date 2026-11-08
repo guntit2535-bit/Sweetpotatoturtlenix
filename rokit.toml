@@ -1,0 +1,6 @@
+# Tools for this project, managed by Rokit (https://github.com/rojo-rbx/rokit). Install with `rokit install`.
+# rojo builds / syncs the place; lune runs scripts/check.luau (syntax + --!strict + pure tests).
+
+[tools]
+rojo = "rojo-rbx/rojo@7.7.1"
+lune = "lune-org/lune@0.10.4"

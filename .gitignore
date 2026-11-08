@@ -1,0 +1,14 @@
+# Place files (the map lives in the place file in Roblox; backups are kept outside git)
+/*.rbxl
+/*.rbxlx
+/*.rbxl.lock
+/*.rbxlx.lock
+/build/
+
+sourcemap.json
+
+# Python caches and art intermediates
+__pycache__/
+/art/**/parts/
+/art/preview/*.mp4
+/art/.render.lock

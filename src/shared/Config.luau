@@ -27,12 +27,14 @@ Config.World = {
 	SkyCloudY = -60, -- the cloud sea under the Sky Islands
 	ClusterSpacing = 80, -- studs between prop clusters along a lane (zones 1-4)
 	-- 180-stud rings: at the start walk speed (16) the map edge is ~65 s from the plaza
+	-- Gate: enter with Strength >= Strength OR Rebirths >= Rebirths. Odds: tier key -> weight (%).
+	-- KgSkew overrides Config.KgSkew (lower = heavier cats). Cats: wild cats kept in the zone at once.
 	Zones = {
-		{ Key = "Backyard", Inner = 150, Outer = 330 },
-		{ Key = "TownMarket", Inner = 330, Outer = 510 },
-		{ Key = "Forest", Inner = 510, Outer = 690 },
-		{ Key = "SnowMountain", Inner = 690, Outer = 870 },
-		{ Key = "SkyIslands", Inner = 870, Outer = 1050 },
+		{ Key = "Backyard", Inner = 150, Outer = 330, Strength = 0, Rebirths = 0, Cats = 18, Odds = { Basic = 90, Rare = 10 } },
+		{ Key = "TownMarket", Inner = 330, Outer = 510, Strength = 10, Rebirths = 1, Cats = 18, Odds = { Basic = 30, Rare = 60, Epic = 10 } },
+		{ Key = "Forest", Inner = 510, Outer = 690, Strength = 60, Rebirths = 2, Cats = 18, Odds = { Rare = 35, Epic = 55, Legendary = 10 } },
+		{ Key = "SnowMountain", Inner = 690, Outer = 870, Strength = 300, Rebirths = 4, Cats = 18, Odds = { Epic = 45, Legendary = 55 } },
+		{ Key = "SkyIslands", Inner = 870, Outer = 1050, Strength = 1500, Rebirths = 6, Cats = 18, Odds = { Epic = 20, Legendary = 80 }, KgSkew = 0.8 },
 	},
 	HideSpotsPerZone = { Min = 30, Max = 60 },
 }
@@ -76,10 +78,32 @@ Config.Pen = {
 	MaxSlots = 60,
 }
 
--- Training (tasks 1.15 / 1.16); costs and gains come from the economy pick (task 1.6).
-Config.Weights = { Levels = 25 }
-Config.Treadmill = { Levels = 25 }
-Config.Rebirth = { Max = 25 }
+-- Cat tiers (blueprint §5): designs per tier, weight range, money per second per kg, catch difficulty.
+-- Income of a cat = Rate x kg (x mutations / boosts later). Basic-Legendary are one size; Mythical
+-- 1.3-2x and Secret 3-6x by weight (CatRules.size).
+Config.Tiers = {
+	{ Key = "Basic", Count = 150, MinKg = 1, MaxKg = 10, Rate = 0.5, Color = "9aa7bd" },
+	{ Key = "Rare", Count = 110, MinKg = 10, MaxKg = 60, Rate = 0.8, Color = "3da5ff" },
+	{ Key = "Epic", Count = 70, MinKg = 60, MaxKg = 300, Rate = 1.2, Color = "a46bff" },
+	{ Key = "Legendary", Count = 45, MinKg = 300, MaxKg = 1500, Rate = 2, Color = "ffb020" },
+	{ Key = "Mythical", Count = 20, MinKg = 1500, MaxKg = 8000, Rate = 4, Color = "ff5fa2", SizeMin = 1.3, SizeMax = 2 },
+	{ Key = "Secret", Count = 5, MinKg = 10000, MaxKg = 50000, Rate = 8, Color = "18c9b9", SizeMin = 3, SizeMax = 6 },
+}
+Config.KgSkew = 2 -- kg = min + (max - min) * u^KgSkew: heavy cats of a tier are rarer
+
+-- Economy (task 1.6, option B "Normal" in docs/economy.md; tools/sim/economy.luau).
+Config.Economy = {
+	SellSeconds = 120, -- selling a cat pays this many seconds of its income
+	IncomeTick = 1, -- seconds between pen income ticks
+}
+
+-- Training (tasks 1.15 / 1.16): one rep / step every Tick seconds; level L gives Gain * Growth^(L-1);
+-- the next level costs Cost * CostGrowth^(L-1) money.
+Config.Weights = { Levels = 25, Tick = 1, Gain = 0.1, Growth = 1.33, Cost = 100, CostGrowth = 2.5 }
+Config.Treadmill = { Levels = 25, Tick = 1, Gain = 0.2, Growth = 1.4, Cost = 40, CostGrowth = 1.85 }
+-- Walk speed from the Speed stat: Base + Bonus * ln(1 + Speed / Scale), at most Max (studs/s).
+Config.Walk = { Base = 16, Bonus = 9, Scale = 10, Max = 60, LikeBuff = 2, LikeBuffSeconds = 300 }
+Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 1.5 }
 
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
 Config.CatAnim = {

@@ -409,5 +409,5 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Config.TreadmillFx.RunSpeed) and sparkles race back along the belt under the runner, 5 .. 34 a second at
   8 .. 24 studs/s, in the treadmill family's colour, fading at the belt's end (TrainingService speedLines: an
   invisible strip welded in front of the feet, seen by everyone, removed when you leave). Thin streaks were
-  tried first: too faint from the camera behind. Studio Play: levels 4 / 13 / 25 (), no errors;
+  tried first: too faint from the camera behind. Studio Play: levels 4 / 13 / 25 (`art/preview/r7/`), no errors;
   the developer's save was put back (treadmill 4, Speed 2623.04).

@@ -309,24 +309,7 @@ def bat():
 
 
 def crate(key, lid_open=0.0):
-    P = CRATES[key]
-    m = Model(f"Crate{key}")
-    rbox(m, (0, 0, 0.9), (1.0, 1.0, 0.9), P["body"], e=0.22, alpha=P["alpha"], emit=0.4 if P["glow"] else 0.0)
-    lid = T(0, 0, 1.92) @ (T(0, 1.0, 0) @ R(-lid_open, "X") @ T(0, -1.0, 0))
-    rbox(m, (0, 0, 0), (1.08, 1.08, 0.2), P["lid"], e=0.25, frame=lid, alpha=P["alpha"])
-    for x in (-1, 1):
-        ear(m, lid @ Vector((x * 0.55, 0, 0.12)), 0.3, P["lid"])
-    paw(m, (0, -1.01, 0.9), (0, -1, 0), (0, 0, 1), 0.85, (90, 56, 30) if key in ("Paper", "Wood") else (120, 70, 20) if key == "Gold" else (40, 110, 200))
-    if key == "Paper":
-        rbox(m, (0, 0, 1.6), (0.25, 1.02, 0.3), P["trim"], e=0.2)
-    if key == "Wood":
-        for z in (0.45, 1.35):
-            rbox(m, (0, -1.0, z), (0.95, 0.03, 0.04), P["trim"], e=0.4)
-    if P["corner"]:
-        for x in (-1, 1):
-            for z in (0.15, 1.65):
-                if key == "Wood":
-                    m.ball((x * 0.96, -0.96, z), 0.16, P["corner"])
-                else:
-                    m.blob((0.2, 0.2, 0.2), P["corner"], T(x * 0.96, -0.96, z) @ R(PI / 4, "Z"), e1=1.0, e2=1.0, name="Gem", emit=0.4)
-    return m
+    """Round 2 crates (real hollow boxes, opening lid) live in crates.py."""
+    import crates
+
+    return crates.crate(key, lid_open)

@@ -366,3 +366,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   5 families x 5 steps, bat, crate by key) + `pilot.py` (renders and lays out `art/preview/models/pilot_sheet.png`):
   treadmill Lv1 / 13 / 25, weights Lv1 / 13 / 25, wood rod 5, gold rod 3, bat, paper / gold / diamond crate.
   Treadmill screens face the runner (+Y; front = -Y). Sent to the developer for approval before the other families.
+- 2026-11-08: R5 pilot feedback: everything approved except the crates ("ดูสมจริงกว่านี้"). New `art/blender/crates.py`:
+  hollow boxes with a cap lid that opens around its back edge (for R8), paw holes cut through the walls (boolean),
+  crisp bevels; paper = tape + taped corners + printed arrows, wood = grooved planks, posts, rims, brace, metal
+  brackets with bolts, gold = edge bands, rivets, faceted red gems, cat-face lock, diamond = chamfered crystal,
+  crystal bars and diamonds, glowing core. Sheet `art/preview/models/crates_sheet.png` (4 closed + gold open).

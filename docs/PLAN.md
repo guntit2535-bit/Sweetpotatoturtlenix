@@ -73,7 +73,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] 2.25 Full-server test (8 players incl. phones), `docs/LAUNCH_CHECKLIST.md`, client delivery page, Debug off, `.rbxl` backup
 
 ## Phase 3 — revision round 1 (developer, 2026-11-08; spec `docs/tasks/phase-3.md`)
-- [ ] R1 Bushes you can walk through: all 322 map bushes collide (cats do not); bushes CanCollide off in MapKit + patch the place
+- [x] R1 Bushes you can walk through: all 322 map bushes collide (cats do not); bushes CanCollide off in MapKit + patch the place
 - [ ] R2 Training locks the player on the exact spot, only a jump ends it (StopTraining remote), no instant re-lock
 - [ ] R3 Money popups every second over your own pen's cats (server `Rate` attribute per cat) + HUD "+$total"
 - [ ] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
@@ -298,3 +298,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Luck x3 card showed the Lucky Treat text ("x1.5 for 10 minutes"); new key ProductLuck3Desc.
 - 2026-11-08: phase 3 planned from the developer's 10-point list (`docs/tasks/phase-3.md`, R1-R9). Checked first:
   wild cats are already non-colliding; the blocking comes from the bushes (322 / 322 collide).
+- 2026-11-08: R1 bushes walk-through: MapKit Opts `walk` (CanCollide off, queries kept) on the bush balls; the place
+  patched in Studio Edit (322 bushes, 1,610 parts). Studio Play: the character walks straight through a zone-1
+  bush. The place change goes live with the developer's next Save / Publish.
+- 2026-11-08: the developer confirmed "99SX" = 99 sextillion for money, Strength and Speed (R4), and wants the new UI
+  in a cute-cat style (R9).

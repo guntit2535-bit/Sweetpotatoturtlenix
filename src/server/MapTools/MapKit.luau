@@ -12,6 +12,7 @@ export type Opts = {
 	mat: Enum.Material?,
 	shape: Enum.PartType?,
 	decor: boolean?, -- no collision, no queries (small decoration)
+	walk: boolean?, -- no collision, queries kept (players walk through it: bushes that hide cats, R1)
 	t: number?, -- transparency
 	name: string?,
 	shadow: boolean?, -- false = no shadow
@@ -88,6 +89,9 @@ local function style(p: BasePart, color: Color3, o: Opts?)
 		if o.decor then
 			p.CanCollide = false
 			p.CanQuery = false
+		end
+		if o.walk then
+			p.CanCollide = false
 		end
 		if o.t then
 			p.Transparency = o.t
@@ -233,10 +237,10 @@ end
 function Kit.bush(parent: Instance, cf: CFrame, rng: Random, color: Color3?, extra: string?): (Model, Spot)
 	local m = M(parent, "Bush")
 	local c = color or C.Leaf
-	B(m, 7.5, at(cf, 0, 3, 0).Position, c)
+	B(m, 7.5, at(cf, 0, 3, 0).Position, c, { walk = true })
 	for i = 1, 4 do
 		local a = i * math.pi / 2 + rng:NextNumber(-0.3, 0.3)
-		B(m, rng:NextNumber(4.5, 6), at(cf, math.cos(a) * 3.4, 2.3, math.sin(a) * 3.4).Position, if i % 2 == 0 then c else C.Leaf2)
+		B(m, rng:NextNumber(4.5, 6), at(cf, math.cos(a) * 3.4, 2.3, math.sin(a) * 3.4).Position, if i % 2 == 0 then c else C.Leaf2, { walk = true })
 	end
 	if extra == "snow" then
 		B(m, 5.5, at(cf, 0, 5.2, 0).Position, C.Snow, { decor = true })

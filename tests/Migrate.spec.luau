@@ -63,6 +63,18 @@ d2.Strength = 10
 Migrate.econ(d2)
 check(near(d2.Strength, 100 * Config.Rebirth.KgMult ^ 2), "x KgMult per rebirth")
 
+-- V4: the tutorial step of a save that has none yet
+local fresh = copy(DataTemplate.Template)
+check(Migrate.tutorial(fresh) and fresh.TutorialStep == 1, "a new player starts the tutorial")
+check(not Migrate.tutorial(fresh), "decided once")
+local veteran = copy(DataTemplate.Template)
+veteran.NextCatId = 5
+check(Migrate.tutorial(veteran) and veteran.TutorialStep == Config.Tutorial.Done, "an old save has it done")
+local caught = copy(DataTemplate.Template)
+caught.Stats.Caught = 2
+Migrate.tutorial(caught)
+check(caught.TutorialStep == Config.Tutorial.Done, "anyone who caught a cat has it done")
+
 if failures > 0 then
 	error(`Migrate: {failures} failure(s)`)
 end

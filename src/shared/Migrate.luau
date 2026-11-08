@@ -69,4 +69,15 @@ function Migrate.econ(data: any): boolean
 	return true
 end
 
+-- V4: a save without a tutorial step yet: a brand-new player starts the tutorial (1); anyone who already
+-- had a cat (saves from before V4) has it marked done. Returns true when it changed the save.
+function Migrate.tutorial(data: any): boolean
+	if data.TutorialStep ~= 0 then
+		return false
+	end
+	local played = (data.NextCatId or 1) > 1 or (data.Stats and data.Stats.Caught or 0) > 0
+	data.TutorialStep = if played then Config.Tutorial.Done else 1
+	return true
+end
+
 return Migrate

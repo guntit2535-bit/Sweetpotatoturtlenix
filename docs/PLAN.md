@@ -87,7 +87,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] V1 ★ Cat style board in Blender: one original voxel cat in 3 options (Pixel / Brick / Mix), then the pick on 4 base shapes; the developer and the client approve
 - [~] V2 Fishing pose matching the rod: right hand at the grip, left hand turning the reel handle on the rod
 - [ ] V3 Map detail pass: survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
-- [ ] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
+- [~] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
 - [ ] V5 ★ All 400 cats in the approved style (region meshes coloured in game, same cat data), the developer imports
 
 ## Plan changes
@@ -446,3 +446,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   round (PlayerAnimController reachLeft: a two-bone solve from the rig's own rest arm, so slanted / small avatars
   work; out of reach = stretched towards it); R6 keeps the old circling arm. Studio: the left hand stays on the
   crank circle (0.6-0.8 from its centre, radius 0.64), no errors. Until the re-import the old meshes sit 0.63 off.
+- 2026-11-09: V4 tutorial: TutorialService (server owns the step: save TutorialStep / TutorialRewarded, Migrate.tutorial
+  marks old saves done; steps advance from the lobby edge, CarryingCat, CarryService.Delivered, a training tick; acks
+  only for welcome / shop / finish; a lost cat sends step 4 back to 3; Skip, Replay from Settings, !tutorial N) +
+  TutorialController (bubble at the bottom centre sized to the screen, Next / Skip, a yellow beam and a bouncing
+  marker to the Backyard / nearest catchable cat / pen / weights, a pulsing ring on the Shop button). Reward
+  Config.Tutorial.Reward 1000 once. Studio: 1 -> 2 (Next) -> 3 (left the lobby) -> 4 (carrying) -> 3 (lost) ->
+  6 (training) -> 7 (Shop opened) -> done + reward; Skip; no errors (art/preview/v4/). Save put back.

@@ -53,6 +53,8 @@ export type Data = {
 	SlotBuys: number, -- +20 slot products bought (task 2.19)
 	StarterBought: boolean, -- the starter pack (once)
 	EconVersion: number, -- R4: 0 = numbers from before the 99 Sx economy (Migrate converts it once)
+	TutorialStep: number, -- V4: 1-7 while the tutorial runs, Config.Tutorial.Done after; 0 = not decided yet
+	TutorialRewarded: boolean, -- the tutorial's money was given (once)
 	Settings: {
 		Language: string, -- "en" (default) or "th"
 		Music: boolean, -- music on (task 2.23)
@@ -100,6 +102,8 @@ DataTemplate.Template = {
 	SlotBuys = 0,
 	StarterBought = false,
 	EconVersion = 0,
+	TutorialStep = 0,
+	TutorialRewarded = false,
 	Settings = {
 		Language = "en",
 		Music = true,
@@ -175,6 +179,11 @@ function DataTemplate.sanitize(data: Data): number
 	end
 	set("SlotBuys", whole(data.SlotBuys, 0, math.huge, 0))
 	set("EconVersion", whole(data.EconVersion, 0, math.huge, 0))
+	local step = whole(data.TutorialStep, 0, Config.Tutorial.Done, 0)
+	set("TutorialStep", if step > 7 and step < Config.Tutorial.Done then Config.Tutorial.Done else step)
+	if type(data.TutorialRewarded) ~= "boolean" then
+		set("TutorialRewarded", false)
+	end
 	if type(data.StarterBought) ~= "boolean" then
 		set("StarterBought", false)
 	end

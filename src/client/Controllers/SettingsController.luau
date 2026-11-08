@@ -20,6 +20,7 @@ local thai: TextButton
 local labels: { [TextLabel]: string } = {}
 local buttonLabel: TextLabel
 local toggles: { { key: string, button: TextButton } } = {}
+local replayButton: TextButton? = nil -- V4
 local me = game:GetService("Players").LocalPlayer
 
 -- MusicOn / SfxOn: nil (not loaded yet) counts as on
@@ -41,10 +42,13 @@ local function refresh()
 		Kit.setButtonColor(t.button, if on then C.green else C.grey)
 		Kit.setButtonText(t.button, Lang.text(if on then "SettingOn" else "SettingOff"))
 	end
+	if replayButton then
+		Kit.setButtonText(replayButton, Lang.text("TutReplay"))
+	end
 end
 
 local function build(setRemote: RemoteEvent)
-	window = Kit.window({ name = "SettingsWindow", width = 480, height = 386, color = C.purple })
+	window = Kit.window({ name = "SettingsWindow", width = 480, height = 488, color = C.purple })
 
 	local row = Instance.new("Frame")
 	row.Name = "Language"
@@ -95,6 +99,29 @@ local function build(setRemote: RemoteEvent)
 		end)
 		table.insert(toggles, { key = key, button = b })
 	end
+
+	-- V4: replay the tutorial
+	local tr = Instance.new("Frame")
+	tr.Name = "Tutorial"
+	tr.Size = UDim2.new(1, 0, 0, 92)
+	tr.Position = UDim2.fromOffset(0, 306)
+	tr.BackgroundColor3 = C.soft
+	tr.Parent = window.body
+	Kit.corner(tr, 16)
+	Kit.stroke(tr, 3, nil, true)
+	local tt = Kit.text(tr, "Title", UDim2.new(0.55, 0, 0, 34), UDim2.fromOffset(16, 14), 26)
+	tt.TextXAlignment = Enum.TextXAlignment.Left
+	labels[tt] = "SettingsTutorial"
+	local tn = Kit.text(tr, "Note", UDim2.new(0.55, 0, 0, 22), UDim2.fromOffset(16, 52), 16)
+	tn.TextXAlignment = Enum.TextXAlignment.Left
+	tn.TextColor3 = C.muted
+	labels[tn] = "SettingsTutorialNote"
+	local replay = Kit.button(tr, "Replay", C.sky, UDim2.fromOffset(150, 50), UDim2.new(1, -164, 0.5, -28))
+	replayButton = replay
+	replay.Activated:Connect(function()
+		Remotes.event("Tutorial"):FireServer("replay")
+		window.setOpen(false)
+	end)
 
 	-- the gear button (top right, under Roblox's own top bar)
 	local hud = Kit.screen("SettingsButton", 1)

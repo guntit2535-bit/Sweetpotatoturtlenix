@@ -59,6 +59,15 @@ Config.Settings = {
 	SetRate = { maxCalls = 4, window = 1 }, -- SetSetting calls per player
 }
 
+-- V4: the new-player tutorial (TutorialService / TutorialController): 7 steps; Done = finished or skipped.
+-- Reward: money for finishing it the first time.
+Config.Tutorial = {
+	Done = 99,
+	Reward = 1000,
+	CheckEvery = 0.5, -- seconds between the server's step checks
+	Rate = { maxCalls = 4, window = 1 },
+}
+
 -- Saves (task 1.2). NEVER rename StoreName after launch: every player's progress would be lost.
 Config.Data = {
 	StoreName = "Sweetpotato_PlayerData_v1",

@@ -175,6 +175,7 @@ local function onPlayerAdded(player: Player)
 	if Migrate.econ(profile.Data) then
 		log(`converted {player.Name}'s save to the 99 Sx numbers (R4)`)
 	end
+	Migrate.tutorial(profile.Data) -- V4: new players start the tutorial, old saves have it done
 
 	profile.OnSave:Connect(function()
 		profile.Data.LastOnline = os.time()

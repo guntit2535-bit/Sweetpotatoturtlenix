@@ -176,6 +176,33 @@ Text.Lines = {
 	CrateGot = { en = "You got {name}!", th = "ได้ {name}!" },
 	CrateOpening = { en = "Opening...", th = "กำลังเปิด..." },
 	CrateTap = { en = "Tap to continue", th = "แตะเพื่อไปต่อ" },
+	-- V4: the new-player tutorial
+	TutStep = { en = "{n}/{max}", th = "{n}/{max}" },
+	TutWelcome = {
+		en = "Welcome! Catch cute cats, bring them home to your pen and they make money for you.",
+		th = "ยินดีต้อนรับ! จับแมวน่ารัก พากลับคอกของคุณ แล้วแมวจะหาเงินให้",
+	},
+	TutZone = { en = "Walk out to the Backyard: follow the yellow light!", th = "เดินออกไปสนามหลังบ้าน ตามแสงสีเหลืองไปเลย!" },
+	TutCatch = {
+		en = "Cats hide in bushes. Take your rod, go close and tap the cat, then hold to reel it in.",
+		th = "แมวซ่อนอยู่ในพุ่มไม้ หยิบเบ็ด เข้าไปใกล้ๆ แล้วแตะที่แมว จากนั้นกดค้างเพื่อดึงแมวขึ้นมา",
+	},
+	TutCarry = {
+		en = "Got it! Carry it home to your pen. Careful: other players can knock it loose with a bat!",
+		th = "ได้แล้ว! แบกแมวกลับคอกของคุณ ระวังผู้เล่นอื่นเอาไม้ตีให้แมวหล่น!",
+	},
+	TutTrain = {
+		en = "Stand on your weights to get stronger: heavy cats need more Strength. Jump to stop.",
+		th = "ไปยืนที่ที่ยกเวทเพื่อเพิ่มพลัง แมวตัวหนักต้องใช้พลังมากขึ้น กระโดดเพื่อหยุด",
+	},
+	TutShop = { en = "Open the Shop: better rods make catching easier.", th = "เปิดร้านค้าดูสิ เบ็ดที่ดีขึ้นช่วยให้ตกแมวง่ายขึ้น" },
+	TutDone = { en = "All done! Here is ${money} to start. Have fun!", th = "เรียบร้อย! รับเงิน ${money} ไปเริ่มต้นเลย ขอให้สนุก!" },
+	TutNext = { en = "Next", th = "ต่อไป" },
+	TutGo = { en = "Let's go!", th = "ไปกันเลย!" },
+	TutSkip = { en = "Skip", th = "ข้าม" },
+	SettingsTutorial = { en = "Tutorial", th = "สอนเล่น" },
+	SettingsTutorialNote = { en = "Play the tutorial again", th = "ดูวิธีเล่นอีกครั้ง" },
+	TutReplay = { en = "Replay", th = "เล่นอีกครั้ง" },
 	MutGold = { en = "Gold", th = "ทอง" },
 	MutRainbow = { en = "Rainbow", th = "รุ้ง" },
 	MutGlow = { en = "Glow", th = "เรืองแสง" },

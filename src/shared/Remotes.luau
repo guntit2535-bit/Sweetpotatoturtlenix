@@ -46,6 +46,7 @@ Remotes.Events = {
 	"TradeState", -- server -> client: (state table or nil when it ends)
 	"ToggleSpeed", -- client -> server: the x2 Speed switch (owners of the pass), task 2.18
 	"StopTraining", -- client -> server: a jump while locked on the weights / treadmill spot, task R2
+	"Tutorial", -- client -> server: ack + step, skip or replay (task V4)
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

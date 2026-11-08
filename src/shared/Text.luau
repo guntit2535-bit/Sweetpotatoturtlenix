@@ -175,6 +175,7 @@ Text.Lines = {
 	CrateOdds = { en = "Chances:", th = "โอกาส:" },
 	CrateGot = { en = "You got {name}!", th = "ได้ {name}!" },
 	CrateOpening = { en = "Opening...", th = "กำลังเปิด..." },
+	CrateTap = { en = "Tap to continue", th = "แตะเพื่อไปต่อ" },
 	MutGold = { en = "Gold", th = "ทอง" },
 	MutRainbow = { en = "Rainbow", th = "รุ้ง" },
 	MutGlow = { en = "Glow", th = "เรืองแสง" },

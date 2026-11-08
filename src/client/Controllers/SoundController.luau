@@ -20,7 +20,6 @@ local TweenService = game:GetService("TweenService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local CatModel = require(Shared:WaitForChild("CatModel"))
-local Cats = require(Shared:WaitForChild("Cats"))
 local Config = require(Shared:WaitForChild("Config"))
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Sound = require(script.Parent.Parent.Sound)
@@ -249,16 +248,7 @@ function SoundController.Start(_self: any)
 			Sound.play("escape")
 		end
 	end)
-	Remotes.event("CrateResult").OnClientEvent:Connect(function(_key: unknown, kind: unknown)
-		local shake = Sound.play("crate_shake")
-		local design = if type(kind) == "string" then Cats.ById[kind] else nil
-		task.delay(Config.Crates.RevealSeconds, function()
-			if shake and shake.Parent then
-				shake:Stop() -- the shake sound may be longer than the shake
-			end
-			Sound.play(if design and design.Tier >= 4 then "crate_rare" else "crate_reveal")
-		end)
-	end)
+	-- crate_shake / crate_reveal / crate_rare: played by CrateController on the opening's timeline (R8)
 
 	for _, p in Players:GetPlayers() do
 		hookPlayer(p)

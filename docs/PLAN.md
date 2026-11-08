@@ -79,8 +79,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [x] R4 Bigger numbers, top ~99 Sx (money / Strength / Speed, cat weights scaled): sim + options table, log-scale leaderboard, save migration
 - [x] R5 ★ Blender pipeline: GPT reference prompts for every item, pilot sheet, all families, FBX + manifest, the developer imports; Blender-made R15 animations (preview GIF, the developer publishes under the group)
 - [x] R6 ★ Weights: two-hand curl animation with a dumbbell in each hand, 25 looks (5 families x 5 steps, bigger every level)
-- [~] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
-- [ ] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
+- [x] R7 ★ Treadmill: 25 looks (5 families x 5 steps, +2 % size per level)
+- [~] R8 ★ Crate opening 5 s: drop, shake with tier glow, lid pops, cat jumps out, card; tap to skip
 - [x] R9 ★ New UI from GPT designs: style board, one mockup per screen, rebuilt in code (EN / TH, phone first)
 
 ## Plan changes
@@ -99,6 +99,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- R8 (2026-11-09): the opening was built in the game from the approved mockup 12 instead of a Blender preview
+  video first (the look was already approved with the UI; the real crate meshes and cat models are used), and
+  shown as in-game pictures. The crate sounds moved from SoundController into the opening's own timeline so a
+  skip stays in step. Every cat is fitted to the same size in the scene (Mythical / Secret giants included).
 - R6 (2026-11-08): the curl is a code pose (shared/PlayerPoses "curl", shoulders + elbows each frame, like the
   carry / reel poses) instead of an uploaded Blender animation: nothing to publish, every avatar works, and it
   plays only near the camera. R6-rig avatars (no elbows) keep Roblox's cheer. The dumbbells grow like the rack
@@ -411,3 +415,12 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   invisible strip welded in front of the feet, seen by everyone, removed when you leave). Thin streaks were
   tried first: too faint from the camera behind. Studio Play: levels 4 / 13 / 25 (`art/preview/r7/`), no errors;
   the developer's save was put back (treadmill 4, Speed 2623.04).
+- 2026-11-09: R7 approved ("ผ่าน"). R8: the 5 s crate opening (mockup 12) in CrateController on a full-screen layer:
+  0-1 s the crate mesh (lid included) drops and bounces; 1-3 s it wobbles faster with a glow in the colour of the
+  best tier that crate can give (crate_shake); 3-3.6 s the lid flies off up to the right with confetti and turning
+  rays in the cat's tier colour (crate_reveal / crate_rare); then the real cat model jumps out and stands on the
+  crate, and the card (name, tier ribbon, kg and income pills, mutation, "Tap to continue" EN / TH) pops up,
+  sized to the screen's height. A tap before the burst skips to it, a tap after the card closes; it closes itself
+  after 12 s. Timeline in Config.Crates.Open; a plain box stands in when the meshes are missing. Studio Play
+  (CrateResult fired to the client, no save touched): Paper / Wood / Gold (Legendary) / Diamond (Mythical, Gold
+  mutation), skip and close, no errors (`art/preview/r8/`).

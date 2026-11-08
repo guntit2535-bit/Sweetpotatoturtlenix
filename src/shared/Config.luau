@@ -428,7 +428,9 @@ Config.Crates = {
 		{ Key = "Diamond", Cost = 900000, Color = "7fe3ff", Odds = { Epic = 62, Legendary = 37.5, Mythical = 0.5 } },
 	},
 	BuyRate = { maxCalls = 2, window = 1 },
-	RevealSeconds = 1.2,
+	RevealSeconds = 1.2, -- (before R8; unused)
+	-- R8: the opening, in seconds from the result: drop in, shake until, lid off until, card done; closes itself
+	Open = { Drop = 1, Shake = 3, Pop = 3.6, Done = 5, AutoClose = 12 },
 	CostRebirth = 3, -- R4: crate prices x3 per rebirth (their cats are x3.6 heavier)
 }
 

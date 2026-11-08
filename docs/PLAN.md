@@ -269,3 +269,6 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   only the Gold / Rainbow / Glow chance, as built in 2.8; the descriptions say so.
 - 2026-11-08: `docs/gpt_item_prompts.md` (Thai how-to, English prompts): 15 pictures for the 5 passes and 12
   products (the 3 slot products share one), smooth blocky style, transparent 1024 px, kept inside the pass circle.
+- 2026-11-08: the developer's 15 GPT item pictures saved as `art/source/gpt_items/<Key>.webp`; `tools/gen/item_icons.py`
+  (Pillow) cuts the background by a flood fill from the border (white and painted checkerboards), centres and
+  sizes them to 512 x 512 transparent PNGs in `art/export/store_items/` (review sheet `_review.png`: all clean).

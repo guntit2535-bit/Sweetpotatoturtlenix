@@ -272,3 +272,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - 2026-11-08: the developer's 15 GPT item pictures saved as `art/source/gpt_items/<Key>.webp`; `tools/gen/item_icons.py`
   (Pillow) cuts the background by a flood fill from the border (white and painted checkerboards), centres and
   sizes them to 512 x 512 transparent PNGs in `art/export/store_items/` (review sheet `_review.png`: all clean).
+- 2026-11-08: pass / product ids from the developer (5 + 12) in Config. Checked with GetProductInfo in Studio:
+  every name matches, all on sale, passes owned by the group, every item has an icon; Dashboard prices
+  149 / 299 / 249 / 199 / 149 and 49 / 99 / 199 / 25 / 79 / 199 / 449 / 99 / 49 / 199 / 149 / 49 (Studio shows the
+  developer's regional prices, lower). `launch_check` now fails only on Debug (switched off on launch day).
+  `rojo serve` had stopped and Config was missing from the Studio place; restarted it.

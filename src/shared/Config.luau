@@ -197,42 +197,42 @@ Config.Language = {
 	Default = "en",
 }
 
--- Robux (milestone 2). Ids stay 0 until the developer creates them in the group's experience;
--- the launch check fails while any id is 0.
+-- Robux (milestone 2). Ids from the group's experience (created by the developer 2026-11-08, each checked with
+-- GetProductInfo: name, on sale, group). Prices live in Creator Hub; the launch check fails while any id is 0.
 Config.Passes = {
 	-- CLIENT PENDING: permanent game pass ("pass") or a timed boost sold as a developer product
 	-- ("timed"), and its price. Default until the client answers: permanent pass.
 	Speed2x = {
-		Id = 0,
+		Id = 2075284120,
 		Mode = "pass" :: "pass" | "timed",
 		TimedMinutes = 15, -- used only when Mode = "timed"
 		PriceRobux = 0, -- 0 = not decided; the client confirms every Robux price
 	},
-	Cash2x = { Id = 0 },
-	Strength2x = { Id = 0 },
-	Lucky = { Id = 0 }, -- rare finds x2 (luck)
-	VIP = { Id = 0, Money = 0.10 }, -- VIP tag + 10% money
+	Cash2x = { Id = 2075044202 },
+	Strength2x = { Id = 2075884214 },
+	Lucky = { Id = 2075734209 }, -- rare finds x2 (luck)
+	VIP = { Id = 2075422198, Money = 0.10 }, -- VIP tag + 10% money
 }
 
--- Developer products (milestone 2, blueprint §13). Ids stay 0 until the developer makes them; the client
+-- Developer products (milestone 2, blueprint §13). Ids from the group's experience (2026-11-08); the client
 -- confirms every price. Money packs pay Seconds of the buyer's income (at least Base).
 Config.Products = {
 	ServerLuckMult = 2, -- server luck: everyone's luck x2 for 15 minutes
 	LuckSeconds = 900, -- luck x3 and server luck last 15 minutes
 	SlotsStep = 20, -- +20 pen slots per purchase (never past Config.Pen.MaxSlots)
 	List = {
-		{ Key = "Slots1", Id = 0, Kind = "Slots" }, -- 1st +20 slots
-		{ Key = "Slots2", Id = 0, Kind = "Slots" }, -- 2nd, a higher price
-		{ Key = "Slots3", Id = 0, Kind = "Slots" }, -- 3rd, higher again
-		{ Key = "CashS", Id = 0, Kind = "Cash", Base = 5000, Seconds = 600 },
-		{ Key = "CashM", Id = 0, Kind = "Cash", Base = 25000, Seconds = 3600 },
-		{ Key = "CashL", Id = 0, Kind = "Cash", Base = 100000, Seconds = 4 * 3600 },
-		{ Key = "CashXL", Id = 0, Kind = "Cash", Base = 400000, Seconds = 12 * 3600 },
-		{ Key = "Strength", Id = 0, Kind = "Strength", Base = 500, Seconds = 3600 }, -- an hour of lifting
-		{ Key = "Luck3", Id = 0, Kind = "Luck3" },
-		{ Key = "ServerLuck", Id = 0, Kind = "ServerLuck" },
-		{ Key = "SummonMythical", Id = 0, Kind = "Summon" },
-		{ Key = "Starter", Id = 0, Kind = "Starter", Money = 10000, Rod = 6, Treats = { "Luck", "Money" } },
+		{ Key = "Slots1", Id = 3729675464, Kind = "Slots" }, -- 1st +20 slots
+		{ Key = "Slots2", Id = 3729675727, Kind = "Slots" }, -- 2nd, a higher price
+		{ Key = "Slots3", Id = 3729675916, Kind = "Slots" }, -- 3rd, higher again
+		{ Key = "CashS", Id = 3729676037, Kind = "Cash", Base = 5000, Seconds = 600 },
+		{ Key = "CashM", Id = 3729676128, Kind = "Cash", Base = 25000, Seconds = 3600 },
+		{ Key = "CashL", Id = 3729676205, Kind = "Cash", Base = 100000, Seconds = 4 * 3600 },
+		{ Key = "CashXL", Id = 3729676288, Kind = "Cash", Base = 400000, Seconds = 12 * 3600 },
+		{ Key = "Strength", Id = 3729676358, Kind = "Strength", Base = 500, Seconds = 3600 }, -- an hour of lifting
+		{ Key = "Luck3", Id = 3729676458, Kind = "Luck3" },
+		{ Key = "ServerLuck", Id = 3729676540, Kind = "ServerLuck" },
+		{ Key = "SummonMythical", Id = 3729676622, Kind = "Summon" },
+		{ Key = "Starter", Id = 3729676699, Kind = "Starter", Money = 10000, Rod = 6, Treats = { "Luck", "Money" } },
 	},
 	ReceiptsKept = 100,
 }

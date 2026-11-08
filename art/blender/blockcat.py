@@ -274,6 +274,14 @@ def d_dragon(m, A):  # Mythical: wings, horns, back spikes, belly plates, a litt
             if k < 3:
                 fr2 = root @ R(-x * (0.5 + k * 0.32), "Y") @ T(x * 1.3, 0.02, 0)
                 block(m, (0, 0, 0), (2.5, 0.12, 0.75), skin, frame=fr2, name="WingSkin", sides="top")
+    # its effect (round 2): soft flames floating round the body
+    rnd = random.Random(5)
+    for k in range(8):
+        ang = k * math.pi / 4 + rnd.uniform(-0.2, 0.2)
+        r = rnd.uniform(2.1, 2.6)
+        c = (math.cos(ang) * r, A["by"] + math.sin(ang) * r, rnd.uniform(0.6, 3.0))
+        m.blob((0.18, 0.18, 0.42), (255, 150, 50), T(*c), e1=0.8, e2=1.0, nu=8, nv=6, name="FxFlame", emit=3.0, alpha=0.85)
+        m.blob((0.1, 0.1, 0.24), (255, 230, 120), T(c[0], c[1], c[2] - 0.08), e1=0.8, e2=1.0, nu=8, nv=6, name="FxFlame", emit=4.0)
     # a puff of fire from the mouth
     for k, (s, c) in enumerate(((0.32, (255, 210, 80)), (0.24, (255, 140, 40)), (0.18, (255, 90, 40)))):
         m.blob((s, s, s), c, T(0.1 * k, A["front"] - 0.7 - k * 0.35, A["mz"] - 0.05 + k * 0.12) @ R(0.7, "Z") @ R(0.5, "X"),

@@ -7,7 +7,8 @@
   "body": "Loaf",
   "colours": "ส้ม / ส้มเข้ม",
   "special": "ลายทางส้มเข้มบนหลังและหน้าผาก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -17,7 +18,8 @@
   "body": "Slim",
   "colours": "ดำ / ขาว",
   "special": "ตัวดำ อกขาว ถุงเท้าขาว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -27,7 +29,8 @@
   "body": "Loaf",
   "colours": "ขาว / ส้ม / ดำ",
   "special": "ปื้นสีส้มและดำบนตัวขาว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -37,7 +40,8 @@
   "body": "Fluffy",
   "colours": "ขาว",
   "special": "ขาวล้วน ตาฟ้า",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -47,7 +51,8 @@
   "body": "Slim",
   "colours": "ดำ",
   "special": "ดำล้วน ตาเหลือง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -57,7 +62,8 @@
   "body": "Loaf",
   "colours": "เทา / เทาเข้ม",
   "special": "ลายทางเทาเข้ม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -67,7 +73,8 @@
   "body": "Fluffy",
   "colours": "ครีม",
   "special": "ขนฟูสีครีม แก้มฟู",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -77,7 +84,8 @@
   "body": "Loaf",
   "colours": "ดำ / ส้ม",
   "special": "สีดำส้มผสมเป็นจุดๆ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -87,7 +95,8 @@
   "body": "Slim",
   "colours": "ครีม / น้ำตาลเข้ม",
   "special": "หน้า หู ขา หาง สีน้ำตาลเข้ม ตาฟ้า",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -97,7 +106,8 @@
   "body": "Slim",
   "colours": "เทาฟ้า",
   "special": "ขนเทาอมฟ้า ตาเขียว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -107,7 +117,8 @@
   "body": "Slim",
   "colours": "ส้มทอง / น้ำตาล",
   "special": "ลายจุดแบบดอกกุหลาบ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -117,7 +128,8 @@
   "body": "Fluffy",
   "colours": "ขาวครีม",
   "special": "ขนฟูมาก หน้าแบน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -127,7 +139,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาลลายเสือ",
   "special": "ตัวใหญ่ หูมีพู่ขน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -137,7 +150,8 @@
   "body": "Slim",
   "colours": "ชมพูอ่อน",
   "special": "ไม่มีขน ผิวมีรอยย่น หูใหญ่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -147,7 +161,8 @@
   "body": "Loaf",
   "colours": "เทาครีม",
   "special": "หูพับลง หน้ากลม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -157,7 +172,8 @@
   "body": "Fluffy",
   "colours": "ขาว / น้ำตาล",
   "special": "หน้ากากน้ำตาล ตาฟ้า ขนยาว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -167,7 +183,8 @@
   "body": "Loaf",
   "colours": "ส้มขาว",
   "special": "ขาสั้นจิ๋ว ตัวยาว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -177,7 +194,8 @@
   "body": "Loaf",
   "colours": "เทา",
   "special": "แก้มกลมยุ้ย ตาส้มโต",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -187,7 +205,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล / ขาว",
   "special": "เท้าขาวทั้งสี่ข้าง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -197,7 +216,8 @@
   "body": "Slim",
   "colours": "ขาว / ดำ",
   "special": "จุดดำทั่วตัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -207,7 +227,8 @@
   "body": "Loaf",
   "colours": "ส้ม",
   "special": "ส้มล้วน ตัวกลมแบนเหมือนขนมปัง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -217,7 +238,8 @@
   "body": "Fluffy",
   "colours": "เทาเข้มไล่สี",
   "special": "ขนไล่สีจากเข้มไปอ่อน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -227,7 +249,8 @@
   "body": "Slim",
   "colours": "น้ำตาลเข้ม",
   "special": "น้ำตาลเข้มล้วน ตาเหลือง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -237,7 +260,8 @@
   "body": "Slim",
   "colours": "เทาอมม่วง",
   "special": "ขนสีเทาอมม่วงอ่อน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -247,7 +271,8 @@
   "body": "Loaf",
   "colours": "น้ำตาลแดง",
   "special": "สีอบเชย อกครีม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -257,7 +282,8 @@
   "body": "Slim",
   "colours": "เทา / ดำ",
   "special": "ลายทางยาวแบบปลาทู",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -267,7 +293,8 @@
   "body": "Loaf",
   "colours": "ขาว / ดำ",
   "special": "รอบตาดำเหมือนใส่หน้ากาก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -277,7 +304,8 @@
   "body": "Loaf",
   "colours": "ขาว / เทา",
   "special": "ปื้นสีเทาใหญ่บนหลัง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -287,7 +315,8 @@
   "body": "Fluffy",
   "colours": "ส้ม",
   "special": "ขนฟูสีส้ม หางพวง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -297,7 +326,8 @@
   "body": "Slim",
   "colours": "ขาว / ดำ",
   "special": "เท้าและหางสีดำ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -307,7 +337,8 @@
   "body": "Loaf",
   "colours": "น้ำตาลอ่อน",
   "special": "ตาสีทองโตเป็นพิเศษ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -317,7 +348,8 @@
   "body": "Fluffy",
   "colours": "ขาว",
   "special": "ตาข้างฟ้า ข้างเหลือง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -327,7 +359,8 @@
   "body": "Loaf",
   "colours": "ส้มอ่อน",
   "special": "ตาปรือ หาวตลอด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -337,7 +370,8 @@
   "body": "Fluffy",
   "colours": "เทาครีม",
   "special": "ตัวกลมมาก พุงย้อย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -347,7 +381,8 @@
   "body": "Loaf",
   "colours": "ส้มขาว",
   "special": "ตัวเล็ก หัวโต ตาโต",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -357,7 +392,8 @@
   "body": "Slim",
   "colours": "เทาเงิน",
   "special": "หางยาวพิเศษ ม้วนปลาย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -367,7 +403,8 @@
   "body": "Loaf",
   "colours": "ขาว / ส้ม",
   "special": "หางกุดเป็นปอม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -377,7 +414,8 @@
   "body": "Slim",
   "colours": "ครีม",
   "special": "ขนเป็นลอนหยิก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -387,7 +425,8 @@
   "body": "Slim",
   "colours": "เหลืองทอง / ดำ",
   "special": "ลายจุดเสือดาว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -397,7 +436,8 @@
   "body": "Loaf",
   "colours": "เงิน / ดำ",
   "special": "ลายทางดำบนพื้นเงิน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -407,7 +447,8 @@
   "body": "Loaf",
   "colours": "ส้มอมชมพู",
   "special": "สีพีชนุ่มๆ แก้มแดง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -417,7 +458,8 @@
   "body": "Slim",
   "colours": "ดำ",
   "special": "ดำสนิท จมูกชมพู",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -427,7 +469,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาลนม",
   "special": "สีชานม อกขาว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -437,7 +480,8 @@
   "body": "Loaf",
   "colours": "น้ำตาลทอง / ครีม",
   "special": "สีบิสกิต อกครีม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -447,7 +491,8 @@
   "body": "Loaf",
   "colours": "เทา / ขาว",
   "special": "เท้าหน้าขาวเหมือนใส่ถุงมือ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -457,7 +502,8 @@
   "body": "Slim",
   "colours": "ส้ม / ดำ",
   "special": "ลายดำหนาเหมือนเสือ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -467,7 +513,8 @@
   "body": "Loaf",
   "colours": "ส้มเข้ม",
   "special": "ส้มเข้ม ตาเขียว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -477,7 +524,8 @@
   "body": "Fluffy",
   "colours": "ขาว / เทาอ่อน",
   "special": "ขนฟูเป็นก้อนๆ เหมือนเมฆ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -487,7 +535,8 @@
   "body": "Slim",
   "colours": "เทาดำ",
   "special": "สีเทาดำ ตาฟ้าใส",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Basic",
@@ -497,7 +546,8 @@
   "body": "Loaf",
   "colours": "เหลืองทอง",
   "special": "สีน้ำผึ้งทั้งตัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -507,7 +557,8 @@
   "body": "Loaf",
   "colours": "ส้ม + หมวกแดง",
   "special": "หมวกแก๊ปกลับหลัง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -517,7 +568,8 @@
   "body": "Slim",
   "colours": "เทา + แว่นดำ",
   "special": "แว่นกันแดดเท่ๆ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -527,7 +579,8 @@
   "body": "Loaf",
   "colours": "ขาว + โบว์แดง",
   "special": "โบว์ไทที่คอ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -537,7 +590,8 @@
   "body": "Fluffy",
   "colours": "ขาว + โบว์ชมพู",
   "special": "โบว์ชมพูใหญ่บนหัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -547,7 +601,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล + หมวกเขียว",
   "special": "หมวกไหมพรมมีปอม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -557,7 +612,8 @@
   "body": "Slim",
   "colours": "เทา + ผ้าลายทาง",
   "special": "ผ้าพันคอลายทางยาวๆ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -567,7 +623,8 @@
   "body": "Loaf",
   "colours": "ครีม + แว่นหนา",
   "special": "แว่นหนาและเน็คไท",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -577,7 +634,8 @@
   "body": "Slim",
   "colours": "ดำ + หมวกดำ",
   "special": "หมวกทรงสูงและไม้เท้า",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -587,7 +645,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ดอกไม้หลายสี",
   "special": "มงกุฎดอกไม้บนหัว",
-  "effect": "กลีบดอกไม้ร่วง"
+  "effect": "กลีบดอกไม้ร่วง",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -597,7 +656,8 @@
   "body": "Loaf",
   "colours": "ส้ม + หูฟังฟ้า",
   "special": "หูฟังใหญ่ครอบหัว",
-  "effect": "โน้ตเพลงลอย"
+  "effect": "โน้ตเพลงลอย",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -607,7 +667,8 @@
   "body": "Loaf",
   "colours": "เทา + ฮู้ดม่วง",
   "special": "เสื้อฮู้ดที่มีหูแมว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -617,7 +678,8 @@
   "body": "Fluffy",
   "colours": "ครีม + เสื้อลายสก็อต",
   "special": "เสื้อไหมพรมลายสก็อต",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -627,7 +689,8 @@
   "body": "Loaf",
   "colours": "ขาว + เหลือง",
   "special": "เสื้อกันฝนและรองเท้าบูทเหลือง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -637,7 +700,8 @@
   "body": "Slim",
   "colours": "ขาว + ฟ้า",
   "special": "หมวกกะลาสีและปกเสื้อฟ้า",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -647,7 +711,8 @@
   "body": "Loaf",
   "colours": "ส้ม + ผ้าแดงลายจุด",
   "special": "ผ้าโพกหัวลายจุด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -657,7 +722,8 @@
   "body": "Loaf",
   "colours": "ขาว + หมวกลายจุด",
   "special": "หมวกกรวยปาร์ตี้",
-  "effect": "กระดาษสีโปรย"
+  "effect": "กระดาษสีโปรย",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -667,7 +733,8 @@
   "body": "Slim",
   "colours": "ดำ + หมวกแดง",
   "special": "หมวกเบเร่ต์แบบศิลปิน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -677,7 +744,8 @@
   "body": "Fluffy",
   "colours": "ครีม + หมวกฟาง",
   "special": "หมวกปีกกว้างผูกโบว์",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -687,7 +755,8 @@
   "body": "Loaf",
   "colours": "ขาว + เสื้อน้ำเงิน",
   "special": "เสื้อเบสบอลเบอร์ 1",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -697,7 +766,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล + หมวกเขียวอ่อน",
   "special": "หมวกบักเก็ต",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -707,7 +777,8 @@
   "body": "Slim",
   "colours": "เทา + ทอง",
   "special": "แว่นเลนส์เดียวและหนวดเรียว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -717,7 +788,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ไข่มุก",
   "special": "สร้อยไข่มุกหลายเส้น",
-  "effect": "ประกายเล็กๆ"
+  "effect": "ประกายเล็กๆ",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -727,7 +799,8 @@
   "body": "Loaf",
   "colours": "ชมพู + แว่นแดง",
   "special": "แว่นรูปหัวใจ",
-  "effect": "หัวใจลอย"
+  "effect": "หัวใจลอย",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -737,7 +810,8 @@
   "body": "Slim",
   "colours": "ม่วง + แว่นเหลือง",
   "special": "แว่นรูปดาว",
-  "effect": "ดาวกระพริบ"
+  "effect": "ดาวกระพริบ",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -747,7 +821,8 @@
   "body": "Loaf",
   "colours": "ส้ม + เป้ฟ้า",
   "special": "สะพายเป้ ถือดินสอ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -757,7 +832,8 @@
   "body": "Slim",
   "colours": "ครีม + หมวกน้ำตาล",
   "special": "หมวกโบว์เลอร์และไท",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -767,7 +843,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ชมพู",
   "special": "ที่ปิดหูขนปุย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -777,7 +854,8 @@
   "body": "Slim",
   "colours": "ขาว + ชมพู",
   "special": "กระโปรงตูตู",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -787,7 +865,8 @@
   "body": "Loaf",
   "colours": "ส้ม + ยีนส์",
   "special": "ชุดเอี๊ยมยีนส์",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -797,7 +876,8 @@
   "body": "Slim",
   "colours": "เทา + ดำ",
   "special": "แจ็คเก็ตหนังเท่ๆ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -807,7 +887,8 @@
   "body": "Loaf",
   "colours": "ครีม + ลายดอก",
   "special": "เสื้อฮาวายและพวงมาลัย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -817,7 +898,8 @@
   "body": "Fluffy",
   "colours": "ฟ้า + ลายดาว",
   "special": "ชุดนอนและหมวกนอน",
-  "effect": "Zzz ลอย"
+  "effect": "Zzz ลอย",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -827,7 +909,8 @@
   "body": "Slim",
   "colours": "เทา + เน็คไทน้ำเงิน",
   "special": "เสื้อเชิ้ตและเน็คไท",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -837,7 +920,8 @@
   "body": "Loaf",
   "colours": "ขาว + รองเท้าสี",
   "special": "รองเท้าผ้าใบสีสดสี่ข้าง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -847,7 +931,8 @@
   "body": "Fluffy",
   "colours": "ขาว + แดง",
   "special": "กิ๊บเชอร์รี่ที่หู",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -857,7 +942,8 @@
   "body": "Slim",
   "colours": "ขาว + เขียว",
   "special": "ที่คาดผม สายรัดข้อมือ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -867,7 +953,8 @@
   "body": "Fluffy",
   "colours": "ขาว + แว่นส้ม",
   "special": "แว่นสกีบนหัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -877,7 +964,8 @@
   "body": "Loaf",
   "colours": "ดำ + ทอง",
   "special": "สร้อยทองเส้นใหญ่",
-  "effect": "ประกายทอง"
+  "effect": "ประกายทอง",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -887,7 +975,8 @@
   "body": "Slim",
   "colours": "ดำ + หมวกครุย",
   "special": "หมวกบัณฑิตและม้วนปริญญา",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -897,7 +986,8 @@
   "body": "Loaf",
   "colours": "ขาว + แดง",
   "special": "พู่เชียร์สองมือ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -907,7 +997,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ชมพู",
   "special": "ที่คาดหูกระต่าย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -917,7 +1008,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล + เขากวาง",
   "special": "เขากวางคริสต์มาส จมูกแดง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -927,7 +1019,8 @@
   "body": "Fluffy",
   "colours": "ขาว + แดง",
   "special": "หมวกซานต้า",
-  "effect": "หิมะโปรย"
+  "effect": "หิมะโปรย",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -937,7 +1030,8 @@
   "body": "Slim",
   "colours": "ดำ + ม่วง",
   "special": "หมวกแม่มดเล็กๆ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -947,7 +1041,8 @@
   "body": "Loaf",
   "colours": "เขียว + ใบไม้",
   "special": "หมวกใบไม้ใหญ่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -957,7 +1052,8 @@
   "body": "Fluffy",
   "colours": "ครีม + เห็ดแดงจุดขาว",
   "special": "หมวกเห็ด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -967,7 +1063,8 @@
   "body": "Loaf",
   "colours": "ส้ม + ผลไม้",
   "special": "หมวกตะกร้าผลไม้",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -977,7 +1074,8 @@
   "body": "Loaf",
   "colours": "ส้ม + เหลือง",
   "special": "มงกุฎกระดาษ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -987,7 +1085,8 @@
   "body": "Slim",
   "colours": "ขาว + เพชร",
   "special": "ปลอกคอเพชรวิบวับ",
-  "effect": "ประกายเพชร"
+  "effect": "ประกายเพชร",
+  "effectKey": ""
  },
  {
   "tier": "Rare",
@@ -997,7 +1096,8 @@
   "body": "Fluffy",
   "colours": "ครีม + วิกน้ำตาล",
   "special": "วิกผมแกละผูกโบว์",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1007,7 +1107,8 @@
   "body": "Loaf",
   "colours": "ส้ม + ดำแดง",
   "special": "หมวกสามเหลี่ยม ผ้าปิดตา ดาบไม้ แผนที่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1017,7 +1118,8 @@
   "body": "Slim",
   "colours": "ดำ + ผ้าคาดแดง",
   "special": "ชุดนินจา ดาวกระจาย",
-  "effect": "ควันฟุ้ง"
+  "effect": "ควันฟุ้ง",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1027,7 +1129,8 @@
   "body": "Fluffy",
   "colours": "ม่วง + ดาว",
   "special": "หมวกกรวยลายดาว ไม้กายสิทธิ์",
-  "effect": "ประกายเวทมนตร์"
+  "effect": "ประกายเวทมนตร์",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1037,7 +1140,8 @@
   "body": "Loaf",
   "colours": "เงิน + ฟ้า",
   "special": "เกราะ หมวกเหล็ก ดาบ โล่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1047,7 +1151,8 @@
   "body": "Loaf",
   "colours": "ขาว + ส้ม",
   "special": "ชุดอวกาศ หมวกครอบใส",
-  "effect": "ดาวลอย"
+  "effect": "ดาวลอย",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1057,7 +1162,8 @@
   "body": "Slim",
   "colours": "น้ำตาล",
   "special": "หมวกคาวบอย ผ้าพันคอ เชือกบ่วง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1067,7 +1173,8 @@
   "body": "Loaf",
   "colours": "แดง + เหลือง",
   "special": "หมวกดับเพลิง สายฉีดน้ำ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1077,7 +1184,8 @@
   "body": "Slim",
   "colours": "น้ำเงิน",
   "special": "หมวกตำรวจ ตราดาว นกหวีด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1087,7 +1195,8 @@
   "body": "Loaf",
   "colours": "ขาว + ฟ้า",
   "special": "เสื้อกาวน์ หูฟังหมอ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1097,7 +1206,8 @@
   "body": "Fluffy",
   "colours": "ขาว",
   "special": "หมวกเชฟ ตะหลิว",
-  "effect": "ไอร้อนลอย"
+  "effect": "ไอร้อนลอย",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1107,7 +1217,8 @@
   "body": "Slim",
   "colours": "แดง + ดำ",
   "special": "เกราะซามูไร ดาบคาตานะไม้",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1117,7 +1228,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาล + เงิน",
   "special": "หมวกมีเขา ขวาน โล่กลม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1127,7 +1239,8 @@
   "body": "Slim",
   "colours": "ทอง + น้ำเงิน",
   "special": "ผ้าโพกฟาโรห์ คทา",
-  "effect": "ประกายทอง"
+  "effect": "ประกายทอง",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1137,7 +1250,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล",
   "special": "หมวกนักสืบ แว่นขยาย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1147,7 +1261,8 @@
   "body": "Slim",
   "colours": "ขาว + เปื้อนสี",
   "special": "เบเร่ต์ พู่กัน จานสี",
-  "effect": "สีกระเซ็น"
+  "effect": "สีกระเซ็น",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1157,7 +1272,8 @@
   "body": "Slim",
   "colours": "ดำ + ม่วง",
   "special": "กีตาร์ไฟฟ้า แจ็คเก็ต",
-  "effect": "สายฟ้าเล็กๆ"
+  "effect": "สายฟ้าเล็กๆ",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1167,7 +1283,8 @@
   "body": "Loaf",
   "colours": "ม่วง + นีออน",
   "special": "หูฟัง แผ่นเสียง",
-  "effect": "ไฟนีออน"
+  "effect": "ไฟนีออน",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1177,7 +1294,8 @@
   "body": "Slim",
   "colours": "เขียว + ขาว",
   "special": "ชุดบอล ลูกฟุตบอล",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1187,7 +1305,8 @@
   "body": "Loaf",
   "colours": "แดง",
   "special": "นวมมวย กางเกงมวย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1197,7 +1316,8 @@
   "body": "Loaf",
   "colours": "เหลือง + ฟ้า",
   "special": "หน้ากากดำน้ำ ตีนกบ ถังออกซิเจน",
-  "effect": "ฟองอากาศ"
+  "effect": "ฟองอากาศ",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1207,7 +1327,8 @@
   "body": "Slim",
   "colours": "น้ำตาล + ทอง",
   "special": "หมวกนักบิน แว่น ผ้าพันคอ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1217,7 +1338,8 @@
   "body": "Loaf",
   "colours": "เหลือง + ส้ม",
   "special": "หมวกนิรภัย ค้อน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1227,7 +1349,8 @@
   "body": "Loaf",
   "colours": "ส้ม + ฟาง",
   "special": "หมวกฟาง คราด ฟักทอง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1237,7 +1360,8 @@
   "body": "Slim",
   "colours": "ดำ + แดง",
   "special": "หมวกทรงสูง ไม้เท้า กระต่ายโผล่",
-  "effect": "ประกายมายากล"
+  "effect": "ประกายมายากล",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1247,7 +1371,8 @@
   "body": "Loaf",
   "colours": "แดง + ทอง",
   "special": "ชุดละครสัตว์ ลูกบอลโยน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1257,7 +1382,8 @@
   "body": "Fluffy",
   "colours": "ชมพู + ทอง",
   "special": "มงกุฎเล็ก ชุดกระโปรงฟู",
-  "effect": "ประกายชมพู"
+  "effect": "ประกายชมพู",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1267,7 +1393,8 @@
   "body": "Slim",
   "colours": "ฟ้า + ทอง",
   "special": "มงกุฎ ผ้าคลุมแดง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1277,7 +1404,8 @@
   "body": "Slim",
   "colours": "เขียว",
   "special": "หมวกขนนก คันธนู",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1287,7 +1415,8 @@
   "body": "Loaf",
   "colours": "กากี",
   "special": "หมวกสำรวจ กล้องส่องทางไกล",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1297,7 +1426,8 @@
   "body": "Fluffy",
   "colours": "ขาว + เขียว",
   "special": "เสื้อแล็บ แว่น หลอดทดลอง",
-  "effect": "ฟองเขียวลอย"
+  "effect": "ฟองเขียวลอย",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1307,7 +1437,8 @@
   "body": "Loaf",
   "colours": "น้ำเงิน + แดง",
   "special": "หมวกไปรษณีย์ กระเป๋าจดหมาย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1317,7 +1448,8 @@
   "body": "Slim",
   "colours": "ส้ม + เขียว",
   "special": "สเก็ตบอร์ด หมวกกันน็อก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1327,7 +1459,8 @@
   "body": "Slim",
   "colours": "ฟ้า + เหลือง",
   "special": "กระดานโต้คลื่น",
-  "effect": "ละอองน้ำ"
+  "effect": "ละอองน้ำ",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1337,7 +1470,8 @@
   "body": "Fluffy",
   "colours": "ขาว + แดง",
   "special": "สกี ไม้ค้ำ แว่นสกี",
-  "effect": "หิมะกระจาย"
+  "effect": "หิมะกระจาย",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1347,7 +1481,8 @@
   "body": "Slim",
   "colours": "ชมพู",
   "special": "ชุดบัลเลต์ รองเท้าบัลเลต์",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1357,7 +1492,8 @@
   "body": "Loaf",
   "colours": "แดง + น้ำเงิน",
   "special": "ผ้าคลุม หน้ากาก โลโก้อุ้งเท้า",
-  "effect": "ผ้าคลุมพลิ้ว"
+  "effect": "ผ้าคลุมพลิ้ว",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1367,7 +1503,8 @@
   "body": "Slim",
   "colours": "แดง + ดำ",
   "special": "หมวกขนสูง กลอง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1377,7 +1514,8 @@
   "body": "Slim",
   "colours": "เหลือง + ดำ",
   "special": "ชุดกังฟู สายคาด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1387,7 +1525,8 @@
   "body": "Fluffy",
   "colours": "ครีม + ผ้าขาว",
   "special": "ตัวอ้วน ผ้าคาดซูโม่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1397,7 +1536,8 @@
   "body": "Slim",
   "colours": "แดง + ขาว",
   "special": "ชุดแข่ง หมวกกันน็อก ธงตาหมากรุก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1407,7 +1547,8 @@
   "body": "Loaf",
   "colours": "เขียว + น้ำตาล",
   "special": "หมวกสวน บัวรดน้ำ",
-  "effect": "ใบไม้ปลิว"
+  "effect": "ใบไม้ปลิว",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1417,7 +1558,8 @@
   "body": "Loaf",
   "colours": "เหลือง + น้ำเงิน",
   "special": "หมวกกันฝน คันเบ็ด ปลา",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1427,7 +1569,8 @@
   "body": "Fluffy",
   "colours": "แดงลายสก็อต",
   "special": "เสื้อลายสก็อต ขวานไม้",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1437,7 +1580,8 @@
   "body": "Slim",
   "colours": "น้ำตาล + ครีม",
   "special": "ผ้ากันเปื้อน แก้วกาแฟ",
-  "effect": "ไอร้อน"
+  "effect": "ไอร้อน",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1447,7 +1591,8 @@
   "body": "Fluffy",
   "colours": "ขาว + น้ำตาล",
   "special": "หมวกเชฟ ขนมปังฝรั่งเศส",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1457,7 +1602,8 @@
   "body": "Slim",
   "colours": "เทา + เขียว",
   "special": "แว่น ไม้ชี้ กระดานเล็ก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1467,7 +1613,8 @@
   "body": "Loaf",
   "colours": "ส้ม + ดอกไม้",
   "special": "กระโปรงหญ้า พวงมาลัย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1477,7 +1624,8 @@
   "body": "Slim",
   "colours": "เขียวเข้ม",
   "special": "หมวกปีกกว้าง กระบอกน้ำ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1487,7 +1635,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล + ทอง",
   "special": "แผนที่ พลั่ว หีบสมบัติเล็ก",
-  "effect": "ประกายทอง"
+  "effect": "ประกายทอง",
+  "effectKey": ""
  },
  {
   "tier": "Epic",
@@ -1497,7 +1646,8 @@
   "body": "Slim",
   "colours": "ทอง + แดง",
   "special": "ชฎา ชุดไทย",
-  "effect": "ประกายทอง"
+  "effect": "ประกายทอง",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1507,7 +1657,8 @@
   "body": "Loaf",
   "colours": "แดง + เขียว",
   "special": "ตัวเป็นสตรอว์เบอร์รี จุดเมล็ด ใบบนหัว",
-  "effect": "กลิ่นหอมลอยเป็นหัวใจ"
+  "effect": "กลิ่นหอมลอยเป็นหัวใจ",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1517,7 +1668,8 @@
   "body": "Slim",
   "colours": "เหลือง",
   "special": "ใส่ชุดเปลือกกล้วยปอกครึ่ง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1527,7 +1679,8 @@
   "body": "Fluffy",
   "colours": "เขียว + แดง",
   "special": "ตัวลายแตงโม ท้องสีแดงมีเมล็ด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1537,7 +1690,8 @@
   "body": "Loaf",
   "colours": "เขียว + เหลือง",
   "special": "ท้องเป็นเนื้ออะโวคาโด มีเมล็ดกลม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1547,7 +1701,8 @@
   "body": "Loaf",
   "colours": "แดงเข้ม",
   "special": "เชอร์รีคู่บนหัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1557,7 +1712,8 @@
   "body": "Fluffy",
   "colours": "เหลือง + เขียว",
   "special": "ตัวลายสับปะรด ใบแหลมบนหัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1567,7 +1723,8 @@
   "body": "Loaf",
   "colours": "ส้ม",
   "special": "ตัวกลมเหมือนผลส้ม ใบเขียว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1577,7 +1734,8 @@
   "body": "Fluffy",
   "colours": "ม่วง",
   "special": "ขนเป็นพวงองุ่นกลมๆ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1587,7 +1745,8 @@
   "body": "Slim",
   "colours": "เหลืองส้ม",
   "special": "ตัวลายมะม่วง ใบเขียวที่หาง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1597,7 +1756,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล + ขาว",
   "special": "หัวเป็นลูกมะพร้าว หลอดดูด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1607,7 +1767,8 @@
   "body": "Fluffy",
   "colours": "ชมพู + ครีม",
   "special": "นั่งในถ้วยคัพเค้ก ครีมบนหัว",
-  "effect": "เม็ดน้ำตาลหลากสี"
+  "effect": "เม็ดน้ำตาลหลากสี",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1617,7 +1778,8 @@
   "body": "Loaf",
   "colours": "น้ำตาล + ชมพู",
   "special": "ห่วงโดนัทรอบตัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1627,7 +1789,8 @@
   "body": "Fluffy",
   "colours": "ชมพู + ฟ้า + โคน",
   "special": "หัวเป็นไอศกรีมสามสกู๊ป",
-  "effect": "หยดละลาย"
+  "effect": "หยดละลาย",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1637,7 +1800,8 @@
   "body": "Loaf",
   "colours": "ขาว + แดง",
   "special": "ตัวเป็นเค้กหลายชั้น เทียนบนหัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1647,7 +1811,8 @@
   "body": "Loaf",
   "colours": "ขาว + ส้ม + ดำ",
   "special": "นอนบนข้าว ห่อสาหร่าย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1657,7 +1822,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาล + เขียว",
   "special": "ขนมปังบนล่าง ผักชีส",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1667,7 +1833,8 @@
   "body": "Slim",
   "colours": "เหลือง + แดง",
   "special": "ตัวเป็นชิ้นพิซซ่า หน้าเปปเปอโรนี",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1677,7 +1844,8 @@
   "body": "Loaf",
   "colours": "เหลือง + เขียว",
   "special": "อยู่ในแผ่นทาโก้",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1687,7 +1855,8 @@
   "body": "Slim",
   "colours": "น้ำตาล + แดง",
   "special": "อยู่ในขนมปังฮอตดอก ซอสบนหลัง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1697,7 +1866,8 @@
   "body": "Fluffy",
   "colours": "ขาว + แดงขาว",
   "special": "ขนเป็นป๊อปคอร์น ถังลายทาง",
-  "effect": "ป๊อปคอร์นเด้ง"
+  "effect": "ป๊อปคอร์นเด้ง",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1707,7 +1877,8 @@
   "body": "Loaf",
   "colours": "น้ำตาลนม",
   "special": "อยู่ในแก้วชานม ไข่มุกดำ หลอดใหญ่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1717,7 +1888,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ชมพู",
   "special": "ตัวนุ่มยืดเหมือนโมจิ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1727,7 +1899,8 @@
   "body": "Loaf",
   "colours": "พาสเทลหลายสี",
   "special": "หัวเป็นมาการงซ้อน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1737,7 +1910,8 @@
   "body": "Slim",
   "colours": "ชมพูขาวเกลียว",
   "special": "หางเป็นอมยิ้มเกลียว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1747,7 +1921,8 @@
   "body": "Loaf",
   "colours": "น้ำตาลทอง",
   "special": "ตัวเป็นคุกกี้ช็อกชิพ",
-  "effect": "เศษคุกกี้"
+  "effect": "เศษคุกกี้",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1757,7 +1932,8 @@
   "body": "Fluffy",
   "colours": "น้ำเงิน + ขาว",
   "special": "หางวาฬ ครีบ พ่นน้ำจากหัว",
-  "effect": "น้ำพุ่ง"
+  "effect": "น้ำพุ่ง",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1767,7 +1943,8 @@
   "body": "Slim",
   "colours": "เทาฟ้า",
   "special": "ใส่ชุดฉลาม ครีบบนหลัง ฟันน่ารัก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1777,7 +1954,8 @@
   "body": "Fluffy",
   "colours": "ดำ + เทา",
   "special": "ตัวใหญ่ แขนยาวแบบกอริลลา ทุบอก",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1787,7 +1965,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ดำ",
   "special": "รอบตาดำ หูดำ ถือไผ่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1797,7 +1976,8 @@
   "body": "Loaf",
   "colours": "เหลือง + ดำ",
   "special": "ลายผึ้ง ปีกใส หนวด",
-  "effect": "ปีกกระพือ"
+  "effect": "ปีกกระพือ",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1807,7 +1987,8 @@
   "body": "Loaf",
   "colours": "เขียว",
   "special": "ใส่หมวกกบ ตาโปน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1817,7 +1998,8 @@
   "body": "Loaf",
   "colours": "ดำ + ขาว + ส้ม",
   "special": "ชุดเพนกวิน ปากส้ม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1827,7 +2009,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ชมพู",
   "special": "หูกระต่ายยาว หางปุย",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1837,7 +2020,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาล + ครีม",
   "special": "ปีกนก ตาโต ขนหูแหลม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1847,7 +2031,8 @@
   "body": "Loaf",
   "colours": "เขียว + น้ำตาล",
   "special": "แบกกระดองเต่า",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1857,7 +2042,8 @@
   "body": "Slim",
   "colours": "ส้ม + ขาว",
   "special": "หางพวงใหญ่ หน้าแหลม",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1867,7 +2053,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาล",
   "special": "หูกลมแบบหมี ถือโหลน้ำผึ้ง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1877,7 +2064,8 @@
   "body": "Fluffy",
   "colours": "ทอง + แผงคอส้ม",
   "special": "แผงคอใหญ่",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1887,7 +2075,8 @@
   "body": "Slim",
   "colours": "ม่วงเข้ม",
   "special": "ปีกค้างคาวน่ารัก ห้อยหัว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1897,7 +2086,8 @@
   "body": "Fluffy",
   "colours": "ชมพูม่วง",
   "special": "หนวดปลาหมึกแทนขา",
-  "effect": "หมึกพ่น"
+  "effect": "หมึกพ่น",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1907,7 +2097,8 @@
   "body": "Loaf",
   "colours": "แดง",
   "special": "ก้ามปูใหญ่สองข้าง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1917,7 +2108,8 @@
   "body": "Loaf",
   "colours": "เหลือง + ส้ม",
   "special": "ปากเป็ด ห่วงยาง",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1927,7 +2119,8 @@
   "body": "Fluffy",
   "colours": "ขาวปุย",
   "special": "ขนแกะปุยๆ เขาม้วน",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1937,7 +2130,8 @@
   "body": "Slim",
   "colours": "น้ำตาลจุดขาว",
   "special": "เขากวาง ลายจุด",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1947,7 +2141,8 @@
   "body": "Fluffy",
   "colours": "เทา",
   "special": "งวงสั้น หูใหญ่",
-  "effect": "พ่นน้ำ"
+  "effect": "พ่นน้ำ",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1957,7 +2152,8 @@
   "body": "Fluffy",
   "colours": "เทา + ขาว",
   "special": "หูปุยใหญ่ จมูกดำโต กอดกิ่งไม้",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1967,7 +2163,8 @@
   "body": "Slim",
   "colours": "ชมพู",
   "special": "เหงือกฟูข้างหัว หางแบน",
-  "effect": "ฟองอากาศ"
+  "effect": "ฟองอากาศ",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1977,7 +2174,8 @@
   "body": "Slim",
   "colours": "ฟ้าเขียว",
   "special": "หางนกยูงรำแพน",
-  "effect": "ประกายสีรุ้ง"
+  "effect": "ประกายสีรุ้ง",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1987,7 +2185,8 @@
   "body": "Loaf",
   "colours": "ครีม + น้ำตาล",
   "special": "แบกเปลือกหอยเกลียว",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Legendary",
@@ -1997,7 +2196,8 @@
   "body": "Loaf",
   "colours": "แดงจุดดำ",
   "special": "ปีกเต่าทองจุดดำ",
-  "effect": "-"
+  "effect": "-",
+  "effectKey": ""
  },
  {
   "tier": "Mythical",
@@ -2007,7 +2207,8 @@
   "body": "Slim",
   "colours": "เขียว + ทอง",
   "special": "ปีกมังกร เขา หางมีหนาม",
-  "effect": "ไฟพ่นเล็กๆ"
+  "effect": "เปลวไฟอ่อนๆ ลอยรอบตัว",
+  "effectKey": "dragon_flames"
  },
  {
   "tier": "Mythical",
@@ -2017,7 +2218,8 @@
   "body": "Slim",
   "colours": "แดง + ส้ม",
   "special": "ปีกเปลวไฟ เกล็ดแดง",
-  "effect": "เปลวไฟรอบตัว"
+  "effect": "วงแหวนไฟหมุนรอบตัว",
+  "effectKey": "fire_ring"
  },
  {
   "tier": "Mythical",
@@ -2027,7 +2229,8 @@
   "body": "Slim",
   "colours": "ฟ้าอ่อน + ขาว",
   "special": "ปีกผลึกน้ำแข็ง",
-  "effect": "เกล็ดหิมะ"
+  "effect": "เกล็ดน้ำแข็งหมุนรอบตัว",
+  "effectKey": "frost_shards"
  },
  {
   "tier": "Mythical",
@@ -2037,7 +2240,8 @@
   "body": "Slim",
   "colours": "ส้ม + เหลือง",
   "special": "ปีกขนนกไฟ หางยาวพลิ้ว",
-  "effect": "ขนนกไฟร่วง"
+  "effect": "ขนนกไฟร่วงรอบตัว",
+  "effectKey": "phoenix_feathers"
  },
  {
   "tier": "Mythical",
@@ -2047,7 +2251,8 @@
   "body": "Fluffy",
   "colours": "ขาว + รุ้ง",
   "special": "เขาเกลียวทอง แผงคอสีรุ้ง",
-  "effect": "ดาวสีรุ้ง"
+  "effect": "ดาวสีรุ้งวนรอบตัว",
+  "effectKey": "rainbow_stars"
  },
  {
   "tier": "Mythical",
@@ -2057,7 +2262,8 @@
   "body": "Slim",
   "colours": "ขาว + ฟ้า",
   "special": "ปีกขนนกขาวใหญ่",
-  "effect": "ขนนกลอย"
+  "effect": "ก้อนเมฆจิ๋วลอยรอบขา",
+  "effectKey": "cloud_puffs"
  },
  {
   "tier": "Mythical",
@@ -2067,7 +2273,8 @@
   "body": "Fluffy",
   "colours": "ทอง + น้ำตาล",
   "special": "หัวนกอินทรี ปีก",
-  "effect": "-"
+  "effect": "ขนนกปลิวตามลมรอบตัว",
+  "effectKey": "wind_feathers"
  },
  {
   "tier": "Mythical",
@@ -2077,7 +2284,8 @@
   "body": "Slim",
   "colours": "ฟ้าเขียว + ชมพู",
   "special": "หางปลาเงือก เปลือกหอย",
-  "effect": "ฟองน้ำ"
+  "effect": "ฟองน้ำลอยขึ้นรอบตัว",
+  "effectKey": "bubbles_up"
  },
  {
   "tier": "Mythical",
@@ -2087,7 +2295,8 @@
   "body": "Fluffy",
   "colours": "ม่วงเข้ม",
   "special": "หนวดยักษ์ ตาเรือง",
-  "effect": "น้ำวน"
+  "effect": "น้ำวนหมุนรอบตัว",
+  "effectKey": "water_swirl"
  },
  {
   "tier": "Mythical",
@@ -2097,7 +2306,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ฟ้า",
   "special": "ขนยาวหนา ตัวใหญ่",
-  "effect": "หิมะตก"
+  "effect": "หิมะตกรอบตัวตลอดเวลา",
+  "effectKey": "snowfall"
  },
  {
   "tier": "Mythical",
@@ -2107,7 +2317,8 @@
   "body": "Loaf",
   "colours": "เทาหิน + เขียวมอส",
   "special": "ตัวเป็นก้อนหินต่อกัน ตาเรือง",
-  "effect": "ฝุ่นหิน"
+  "effect": "ก้อนหินจิ๋วลอยวนรอบตัว",
+  "effectKey": "rocks_orbit"
  },
  {
   "tier": "Mythical",
@@ -2117,7 +2328,8 @@
   "body": "Slim",
   "colours": "ฟ้าใส",
   "special": "ตัวเป็นผลึกเหลี่ยม",
-  "effect": "แสงสะท้อนวิบวับ"
+  "effect": "ผลึกคริสตัลลอยวนรอบตัว",
+  "effectKey": "crystal_orbit"
  },
  {
   "tier": "Mythical",
@@ -2127,7 +2339,8 @@
   "body": "Slim",
   "colours": "ชมพู + เขียวอ่อน",
   "special": "ปีกผีเสื้อใส ไม้กายสิทธิ์ดอกไม้",
-  "effect": "ฝุ่นนางฟ้า"
+  "effect": "ฝุ่นนางฟ้าวิบวับตามตัว",
+  "effectKey": "fairy_dust"
  },
  {
   "tier": "Mythical",
@@ -2137,7 +2350,8 @@
   "body": "Slim",
   "colours": "เขียว + ทอง",
   "special": "หูแหลมยาว ชุดเอลฟ์ ธนู",
-  "effect": "-"
+  "effect": "ใบไม้เขียววนรอบตัว",
+  "effectKey": "leaf_swirl"
  },
  {
   "tier": "Mythical",
@@ -2147,7 +2361,8 @@
   "body": "Slim",
   "colours": "ดำ + แดง",
   "special": "ผ้าคลุมปกตั้ง เขี้ยวน่ารัก",
-  "effect": "ค้างคาวบิน"
+  "effect": "ค้างคาวจิ๋วบินวนรอบตัว",
+  "effectKey": "bats_orbit"
  },
  {
   "tier": "Mythical",
@@ -2157,7 +2372,8 @@
   "body": "Fluffy",
   "colours": "เทาเข้ม",
   "special": "ขนฟูแบบหมาป่า หอนใส่พระจันทร์",
-  "effect": "พระจันทร์ลอย"
+  "effect": "พระจันทร์เต็มดวงจิ๋วลอยวน",
+  "effectKey": "moon_orbit"
  },
  {
   "tier": "Mythical",
@@ -2167,7 +2383,8 @@
   "body": "Loaf",
   "colours": "เขียวซีด",
   "special": "ผ้าพันแผล ตาไม่เท่ากัน (น่ารัก ไม่น่ากลัว)",
-  "effect": "ควันเขียว"
+  "effect": "หมอกเขียวจางๆ รอบเท้า",
+  "effectKey": "green_fog"
  },
  {
   "tier": "Mythical",
@@ -2177,7 +2394,8 @@
   "body": "Fluffy",
   "colours": "ขาวโปร่ง",
   "special": "ตัวโปร่งแสง ลอยได้",
-  "effect": "ลอยขึ้นลง"
+  "effect": "ดวงไฟสีฟ้าน่ารักลอยรอบตัว",
+  "effectKey": "wisps"
  },
  {
   "tier": "Mythical",
@@ -2187,7 +2405,8 @@
   "body": "Slim",
   "colours": "ครีม",
   "special": "ผ้าพันทั้งตัว ตาโผล่",
-  "effect": "ทรายลอย"
+  "effect": "ทรายวนเป็นเกลียวรอบตัว",
+  "effectKey": "sand_swirl"
  },
  {
   "tier": "Mythical",
@@ -2197,7 +2416,8 @@
   "body": "Loaf",
   "colours": "เงิน + ฟ้านีออน",
   "special": "ตัวเหล็ก ข้อต่อ เสาอากาศ",
-  "effect": "ไฟกระพริบ"
+  "effect": "ประกายไฟฟ้าจิ๋วกระเด็นจากข้อต่อ",
+  "effectKey": "sparks"
  },
  {
   "tier": "Mythical",
@@ -2207,7 +2427,8 @@
   "body": "Slim",
   "colours": "ขาว + น้ำเงิน",
   "special": "ครึ่งตัวกลไก ตาเลเซอร์",
-  "effect": "เส้นแสงสแกน"
+  "effect": "วงแสงสแกนเลื่อนขึ้นลง",
+  "effectKey": "scan_ring"
  },
  {
   "tier": "Mythical",
@@ -2217,7 +2438,8 @@
   "body": "Slim",
   "colours": "เขียวมะนาว",
   "special": "หัวโต ตาดำใหญ่ หนวดเสาอากาศ",
-  "effect": "แสงเขียว"
+  "effect": "จานบินจิ๋วบินวนรอบตัว",
+  "effectKey": "ufo_orbit"
  },
  {
   "tier": "Mythical",
@@ -2227,7 +2449,8 @@
   "body": "Loaf",
   "colours": "เงิน + ม่วง",
   "special": "นั่งในจานบิน",
-  "effect": "ลำแสงดูด"
+  "effect": "ลำแสงดูดสีเขียวใต้จาน ของจิ๋วลอยขึ้น",
+  "effectKey": "tractor_beam"
  },
  {
   "tier": "Mythical",
@@ -2237,7 +2460,8 @@
   "body": "Fluffy",
   "colours": "ส้ม + ดำ",
   "special": "หัวฟักทองแกะสลัก มงกุฎ",
-  "effect": "ไฟในฟักทอง"
+  "effect": "โคมฟักทองจิ๋วลอยวน",
+  "effectKey": "lanterns"
  },
  {
   "tier": "Mythical",
@@ -2247,7 +2471,8 @@
   "body": "Slim",
   "colours": "ม่วง + ดำ",
   "special": "หมวกแม่มด ไม้กวาด หม้อยา",
-  "effect": "ฟองยาลอย"
+  "effect": "ฟองยาสีม่วงลอยขึ้น",
+  "effectKey": "potion_bubbles"
  },
  {
   "tier": "Mythical",
@@ -2257,7 +2482,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ฟ้า",
   "special": "ตัวเป็นหิมะ มงกุฎน้ำแข็ง",
-  "effect": "พายุหิมะเล็ก"
+  "effect": "พายุหิมะเล็กหมุนรอบ",
+  "effectKey": "blizzard"
  },
  {
   "tier": "Mythical",
@@ -2267,7 +2493,8 @@
   "body": "Slim",
   "colours": "น้ำเงิน + เหลือง",
   "special": "ปีกสายฟ้า",
-  "effect": "สายฟ้าแลบ"
+  "effect": "สายฟ้าแลบเป็นช่วงๆ รอบตัว",
+  "effectKey": "lightning"
  },
  {
   "tier": "Mythical",
@@ -2277,7 +2504,8 @@
   "body": "Slim",
   "colours": "ขาว + แดง",
   "special": "หางเก้าหาง หน้ากากจิ้งจอก",
-  "effect": "ไฟจิ้งจอกสีฟ้า"
+  "effect": "ไฟจิ้งจอกสีฟ้าลอยวน",
+  "effectKey": "foxfire"
  },
  {
   "tier": "Mythical",
@@ -2287,7 +2515,8 @@
   "body": "Slim",
   "colours": "เขียวทอง",
   "special": "หงอนพญานาค เกล็ดทอง หางงู",
-  "effect": "ประกายน้ำ"
+  "effect": "หยดน้ำประกายทองลอยวน",
+  "effectKey": "gold_water"
  },
  {
   "tier": "Mythical",
@@ -2297,7 +2526,8 @@
   "body": "Fluffy",
   "colours": "แดง + ทอง",
   "special": "ปีกครุฑ ปากนก มงกุฎไทย",
-  "effect": "ขนนกทอง"
+  "effect": "ขนนกทองร่วงช้าๆ",
+  "effectKey": "gold_feathers"
  },
  {
   "tier": "Mythical",
@@ -2307,7 +2537,8 @@
   "body": "Fluffy",
   "colours": "ดำ + แดง",
   "special": "สามหัวน่ารัก ปลอกคอหนาม",
-  "effect": "-"
+  "effect": "ถ่านไฟแดงลอยขึ้น",
+  "effectKey": "embers"
  },
  {
   "tier": "Mythical",
@@ -2317,7 +2548,8 @@
   "body": "Slim",
   "colours": "เขียวน้ำทะเล",
   "special": "หางเป็นงูหลายหัว",
-  "effect": "-"
+  "effect": "ฟองสีเขียวมรกตลอยขึ้น",
+  "effectKey": "emerald_bubbles"
  },
  {
   "tier": "Mythical",
@@ -2327,7 +2559,8 @@
   "body": "Loaf",
   "colours": "น้ำตาลไม้ + เขียว",
   "special": "ตัวเป็นไม้ มีใบไม้งอก",
-  "effect": "ใบไม้ปลิว"
+  "effect": "ดอกไม้ผลิบานรอบเท้า",
+  "effectKey": "flowers_bloom"
  },
  {
   "tier": "Mythical",
@@ -2337,7 +2570,8 @@
   "body": "Fluffy",
   "colours": "แดงจุด + ครีม",
   "special": "หมวกเห็ดเรืองแสง",
-  "effect": "สปอร์เรืองแสง"
+  "effect": "สปอร์เรืองแสงลอยช้าๆ",
+  "effectKey": "spores"
  },
  {
   "tier": "Mythical",
@@ -2347,7 +2581,8 @@
   "body": "Loaf",
   "colours": "ดำ + ส้มลาวา",
   "special": "ตัวหินดำมีรอยแตกลาวา",
-  "effect": "ประกายไฟ"
+  "effect": "ลาวาหยดและไอร้อนพวย",
+  "effectKey": "lava_heat"
  },
  {
   "tier": "Mythical",
@@ -2357,7 +2592,8 @@
   "body": "Slim",
   "colours": "ขาว + ฟ้าอ่อน",
   "special": "ตัวยาวเป็นเมฆ หนวดมังกร",
-  "effect": "เมฆลอย"
+  "effect": "วงเมฆหมุนรอบตัว",
+  "effectKey": "cloud_ring"
  },
  {
   "tier": "Mythical",
@@ -2367,7 +2603,8 @@
   "body": "Slim",
   "colours": "น้ำเงิน + เขียว",
   "special": "ครีบหลัง ตัวยาว",
-  "effect": "คลื่นเล็ก"
+  "effect": "คลื่นน้ำเล็กๆ ซัดรอบตัว",
+  "effectKey": "waves"
  },
  {
   "tier": "Mythical",
@@ -2377,7 +2614,8 @@
   "body": "Loaf",
   "colours": "เทาหิน",
   "special": "ปีกหิน เขาเล็ก",
-  "effect": "-"
+  "effect": "ฝุ่นหินร่วงช้าๆ",
+  "effectKey": "stone_dust"
  },
  {
   "tier": "Mythical",
@@ -2387,7 +2625,8 @@
   "body": "Slim",
   "colours": "ฟ้า + ทอง",
   "special": "ครึ่งล่างเป็นควันจากตะเกียง",
-  "effect": "ควันวิเศษ"
+  "effect": "ควันวิเศษม่วงทองพวยพุ่ง",
+  "effectKey": "magic_smoke"
  },
  {
   "tier": "Mythical",
@@ -2397,7 +2636,8 @@
   "body": "Slim",
   "colours": "ดำ + ม่วง",
   "special": "เกราะดำ ดาบเรือง",
-  "effect": "ออร่าม่วง"
+  "effect": "ออร่าม่วงพลิ้วรอบตัว",
+  "effectKey": "purple_aura"
  },
  {
   "tier": "Mythical",
@@ -2407,7 +2647,8 @@
   "body": "Fluffy",
   "colours": "แดง",
   "special": "เขาเล็กสองข้าง กระบอง (น่ารัก)",
-  "effect": "-"
+  "effect": "วงคลื่นสีแดงกระจายจากพื้น",
+  "effectKey": "drum_waves"
  },
  {
   "tier": "Mythical",
@@ -2417,7 +2658,8 @@
   "body": "Slim",
   "colours": "แดง + น้ำเงิน",
   "special": "กุญแจไขลานที่หลัง",
-  "effect": "เดินแบบของเล่น"
+  "effect": "กระดาษสีโปรยเป็นช่วงๆ",
+  "effectKey": "confetti"
  },
  {
   "tier": "Mythical",
@@ -2427,7 +2669,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาลอ่อน",
   "special": "รอยเย็บ กระดุมตา",
-  "effect": "-"
+  "effect": "หัวใจลอยขึ้น",
+  "effectKey": "hearts"
  },
  {
   "tier": "Mythical",
@@ -2437,7 +2680,8 @@
   "body": "Loaf",
   "colours": "เขียวใส",
   "special": "ตัวเป็นวุ้นใส เด้งดึ๋ง",
-  "effect": "เด้งไปมา"
+  "effect": "หยดสไลม์เด้งดึ๋งรอบตัว",
+  "effectKey": "slime_drops"
  },
  {
   "tier": "Mythical",
@@ -2447,7 +2691,8 @@
   "body": "Fluffy",
   "colours": "ชมพู + ฟ้า",
   "special": "ตัวเป็นสายไหม ลูกอมเป็นเขา",
-  "effect": "ลูกอมลอย"
+  "effect": "ลูกอมลอยวนรอบตัว",
+  "effectKey": "candy_orbit"
  },
  {
   "tier": "Mythical",
@@ -2457,7 +2702,8 @@
   "body": "Loaf",
   "colours": "ทองเหลือง",
   "special": "เฟืองหมุนบนตัว",
-  "effect": "เฟืองหมุน"
+  "effect": "เฟืองหมุนวนรอบตัว",
+  "effectKey": "gears_orbit"
  },
  {
   "tier": "Mythical",
@@ -2467,7 +2713,8 @@
   "body": "Fluffy",
   "colours": "ทองแดง + เหล็ก",
   "special": "ท่อไอน้ำ หมวกนักบิน",
-  "effect": "ไอน้ำพุ่ง"
+  "effect": "ไอน้ำพ่นเป็นจังหวะ",
+  "effectKey": "steam_puffs"
  },
  {
   "tier": "Mythical",
@@ -2477,7 +2724,8 @@
   "body": "Loaf",
   "colours": "ม่วง + ฟ้านีออน",
   "special": "ตัวพิกเซลแตกๆ",
-  "effect": "กระตุกแบบกลิตช์"
+  "effect": "สี่เหลี่ยมพิกเซลกระพริบรอบตัว",
+  "effectKey": "glitch"
  },
  {
   "tier": "Mythical",
@@ -2487,7 +2735,8 @@
   "body": "Slim",
   "colours": "ดำ + ชมพูนีออน",
   "special": "เส้นนีออนทั่วตัว แว่นไซเบอร์",
-  "effect": "แสงนีออน"
+  "effect": "วงแหวนนีออนหมุนรอบตัว",
+  "effectKey": "neon_rings"
  },
  {
   "tier": "Mythical",
@@ -2497,7 +2746,8 @@
   "body": "Fluffy",
   "colours": "ใสสีรุ้ง",
   "special": "อยู่ในฟองสบู่ลอย",
-  "effect": "ฟองสบู่ลอย"
+  "effect": "ฟองสบู่สีรุ้งลอยรอบตัว",
+  "effectKey": "soap_bubbles"
  },
  {
   "tier": "Secret",
@@ -2507,7 +2757,8 @@
   "body": "Fluffy",
   "colours": "ทอง + ขาว",
   "special": "มงกุฎทอง รัศมีหลังศีรษะ ปีกทอง",
-  "effect": "ลำแสงจากฟ้า"
+  "effect": "แสงวิบวับระยิบรอบตัว และรัศมีทอง",
+  "effectKey": "sparkle_aura"
  },
  {
   "tier": "Secret",
@@ -2517,7 +2768,8 @@
   "body": "Fluffy",
   "colours": "ทอง + ส้ม",
   "special": "จานพระอาทิตย์หลังตัว",
-  "effect": "แสงอาทิตย์เปล่ง"
+  "effect": "รังสีพระอาทิตย์หมุนหลังตัว",
+  "effectKey": "sun_rays"
  },
  {
   "tier": "Secret",
@@ -2527,7 +2779,8 @@
   "body": "Slim",
   "colours": "ขาวเงิน + น้ำเงิน",
   "special": "พระจันทร์เสี้ยวบนหัว",
-  "effect": "ดาวระยิบ"
+  "effect": "พระจันทร์เสี้ยวกับดาววนรอบตัว",
+  "effectKey": "moon_stars"
  },
  {
   "tier": "Secret",
@@ -2537,7 +2790,8 @@
   "body": "Slim",
   "colours": "น้ำเงินเข้ม + ทอง",
   "special": "เสื้อคลุมลายดาว คทาดาว",
-  "effect": "ดาวหมุนรอบ"
+  "effect": "ดาวทองดวงใหญ่หมุนรอบตัว",
+  "effectKey": "star_orbit"
  },
  {
   "tier": "Secret",
@@ -2547,7 +2801,8 @@
   "body": "Fluffy",
   "colours": "ม่วง + ชมพู + ดาว",
   "special": "ตัวเป็นลายจักรวาล",
-  "effect": "เนบิวลาเรืองแสง"
+  "effect": "หมอกกาแล็กซีหมุนรอบตัว",
+  "effectKey": "nebula_swirl"
  },
  {
   "tier": "Secret",
@@ -2557,7 +2812,8 @@
   "body": "Loaf",
   "colours": "ดำ + ม่วงเรือง",
   "special": "วงแหวนหลุมดำรอบตัว",
-  "effect": "แสงถูกดูดเข้า"
+  "effect": "วงแสงถูกดูดหมุนเข้าหาตัว",
+  "effectKey": "singularity"
  },
  {
   "tier": "Secret",
@@ -2567,7 +2823,8 @@
   "body": "Slim",
   "colours": "ทอง + ฟ้า",
   "special": "นาฬิกาทรายและหน้าปัดนาฬิกาลอย",
-  "effect": "เข็มนาฬิกาหมุน"
+  "effect": "หน้าปัดนาฬิกาเรืองแสงหมุนรอบตัว",
+  "effectKey": "clock_faces"
  },
  {
   "tier": "Secret",
@@ -2577,7 +2834,8 @@
   "body": "Fluffy",
   "colours": "ขาว + เหลือง",
   "special": "ค้อนสายฟ้า ผ้าคลุมแดง",
-  "effect": "สายฟ้ารอบตัว"
+  "effect": "เมฆครึ้มเหนือหัวและสายฟ้าฟาด",
+  "effectKey": "storm"
  },
  {
   "tier": "Secret",
@@ -2587,7 +2845,8 @@
   "body": "Slim",
   "colours": "น้ำเงิน + ทอง",
   "special": "สามง่าม มงกุฎปะการัง",
-  "effect": "คลื่นหมุนรอบ"
+  "effect": "สายน้ำไหลวนรอบตัว",
+  "effectKey": "water_orbit"
  },
  {
   "tier": "Secret",
@@ -2597,7 +2856,8 @@
   "body": "Fluffy",
   "colours": "น้ำตาล + เขียว",
   "special": "ภูเขาเล็กบนหลัง ต้นไม้งอก",
-  "effect": "หินลอย"
+  "effect": "เกาะหินจิ๋วมีต้นไม้ลอยวน",
+  "effectKey": "floating_islands"
  },
  {
   "tier": "Secret",
@@ -2607,7 +2867,8 @@
   "body": "Fluffy",
   "colours": "แดง + ทอง",
   "special": "มงกุฎเปลวไฟ",
-  "effect": "พายุไฟ"
+  "effect": "พายุไฟหมุนรอบตัว",
+  "effectKey": "fire_storm"
  },
  {
   "tier": "Secret",
@@ -2617,7 +2878,8 @@
   "body": "Slim",
   "colours": "ฟ้าอ่อน + ขาว",
   "special": "มงกุฎน้ำแข็ง ชุดผลึก",
-  "effect": "เกล็ดน้ำแข็งหมุน"
+  "effect": "เกล็ดหิมะดวงใหญ่หมุนช้าๆ",
+  "effectKey": "big_snowflakes"
  },
  {
   "tier": "Secret",
@@ -2627,7 +2889,8 @@
   "body": "Slim",
   "colours": "เขียวมิ้นต์ใส",
   "special": "ตัวเป็นสายลมม้วน",
-  "effect": "ใบไม้หมุน"
+  "effect": "เส้นลมพลิ้ววนรอบตัว",
+  "effectKey": "wind_trails"
  },
  {
   "tier": "Secret",
@@ -2637,7 +2900,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ทอง",
   "special": "ปีกขาวคู่ใหญ่ วงแหวนทอง",
-  "effect": "ขนนกขาวร่วง"
+  "effect": "ขนนกขาวร่วงช้าๆ",
+  "effectKey": "white_feathers"
  },
  {
   "tier": "Secret",
@@ -2647,7 +2911,8 @@
   "body": "Slim",
   "colours": "ดำ + ม่วง",
   "special": "มงกุฎเงา ตาม่วงเรือง (ไม่น่ากลัว)",
-  "effect": "เงาพลิ้ว"
+  "effect": "ควันเงาสีม่วงพลิ้ว",
+  "effectKey": "shadow_wisps"
  },
  {
   "tier": "Secret",
@@ -2657,7 +2922,8 @@
   "body": "Fluffy",
   "colours": "สีรุ้ง",
   "special": "ขนไล่สีรุ้ง",
-  "effect": "สายรุ้งตามตัว"
+  "effect": "สายรุ้งวนรอบตัว",
+  "effectKey": "rainbow_trail"
  },
  {
   "tier": "Secret",
@@ -2667,7 +2933,8 @@
   "body": "Fluffy",
   "colours": "ฟ้าใส + ม่วง",
   "special": "ผลึกยักษ์งอกทั่วตัว",
-  "effect": "แสงหักเหสีรุ้ง"
+  "effect": "ผลึกใหญ่หมุน สะท้อนแสงรุ้ง",
+  "effectKey": "prism_shards"
  },
  {
   "tier": "Secret",
@@ -2677,7 +2944,8 @@
   "body": "Slim",
   "colours": "ขาว + ทอง",
   "special": "ตัวยาวแบบมังกรจีน",
-  "effect": "เมฆทองลอย"
+  "effect": "เมฆทองหมุนรอบตัว",
+  "effectKey": "gold_clouds"
  },
  {
   "tier": "Secret",
@@ -2687,7 +2955,8 @@
   "body": "Fluffy",
   "colours": "น้ำเงินเข้ม + ดาว",
   "special": "ตัวลายจักรวาล หางวาฬ",
-  "effect": "ดาวพ่นจากหัว"
+  "effect": "ดาวพุ่งจากหัวเหมือนวาฬพ่นน้ำ",
+  "effectKey": "star_spray"
  },
  {
   "tier": "Secret",
@@ -2697,7 +2966,8 @@
   "body": "Slim",
   "colours": "ชมพู + ฟ้า",
   "special": "ขนเป็นกลุ่มหมอกอวกาศ",
-  "effect": "หมอกเรืองแสง"
+  "effect": "หมอกชมพูฟ้าเรืองแสง",
+  "effectKey": "pink_mist"
  },
  {
   "tier": "Secret",
@@ -2707,7 +2977,8 @@
   "body": "Slim",
   "colours": "ฟ้า + ขาว",
   "special": "นั่งบนดาวหาง",
-  "effect": "หางดาวหาง"
+  "effect": "หางดาวหางลากตามตัว",
+  "effectKey": "comet_tail"
  },
  {
   "tier": "Secret",
@@ -2717,7 +2988,8 @@
   "body": "Loaf",
   "colours": "ส้ม + วงแหวน",
   "special": "ตัวกลมมีวงแหวนดาวเสาร์",
-  "effect": "วงแหวนหมุน"
+  "effect": "ดวงจันทร์จิ๋ว 3 ดวงโคจร",
+  "effectKey": "moons_orbit"
  },
  {
   "tier": "Secret",
@@ -2727,7 +2999,8 @@
   "body": "Fluffy",
   "colours": "เขียว + ม่วง",
   "special": "ขนพลิ้วเป็นแสงเหนือ",
-  "effect": "ม่านแสงพลิ้ว"
+  "effect": "ม่านแสงเหนือพลิ้วเหนือหัว",
+  "effectKey": "aurora_curtain"
  },
  {
   "tier": "Secret",
@@ -2737,7 +3010,8 @@
   "body": "Fluffy",
   "colours": "ม่วงอ่อน + ขาว",
   "special": "หมวกนอนดาว เส้นไหมฝัน",
-  "effect": "ฟองฝันลอย"
+  "effect": "ฟองฝันมีดาวอยู่ข้างในลอย",
+  "effectKey": "dream_bubbles"
  },
  {
   "tier": "Secret",
@@ -2747,7 +3021,8 @@
   "body": "Slim",
   "colours": "ดำ + ฟ้านีออน",
   "special": "ประตูมิติที่เท้า",
-  "effect": "รอยแยกมิติ"
+  "effect": "ประตูมิติเปิดปิดรอบตัว",
+  "effectKey": "portals"
  },
  {
   "tier": "Secret",
@@ -2757,7 +3032,8 @@
   "body": "Loaf",
   "colours": "ขาว + ฟ้านีออน",
   "special": "ตัวเป็นวงจร จอแสดงหน้า",
-  "effect": "โค้ดลอย"
+  "effect": "ตัวเลขโค้ดเรืองแสงลอยขึ้น",
+  "effectKey": "code_rise"
  },
  {
   "tier": "Secret",
@@ -2767,7 +3043,8 @@
   "body": "Fluffy",
   "colours": "เหล็ก + ทอง",
   "special": "หุ่นยนต์ยักษ์ ปีกเจ็ต",
-  "effect": "ไอพ่น"
+  "effect": "ไฟไอพ่นพ่นจากหลัง",
+  "effectKey": "jet_flames"
  },
  {
   "tier": "Secret",
@@ -2777,7 +3054,8 @@
   "body": "Fluffy",
   "colours": "เพชรใส + ทอง",
   "special": "ตัวเพชรเจียระไน",
-  "effect": "ประกายเพชร"
+  "effect": "เพชรเล็กโปรยลงมา",
+  "effectKey": "diamond_rain"
  },
  {
   "tier": "Secret",
@@ -2787,7 +3065,8 @@
   "body": "Slim",
   "colours": "ทอง + ดำ",
   "special": "เครื่องประดับอียิปต์ทอง",
-  "effect": "ทรายทองหมุน"
+  "effect": "ทรายทองหมุนวนเป็นวง",
+  "effectKey": "golden_sand"
  },
  {
   "tier": "Secret",
@@ -2797,7 +3076,8 @@
   "body": "Fluffy",
   "colours": "น้ำเงิน + ทอง",
   "special": "วงล้อ 12 ราศีหลังตัว",
-  "effect": "สัญลักษณ์ราศีลอย"
+  "effect": "วงล้อราศีเรืองแสงหมุนหลังตัว",
+  "effectKey": "zodiac_wheel"
  },
  {
   "tier": "Secret",
@@ -2807,7 +3087,8 @@
   "body": "Fluffy",
   "colours": "แดง ฟ้า เขียว น้ำตาล",
   "special": "ลูกแก้วธาตุสี่ลูกลอยรอบ",
-  "effect": "ธาตุหมุนรอบ"
+  "effect": "ลูกแก้วสี่ธาตุโคจรรอบตัว",
+  "effectKey": "element_orbs"
  },
  {
   "tier": "Secret",
@@ -2817,7 +3098,8 @@
   "body": "Slim",
   "colours": "ทอง + แดง",
   "special": "ปีกไฟใหญ่ มงกุฎขนนก",
-  "effect": "เพลิงทอง"
+  "effect": "ออร่ารูปปีกนกไฟกางหลังตัว",
+  "effectKey": "phoenix_wings"
  },
  {
   "tier": "Secret",
@@ -2827,7 +3109,8 @@
   "body": "Fluffy",
   "colours": "ม่วง + ทอง",
   "special": "หนวดยักษ์ มงกุฎปะการัง",
-  "effect": "พายุน้ำ"
+  "effect": "หนวดน้ำวนรอบตัว",
+  "effectKey": "tentacle_swirl"
  },
  {
   "tier": "Secret",
@@ -2837,7 +3120,8 @@
   "body": "Fluffy",
   "colours": "เขียว + ทอง",
   "special": "ต้นไม้ใหญ่งอกจากหลัง",
-  "effect": "ใบไม้เรืองแสง"
+  "effect": "ใบไม้เรืองแสงร่วง",
+  "effectKey": "glow_leaves"
  },
  {
   "tier": "Secret",
@@ -2847,7 +3131,8 @@
   "body": "Fluffy",
   "colours": "ฟ้า + ขาว",
   "special": "วาฬบินได้ มีเมฆเกาะ",
-  "effect": "เมฆลอยตาม"
+  "effect": "เมฆก้อนนุ่มลอยตามตัว",
+  "effectKey": "cloud_follow"
  },
  {
   "tier": "Secret",
@@ -2857,7 +3142,8 @@
   "body": "Slim",
   "colours": "น้ำเงิน + ทอง",
   "special": "เขาสายฟ้า ปีกใหญ่",
-  "effect": "สายฟ้าฟาด"
+  "effect": "วงสายฟ้าหมุนรอบตัว",
+  "effectKey": "lightning_ring"
  },
  {
   "tier": "Secret",
@@ -2867,7 +3153,8 @@
   "body": "Slim",
   "colours": "ขาว + รุ้ง",
   "special": "สัญลักษณ์อนันต์ลอยเหนือหัว",
-  "effect": "แสงวนไม่สิ้นสุด"
+  "effect": "แสงวิ่งวนเป็นเลขแปด",
+  "effectKey": "infinity_loop"
  },
  {
   "tier": "Secret",
@@ -2877,7 +3164,8 @@
   "body": "Loaf",
   "colours": "ม่วง + เขียวนีออน",
   "special": "จอยเกม หูฟังเทพ",
-  "effect": "พิกเซลลอย"
+  "effect": "หัวใจพิกเซลและเหรียญเกมลอย",
+  "effectKey": "pixel_coins"
  },
  {
   "tier": "Secret",
@@ -2887,7 +3175,8 @@
   "body": "Fluffy",
   "colours": "ชมพู + ขาว",
   "special": "มงกุฎลูกอม คทาอมยิ้ม",
-  "effect": "ฝนลูกอม"
+  "effect": "ฝนลูกอมโปรยลงมา",
+  "effectKey": "candy_rain"
  },
  {
   "tier": "Secret",
@@ -2897,7 +3186,8 @@
   "body": "Slim",
   "colours": "ทอง + ม่วง",
   "special": "พิณทอง โน้ตเพลงรอบตัว",
-  "effect": "โน้ตเพลงลอย"
+  "effect": "โน้ตเพลงลอยวนรอบตัว",
+  "effectKey": "music_notes"
  },
  {
   "tier": "Secret",
@@ -2907,7 +3197,8 @@
   "body": "Fluffy",
   "colours": "ชมพู เขียว ส้ม ขาว",
   "special": "ขนสี่สีสี่ฤดู",
-  "effect": "ดอกไม้ ใบไม้ หิมะ วนรอบ"
+  "effect": "ดอกไม้ ใบไม้ หิมะ วนสลับฤดู",
+  "effectKey": "seasons"
  },
  {
   "tier": "Secret",
@@ -2917,7 +3208,8 @@
   "body": "Slim",
   "colours": "ชมพู + ขาว",
   "special": "กิ่งซากุระบนหัว กิโมโน",
-  "effect": "กลีบซากุระร่วง"
+  "effect": "กลีบซากุระร่วงรอบตัว",
+  "effectKey": "sakura_petals"
  },
  {
   "tier": "Secret",
@@ -2927,7 +3219,8 @@
   "body": "Fluffy",
   "colours": "ชมพู + เขียว",
   "special": "นั่งบนดอกบัวเรืองแสง",
-  "effect": "แสงบัวเปล่ง"
+  "effect": "ดอกบัวเรืองแสงลอยรอบตัว",
+  "effectKey": "lotus_glow"
  },
  {
   "tier": "Secret",
@@ -2937,7 +3230,8 @@
   "body": "Slim",
   "colours": "เงิน + น้ำเงิน",
   "special": "เกราะดาว ดาบดาวตก",
-  "effect": "ดาวตกรอบตัว"
+  "effect": "ดาวตกพุ่งรอบตัว",
+  "effectKey": "falling_stars"
  },
  {
   "tier": "Secret",
@@ -2947,7 +3241,8 @@
   "body": "Loaf",
   "colours": "ดำ + ทอง",
   "special": "วงแหวนสุริยุปราคาด้านหลัง",
-  "effect": "แสงขอบทอง"
+  "effect": "วงแหวนสุริยุปราคาเปล่งแสงหลังตัว",
+  "effectKey": "eclipse_ring"
  },
  {
   "tier": "Secret",
@@ -2957,7 +3252,8 @@
   "body": "Slim",
   "colours": "ใสสะท้อนรุ้ง",
   "special": "ตัวเป็นปริซึมแยกแสง",
-  "effect": "แสงรุ้งพาดผ่าน"
+  "effect": "ลำแสงรุ้งพาดผ่านรอบตัว",
+  "effectKey": "rainbow_beams"
  },
  {
   "tier": "Secret",
@@ -2967,7 +3263,8 @@
   "body": "Loaf",
   "colours": "ทองคำ",
   "special": "ทั้งตัวเป็นทองคำ อุ้งเท้ายักษ์",
-  "effect": "เหรียญทองโปรย"
+  "effect": "เหรียญทองโปรยลงมา",
+  "effectKey": "coin_rain"
  },
  {
   "tier": "Secret",
@@ -2977,7 +3274,8 @@
   "body": "Slim",
   "colours": "ฟ้า + ม่วง",
   "special": "ตัวแยกเป็นสองร่างซ้อน",
-  "effect": "ร่างกระพริบ"
+  "effect": "ร่างเงาซ้อนกระพริบ",
+  "effectKey": "afterimage"
  },
  {
   "tier": "Secret",
@@ -2987,7 +3285,8 @@
   "body": "Fluffy",
   "colours": "ขาว + ทุกสี",
   "special": "ถือพู่กันวาดโลก",
-  "effect": "ดาวเกิดใหม่รอบตัว"
+  "effect": "ดาวหลากสีเกิดใหม่รอบตัว",
+  "effectKey": "paint_stars"
  },
  {
   "tier": "Secret",
@@ -2997,6 +3296,7 @@
   "body": "Fluffy",
   "colours": "ม่วงมันหวาน + ทอง",
   "special": "แมวประจำเกม หมวกมันหวาน มงกุฎทอง",
-  "effect": "ออร่าทองม่วง"
+  "effect": "ออร่าทองม่วงและมันหวานจิ๋วลอยวน",
+  "effectKey": "sweetpotato_aura"
  }
 ]

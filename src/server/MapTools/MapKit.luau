@@ -937,8 +937,7 @@ function Kit.pen(parent: Instance, index: number, cf: CFrame, w: number, d: numb
 	for i = -1, 1 do
 		B(house, 0.6, (paw * CFrame.new(i * 0.75, 0.75 - math.abs(i) * 0.2, 0)).Position, C.Orange, { decor = true, shadow = false })
 	end
-	D(m, cf * CFrame.new(-6, 0.7, hd - 9), 2.4, 0.6, C.Red, { decor = true })
-	D(m, cf * CFrame.new(6, 0.6, hd - 10), 4, 0.4, C.Pink, { decor = true })
+	-- (round 2: no decorations inside the pen, only the house and the green floor)
 	-- name sign as an arch over the gate (text is added by the game: PenService)
 	local sign = M(m, "Sign")
 	local sc = cf * CFrame.new(0, 0, -hd - 0.8)
@@ -980,9 +979,6 @@ function Kit.pen(parent: Instance, index: number, cf: CFrame, w: number, d: numb
 	-- invisible helpers for the game code
 	P(m, Vector3.new(4, 1, 4), cf * CFrame.new(0, 0.9, -hd + 4), C.White, { name = "Spawn", t = 1, decor = true })
 	P(m, Vector3.new(w - 6, 1, d - 16), cf * CFrame.new(0, 0.9, -3), C.White, { name = "Area", t = 1, decor = true })
-	for _ = 1, 2 do
-		Kit.flowers(m, cf * CFrame.new(rng:NextNumber(-hw + 3, -hw + 6), 0.4, rng:NextNumber(-4, 6)), rng, 4)
-	end
 	return m
 end
 

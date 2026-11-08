@@ -328,6 +328,113 @@ SECRET = [
     ("Sweetpotato Legend", "แมวตำนานมันหวาน", "Fluffy", "ม่วงมันหวาน + ทอง", "แมวประจำเกม หมวกมันหวาน มงกุฎทอง", "ออร่าทองม่วง"),
 ]
 
+# Round 2 (developer): every Mythical and Secret cat has its own effect around the body. key = the effect in the
+# game (built from orbiting block objects and particle styles), th = what it looks like.
+EFFECTS = {
+    # Mythical
+    "Dragon Cat": ("dragon_flames", "เปลวไฟอ่อนๆ ลอยรอบตัว"),
+    "Fire Dragon Cat": ("fire_ring", "วงแหวนไฟหมุนรอบตัว"),
+    "Ice Dragon Cat": ("frost_shards", "เกล็ดน้ำแข็งหมุนรอบตัว"),
+    "Phoenix Cat": ("phoenix_feathers", "ขนนกไฟร่วงรอบตัว"),
+    "Unicorn Cat": ("rainbow_stars", "ดาวสีรุ้งวนรอบตัว"),
+    "Pegasus Cat": ("cloud_puffs", "ก้อนเมฆจิ๋วลอยรอบขา"),
+    "Griffin Cat": ("wind_feathers", "ขนนกปลิวตามลมรอบตัว"),
+    "Mermaid Cat": ("bubbles_up", "ฟองน้ำลอยขึ้นรอบตัว"),
+    "Kraken Cat": ("water_swirl", "น้ำวนหมุนรอบตัว"),
+    "Yeti Cat": ("snowfall", "หิมะตกรอบตัวตลอดเวลา"),
+    "Stone Golem Cat": ("rocks_orbit", "ก้อนหินจิ๋วลอยวนรอบตัว"),
+    "Crystal Cat": ("crystal_orbit", "ผลึกคริสตัลลอยวนรอบตัว"),
+    "Fairy Cat": ("fairy_dust", "ฝุ่นนางฟ้าวิบวับตามตัว"),
+    "Elf Cat": ("leaf_swirl", "ใบไม้เขียววนรอบตัว"),
+    "Vampire Cat": ("bats_orbit", "ค้างคาวจิ๋วบินวนรอบตัว"),
+    "Werewolf Cat": ("moon_orbit", "พระจันทร์เต็มดวงจิ๋วลอยวน"),
+    "Zombie Cat": ("green_fog", "หมอกเขียวจางๆ รอบเท้า"),
+    "Ghost Cat": ("wisps", "ดวงไฟสีฟ้าน่ารักลอยรอบตัว"),
+    "Mummy Cat": ("sand_swirl", "ทรายวนเป็นเกลียวรอบตัว"),
+    "Mech Cat": ("sparks", "ประกายไฟฟ้าจิ๋วกระเด็นจากข้อต่อ"),
+    "Cyborg Cat": ("scan_ring", "วงแสงสแกนเลื่อนขึ้นลง"),
+    "Alien Cat": ("ufo_orbit", "จานบินจิ๋วบินวนรอบตัว"),
+    "UFO Cat": ("tractor_beam", "ลำแสงดูดสีเขียวใต้จาน ของจิ๋วลอยขึ้น"),
+    "Pumpkin King Cat": ("lanterns", "โคมฟักทองจิ๋วลอยวน"),
+    "Witch Cat": ("potion_bubbles", "ฟองยาสีม่วงลอยขึ้น"),
+    "Snow Spirit Cat": ("blizzard", "พายุหิมะเล็กหมุนรอบ"),
+    "Thunderbird Cat": ("lightning", "สายฟ้าแลบเป็นช่วงๆ รอบตัว"),
+    "Kitsune Cat": ("foxfire", "ไฟจิ้งจอกสีฟ้าลอยวน"),
+    "Naga Cat": ("gold_water", "หยดน้ำประกายทองลอยวน"),
+    "Garuda Cat": ("gold_feathers", "ขนนกทองร่วงช้าๆ"),
+    "Cerberus Cat": ("embers", "ถ่านไฟแดงลอยขึ้น"),
+    "Hydra Cat": ("emerald_bubbles", "ฟองสีเขียวมรกตลอยขึ้น"),
+    "Treant Cat": ("flowers_bloom", "ดอกไม้ผลิบานรอบเท้า"),
+    "Mushroom Spirit Cat": ("spores", "สปอร์เรืองแสงลอยช้าๆ"),
+    "Lava Cat": ("lava_heat", "ลาวาหยดและไอร้อนพวย"),
+    "Cloud Dragon Cat": ("cloud_ring", "วงเมฆหมุนรอบตัว"),
+    "Sea Serpent Cat": ("waves", "คลื่นน้ำเล็กๆ ซัดรอบตัว"),
+    "Gargoyle Cat": ("stone_dust", "ฝุ่นหินร่วงช้าๆ"),
+    "Genie Cat": ("magic_smoke", "ควันวิเศษม่วงทองพวยพุ่ง"),
+    "Dark Knight Cat": ("purple_aura", "ออร่าม่วงพลิ้วรอบตัว"),
+    "Oni Cat": ("drum_waves", "วงคลื่นสีแดงกระจายจากพื้น"),
+    "Toy Soldier Cat": ("confetti", "กระดาษสีโปรยเป็นช่วงๆ"),
+    "Teddy Bear Cat": ("hearts", "หัวใจลอยขึ้น"),
+    "Slime Cat": ("slime_drops", "หยดสไลม์เด้งดึ๋งรอบตัว"),
+    "Candy Monster Cat": ("candy_orbit", "ลูกอมลอยวนรอบตัว"),
+    "Clockwork Cat": ("gears_orbit", "เฟืองหมุนวนรอบตัว"),
+    "Steam Mech Cat": ("steam_puffs", "ไอน้ำพ่นเป็นจังหวะ"),
+    "Pixel Glitch Cat": ("glitch", "สี่เหลี่ยมพิกเซลกระพริบรอบตัว"),
+    "Neon Cyber Cat": ("neon_rings", "วงแหวนนีออนหมุนรอบตัว"),
+    "Bubble Cat": ("soap_bubbles", "ฟองสบู่สีรุ้งลอยรอบตัว"),
+    # Secret
+    "Cat God": ("sparkle_aura", "แสงวิบวับระยิบรอบตัว และรัศมีทอง"),
+    "Sun God Cat": ("sun_rays", "รังสีพระอาทิตย์หมุนหลังตัว"),
+    "Moon Goddess Cat": ("moon_stars", "พระจันทร์เสี้ยวกับดาววนรอบตัว"),
+    "Star Emperor Cat": ("star_orbit", "ดาวทองดวงใหญ่หมุนรอบตัว"),
+    "Galaxy Cat": ("nebula_swirl", "หมอกกาแล็กซีหมุนรอบตัว"),
+    "Black Hole Cat": ("singularity", "วงแสงถูกดูดหมุนเข้าหาตัว"),
+    "Time Keeper Cat": ("clock_faces", "หน้าปัดนาฬิกาเรืองแสงหมุนรอบตัว"),
+    "Thunder God Cat": ("storm", "เมฆครึ้มเหนือหัวและสายฟ้าฟาด"),
+    "Ocean God Cat": ("water_orbit", "สายน้ำไหลวนรอบตัว"),
+    "Earth Titan Cat": ("floating_islands", "เกาะหินจิ๋วมีต้นไม้ลอยวน"),
+    "Fire Emperor Cat": ("fire_storm", "พายุไฟหมุนรอบตัว"),
+    "Ice Queen Cat": ("big_snowflakes", "เกล็ดหิมะดวงใหญ่หมุนช้าๆ"),
+    "Wind Spirit Cat": ("wind_trails", "เส้นลมพลิ้ววนรอบตัว"),
+    "Angel Cat": ("white_feathers", "ขนนกขาวร่วงช้าๆ"),
+    "Shadow King Cat": ("shadow_wisps", "ควันเงาสีม่วงพลิ้ว"),
+    "Rainbow Spirit Cat": ("rainbow_trail", "สายรุ้งวนรอบตัว"),
+    "Crystal Titan Cat": ("prism_shards", "ผลึกใหญ่หมุน สะท้อนแสงรุ้ง"),
+    "Celestial Dragon Cat": ("gold_clouds", "เมฆทองหมุนรอบตัว"),
+    "Cosmic Whale Cat": ("star_spray", "ดาวพุ่งจากหัวเหมือนวาฬพ่นน้ำ"),
+    "Nebula Cat": ("pink_mist", "หมอกชมพูฟ้าเรืองแสง"),
+    "Comet Rider Cat": ("comet_tail", "หางดาวหางลากตามตัว"),
+    "Planet Cat": ("moons_orbit", "ดวงจันทร์จิ๋ว 3 ดวงโคจร"),
+    "Aurora Cat": ("aurora_curtain", "ม่านแสงเหนือพลิ้วเหนือหัว"),
+    "Dream Weaver Cat": ("dream_bubbles", "ฟองฝันมีดาวอยู่ข้างในลอย"),
+    "Void Walker Cat": ("portals", "ประตูมิติเปิดปิดรอบตัว"),
+    "AI God Cat": ("code_rise", "ตัวเลขโค้ดเรืองแสงลอยขึ้น"),
+    "Mecha Titan Cat": ("jet_flames", "ไฟไอพ่นพ่นจากหลัง"),
+    "Diamond Emperor Cat": ("diamond_rain", "เพชรเล็กโปรยลงมา"),
+    "Bastet Cat": ("golden_sand", "ทรายทองหมุนวนเป็นวง"),
+    "Zodiac Cat": ("zodiac_wheel", "วงล้อราศีเรืองแสงหมุนหลังตัว"),
+    "Elemental Cat": ("element_orbs", "ลูกแก้วสี่ธาตุโคจรรอบตัว"),
+    "Phoenix Emperor Cat": ("phoenix_wings", "ออร่ารูปปีกนกไฟกางหลังตัว"),
+    "Kraken Lord Cat": ("tentacle_swirl", "หนวดน้ำวนรอบตัว"),
+    "World Tree Cat": ("glow_leaves", "ใบไม้เรืองแสงร่วง"),
+    "Sky Whale Cat": ("cloud_follow", "เมฆก้อนนุ่มลอยตามตัว"),
+    "Thunder Dragon King Cat": ("lightning_ring", "วงสายฟ้าหมุนรอบตัว"),
+    "Infinity Cat": ("infinity_loop", "แสงวิ่งวนเป็นเลขแปด"),
+    "Game God Cat": ("pixel_coins", "หัวใจพิกเซลและเหรียญเกมลอย"),
+    "Candy Queen Cat": ("candy_rain", "ฝนลูกอมโปรยลงมา"),
+    "Music Goddess Cat": ("music_notes", "โน้ตเพลงลอยวนรอบตัว"),
+    "Four Seasons Cat": ("seasons", "ดอกไม้ ใบไม้ หิมะ วนสลับฤดู"),
+    "Sakura Goddess Cat": ("sakura_petals", "กลีบซากุระร่วงรอบตัว"),
+    "Lotus Spirit Cat": ("lotus_glow", "ดอกบัวเรืองแสงลอยรอบตัว"),
+    "Starfall Knight Cat": ("falling_stars", "ดาวตกพุ่งรอบตัว"),
+    "Eclipse Cat": ("eclipse_ring", "วงแหวนสุริยุปราคาเปล่งแสงหลังตัว"),
+    "Prism Cat": ("rainbow_beams", "ลำแสงรุ้งพาดผ่านรอบตัว"),
+    "Golden Paw Cat": ("coin_rain", "เหรียญทองโปรยลงมา"),
+    "Quantum Cat": ("afterimage", "ร่างเงาซ้อนกระพริบ"),
+    "Creator Cat": ("paint_stars", "ดาวหลากสีเกิดใหม่รอบตัว"),
+    "Sweetpotato Legend": ("sweetpotato_aura", "ออร่าทองม่วงและมันหวานจิ๋วลอยวน"),
+}
+
 TIERS = [
     ("Basic", "ธรรมดา", BASIC, "แมวธรรมดา: สายพันธุ์ สีขน ลาย ทรงตัวต่างกัน ไม่ใส่ของ", 100),
     ("Rare", "หายาก", RARE, "แมวแฟชั่น: หมวก แว่น เสื้อผ้า เครื่องประดับ", 80),
@@ -343,10 +450,16 @@ def main():
         assert len(rows) == 50, (key, len(rows))
     names = [r[0] for _, _, rows, _, _ in TIERS for r in rows]
     assert len(set(names)) == len(names), "duplicate names"
+    tops = [r[0] for key, _, rows, _, _ in TIERS if key in ("Mythical", "Secret") for r in rows]
+    assert sorted(tops) == sorted(EFFECTS), set(tops) ^ set(EFFECTS)
+    keys = [v[0] for v in EFFECTS.values()]
+    assert len(set(keys)) == len(keys), "duplicate effect keys"
     data = []
     for key, th, rows, _, _ in TIERS:
         for i, r in enumerate(rows, 1):
-            data.append(dict(tier=key, n=i, en=r[0], th=r[1], body=r[2], colours=r[3], special=r[4], effect=r[5]))
+            fx = EFFECTS.get(r[0])
+            data.append(dict(tier=key, n=i, en=r[0], th=r[1], body=r[2], colours=r[3], special=r[4],
+                             effect=fx[1] if fx else r[5], effectKey=fx[0] if fx else ""))
     os.makedirs(os.path.join(ROOT, "art", "source"), exist_ok=True)
     with open(os.path.join(ROOT, "art", "source", "cat_designs.json"), "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
@@ -387,13 +500,15 @@ def main():
         ws = wb.create_sheet(f"{key} {th}")
         ws.append([f"{key} ({th}): {idea}"])
         ws["A1"].font = Font(bold=True, size=13)
-        ws.append(["#", "ชื่ออังกฤษ (ในเกม)", "ชื่อไทย", "ทรงร่าง", "สีหลัก", "จุดเด่น / ของที่ใส่", "เอฟเฟกต์", "ตรวจ"])
+        ws.append(["#", "ชื่ออังกฤษ (ในเกม)", "ชื่อไทย", "ทรงร่าง", "สีหลัก", "จุดเด่น / ของที่ใส่",
+                   "เอฟเฟกต์รอบตัว (ไม่ซ้ำกัน)" if key in ("Mythical", "Secret") else "เอฟเฟกต์", "ตรวจ"])
         for c in ws[2]:
             c.font = head_font
             c.fill = PatternFill("solid", fgColor="2A2F4F")
             c.border = border
         for i, r in enumerate(rows, 1):
-            ws.append([i, r[0], r[1], r[2], r[3], r[4], r[5], ""])
+            fx = EFFECTS.get(r[0])
+            ws.append([i, r[0], r[1], r[2], r[3], r[4], fx[1] if fx else r[5], ""])
             for c in ws[ws.max_row]:
                 c.border = border
                 c.alignment = Alignment(wrap_text=True, vertical="center")

@@ -88,7 +88,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] V2 Fishing pose matching the rod: right hand at the grip, left hand turning the reel handle on the rod
 - [~] V3 Map detail pass: survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
 - [~] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
-- [ ] V5 ★ All 400 cats in the approved style (region meshes coloured in game, same cat data), the developer imports
+- [~] V5 ★ All 400 cats as approved: block cats with LEGO studs, 50 unique designs per tier (docs/Sweetpotato_Cats.xlsx), bones + walk / idle animation, a unique effect round every Mythical / Secret cat
+  - [x] V5a design table (300) + one Blender cat per tier + bones / walk preview (art/preview/cats_v1/walk.gif)
+  - [ ] V5b-g the other 294 in Blender, one tier at a time, a sheet per tier for approval (Basic, Rare, Epic, Legendary, Mythical, Secret)
+  - [ ] V5h into the game: an exporter writes every design as block data per bone (size, offset, colour, studs, glow) to a Luau module; CatModel builds the cat from Parts on the same rig (Body, Head, Tail1/2, legs, wings) so CatAnims moves it; the studs come from one MaterialVariant (a studs normal map the developer uploads), so no extra parts; effects from a small library (orbiting block objects + particle styles) keyed by effectKey; Cats data: 400 cats (100/80/70/50/50/50), names from the table
+  - [ ] V5i Studio checks: pens with many cats on a phone, book, trade, crate opening, the Caught! card
 
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
@@ -492,3 +496,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Dragon Cat (Mythical: gold horns, back and tail spikes, belly plates, bat wings with bones, a fire puff), Cat God
   (Secret: golden, crown with gems, halo, gold armour and sash, wings, glowing eyes, floating gems, a light ring).
   Sent for approval; after "ผ่าน" the other 294.
+- 2026-11-09: tier samples approved ("ผ่าน"); the developer asked for bones, animation and a different effect round
+  every Mythical / Secret cat. Effects: 100 unique ones in the table (effectKey + Thai text, e.g. Cat God sparkles,
+  Dragon soft flames, Alien a UFO circling). Bones: `art/blender/catrig.py` sorts every block into the game's rig
+  bones (Body, Head, Tail1, Tail2, LegFL/FR/BL/BR, WingL/R, Fx) with pivots; walk cycle (legs in diagonal pairs,
+  body bob, head nod, tail sway, wing flap, effects orbit / flicker) rendered as `art/preview/cats_v1/walk.gif`.
+  Also (developer): the pens' inside decorations removed (red and pink discs, 2 flower patches each) in MapKit and
+  in the place, only the house and the green floor left.

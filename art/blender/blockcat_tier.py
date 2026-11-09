@@ -34,9 +34,12 @@ files = []
 for d in designs:
     sc = kit.new_scene()
     sc.cycles.samples = 24
-    sc.render.film_transparent = True
+    # Mythical / Secret on the game's grass and sky, so their glow reads as in the game (V5j)
+    on_grass = TIER in ("Mythical", "Secret")
+    sc.render.film_transparent = not on_grass
     sc.render.resolution_x = sc.render.resolution_y = CELL
-    bpy.data.objects.remove(bpy.data.objects["Ground"])
+    if not on_grass:
+        bpy.data.objects.remove(bpy.data.objects["Ground"])
     if d["en"] not in blockcat.DESIGNS:
         print("not built yet:", d["en"])
         continue

@@ -2,6 +2,11 @@
 STYLE[key] = one or more catparts.fx() calls (layout, kind of item, colours, count, size, glow). The Blender sheets use
 it for the preview; the game builds the same effect from the same table (V5h: orbiting items + particles).
 """
+import json
+import os
+
+import bpy
+
 from catparts import fx
 
 FIRE = [(255, 120, 40), (255, 200, 60)]
@@ -123,7 +128,29 @@ STYLE = {
 }
 
 
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "source", "cat_designs.json"), encoding="utf-8") as _f:
+    _rows = json.load(_f)
+KEY_OF = {d["en"]: d["effectKey"] for d in _rows if d["effectKey"]}
+TIER_OF = {d["effectKey"]: d["tier"] for d in _rows if d["effectKey"]}
+
+
 def effect(m, A, key):
+    """The cat's effect in its tier's approved look (V5j, fxshapes.from_style). Any older effect parts the design
+    made itself (names the rig puts on the Fx bone) are removed first."""
+    import catrig
+    import fxshapes
+    from catparts import G
+    old = catrig.rig(m, A).bones.get("Fx", [])
+    for o in old:
+        m.objects.remove(o)
+        bpy.data.objects.remove(o)
+    first = STYLE[key][0]
+    fxshapes.from_style(m, G(A), STYLE[key], TIER_OF.get(key, "Mythical"), seed=first["seed"])
+    m.fx_done = True
+
+
+def legacy_effect(m, A, key):
+    """The block effect of the first round-2 sheets (kept for comparisons)."""
     for st in STYLE[key]:
         z = st["z"]
         fx(m, A, st["layout"], st["kind"], st["cols"], n=st["n"], r=st["r"], z=z, s=st["s"], emit=st["emit"], seed=st["seed"])

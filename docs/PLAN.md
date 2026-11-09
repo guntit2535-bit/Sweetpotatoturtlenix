@@ -101,8 +101,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   - [~] V5i Studio checks: full pens (480 cats) made fast enough (anchored blocks, posing budget), carried cats animate, My Cats / book cards checked; a real phone test with `!fillpens` is the developer's
 
   - [~] V5j effects remade as smooth Blender shapes with an aura (developer 2026-11-09: "the effects look like plain
-    geometry"): `art/blender/fxshapes.py`, options A charms / B magic circle + ribbons / C flame aura on 3 cats in
-    `art/preview/cats_v1/fx_options.png`, waiting for the pick; then all 100 effects + meshes for the game
+    geometry"): `art/blender/fxshapes.py`; picked: Mythical = A (items orbit the cat, soft ground glow), Secret = B
+    (magic circle, ribbons of light shoot up from the ground and fade every 3 s). All 100 built: `tier_mythical.png`,
+    `tier_secret.png`, motion in `fx_anim.gif`, waiting for approval; then meshes for the game (developer imports)
 
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
@@ -567,3 +568,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   puffy stars + twinkles; A soft ground glow, B magic circle + two light ribbons, C ring of see-through flame tongues.
   Self-check round: crystals read as drops (made long faceted clusters), ground glow too solid (three faint discs +
   thin ring), ribbons too thick, aura looked like an egg (now flame tongues).
+- 2026-11-09 V5j picked (developer: "Mythical A, items turning round the body; Secret B, a spiral shooting up from the
+  ground and vanishing every 3 s"). cateffects.effect now builds fxshapes.from_style (smooth versions of all 31 item
+  kinds, smooth ring / wheel layouts, tier look) and removes the old block effect parts (also Dragon Cat / Cat God).
+  Mythical / Secret sheets now on the game's grass (the glow vanished on the grey sheet). Self-check: items made
+  bigger, pale effects (ice, snow, clouds) get a stronger glow colour, the Secret sheet shows the burst mid-flight in
+  each effect's colours (the full white spiral hid every cat). `fx_anim.py` -> `fx_anim.gif` (3 s loop).

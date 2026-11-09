@@ -709,4 +709,7 @@ def build(name):
     A = base(m, look)
     fn(m, A)
     m.A = A  # the attach points (the rig and the game exporter need them)
+    import cateffects  # (late: cateffects imports this module)
+    if not getattr(m, "fx_done", False) and name in cateffects.KEY_OF:
+        cateffects.effect(m, A, cateffects.KEY_OF[name])  # Dragon Cat / Cat God: their effect in the V5j look
     return m

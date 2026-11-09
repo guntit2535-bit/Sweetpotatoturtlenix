@@ -107,6 +107,186 @@ def item(m, kind, c, s, col, center, rnd, emit=3.0):
         m.ball(Vector(c), s * 0.32, hi, name="Fx_Orb", emit=emit * 1.2)
         m.ball(Vector(c), s * 0.55, col, name="Fx_OrbGlow", emit=emit * 0.6, alpha=0.25)
     else:
+        more(m, kind, c, s, col, hi, f, rnd, emit, center)
+
+
+def halo(m, c, r, col, emit, name="Fx_Glow"):
+    """A soft see-through ball round an item (only for things that glow)."""
+    if emit > 0.4:
+        m.ball(Vector(c), r, col, name=name, emit=emit * 0.5, alpha=0.18)
+
+
+def more(m, kind, c, s, col, hi, f, rnd, emit, center):
+    """The other item kinds of cateffects.STYLE, all smooth (V5j)."""
+    v = Vector(c)
+    e = emit
+    if kind == "ball":
+        m.ball(v, s * 0.4, col, name="Fx_Orb", emit=e)
+        m.ball(v + Vector((-s * 0.1, -s * 0.12, s * 0.12)), s * 0.12, lighter(col, 0.7), name="Fx_OrbShine", emit=e * 1.3)
+        halo(m, c, s * 0.62, col, e)
+    elif kind == "bubble":
+        m.ball(v, s * 0.5, lighter(col, 0.3), name="Fx_Bubble", emit=e * 0.5, alpha=0.3, rough=0.02, coat=1.0)
+        m.ball(v + Vector((-s * 0.18, -s * 0.2, s * 0.2)), s * 0.09, (255, 255, 255), name="Fx_BubbleShine", emit=2.0)
+        m.torus(s * 0.5, s * 0.02, lighter(col, 0.5), f, nu=32, nv=6, name="Fx_BubbleRim", emit=e, alpha=0.6)
+    elif kind in ("cube", "pixel"):
+        k = 0.5 if kind == "cube" else 0.35
+        m.blob((s * 0.5, s * 0.5 * (1 if kind == "cube" else 0.4), s * 0.5), col, f @ R(rnd.uniform(0, 1.5), "Z") @ R(0.6, "X"),
+               e1=k, e2=k, nu=12, nv=8, name="Fx_Chip", emit=e, smooth=True)
+        halo(m, c, s * 0.75, col, e)
+    elif kind == "spark":
+        item(m, "twinkle", c, s * 1.2, col, center, rnd, e)
+    elif kind == "heart":
+        out = []
+        for i in range(40):
+            t = i / 40 * TAU
+            x = 16 * math.sin(t) ** 3
+            y = 13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)
+            out.append((x * s * 0.034, y * s * 0.034))
+        out.reverse()
+        m.slab(out[::-1], s * 0.32, col, f, bevel=s * 0.13, name="Fx_Heart", emit=e, rough=0.2)
+        if e > 0.4:
+            m.slab([(x * 1.45, y * 1.45) for x, y in out[::-1]], s * 0.08, col, f @ T(0, 0, -s * 0.06), bevel=s * 0.03,
+                   name="Fx_HeartGlow", emit=e * 0.5, alpha=0.22)
+    elif kind == "note":
+        head = f @ T(-s * 0.15, -s * 0.3, 0)
+        m.blob((s * 0.2, s * 0.14, s * 0.1), col, head @ R(0.45, "Z"), name="Fx_Note", emit=e)
+        top = f @ Vector((s * 0.03, s * 0.42, 0))
+        m.tube([head @ Vector((s * 0.18, 0, 0)), top], s * 0.035, col, n=8, name="Fx_Note", emit=e)
+        m.leaf(top, (f.to_3x3() @ Vector((0.6, -0.8, 0))), s * 0.38, s * 0.16, col, thick=s * 0.05, bend=0.2, name="Fx_Note",
+               emit=e)
+        halo(m, c, s * 0.55, col, e)
+    elif kind == "flame":
+        item(m, "flame", c, s, col, center, rnd, e)
+    elif kind in ("leaf", "petal", "feather"):
+        L, W = {"leaf": (s * 1.0, s * 0.5), "petal": (s * 0.6, s * 0.5), "feather": (s * 1.3, s * 0.34)}[kind]
+        d = Vector((rnd.uniform(-0.4, 0.4), rnd.uniform(-0.4, 0.4), 1)).normalized()
+        base = v - d * L * 0.5
+        m.leaf(base, d, L, W, col, thick=W * 0.16, bend=0.25 if kind != "petal" else 0.4, roll=rnd.uniform(0, 3),
+               fat=0.55 if kind == "leaf" else (0.4 if kind == "petal" else 0.75), name="Fx_" + kind.title(), emit=e)
+        if kind != "petal":
+            m.tube([base, base + d * L * 0.95], W * 0.05, lighter(col, 0.4) if kind == "feather" else C((90, 150, 60)), n=6,
+                   name="Fx_" + kind.title(), emit=e * 0.5)
+        halo(m, c, L * 0.55, col, e)
+    elif kind == "gem":
+        item(m, "crystal", c, s, col, center, rnd, e)
+    elif kind == "coin":
+        fr = f @ R(math.pi / 2, "X") @ R(rnd.uniform(-0.4, 0.4), "Y")
+        r = s * 0.45
+        m.revolve([(0, -s * 0.07), (r * 0.95, -s * 0.07), (r, -s * 0.03), (r, s * 0.03), (r * 0.95, s * 0.07), (r * 0.75, s * 0.07),
+                   (r * 0.72, s * 0.04), (0, s * 0.04)], col, fr, n_a=32, name="Fx_Coin", emit=e * 0.6, rough=0.15, coat=0.8)
+        m.slab(star_outline(5, r * 0.45, r * 0.2), s * 0.03, lighter(col, 0.4), fr @ T(0, 0, s * 0.05), bevel=s * 0.01,
+               name="Fx_Coin", emit=e)
+        halo(m, c, s * 0.6, col, e)
+    elif kind == "ufo":
+        fr = Matrix.Translation(v) @ R(rnd.uniform(-0.2, 0.2), "X")
+        m.revolve([(0, -s * 0.1), (s * 0.35, -s * 0.12), (s * 0.62, -s * 0.02), (s * 0.62, s * 0.02), (s * 0.35, s * 0.08),
+                   (0, s * 0.08)], (205, 215, 230), fr, n_a=36, name="Fx_Ufo", rough=0.2, coat=0.8)
+        m.blob((s * 0.28, s * 0.28, s * 0.22), (150, 255, 190), fr @ T(0, 0, s * 0.1), name="Fx_UfoDome", emit=1.0, alpha=0.7)
+        for k in range(6):
+            a = k * TAU / 6
+            m.ball(fr @ Vector((math.cos(a) * s * 0.48, math.sin(a) * s * 0.48, 0)), s * 0.06, col, name="Fx_UfoLight", emit=3.0)
+    elif kind == "bat":
+        out = [(0, 0.18), (0.2, 0.08), (0.45, 0.22), (0.62, 0.1), (0.55, -0.05), (0.42, -0.02), (0.32, -0.14), (0.2, -0.05),
+               (0, -0.12), (-0.2, -0.05), (-0.32, -0.14), (-0.42, -0.02), (-0.55, -0.05), (-0.62, 0.1), (-0.45, 0.22), (-0.2, 0.08)]
+        out = [(x * s * 1.4, y * s * 1.4) for x, y in out]
+        m.slab(out[::-1], s * 0.08, col, f, bevel=s * 0.03, name="Fx_Bat")
+        m.ball(f @ Vector((0, 0.02, s * 0.06)), s * 0.14, col, name="Fx_Bat")
+        for x in (-1, 1):
+            m.ball(f @ Vector((x * s * 0.05, s * 0.05, s * 0.18)), s * 0.03, (255, 220, 80), name="Fx_BatEye", emit=3.0)
+    elif kind == "gear":
+        fr = f
+        m.revolve([(s * 0.16, -s * 0.08), (s * 0.4, -s * 0.08), (s * 0.4, s * 0.08), (s * 0.16, s * 0.08)], col, fr, n_a=64,
+                  rmod=lambda a: 1.0 + 0.22 * (1 if math.cos(a * 8) > 0.2 else 0), name="Fx_Gear", rough=0.25, coat=0.6,
+                  smooth=False, emit=e)
+    elif kind == "candy":
+        fr = f @ R(rnd.uniform(-0.6, 0.6), "Y")
+        m.ball(v, s * 0.28, col, name="Fx_Candy", emit=e, rough=0.1, coat=1.0)
+        m.torus(s * 0.2, s * 0.05, (255, 255, 255), fr @ R(0.6, "Y"), nu=24, nv=6, name="Fx_Candy", emit=e)
+        for x in (-1, 1):
+            m.drop(fr @ Vector((x * s * 0.62, 0, 0)), fr.to_3x3() @ Vector((-x, 0, 0)), s * 0.38, s * 0.2, lighter(col, 0.3),
+                   name="Fx_Candy", emit=e)
+    elif kind == "moon":
+        out = []
+        for i in range(25):
+            a = -2.4 + 4.8 * i / 24
+            out.append((math.cos(a) * s * 0.55, math.sin(a) * s * 0.55))
+        for i in range(25):
+            a = 2.0 - 4.0 * i / 24
+            out.append((math.cos(a) * s * 0.42 + s * 0.2, math.sin(a) * s * 0.46))
+        m.slab(out, s * 0.22, col, f @ R(0.4, "Z"), bevel=s * 0.09, name="Fx_Moon", emit=e)
+        halo(m, c, s * 0.75, col, e)
+    elif kind == "cloud":
+        for dx, dz, r in ((-0.32, -0.05, 0.3), (0.0, 0.08, 0.4), (0.33, -0.04, 0.3), (0.12, -0.15, 0.28), (-0.15, -0.15, 0.27)):
+            m.ball(f @ Vector((dx * s, dz * s, 0)), r * s, col, name="Fx_Cloud", emit=e * 0.6, rough=0.6)
+    elif kind == "rock":
+        def warp(p):
+            k = 1 + 0.18 * math.sin(p.x * 7 + 1.3) * math.cos(p.y * 6) + 0.1 * math.sin(p.z * 9)
+            return p * k
+        m.blob((s * 0.42, s * 0.36, s * 0.32), col, f @ R(rnd.uniform(0, 3), "Z"), e1=0.8, e2=0.8, nu=14, nv=10, warp=warp,
+               name="Fx_Rock", smooth=False, rough=0.8)
+        m.blob((s * 0.3, s * 0.26, s * 0.08), C((110, 190, 90)), f @ T(0, 0, s * 0.28), nu=10, nv=6, name="Fx_RockMoss")
+    elif kind == "drop":
+        m.drop(v - Vector((0, 0, s * 0.25)), (0, 0, 1), s * 0.75, s * 0.3, col, tip=1.4, name="Fx_Drop", emit=e, alpha=0.85, rough=0.05,
+               coat=1.0)
+        m.ball(v + Vector((-s * 0.08, -s * 0.12, -s * 0.05)), s * 0.06, (255, 255, 255), name="Fx_DropShine", emit=2.0)
+        halo(m, c, s * 0.5, col, e)
+    elif kind == "lantern":
+        fr = Matrix.Translation(v)
+        m.revolve([(0.0, -s * 0.35), (s * 0.2, -s * 0.33), (s * 0.34, -s * 0.15), (s * 0.36, 0), (s * 0.34, s * 0.15), (s * 0.2, s * 0.33),
+                   (0.0, s * 0.35)], col, fr, n_a=32, rmod=lambda a: 1 - 0.06 * abs(math.sin(a * 4)), name="Fx_Lantern", emit=e,
+                  alpha=0.95)
+        for z in (-1, 1):
+            m.revolve([(0, -s * 0.04), (s * 0.18, -s * 0.04), (s * 0.18, s * 0.04), (0, s * 0.04)], C((140, 40, 30)),
+                      fr @ T(0, 0, z * s * 0.36), n_a=20, name="Fx_LanternCap")
+        halo(m, c, s * 0.6, col, e)
+    elif kind == "z":
+        out = [(-0.3, 0.3), (0.3, 0.3), (0.3, 0.18), (-0.1, -0.18), (0.3, -0.18), (0.3, -0.3), (-0.3, -0.3), (-0.3, -0.18),
+               (0.1, 0.18), (-0.3, 0.18)]
+        m.slab([(x * s, y * s) for x, y in out][::-1], s * 0.16, col, f, bevel=s * 0.05, name="Fx_Zzz", emit=e)
+    elif kind == "bolt":
+        out = [(0.05, 0.55), (-0.25, 0.0), (-0.02, 0.02), (-0.12, -0.55), (0.25, 0.08), (0.02, 0.06), (0.18, 0.55)]
+        m.slab([(x * s, y * s) for x, y in out][::-1], s * 0.16, col, f, bevel=s * 0.05, name="Fx_Bolt", emit=e)
+        if e > 0.4:
+            m.slab([(x * s * 1.5, y * s * 1.3) for x, y in out][::-1], s * 0.05, col, f @ T(0, 0, -s * 0.06), bevel=s * 0.02,
+                   name="Fx_BoltGlow", emit=e * 0.5, alpha=0.25)
+    elif kind == "clock":
+        fr = f
+        m.revolve([(0, -s * 0.06), (s * 0.48, -s * 0.06), (s * 0.5, 0), (s * 0.48, s * 0.06), (0, s * 0.06)], col, fr, n_a=40,
+                  name="Fx_Clock", emit=e * 0.6)
+        m.torus(s * 0.48, s * 0.05, C((220, 170, 60)), fr, nu=40, nv=8, name="Fx_ClockRim", rough=0.2)
+        o = fr @ Vector((0, 0, s * 0.08))
+        m.tube([o, fr @ Vector((0, s * 0.3, s * 0.08))], s * 0.03, C((60, 50, 70)), n=6, name="Fx_ClockHand")
+        m.tube([o, fr @ Vector((s * 0.2, -s * 0.05, s * 0.08))], s * 0.03, C((60, 50, 70)), n=6, name="Fx_ClockHand")
+    elif kind == "portal":
+        fr = f
+        m.torus(s * 0.5, s * 0.08, col, fr, nu=48, nv=10, name="Fx_Portal", emit=e)
+        m.revolve([(0, -0.01), (s * 0.48, -0.01), (s * 0.48, 0.01), (0, 0.01)], lighter(col, 0.3), fr, n_a=40, name="Fx_PortalCore",
+                  emit=e * 0.6, alpha=0.4)
+        pts = [fr @ Vector((math.cos(t * 9) * s * 0.45 * t, math.sin(t * 9) * s * 0.45 * t, 0.02)) for t in [i / 30 for i in range(1, 31)]]
+        m.tube(pts, s * 0.025, lighter(col, 0.6), n=6, name="Fx_PortalSwirl", emit=e * 1.2)
+    elif kind == "sweetpotato":
+        def warp(p):
+            return Vector((p.x, p.y, p.z + 0.12 * s * math.sin(p.x / s * 3)))
+        fr = Matrix.Translation(v) @ R(rnd.uniform(0.3, 0.8), "Y")
+        m.blob((s * 0.55, s * 0.3, s * 0.28), C((175, 85, 170)), fr, nu=20, nv=12, warp=warp, name="Fx_Potato", emit=e * 0.3)
+        m.leaf(fr @ Vector((s * 0.5, 0, s * 0.1)), (fr.to_3x3() @ Vector((1, 0, 0.8))), s * 0.5, s * 0.25, C((110, 200, 80)),
+               name="Fx_PotatoLeaf")
+        halo(m, c, s * 0.7, col, e)
+    elif kind == "flower":
+        fr = Matrix.Translation(v)
+        for k in range(5):
+            a = k * TAU / 5
+            d = Vector((math.cos(a), math.sin(a), 0.35)).normalized()
+            m.leaf(v, d, s * 0.55, s * 0.36, col, thick=s * 0.06, bend=0.35, fat=0.4, name="Fx_Flower", emit=e)
+        m.ball(v + Vector((0, 0, s * 0.06)), s * 0.14, C((255, 225, 90)), name="Fx_FlowerCore", emit=e * 1.2)
+    elif kind == "fish":
+        fr = f @ R(math.pi / 2, "Y")
+        m.blob((s * 0.38, s * 0.12, s * 0.22), col, f, nu=18, nv=10, name="Fx_Fish", emit=e * 0.5)
+        m.leaf(f @ Vector((-s * 0.3, 0, 0)), f.to_3x3() @ Vector((-1, 0, 0)), s * 0.3, s * 0.3, col, thick=s * 0.04, fat=0.3,
+               name="Fx_Fish", emit=e * 0.5)
+    elif kind == "twinkle":
+        item(m, "twinkle", c, s, col, center, rnd, e)
+    else:
         raise ValueError(kind)
 
 
@@ -140,17 +320,23 @@ def magic_circle(m, cx, cy, r, col, emit=2.5):
               emit=emit * 0.4, alpha=0.18)
 
 
-def swirl(m, cx, cy, r, z0, z1, cols, emit=2.5, turns=1.4):
+def swirl(m, cx, cy, r, z0, z1, cols, emit=2.5, turns=1.4, tail=0.0, head=1.0, fade=1.0):
+    """Two ribbons of light spiralling up. tail..head (0..1 of the full spiral) and fade (1 = full, 0 = gone) show one
+    moment of the Secret burst (in game every 3 s: the head shoots up from the ground, the tail follows, it fades)."""
+    if head - tail < 0.02 or fade <= 0.02:
+        return
     for k, col in enumerate(cols[:2]):
         pts = []
-        n = 48
+        n = max(4, int(48 * (head - tail)))
         for i in range(n + 1):
-            t = i / n
+            t = tail + (head - tail) * i / n
             a = k * math.pi + t * turns * TAU
             rr = r * (1.0 - 0.25 * t)
             pts.append(Vector((cx + math.cos(a) * rr, cy + math.sin(a) * rr, z0 + (z1 - z0) * t)))
-        m.tube(pts, lambda t: 0.02 + 0.06 * math.sin(math.pi * t), lighter(C(col), 0.4), n=8, name="Fx_Swirl", emit=emit * 1.2)
-        m.tube(pts, lambda t: 0.05 + 0.16 * math.sin(math.pi * t), C(col), n=10, name="Fx_SwirlGlow", emit=emit * 0.5, alpha=0.2)
+        m.tube(pts, lambda t: (0.03 + 0.07 * math.sin(math.pi * t)) * (0.4 + 0.6 * fade), lighter(C(col), 0.15), n=8,
+               name="Fx_Swirl", emit=emit * 1.2, alpha=min(1.0, 0.25 + 0.75 * fade))
+        m.tube(pts, lambda t: 0.05 + 0.16 * math.sin(math.pi * t), C(col), n=10, name="Fx_SwirlGlow", emit=emit * 0.5,
+               alpha=0.2 * fade)
 
 
 def aura_shell(m, cx, cy, r, height, col, emit=1.6, rnd=None):
@@ -211,3 +397,94 @@ def effect(m, a, style, kind, cols, n=8, s=0.55, emit=3.0, seed=3):
         motes(m, cx, cy, r * 0.9, 0.3, top + 1.5, cols[-1], 12, rnd, emit)
     else:
         raise ValueError(style)
+
+
+# -- the game's effects: cateffects.STYLE specs in the approved looks ------------------------------------------
+# developer 2026-11-09: Mythical = A (items + twinkles + soft ground glow; in game the items orbit the cat),
+# Secret = B (items + twinkles + magic circle + light ribbons; in game the ribbons shoot up from the ground and fade,
+# every 3 s).
+KIND = {"star": "star", "flame": "flame", "gem": "crystal", "flake": "flake", "spark": "twinkle", "ball": "ball"}
+
+
+def ring_arcs(m, cx, cy, r, z, cols, emit):
+    """A smooth glowing ring, one arc per colour."""
+    n = len(cols)
+    for k, col in enumerate(cols):
+        a0, a1 = k * TAU / n, (k + 1) * TAU / n + 0.02
+        pts = [Vector((cx + math.cos(a0 + (a1 - a0) * i / 16) * r, cy + math.sin(a0 + (a1 - a0) * i / 16) * r, z)) for i in range(17)]
+        m.tube(pts, 0.07, lighter(C(col), 0.25), n=8, caps=False, name="Fx_Ring", emit=emit)
+        m.tube(pts, 0.2, C(col), n=8, caps=False, name="Fx_RingGlow", emit=emit * 0.5, alpha=0.18)
+
+
+def back_wheel(m, a, r, cols, n, emit):
+    """A radiant wheel behind the cat (sun, wings of light, zodiac, eclipse): rays, a ring and a soft disc."""
+    c = Vector((0, a.bback + 0.6, a.btop + 1.2))
+    fr = Matrix.Translation(c) @ R(math.pi / 2, "X")
+    cols = [C(x) for x in cols]
+    m.revolve([(0, -0.01), (r * 0.62, -0.01), (r * 0.62, 0.01), (0, 0.01)], cols[0], fr, n_a=48, name="Fx_WheelDisc",
+              emit=emit * 0.4, alpha=0.25)
+    m.torus(r * 0.62, 0.08, lighter(cols[0], 0.3), fr, nu=64, nv=8, name="Fx_Wheel", emit=emit)
+    for k in range(n):
+        ang = k * TAU / n
+        d = Vector((math.cos(ang), math.sin(ang), 0))
+        p0, p1 = fr @ (d * r * 0.7), fr @ (d * (r + (0.35 if k % 2 == 0 else 0.0)))
+        m.tube([p0, p1], lambda t: 0.16 * (1 - t) + 0.02, cols[k % len(cols)], n=8, name="Fx_WheelRay", emit=emit)
+
+
+def from_style(m, a, specs, tier, seed=3):
+    """All the effect specs of one effectKey (cateffects.STYLE[key]) in the tier's look."""
+    rnd = random.Random(seed)
+    cx, cy = 0.0, a.by - 0.3
+    top = a.top
+    center = (cx, cy)
+    base_r = max(a.bw, a.bl) / 2 + 1.5
+    first = [C(x) for x in specs[0]["cols"]]
+    # grey / dark effects (rocks, bats, gears) get the tier's colour on the ground
+    import colorsys
+    hsv = colorsys.rgb_to_hsv(*[v / 255 for v in first[0]])
+    if hsv[1] < 0.25 or hsv[2] < 0.4:
+        if hsv[2] > 0.8 and hsv[1] > 0.05:
+            # pale but tinted (ice, snow, clouds): the same hue, stronger, so the glow shows
+            r, g, b = colorsys.hsv_to_rgb(hsv[0], 0.55, 1.0)
+            first = [(int(r * 255), int(g * 255), int(b * 255))] + first[1:]
+        else:
+            first = [(255, 95, 162)] if tier == "Mythical" else [(24, 201, 185), (120, 240, 230)]
+    for st in specs:
+        cols = [C(x) for x in st["cols"]]
+        kind = KIND.get(st["kind"], st["kind"])
+        n, sz, e, z = st["n"], max(0.32, st["s"] * 1.6), max(st["emit"], 0.0), st["z"]
+        r = st["r"] or base_r
+        lay = st["layout"]
+        if lay in ("orbit", "rise", "ground", "above"):
+            for k in range(n):
+                ang = k * TAU / n + 0.3 + rnd.uniform(-0.08, 0.08)
+                if lay == "orbit":
+                    z0, z1 = (z[0], z[1]) if len(z) > 1 else (z[0], z[0])
+                    zz = z0 + (z1 - z0) * (0.5 + 0.45 * math.sin(k * TAU / n * 2 + 0.6))
+                    p = (cx + math.cos(ang) * r, cy + math.sin(ang) * r, zz)
+                elif lay == "rise":
+                    z0, z1 = z[0], z[-1]
+                    p = (cx + math.cos(ang * 1.5) * r * 0.9, cy + math.sin(ang * 1.5) * r * 0.9, z0 + (z1 - z0) * k / max(1, n - 1))
+                elif lay == "ground":
+                    p = (cx + math.cos(ang) * r, cy + math.sin(ang) * r, sz * 0.5 + 0.1)
+                else:
+                    p = (rnd.uniform(-1.6, 1.6), a.hy + rnd.uniform(-1.0, 1.4), top + 1.0 + rnd.uniform(0, 1.4))
+                item(m, kind, p, sz * (1.0 if k % 2 == 0 else 0.85), cols[k % len(cols)], center, rnd, e)
+        elif lay == "ring":
+            ring_arcs(m, cx, cy, r, z[0], cols, max(e, 1.5))
+        elif lay == "back":
+            back_wheel(m, a, r, cols, n, max(e, 1.5))
+        else:
+            raise ValueError(lay)
+    # twinkles round every effect
+    for k in range(4 if tier == "Mythical" else 6):
+        ang = rnd.uniform(0, TAU)
+        rr = base_r * rnd.uniform(0.8, 1.15)
+        item(m, "twinkle", (cx + math.cos(ang) * rr, cy + math.sin(ang) * rr, rnd.uniform(0.8, top + 0.8)), rnd.uniform(0.35, 0.5),
+             first[0], center, rnd, 3.0)
+    if tier == "Mythical":
+        ground_glow(m, cx, cy, base_r * 0.95, first[0], 2.5)
+    else:
+        magic_circle(m, cx, cy, base_r * 1.05, first[0], 2.5)
+        # the sheets show one moment of the burst (mid-flight); the game plays it every 3 s
+        swirl(m, cx, cy, base_r, 0.2, top + 1.0, first if len(first) > 1 else first * 2, 2.5, tail=0.3, head=0.8)

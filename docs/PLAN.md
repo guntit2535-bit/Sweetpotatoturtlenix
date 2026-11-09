@@ -100,6 +100,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   - [x] V5h into the game (approved 2026-11-09): `art/blender/cats_export.py` writes every design as blocks per bone to `src/shared/CatShapeData/<Tier>` (+ `CatDesigns` names); `shared/CatShapes` decodes them; CatModel builds one Part per block on the same rig (Body, Head, Tail1/2, legs, wings, + Fx that spins round Mythical / Secret cats) so CatAnims moves it; studs = Roblox's Studs surface on Plastic (no extra parts, no upload; a finer MaterialVariant option is ready: `art/export/CatStuds_Normal.png`); Mythical / Secret sparkles + light in their effect's colours; Cats data: 400 cats (100/80/70/50/50/50) = 300 designs + 100 colour variants (Basic 50, Rare 30, Epic 20)
   - [~] V5i Studio checks: full pens (480 cats) made fast enough (anchored blocks, posing budget), carried cats animate, My Cats / book cards checked; a real phone test with `!fillpens` is the developer's
 
+  - [~] V5j effects remade as smooth Blender shapes with an aura (developer 2026-11-09: "the effects look like plain
+    geometry"): `art/blender/fxshapes.py`, options A charms / B magic circle + ribbons / C flame aura on 3 cats in
+    `art/preview/cats_v1/fx_options.png`, waiting for the pick; then all 100 effects + meshes for the game
+
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
   animations now go through Blender with the developer's check before Studio (point 8), item models are
@@ -559,3 +563,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   "CatAnimMs" / "PenCatsMs" player attributes (time per frame), `!fillpens N` / `!clearpens` (test cats, not
   saved), and scripts/check.luau fails a module with no top-level return. Checked in Play: pen cats walk / rest,
   carried cat animates over the head, My Cats cards and the book (100/80/70/50/50/50) show the new cats.
+- 2026-11-09 V5j: effect style options rendered (fxshapes.py, fx_options.py): smooth flames / faceted crystal clusters /
+  puffy stars + twinkles; A soft ground glow, B magic circle + two light ribbons, C ring of see-through flame tongues.
+  Self-check round: crystals read as drops (made long faceted clusters), ground glow too solid (three faint discs +
+  thin ring), ribbons too thick, aura looked like an egg (now flame tongues).

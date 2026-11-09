@@ -274,6 +274,15 @@ Config.CatAnim = {
 	RescanSeconds = 1, -- a cat whose bones have not all streamed in yet is looked up again this often
 	FxSpin = 0.9, -- radians a second the things round a Mythical / Secret cat turn
 }
+-- V5j Secret burst (CatFxController): two ribbons of light spiral up round each Secret cat near the camera.
+Config.CatFx = {
+	BurstEvery = 3, -- seconds (developer 2026-11-09)
+	FlySeconds = 0.9, -- from the ground to the top
+	TrailSeconds = 0.45, -- how long a ribbon stays behind its head
+	Turns = 1.4, -- turns round the cat on the way up
+	Width = 0.35, -- studs at size 1
+	Range = 120, -- studs (x the cat's size)
+}
 -- V5h block cats (shared/CatModel, shared/CatShapes): Blender units x BaseScale = studs at size 1.
 Config.Cats = {
 	BaseScale = 1,

@@ -4,6 +4,7 @@
 local Shared = require("./lib/Shared")
 local CatShapes = Shared.require("CatShapes")
 local CatDesigns = Shared.require("CatDesigns")
+local FxMeshData = Shared.require("FxMeshData")
 
 local failures = 0
 local function check(ok: boolean, message: string)
@@ -36,6 +37,19 @@ for _, tier in CatShapes.Tiers do
 		-- Mythical / Secret cats carry their effect on the Fx bone
 		if tier == "Mythical" or tier == "Secret" then
 			check(shape.bones.Fx ~= nil, `{name} has an effect`)
+			-- V5j: the effect as pieces of the mesh library; Secret cats burst, Mythical ones glow on the ground
+			check(#shape.fx >= 5, `{name}: effect pieces`)
+			local whats = {}
+			for _, piece in shape.fx do
+				whats[piece.what] = true
+				if piece.what == "I" then
+					check(FxMeshData.Kinds[piece.kind] ~= nil, `{name}: library has {piece.kind}`)
+					check(piece.s > 0 and #piece.colors == 1, `{name}: item size / colour`)
+				end
+			end
+			check(if tier == "Secret" then whats.B == true and whats.M == true else whats.G == true, `{name}: tier look`)
+		else
+			check(#shape.fx == 0, `{name}: no V5j effect below Mythical`)
 		end
 		total += #shape.parts
 		most = math.max(most, #shape.parts)

@@ -145,7 +145,11 @@ def effect(m, A, key):
         m.objects.remove(o)
         bpy.data.objects.remove(o)
     first = STYLE[key][0]
+    before = set(m.objects)
     fxshapes.from_style(m, G(A), STYLE[key], TIER_OF.get(key, "Mythical"), seed=first["seed"])
+    for o in m.objects:
+        if o not in before:
+            o["fxnew"] = 1  # rebuilt in the game from the mesh library (cats_export.py skips these)
     m.fx_done = True
 
 

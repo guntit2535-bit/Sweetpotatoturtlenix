@@ -21,6 +21,7 @@ local CollectionService = game:GetService("CollectionService")
 
 local CatShapes = require(script.Parent.CatShapes)
 local Config = require(script.Parent.Config)
+local FxMeshes = require(script.Parent.FxMeshes)
 
 export type Look = {
 	design: string,
@@ -31,7 +32,8 @@ export type Look = {
 local CatModel = {}
 
 CatModel.Tag = "Cat" -- CollectionService tag on every cat model (the client animates tagged cats)
-CatModel.Bones = CatShapes.Bones
+CatModel.Bones = table.clone(CatShapes.Bones)
+table.insert(CatModel.Bones, "FxStill") -- V5j: the effect's pieces on the ground (they do not spin)
 CatModel.BaseScale = Config.Cats.BaseScale
 
 local PARENT: { [string]: string } = { -- each bone hangs from this one
@@ -46,6 +48,7 @@ local PARENT: { [string]: string } = { -- each bone hangs from this one
 	WingL = "Body",
 	WingR = "Body",
 	Fx = "Root",
+	FxStill = "Root",
 }
 
 CatModel.Parent = PARENT
@@ -172,6 +175,118 @@ local function makePart(parent: Instance, spec: CatShapes.PartSpec, color: Color
 	return made
 end
 
+-- V5j effect pieces ------------------------------------------------------------------------------------------
+local function fxSetup(p: BasePart, parent: Instance, color: Color3, neon: boolean, transparency: number)
+	p.Color = color
+	p.Material = if neon then Enum.Material.Neon else Enum.Material.SmoothPlastic
+	p.Transparency = transparency
+	p.Anchored = true
+	p.CanCollide = false
+	p.CanQuery = false
+	p.CanTouch = false
+	p.Massless = true
+	p.CastShadow = false
+	p.Name = "Fx"
+	p.Parent = parent
+end
+
+-- every layer of a library kind at cf, scaled (x, y, z); glow layers only when the piece glows
+local function fxLayers(parent: Instance, kind: string, cf: CFrame, scale: Vector3, color: Color3, emit: number): number
+	local made = 0
+	for _, layer in FxMeshes.layers(kind) or {} do
+		if layer.transparency > 0 and emit < 0.4 then
+			continue
+		end
+		local p = FxMeshes.part(layer)
+		if p then
+			p.Size = layer.size * scale
+			p.CFrame = cf * CFrame.new(FxMeshes.offset(layer, scale))
+			fxSetup(p, parent, FxMeshes.tint(layer, color), layer.glows and emit >= 1, layer.transparency)
+			made += 1
+		end
+	end
+	return made
+end
+
+local function disc(parent: Instance, cf: CFrame, radius: number, color: Color3, transparency: number)
+	local p = Instance.new("Part")
+	p.Shape = Enum.PartType.Cylinder
+	p.Size = Vector3.new(0.02, radius * 2, radius * 2)
+	p.CFrame = cf
+	fxSetup(p, parent, color, true, transparency)
+end
+
+local UP = CFrame.Angles(0, 0, math.pi / 2) -- a cylinder's axis (X) turned to point up
+
+local function light(c: Color3, k: number): Color3
+	return c:Lerp(WHITE, k)
+end
+
+-- Builds the pieces; returns the Secret burst ("x,y,z,r,top,hex,hex": from the model's pivot, at size 1) when there is one.
+local function buildFx(pieces: { CatShapes.FxPiece }, spin: Model, still: Model, origin: Vector3): string?
+	local burst: string? = nil
+	local R = FxMeshes.BuiltRadius
+	for _, piece in pieces do
+		local col = piece.colors[1] or WHITE
+		local at = piece.at
+		if piece.what == "I" then
+			local out = if piece.out.Magnitude > 1e-3 then piece.out.Unit else Vector3.new(0, 0, -1)
+			local cf = CFrame.lookAt(at, at + out)
+			if fxLayers(spin, piece.kind, cf, Vector3.one * piece.s, col, piece.emit) == 0 then
+				-- no meshes imported yet: a small glowing ball in its place
+				local p = Instance.new("Part")
+				p.Shape = Enum.PartType.Ball
+				p.Size = Vector3.one * math.max(0.2, piece.s * 0.55)
+				p.CFrame = cf
+				fxSetup(p, spin, col, piece.emit >= 1, 0)
+			end
+		elseif piece.what == "G" then
+			for k, d in { { 0.55, 0.84 }, { 0.8, 0.9 }, { 1, 0.93 } } do
+				disc(still, CFrame.new(at + Vector3.new(0, 0.04 + k * 0.004, 0)) * UP, piece.r * d[1], light(col, 0.35), d[2])
+			end
+			local k = piece.r / R.GlowRing
+			fxLayers(still, "GlowRing", CFrame.new(at + Vector3.new(0, 0.05, 0)), Vector3.new(k, 1, k), light(col, 0.5), 3)
+		elseif piece.what == "M" then
+			disc(still, CFrame.new(at + Vector3.new(0, 0.04, 0)) * UP, piece.r, col, 0.82)
+			local k = piece.r / R.MagicCircle
+			fxLayers(still, "MagicCircle", CFrame.new(at + Vector3.new(0, 0.05, 0)), Vector3.new(k, 1, k), col, 3)
+		elseif piece.what == "R" then
+			local k = piece.r / R.RingSeg
+			local n = #piece.colors
+			for i = 0, 11 do
+				local c = piece.colors[math.floor(i * n / 12) + 1] or col
+				fxLayers(spin, "RingSeg", CFrame.new(at) * CFrame.Angles(0, i * math.pi / 6, 0), Vector3.new(k, 1, k), light(c, 0.25), 3)
+			end
+		elseif piece.what == "W" then
+			local face = CFrame.new(at) -- the wheel stands in the X / Y plane behind the cat
+			disc(still, face * CFrame.Angles(0, math.pi / 2, 0), piece.r * 0.62, col, 0.75)
+			local k = piece.r * 0.62 / R.GlowRing
+			fxLayers(still, "GlowRing", face * CFrame.Angles(math.pi / 2, 0, 0), Vector3.new(k, 1, k), light(col, 0.3), 3)
+			local ray = (FxMeshes.layers("WheelRay") or {})[1]
+			-- the import turn puts the ray's thick end on +X: turn it inward
+			local turn = if (Config.ItemModels :: any).Flip then CFrame.Angles(0, 0, math.pi) else CFrame.identity
+			for i = 0, piece.n - 1 do
+				local len = piece.r * 0.3 + (if i % 2 == 0 then 0.35 else 0)
+				local c = piece.colors[i % math.max(1, #piece.colors) + 1] or col
+				local p = if ray then FxMeshes.part(ray) else nil
+				if ray and p then
+					p.Size = Vector3.new(len, ray.size.Y, ray.size.Z)
+					p.CFrame = face * CFrame.Angles(0, 0, i * 2 * math.pi / piece.n) * CFrame.new(piece.r * 0.7 + len / 2, 0, 0) * turn
+					fxSetup(p, still, c, true, 0)
+				end
+			end
+		elseif piece.what == "B" then
+			local hexes = {}
+			for _, c in piece.colors do
+				table.insert(hexes, c:ToHex())
+			end
+			local rel = at - origin
+			burst = string.format("%.2f,%.2f,%.2f,%.2f,%.2f,%s", rel.X, rel.Y, rel.Z, piece.r, piece.top - origin.Y, table.concat(hexes, ","))
+		end
+	end
+	return burst
+end
+
 -- The world box of a part spec (for the Root's size).
 local function extent(spec: CatShapes.PartSpec): (Vector3, Vector3)
 	local cf, h = spec.cf, spec.size / 2
@@ -229,18 +344,19 @@ function CatModel.build(look: Look, at: CFrame, size: number?): Model
 
 	-- bones: a sub-model with a Joint at the pivot
 	local bones: { [string]: Model } = {}
-	local joints: { [string]: BasePart } = { Root = root }
+	local function addBone(name: string, at0: Vector3)
+		local b = Instance.new("Model")
+		b.Name = name
+		b.Parent = m
+		bones[name] = b
+		local j = newPart(b, Vector3.new(0.2, 0.2, 0.2), CFrame.new(at0), WHITE, "Joint")
+		j.Transparency = 1
+		j.CastShadow = false
+	end
 	for _, name in CatModel.Bones do
 		local at0 = shape.bones[name]
 		if at0 then
-			local b = Instance.new("Model")
-			b.Name = name
-			b.Parent = m
-			bones[name] = b
-			local j = newPart(b, Vector3.new(0.2, 0.2, 0.2), CFrame.new(at0), WHITE, "Joint")
-			j.Transparency = 1
-			j.CastShadow = false
-			joints[name] = j
+			addBone(name, at0)
 		end
 	end
 
@@ -256,6 +372,24 @@ function CatModel.build(look: Look, at: CFrame, size: number?): Model
 		end
 		if spec.bone == "Fx" and spec.neon and #fxColors < 3 and not table.find(fxColors, colors[spec.color]) then
 			table.insert(fxColors, colors[spec.color])
+		end
+	end
+
+	-- V5j: the effect round a Mythical / Secret cat, from the mesh library (Fx spins, FxStill stays on the ground)
+	if #shape.fx > 0 then
+		local pivot = shape.bones.Fx or shape.pivot
+		if not bones.Fx then
+			addBone("Fx", pivot)
+		end
+		addBone("FxStill", pivot)
+		local burst = buildFx(shape.fx, bones.Fx, bones.FxStill, shape.pivot)
+		if burst then
+			m:SetAttribute("Burst", burst)
+		end
+		for _, piece in shape.fx do
+			if piece.what == "I" and piece.colors[1] and #fxColors < 2 and not table.find(fxColors, piece.colors[1]) then
+				table.insert(fxColors, piece.colors[1])
+			end
 		end
 	end
 

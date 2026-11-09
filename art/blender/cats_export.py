@@ -150,6 +150,8 @@ def export(d):
     for bone_b, objs in rig.bones.items():
         bone = SWAP.get(bone_b, bone_b)
         for obj in objs:
+            if obj.get("fxnew"):
+                continue  # the V5j effect: written as placements (fx_lines), built from the mesh library in the game
             got = part_of(obj)
             if not got:
                 continue
@@ -179,7 +181,40 @@ def export(d):
     # the model's pivot: feet, under the middle of the body
     foot = rb(Vector((0, A["by"], 0)))
     return {"name": name, "pivot": f"{q(foot.x)},{q(foot.y)},{q(foot.z)}", "bones": " ".join(pivots),
-            "palette": " ".join(palette), "parts": "\n".join(lines), "count": len(lines)}
+            "palette": " ".join(palette), "parts": "\n".join(lines), "count": len(lines), "fx": fx_lines(m)}
+
+
+def hexs(cols):
+    return ",".join("%02x%02x%02x" % tuple(int(v) for v in c) for c in cols)
+
+
+def fx_lines(m):
+    """The V5j effect as placements (Roblox axes, numbers x100):
+      I kind x y z s hex emit ox oz   an item from the mesh library, its front turned toward (ox, oz)
+      G x y z r hex                   soft ground glow + ring      M x y z r hex       magic circle
+      R x y z r hex,hex,..            ring of arcs round the cat   W x y z r n hex,..  radiant wheel behind
+      B x y z r top hex,hex           Secret burst: two ribbons of light from y up to top"""
+    out = []
+    for e in getattr(m, "fx_log", []):
+        at = rb(Vector(e["at"]))
+        xyz = f"{q(at.x)} {q(at.y)} {q(at.z)}"
+        w = e["what"]
+        if w == "item":
+            c = rb(Vector((e["center"][0], e["center"][1], e["at"][2])))
+            d = Vector((at.x - c.x, 0, at.z - c.z))
+            d = d.normalized() if d.length > 1e-4 else Vector((0, 0, -1))
+            out.append(f"I {e['kind']} {xyz} {q(e['s'])} {hexs([e['col']])} {q(e['emit'])} {q(d.x)} {q(d.z)}")
+        elif w == "ground":
+            out.append(f"G {xyz} {q(e['r'])} {hexs(e['cols'])}")
+        elif w == "circle":
+            out.append(f"M {xyz} {q(e['r'])} {hexs(e['cols'])}")
+        elif w == "ring":
+            out.append(f"R {xyz} {q(e['r'])} {hexs(e['cols'])}")
+        elif w == "wheel":
+            out.append(f"W {xyz} {q(e['r'])} {e['n']} {hexs(e['cols'])}")
+        elif w == "burst":
+            out.append(f"B {xyz} {q(e['r'])} {q(e['top'])} {hexs(e['cols'])}")
+    return "\n".join(out)
 
 
 def luau_string(s):
@@ -209,6 +244,8 @@ for tier in ("Basic", "Rare", "Epic", "Legendary", "Mythical", "Secret"):
         out.append(f"\t\tbones = \"{e['bones']}\",")
         out.append(f"\t\tpalette = \"{e['palette']}\",")
         out.append(f"\t\tparts = {luau_string(e['parts'])},")
+        if e["fx"]:
+            out.append(f"\t\tfx = {luau_string(e['fx'])},")
         out.append("\t},")
         print("exported", tier, d["n"], d["en"], e["count"])
     out.append("}")

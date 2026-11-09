@@ -27,6 +27,22 @@ export type PartSpec = {
 
 export type PaletteEntry = { color: Color3, role: string } -- role "f" fur, "p" pattern, "-" other
 
+-- V5j effect pieces (Mythical / Secret), built by CatModel from the mesh library (shared/FxMeshData):
+--   I an item (kind, at, s, colors[1], emit, out = the way its front faces), G ground glow, M magic circle,
+--   R ring of arcs (colors), W radiant wheel behind (n rays), B Secret burst (r, top, colors)
+export type FxPiece = {
+	what: string,
+	kind: string,
+	at: Vector3,
+	s: number,
+	r: number,
+	top: number,
+	n: number,
+	emit: number,
+	out: Vector3,
+	colors: { Color3 },
+}
+
 export type Shape = {
 	name: string,
 	tier: string,
@@ -34,9 +50,10 @@ export type Shape = {
 	bones: { [string]: Vector3 }, -- bone -> joint position
 	palette: { PaletteEntry },
 	parts: { PartSpec },
+	fx: { FxPiece },
 }
 
-type Raw = { name: string, pivot: string, bones: string, palette: string, parts: string }
+type Raw = { name: string, pivot: string, bones: string, palette: string, parts: string, fx: string? }
 
 local CatShapes = {}
 
@@ -94,7 +111,55 @@ local function decode(raw: Raw, tier: string): Shape
 			r2 = if r2 then (tonumber(r2) :: number) / 100 else 0,
 		})
 	end
-	return { name = raw.name, tier = tier, pivot = vec(raw.pivot), bones = bones, palette = palette, parts = parts }
+	local fx = {}
+	for line in string.gmatch(raw.fx or "", "[^\n]+") do
+		local f = string.split(line, " ")
+		local what = f[1]
+		local function num(i: number): number
+			return (tonumber(f[i]) or 0) / 100
+		end
+		local function colors(text: string?): { Color3 }
+			local out = {}
+			for hex in string.gmatch(text or "", "%x%x%x%x%x%x") do
+				table.insert(out, Color3.fromHex(hex))
+			end
+			return out
+		end
+		local piece: FxPiece = {
+			what = what,
+			kind = "",
+			at = Vector3.zero,
+			s = 1,
+			r = 0,
+			top = 0,
+			n = 0,
+			emit = 0,
+			out = Vector3.new(0, 0, -1),
+			colors = {},
+		}
+		if what == "I" then
+			piece.kind = f[2]
+			piece.at = Vector3.new(num(3), num(4), num(5))
+			piece.s = num(6)
+			piece.colors = colors(f[7])
+			piece.emit = num(8)
+			piece.out = Vector3.new(num(9), 0, num(10))
+		else
+			piece.at = Vector3.new(num(2), num(3), num(4))
+			piece.r = num(5)
+			if what == "W" then
+				piece.n = tonumber(f[6]) or 12
+				piece.colors = colors(f[7])
+			elseif what == "B" then
+				piece.top = num(6)
+				piece.colors = colors(f[7])
+			else
+				piece.colors = colors(f[6])
+			end
+		end
+		table.insert(fx, piece)
+	end
+	return { name = raw.name, tier = tier, pivot = vec(raw.pivot), bones = bones, palette = palette, parts = parts, fx = fx }
 end
 
 -- The tier key of a design ("Basic" .. "Secret"), nil when unknown.

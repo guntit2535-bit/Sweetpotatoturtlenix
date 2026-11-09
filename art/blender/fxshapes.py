@@ -431,6 +431,14 @@ def back_wheel(m, a, r, cols, n, emit):
         m.tube([p0, p1], lambda t: 0.16 * (1 - t) + 0.02, cols[k % len(cols)], n=8, name="Fx_WheelRay", emit=emit)
 
 
+def log(m, what, **data):
+    """What the game needs to rebuild the effect from the mesh library (cats_export.py writes it per cat)."""
+    if not hasattr(m, "fx_log"):
+        m.fx_log = []
+    data["what"] = what
+    m.fx_log.append(data)
+
+
 def from_style(m, a, specs, tier, seed=3):
     """All the effect specs of one effectKey (cateffects.STYLE[key]) in the tier's look."""
     rnd = random.Random(seed)
@@ -469,10 +477,14 @@ def from_style(m, a, specs, tier, seed=3):
                     p = (cx + math.cos(ang) * r, cy + math.sin(ang) * r, sz * 0.5 + 0.1)
                 else:
                     p = (rnd.uniform(-1.6, 1.6), a.hy + rnd.uniform(-1.0, 1.4), top + 1.0 + rnd.uniform(0, 1.4))
-                item(m, kind, p, sz * (1.0 if k % 2 == 0 else 0.85), cols[k % len(cols)], center, rnd, e)
+                size = sz * (1.0 if k % 2 == 0 else 0.85)
+                log(m, "item", kind=kind, at=p, s=size, col=cols[k % len(cols)], center=center, emit=e)
+                item(m, kind, p, size, cols[k % len(cols)], center, rnd, e)
         elif lay == "ring":
+            log(m, "ring", at=(cx, cy, z[0]), r=r, cols=cols)
             ring_arcs(m, cx, cy, r, z[0], cols, max(e, 1.5))
         elif lay == "back":
+            log(m, "wheel", at=(0, a.bback + 0.6, a.btop + 1.2), r=r, n=n, cols=cols)
             back_wheel(m, a, r, cols, n, max(e, 1.5))
         else:
             raise ValueError(lay)
@@ -480,11 +492,16 @@ def from_style(m, a, specs, tier, seed=3):
     for k in range(4 if tier == "Mythical" else 6):
         ang = rnd.uniform(0, TAU)
         rr = base_r * rnd.uniform(0.8, 1.15)
-        item(m, "twinkle", (cx + math.cos(ang) * rr, cy + math.sin(ang) * rr, rnd.uniform(0.8, top + 0.8)), rnd.uniform(0.35, 0.5),
-             first[0], center, rnd, 3.0)
+        p, size = (cx + math.cos(ang) * rr, cy + math.sin(ang) * rr, rnd.uniform(0.8, top + 0.8)), rnd.uniform(0.35, 0.5)
+        log(m, "item", kind="twinkle", at=p, s=size, col=first[0], center=center, emit=3.0)
+        item(m, "twinkle", p, size, first[0], center, rnd, 3.0)
     if tier == "Mythical":
+        log(m, "ground", at=(cx, cy, 0), r=base_r * 0.95, cols=[first[0]])
         ground_glow(m, cx, cy, base_r * 0.95, first[0], 2.5)
     else:
+        log(m, "circle", at=(cx, cy, 0), r=base_r * 1.05, cols=[first[0]])
         magic_circle(m, cx, cy, base_r * 1.05, first[0], 2.5)
         # the sheets show one moment of the burst (mid-flight); the game plays it every 3 s
-        swirl(m, cx, cy, base_r, 0.2, top + 1.0, first if len(first) > 1 else first * 2, 2.5, tail=0.3, head=0.8)
+        ribbon = first if len(first) > 1 else first * 2
+        log(m, "burst", at=(cx, cy, 0.2), r=base_r, top=top + 1.0, cols=ribbon[:2])
+        swirl(m, cx, cy, base_r, 0.2, top + 1.0, ribbon, 2.5, tail=0.3, head=0.8)

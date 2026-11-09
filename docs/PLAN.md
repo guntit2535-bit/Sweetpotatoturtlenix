@@ -103,7 +103,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   - [~] V5j effects remade as smooth Blender shapes with an aura (developer 2026-11-09: "the effects look like plain
     geometry"): `art/blender/fxshapes.py`; picked: Mythical = A (items orbit the cat, soft ground glow), Secret = B
     (magic circle, ribbons of light shoot up from the ground and fade every 3 s). All 100 built: `tier_mythical.png`,
-    `tier_secret.png`, motion in `fx_anim.gif`, waiting for approval; then meshes for the game (developer imports)
+    `tier_secret.png`, motion in `fx_anim.gif`, approved 2026-11-09. In the game: mesh library `art/export/Effects.fbx`
+    (78 meshes, developer imports into ReplicatedStorage.FxMeshes), pieces per cat in CatShapeData `fx`, CatModel builds
+    them (Fx spins, FxStill on the ground), CatFxController plays the Secret burst with Trails; meshes not imported yet
 
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
@@ -574,3 +576,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Mythical / Secret sheets now on the game's grass (the glow vanished on the grey sheet). Self-check: items made
   bigger, pale effects (ice, snow, clouds) get a stronger glow colour, the Secret sheet shows the burst mid-flight in
   each effect's colours (the full white spiral hid every cat). `fx_anim.py` -> `fx_anim.gif` (3 s loop).
+- 2026-11-09 V5j approved ("ผ่าน นำเข้าเกม"). Game import: `fx_export.py` builds each item kind once in red and splits it
+  into layers by colour role (main / light:k / fixed / see-through glow) -> `art/export/Effects.fbx` + `FxMeshData.luau`
+  (78 meshes, 63k triangles, 33 kinds + GlowRing / MagicCircle / RingSeg / WheelRay). fxshapes logs every placement;
+  cats_export writes them as `fx` lines per cat (and skips the effect objects). CatModel builds the pieces from
+  ReplicatedStorage.FxMeshes (small glowing balls until the import), ground glows / discs are plain cylinders, the
+  Secret burst is two Trails behind invisible movers (no assets) every Config.CatFx.BurstEvery = 3 s. Studio (Play):
+  4 test cats built (13-19 effect parts each), the burst ribbons fly and fade, no errors. The mesh path waits for the
+  developer's import (then check the import turn / sizes in Studio).

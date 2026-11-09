@@ -90,14 +90,14 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 - [~] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
 - [~] V5 ★ All 400 cats as approved: block cats with LEGO studs, 50 unique designs per tier (docs/Sweetpotato_Cats.xlsx), bones + walk / idle animation, a unique effect round every Mythical / Secret cat
   - [x] V5a design table (300) + one Blender cat per tier + bones / walk preview (art/preview/cats_v1/walk.gif)
-  - [ ] V5b-g the other 294 in Blender, one tier at a time, a sheet per tier for approval (Basic, Rare, Epic, Legendary, Mythical, Secret)
+  - [x] V5b-g the other 294 in Blender, one tier at a time, a sheet per tier for approval (Basic, Rare, Epic, Legendary, Mythical, Secret)
     - [x] V5b Basic: all 50 built (`art/preview/cats_v1/tier_basic.png`), approved 2026-11-09
-    - [~] V5c Rare: all 50 (`tier_rare.png`), self-checked (developer: "build every tier, check them yourself"), for the morning check
-    - [~] V5d Epic: all 50 costumes (`tier_epic.png`), self-checked, for the morning check
-    - [~] V5e Legendary: all 50 food / animal cats (`tier_legendary.png`), self-checked, for the morning check
-    - [~] V5f Mythical: all 50 creatures with their effects (`tier_mythical.png`), self-checked, for the morning check
-    - [~] V5g Secret: all 50 gods / cosmic cats with their effects (`tier_secret.png`), self-checked, for the morning check
-  - [ ] V5h into the game: an exporter writes every design as block data per bone (size, offset, colour, studs, glow) to a Luau module; CatModel builds the cat from Parts on the same rig (Body, Head, Tail1/2, legs, wings) so CatAnims moves it; the studs come from one MaterialVariant (a studs normal map the developer uploads), so no extra parts; effects from a small library (orbiting block objects + particle styles) keyed by effectKey; Cats data: 400 cats (100/80/70/50/50/50), names from the table
+    - [x] V5c Rare: all 50 (`tier_rare.png`), self-checked (developer: "build every tier, check them yourself"), approved 2026-11-09
+    - [x] V5d Epic: all 50 costumes (`tier_epic.png`), self-checked, approved 2026-11-09
+    - [x] V5e Legendary: all 50 food / animal cats (`tier_legendary.png`), self-checked, approved 2026-11-09
+    - [x] V5f Mythical: all 50 creatures with their effects (`tier_mythical.png`), self-checked, approved 2026-11-09
+    - [x] V5g Secret: all 50 gods / cosmic cats with their effects (`tier_secret.png`), self-checked, approved 2026-11-09
+  - [~] V5h into the game: `art/blender/cats_export.py` writes every design as blocks per bone to `src/shared/CatShapeData/<Tier>` (+ `CatDesigns` names); `shared/CatShapes` decodes them; CatModel builds one Part per block on the same rig (Body, Head, Tail1/2, legs, wings, + Fx that spins round Mythical / Secret cats) so CatAnims moves it; studs = Roblox's Studs surface on Plastic (no extra parts, no upload; a finer MaterialVariant option is ready: `art/export/CatStuds_Normal.png`); Mythical / Secret sparkles + light in their effect's colours; Cats data: 400 cats (100/80/70/50/50/50) = 300 designs + 100 colour variants (Basic 50, Rare 30, Epic 20)
   - [ ] V5i Studio checks: pens with many cats on a phone, book, trade, crate opening, the Caught! card
 
 ## Plan changes
@@ -538,3 +538,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   crowns, wings, crystals, tentacles, a mountain or a tree on the back) with their effects. Self-check: Earth Titan's
   mountain made taller (it hid behind the head), Moon Goddess crescent made gold, Angel wings gold-edged, Prism's
   rainbow beam moved to the visible side. 34-101 parts (average 60; Sakura Goddess the most).
+- 2026-11-09 V5c-g approved (developer: "ผ่าน นำเข้าเกม"). V5h: the Blender helpers record each block's shape and frame
+  (`kit.prim`), `cats_export.py` turns every block into one Roblox part line (box / ball / ellipsoid / cylinder / stepped
+  cone / wedge / gem; rings = a circle of boxes), bones sorted by catrig and named by their Roblox side. CatModel
+  rewritten on that data (Look = { design, tint?, mutation? }); Cats = 300 designs + 100 tinted variants ("Frost Ginger
+  Tabby"), ids cat001-400 by tier (old test saves now show other designs: fine before launch). Parts per cat 28-131
+  (Basic avg 38, Secret avg 83). Studio: all 6 tiers built and compared with the sheets (wedges, wings, halos,
+  effects match), pen cats animate (walk / idle / sleep, Fx spins), no errors in Play. Phone performance not
+  checked yet (V5i).

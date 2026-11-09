@@ -97,6 +97,16 @@ def S(k):
 FRONT = R(math.pi / 2, "X")  # local Z -> -Y (a flat thing facing the viewer)
 
 
+def prim(obj, kind, frame, size, **extra):
+    """Remember what simple shape an object is (for exporters that turn it into a Roblox part): kind, the frame
+    of its centre (in the object's local space, before matrix_world) and its full sizes along that frame."""
+    obj["prim"] = kind
+    obj["frame"] = [v for row in frame for v in row]
+    obj["size"] = [float(v) for v in size]
+    for k, v in extra.items():
+        obj[k] = v
+
+
 class Model:
     """A list of smooth parts that together make one item."""
 
@@ -195,7 +205,10 @@ class Model:
         pa, pb = Vector((0, 0, -sz)), Vector((0, 0, sz))
         if warp:
             pa, pb = warp(pa), warp(pb)
-        return self.surface(rows, color, pole_a=frame @ pa, pole_b=frame @ pb, name=name, **o)
+        obj = self.surface(rows, color, pole_a=frame @ pa, pole_b=frame @ pb, name=name, **o)
+        if not warp:
+            prim(obj, "Blob", frame, (2 * sx, 2 * sy, 2 * sz), e=[float(e1), float(e2)])
+        return obj
 
     def ball(self, center, radius, color, nu=24, nv=14, **o):
         return self.blob((radius,) * 3, color, Matrix.Translation(center), nu=nu, nv=nv, **o)
@@ -213,7 +226,10 @@ class Model:
                 d = R + rr * math.cos(psi)
                 row.append(frame @ Vector((d * math.cos(phi), d * math.sin(phi), rr * math.sin(psi))))
             rows.append(row)
-        return self.surface(rows, color, closed_v=True, name=name, **o)
+        obj = self.surface(rows, color, closed_v=True, name=name, **o)
+        if not rfun:
+            prim(obj, "Torus", frame, (2 * (R + r), 2 * (R + r), 2 * r), R=float(R), r=float(r))
+        return obj
 
     def tube(self, points, radius, color, n=12, caps=True, name="Tube", **o):
         """Tube along a polyline. radius: number or f(t)."""

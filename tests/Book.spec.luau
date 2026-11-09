@@ -24,7 +24,7 @@ for _, id in Cats.ByTier[6] do
 	secret[id] = true
 end
 per, total = Book.progress(secret)
-check(per[6] == 5 and total == 5, "5 Secrets seen")
+check(per[6] == 50 and total == 50, "50 Secrets seen")
 check(math.abs(Book.money(secret) - Config.Book.TierBonus) < 1e-9, "a full tier gives the tier bonus")
 
 local all: { [string]: boolean } = {}

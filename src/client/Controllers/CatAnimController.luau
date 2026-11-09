@@ -120,10 +120,12 @@ local function step()
 		set(m, "LegBR", angles(pose.legBR, 0, 0))
 		set(m, "WingL", angles(0, 0, -pose.wing))
 		set(m, "WingR", angles(0, 0, pose.wing))
+		set(m, "Fx", angles(0, pose.fxYaw, 0))
 	end
 end
 
 function CatAnimController.Start(_self: any)
+	CatAnims.FxSpin = Config.CatAnim.FxSpin
 	for _, inst in CollectionService:GetTagged(CatModel.Tag) do
 		register(inst)
 	end

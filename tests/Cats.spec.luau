@@ -14,31 +14,35 @@ local function check(ok: boolean, message: string)
 	end
 end
 
--- 400 designs with the blueprint counts, unique ids, names and looks
-check(#Cats.List == 400, `400 designs (got {#Cats.List})`)
-local wanted = { 150, 110, 70, 45, 20, 5 }
+-- 400 cats (round 2 counts): 300 designs + colour variants, unique ids, names and looks
+local CatDesigns = Shared.require("CatDesigns")
+check(#Cats.List == 400, `400 cats (got {#Cats.List})`)
+local wanted = { 100, 80, 70, 50, 50, 50 }
 for tier, n in wanted do
-	check(#Cats.ByTier[tier] == n, `tier {tier}: {n} designs`)
+	check(#Cats.ByTier[tier] == n, `tier {tier}: {n} cats`)
 	check(Config.Tiers[tier].Count == n, `Config tier {tier} count`)
+	check(#CatDesigns[Config.Tiers[tier].Key] == 50, `tier {tier}: 50 designs`)
 end
 local names, looks = {}, {}
-for _, cat in Cats.List do
+for i, cat in Cats.List do
 	check(Cats.ById[cat.Id] == cat, `{cat.Id} indexed`)
-	check(string.match(cat.Id, "^cat%d%d%d$") ~= nil, `{cat.Id} id format`)
+	check(cat.Id == string.format("cat%03d", i), `{cat.Id} id in order`)
 	check(type(cat.Name) == "string" and #cat.Name > 0, `{cat.Id} has a name`)
 	check(not names[cat.Name], `name "{cat.Name}" used twice`)
 	names[cat.Name] = true
 	local l = cat.Look
-	local key = table.concat({ l.shape, l.fur, l.second, l.pattern or "", l.patternColor or "", l.accessory or "", l.accessoryColor or "", l.eyes or "" }, "|")
+	local key = l.design .. "|" .. (l.tint or "")
 	check(not looks[key], `{cat.Id} look repeats another`)
 	looks[key] = true
-	check(table.find({ "Loaf", "Slim", "Fluffy" }, l.shape) ~= nil, `{cat.Id} shape`)
-	check(string.match(l.fur, "^%x%x%x%x%x%x$") ~= nil, `{cat.Id} fur hex`)
+	check(table.find(CatDesigns[cat.TierKey], l.design) ~= nil, `{cat.Id} design {l.design} is in its tier`)
+	check(l.tint == nil or string.match(l.tint, "^%x%x%x%x%x%x$") ~= nil, `{cat.Id} tint hex`)
 end
--- higher tiers carry their effects
-check(Cats.ById[Cats.ByTier[5][1]].Look.accessory == "wings", "Mythical has wings")
-check(Cats.ById[Cats.ByTier[6][1]].Look.aura == "rainbow", "Secret has the rainbow aura")
-check(Cats.ById[Cats.ByTier[1][1]].Look.aura == nil, "Basic has no aura")
+-- every design once untinted; variants only in Basic / Rare / Epic
+check(Cats.ById["cat001"].Name == "Ginger Tabby" and Cats.ById["cat001"].Look.tint == nil, "cat001 = Ginger Tabby")
+check(Cats.ById["cat051"].Look.design == "Ginger Tabby" and Cats.ById["cat051"].Look.tint ~= nil, "cat051 = its first variant")
+for _, id in Cats.ByTier[4] do
+	check(Cats.ById[id].Look.tint == nil, `{id}: no Legendary variants`)
+end
 
 -- weights stay in their tier's range; heavier = more income; sizes
 for tier, t in Config.Tiers do

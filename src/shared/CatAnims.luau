@@ -26,9 +26,12 @@ export type Pose = {
 	legBL: number,
 	legBR: number,
 	wing: number, -- flap: 0 = folded along the body
+	fxYaw: number, -- the things round a Mythical / Secret cat (the Fx bone) turn round it
 }
 
 local CatAnims = {}
+
+CatAnims.FxSpin = 0.9 -- radians a second (Config.CatAnim.FxSpin sets it on the client)
 
 CatAnims.Clips = { "idle", "walk", "struggle", "carried", "sleep" }
 
@@ -52,6 +55,7 @@ local function blank(): Pose
 		legBL = 0,
 		legBR = 0,
 		wing = 0,
+		fxYaw = 0,
 	}
 end
 CatAnims.blank = blank
@@ -168,6 +172,7 @@ function CatAnims.pose(clip: string, t: number, into: Pose?): Pose
 	end
 	local f = CLIPS[clip] or CLIPS.idle
 	f(p, t)
+	p.fxYaw = (t * CatAnims.FxSpin) % (2 * math.pi) -- every clip: the effect never stops turning
 	return p
 end
 

@@ -101,12 +101,12 @@ Config.Pen = {
 -- Economy.IncomePower (x mutations / boosts). Basic-Legendary are one size; Mythical 1.3-2x and Secret 3-6x by
 -- weight inside the tier (CatRules.size).
 Config.Tiers = {
-	{ Key = "Basic", Count = 150, MinKg = 1, MaxKg = 100, Rate = 0.5, Color = "9aa7bd" },
-	{ Key = "Rare", Count = 110, MinKg = 100, MaxKg = 1e4, Rate = 0.8, Color = "3da5ff" },
+	{ Key = "Basic", Count = 100, MinKg = 1, MaxKg = 100, Rate = 0.5, Color = "9aa7bd" },
+	{ Key = "Rare", Count = 80, MinKg = 100, MaxKg = 1e4, Rate = 0.8, Color = "3da5ff" },
 	{ Key = "Epic", Count = 70, MinKg = 1e4, MaxKg = 1e6, Rate = 1.2, Color = "a46bff" },
-	{ Key = "Legendary", Count = 45, MinKg = 1e6, MaxKg = 1e8, Rate = 2, Color = "ffb020" },
-	{ Key = "Mythical", Count = 20, MinKg = 1e8, MaxKg = 1e9, Rate = 4, Color = "ff5fa2", SizeMin = 1.3, SizeMax = 2 },
-	{ Key = "Secret", Count = 5, MinKg = 1e9, MaxKg = 1.18e9, Rate = 8, Color = "18c9b9", SizeMin = 3, SizeMax = 6 },
+	{ Key = "Legendary", Count = 50, MinKg = 1e6, MaxKg = 1e8, Rate = 2, Color = "ffb020" },
+	{ Key = "Mythical", Count = 50, MinKg = 1e8, MaxKg = 1e9, Rate = 4, Color = "ff5fa2", SizeMin = 1.3, SizeMax = 2 },
+	{ Key = "Secret", Count = 50, MinKg = 1e9, MaxKg = 1.18e9, Rate = 8, Color = "18c9b9", SizeMin = 3, SizeMax = 6 },
 }
 Config.KgSkew = 2 -- base kg = min * (max / min) ^ (u ^ KgSkew): heavy cats of a tier are rarer
 
@@ -262,6 +262,18 @@ Config.IncomePopup = {
 Config.CatAnim = {
 	Range = 160, -- only cats this close to the camera are animated (studs)
 	RescanSeconds = 1, -- a cat whose joints have not all streamed in yet is looked up again this often
+	FxSpin = 0.9, -- radians a second the things round a Mythical / Secret cat turn
+}
+-- V5h block cats (shared/CatModel, shared/CatShapes): Blender units x BaseScale = studs at size 1.
+Config.Cats = {
+	BaseScale = 1,
+	-- LEGO studs on the blocks: "surface" = Roblox's Studs surface (Plastic, one stud per stud of size; checked in
+	-- Studio 2026-11-09), "variant" = the MaterialVariant named
+	-- StudsVariant (a studs normal map uploaded by the developer), "none" = smooth blocks
+	Studs = "surface",
+	StudsVariant = "",
+	ConeSteps = 3, -- a cone (party hat, horn) = this many stepped cylinders
+	ShadowMin = 0.6, -- parts smaller than this (studs) cast no shadow (eyes, noses, trims): lighter on phones
 }
 -- Player arm poses (task 2.22, shared/PlayerPoses): carrying a cat and reeling, drawn by every client.
 Config.PlayerAnim = {

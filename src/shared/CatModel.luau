@@ -1,66 +1,59 @@
 --!strict
--- Builds a blocky, rigged cat Model from a look (A6, style A like the map). The 400 cats (task 1.5) are
--- looks made from 3 base shapes x fur colours x patterns x accessories; higher tiers add effects.
+-- Builds a rigged block cat Model (V5h) from its design's blocks (shared/CatShapes, made in Blender and approved
+-- as the art/preview/cats_v1 sheets). One block = one Part; the LEGO studs are a look on the part (Config.Cats.Studs),
+-- not extra parts.
 --
--- Rig ("bones"): an anchored, invisible Root; every bone is a sub-model with an invisible "Joint" part
--- at its pivot, its parts welded to that Joint, and a Motor6D named after the bone inside the Joint:
+-- Rig ("bones"): an anchored, invisible Root; every bone is a sub-model with an invisible "Joint" part at its
+-- pivot, its parts welded to that Joint, and a Motor6D named after the bone inside the Joint:
 --   Root > Body > Head
 --               > Tail1 > Tail2
---               > LegFL, LegFR, LegBL, LegBR
---               > WingL, WingR        (only cats with wings)
--- The client animates the Motor6D.Transform values (CatAnimController + shared/CatAnims); moving the
--- cat = PivotTo on the model (the anchored Root carries everything).
--- Front = -Z (the face), feet on y = 0 of the given CFrame. Parts are not solid and not touchable; only
--- Root can be hit by queries (fishing, clicks).
+--               > LegFL, LegFR, LegBL, LegBR   (a mermaid / genie has no back legs: those bones are left out)
+--               > WingL, WingR                 (only cats with wings)
+--        > Fx                                  (Mythical / Secret: the things round the cat; it spins)
+-- The client animates the Motor6D.Transform values (CatAnimController + shared/CatAnims); moving the cat = PivotTo
+-- on the model (the anchored Root carries everything). Front = -Z (the face), feet on y = 0 of the given CFrame.
+-- Parts are not solid and not touchable; only Root can be hit by queries (fishing, clicks).
 --
---   local cat = CatModel.build(look, CFrame.new(x, 0, z), 1.5)   -- 1.5 = size multiplier
---
--- Colours in a look are hex strings ("ffb347") so the cat data stays plain data.
+--   local cat = CatModel.build(look, CFrame.new(x, 0, z), 1.5)   -- look = Cats.ById[id].Look (+ mutation)
 
 local CollectionService = game:GetService("CollectionService")
 
+local CatShapes = require(script.Parent.CatShapes)
+local Config = require(script.Parent.Config)
+
 export type Look = {
-	shape: string, -- "Loaf" | "Slim" | "Fluffy"
-	fur: string,
-	second: string, -- muzzle, chest, tail tip (and paws with "socks" / "tuxedo")
-	pattern: string?, -- "solid" | "tabby" | "patches" | "socks" | "tuxedo" | "spots"
-	patternColor: string?,
-	patternColor2: string?,
-	eyes: string?, -- eye colour (default near-black)
-	accessory: string?, -- "bow" | "collar" | "scarf" | "hat" | "flowers" | "crown" | "wings" | "halo"
-	accessoryColor: string?,
-	aura: string?, -- "sparkle" | "gold" | "glow" | "rainbow"
+	design: string,
+	tint: string?, -- colour variant (shared/Cats)
 	mutation: string?, -- "Gold" | "Rainbow" | "Glow" (task 2.9)
-}
-
-type Shape = {
-	w: number, -- body width
-	h: number, -- body height
-	d: number, -- body length
-	leg: number, -- leg height
-	head: number, -- head cube size
-	tail: number, -- tail thickness
-	cheeks: boolean,
-}
-
-local SHAPES: { [string]: Shape } = {
-	Loaf = { w = 3.6, h = 2.8, d = 4.6, leg = 0.9, head = 3.4, tail = 0.7, cheeks = false },
-	Slim = { w = 3.0, h = 2.5, d = 5.2, leg = 1.5, head = 3.0, tail = 0.6, cheeks = false },
-	Fluffy = { w = 4.2, h = 3.2, d = 4.8, leg = 0.8, head = 3.6, tail = 1.2, cheeks = true },
 }
 
 local CatModel = {}
 
-CatModel.Shapes = { "Loaf", "Slim", "Fluffy" }
-CatModel.BaseScale = 0.8 -- a Basic cat is about 5.5 studs tall with its ears
 CatModel.Tag = "Cat" -- CollectionService tag on every cat model (the client animates tagged cats)
-CatModel.Bones = { "Body", "Head", "Tail1", "Tail2", "LegFL", "LegFR", "LegBL", "LegBR", "WingL", "WingR" }
+CatModel.Bones = CatShapes.Bones
+CatModel.BaseScale = Config.Cats.BaseScale
+
+local PARENT: { [string]: string } = {
+	Body = "Root",
+	Head = "Body",
+	Tail1 = "Body",
+	Tail2 = "Tail1",
+	LegFL = "Body",
+	LegFR = "Body",
+	LegBL = "Body",
+	LegBR = "Body",
+	WingL = "Body",
+	WingR = "Body",
+	Fx = "Root",
+}
 
 local hex = Color3.fromHex
-local PINK = hex("ff9fb8")
-local INK = hex("2a2433")
 local WHITE = Color3.new(1, 1, 1)
 local GOLD = hex("ffcc33")
+local GOLD_FUR = hex("f6c945")
+local GOLD_DARK = hex("d9a520")
+local RAINBOW = { hex("ff5a5a"), hex("ffd23f"), hex("5ad67a"), hex("4fb6ff"), hex("b06bff") }
+local SURFACES = { "TopSurface", "BottomSurface", "FrontSurface", "BackSurface", "LeftSurface", "RightSurface" }
 
 local function setup(p: BasePart, color: Color3)
 	p.Color = color
@@ -74,29 +67,38 @@ local function setup(p: BasePart, color: Color3)
 	p.Massless = true
 end
 
-local function part(parent: Instance, size: Vector3, cf: CFrame, color: Color3, name: string?): Part
+local function newPart(parent: Instance, size: Vector3, cf: CFrame, color: Color3, name: string): Part
 	local p = Instance.new("Part")
 	p.Size = size
 	p.CFrame = cf
 	setup(p, color)
-	p.Name = name or "Part"
+	p.Name = name
 	p.Parent = parent
 	return p
 end
 
-local function wedge(parent: Instance, size: Vector3, cf: CFrame, color: Color3): WedgePart
-	local p = Instance.new("WedgePart")
-	p.Size = size
-	p.CFrame = cf
-	setup(p, color)
-	p.Parent = parent
-	return p
+-- A colour variant: the fur / pattern colour moved to the tint's hue, keeping its lightness.
+local function tinted(c: Color3, target: Color3): Color3
+	local _, s, v = c:ToHSV()
+	local th, ts, tv = target:ToHSV()
+	return Color3.fromHSV(th, math.clamp(s * 0.5 + ts * 0.6, 0, 0.9), math.clamp(v * 0.75 + tv * 0.25, 0.42, 1))
 end
+CatModel.tinted = tinted
 
--- A triangle seen from the front (two wedges back to back), centred on cf, w wide, h high, t thick.
-local function triangle(parent: Instance, cf: CFrame, w: number, h: number, t: number, color: Color3)
-	wedge(parent, Vector3.new(t, h, w / 2), cf * CFrame.new(-w / 4, 0, 0) * CFrame.Angles(0, math.pi / 2, 0), color)
-	wedge(parent, Vector3.new(t, h, w / 2), cf * CFrame.new(w / 4, 0, 0) * CFrame.Angles(0, -math.pi / 2, 0), color)
+local function studs(p: BasePart, which: string)
+	local mode = Config.Cats.Studs
+	if mode == "variant" and Config.Cats.StudsVariant ~= "" then
+		p.MaterialVariant = Config.Cats.StudsVariant
+	elseif mode == "surface" then
+		p.Material = Enum.Material.Plastic -- Roblox draws the Studs surface on Plastic only
+		if which == "top" then
+			p.TopSurface = Enum.SurfaceType.Studs
+		else
+			for _, s in SURFACES do
+				(p :: any)[s] = Enum.SurfaceType.Studs
+			end
+		end
+	end
 end
 
 local function sparkles(parent: BasePart, colors: { Color3 }, rate: number, size: number)
@@ -118,220 +120,175 @@ local function sparkles(parent: BasePart, colors: { Color3 }, rate: number, size
 	e.Parent = parent
 end
 
+-- One block -> one Part (a cone = a few stepped cylinders, block style).
+local function makePart(parent: Instance, spec: CatShapes.PartSpec, color: Color3): { BasePart }
+	local kind = spec.kind
+	local made: { BasePart } = {}
+	if kind == "W" then
+		local w = Instance.new("WedgePart")
+		w.Size = spec.size
+		w.CFrame = spec.cf
+		setup(w, color)
+		w.Name = "Wedge"
+		w.Parent = parent
+		table.insert(made, w)
+	elseif kind == "K" then
+		local n = Config.Cats.ConeSteps
+		local h = spec.size.X
+		local r1 = spec.size.Y / 2
+		for k = 0, n - 1 do
+			local t = (k + 0.5) / n
+			local r = math.max(0.03, r1 + (spec.r2 - r1) * t)
+			local p = newPart(parent, Vector3.new(h / n + 0.01, 2 * r, 2 * r), spec.cf * CFrame.new(-h / 2 + h * t, 0, 0), color, "Cone")
+			p.Shape = Enum.PartType.Cylinder
+			table.insert(made, p)
+		end
+	else
+		local p = newPart(parent, spec.size, spec.cf, color, "Block")
+		if kind == "S" then
+			p.Shape = Enum.PartType.Ball
+		elseif kind == "C" then
+			p.Shape = Enum.PartType.Cylinder
+		elseif kind == "E" then
+			local mesh = Instance.new("SpecialMesh")
+			mesh.MeshType = Enum.MeshType.Sphere
+			mesh.Parent = p
+		elseif spec.studs then
+			studs(p, spec.studs)
+		end
+		table.insert(made, p)
+	end
+	for _, p in made do
+		if spec.neon then
+			p.Material = Enum.Material.Neon
+		end
+		p.Transparency = spec.transparency
+		local big = math.max(p.Size.X, p.Size.Y, p.Size.Z)
+		p.CastShadow = big >= Config.Cats.ShadowMin and spec.transparency == 0 and not spec.neon
+	end
+	return made
+end
+
+-- The world box of a part spec (for the Root's size).
+local function extent(spec: CatShapes.PartSpec): (Vector3, Vector3)
+	local cf, h = spec.cf, spec.size / 2
+	local x, y, z = cf.XVector, cf.YVector, cf.ZVector
+	local e = Vector3.new(
+		math.abs(x.X) * h.X + math.abs(y.X) * h.Y + math.abs(z.X) * h.Z,
+		math.abs(x.Y) * h.X + math.abs(y.Y) * h.Y + math.abs(z.Y) * h.Z,
+		math.abs(x.Z) * h.X + math.abs(y.Z) * h.Y + math.abs(z.Z) * h.Z
+	)
+	return cf.Position - e, cf.Position + e
+end
+
 function CatModel.build(look: Look, at: CFrame, size: number?): Model
-	local s = SHAPES[look.shape] or SHAPES.Loaf
+	local shape = CatShapes.get(look.design)
+	if not shape then
+		warn(`[Sweetpotato] CatModel: unknown design {look.design}`)
+		shape = CatShapes.get("Ginger Tabby") :: CatShapes.Shape
+	end
 	local mutation = look.mutation
-	local fur = if mutation == "Gold" then hex("f6c945") else hex(look.fur)
-	local second = if mutation == "Gold" then hex("fff3c4") else hex(look.second)
-	local pattern = look.pattern or "solid"
-	local pc = if look.patternColor then hex(look.patternColor) else fur:Lerp(INK, 0.35)
-	local pc2 = if look.patternColor2 then hex(look.patternColor2) else pc
-	local eyes = if look.eyes then hex(look.eyes) else INK
-	local acc = if look.accessoryColor then hex(look.accessoryColor) else hex("ff5a6e")
-	local accessory = look.accessory
-	local hasWings = accessory == "wings" or look.aura == "rainbow"
+	local target = if look.tint then hex(look.tint) else nil
+
+	-- colours of this cat (variant tint, Gold / Glow mutation)
+	local colors: { Color3 } = {}
+	for i, p in shape.palette do
+		local c = p.color
+		if target and p.role ~= "-" then
+			c = tinted(c, target)
+		end
+		if mutation == "Gold" and p.role == "f" then
+			c = GOLD_FUR
+		elseif mutation == "Gold" and p.role == "p" then
+			c = GOLD_DARK
+		elseif mutation == "Glow" and p.role == "f" then
+			c = c:Lerp(WHITE, 0.15)
+		end
+		colors[i] = c
+	end
 
 	local m = Instance.new("Model")
 	m.Name = "Cat"
-	-- built at the origin, moved and scaled at the end
-	local o = CFrame.new()
-	local bodyY = s.leg + s.h / 2
-	local hs = s.head
-	local headY = s.leg + s.h + hs * 0.18
-	local headZ = -s.d / 2 + hs * 0.2
-	local front = headZ - hs / 2 -- z of the face
-	local topY = headY + hs * 0.45
-	local t = s.tail
-	local tailBase = o * CFrame.new(0, s.leg + s.h * 0.75, s.d / 2 + 0.55)
 
-	local root = part(m, Vector3.new(s.w, s.leg + s.h + hs * 0.7, s.d + hs * 0.4), o * CFrame.new(0, (s.leg + s.h + hs * 0.7) / 2, -hs * 0.2), WHITE, "Root")
+	-- Root: an invisible box round the cat (not its effect), the part queries hit
+	local lo, hi = Vector3.one * math.huge, -Vector3.one * math.huge
+	for _, spec in shape.parts do
+		if spec.bone ~= "Fx" then
+			local a, b = extent(spec)
+			lo, hi = lo:Min(a), hi:Max(b)
+		end
+	end
+	local root = newPart(m, hi - lo, CFrame.new((lo + hi) / 2), WHITE, "Root")
 	root.Transparency = 1
 	root.CanQuery = true
 	root.CastShadow = false
 	m.PrimaryPart = root
 
-	-- bones: name -> { model, joint cframe, parent bone }
+	-- bones: a sub-model with a Joint at the pivot
 	local bones: { [string]: Model } = {}
-	local jointAt: { [string]: CFrame } = {}
-	local parentOf: { [string]: string } = {}
-	local function bone(name: string, cf: CFrame, parentName: string): Model
-		local b = Instance.new("Model")
-		b.Name = name
-		b.Parent = m
-		bones[name] = b
-		jointAt[name] = cf
-		parentOf[name] = parentName
-		return b
-	end
-	local B = bone("Body", o * CFrame.new(0, bodyY, 0), "Root")
-	local H = bone("Head", o * CFrame.new(0, s.leg + s.h - 0.3, headZ + hs * 0.3), "Body")
-	local T1 = bone("Tail1", o * CFrame.new(0, s.leg + s.h * 0.75, s.d / 2 - 0.1), "Body")
-	local T2 = bone("Tail2", tailBase * CFrame.new(0, 0.45, 0.5), "Tail1")
-
-	-- body
-	local body = part(B, Vector3.new(s.w, s.h, s.d), o * CFrame.new(0, bodyY, 0), fur, "Body")
-	part(B, Vector3.new(s.w * 0.55, s.h * 0.5, 0.2), o * CFrame.new(0, s.leg + s.h * 0.35, -s.d / 2 - 0.05), second)
-
-	-- legs (hips at the bottom of the body)
-	local pawColor = if pattern == "socks" or pattern == "tuxedo" then second else fur
-	for _, x in { -1, 1 } do
-		for _, z in { -1, 1 } do
-			local lx, lz = x * (s.w / 2 - 0.6), z * (s.d / 2 - 0.8)
-			local name = "Leg" .. (if z < 0 then "F" else "B") .. (if x < 0 then "L" else "R")
-			local L = bone(name, o * CFrame.new(lx, s.leg + 0.3, lz), "Body")
-			part(L, Vector3.new(0.95, s.leg + 0.3, 0.95), o * CFrame.new(lx, (s.leg + 0.3) / 2, lz), fur)
-			part(L, Vector3.new(1.05, 0.45, 1.15), o * CFrame.new(lx, 0.22, lz - 0.08), pawColor)
+	local joints: { [string]: BasePart } = { Root = root }
+	for _, name in CatModel.Bones do
+		local at0 = shape.bones[name]
+		if at0 then
+			local b = Instance.new("Model")
+			b.Name = name
+			b.Parent = m
+			bones[name] = b
+			local j = newPart(b, Vector3.new(0.2, 0.2, 0.2), CFrame.new(at0), WHITE, "Joint")
+			j.Transparency = 1
+			j.CastShadow = false
+			joints[name] = j
 		end
 	end
 
-	-- tail in two pieces
-	part(T1, Vector3.new(t, t, 1.6), tailBase * CFrame.Angles(math.rad(35), 0, 0), fur)
-	part(T2, Vector3.new(t, 2.2, t), tailBase * CFrame.new(0, 1.35, 0.55) * CFrame.Angles(math.rad(-12), 0, 0), fur)
-	part(T2, Vector3.new(t + 0.08, 0.8, t + 0.08), tailBase * CFrame.new(0, 2.55, 0.8) * CFrame.Angles(math.rad(-12), 0, 0), second)
-
-	-- head and face
-	local head = part(H, Vector3.new(hs, hs * 0.9, hs), o * CFrame.new(0, headY, headZ), fur, "Head")
-	if s.cheeks then
-		for _, x in { -1, 1 } do
-			part(H, Vector3.new(0.7, hs * 0.45, hs * 0.6), o * CFrame.new(x * (hs / 2 + 0.25), headY - hs * 0.2, headZ - 0.1), second)
+	local furParts: { BasePart } = {}
+	local fxColors: { Color3 } = {}
+	for _, spec in shape.parts do
+		local b = bones[spec.bone] or bones.Body
+		local made = makePart(b, spec, colors[spec.color] or WHITE)
+		if shape.palette[spec.color] and shape.palette[spec.color].role == "f" then
+			for _, p in made do
+				table.insert(furParts, p)
+			end
 		end
-	end
-	for _, x in { -1, 1 } do
-		local ear = o * CFrame.new(x * hs * 0.3, headY + hs * 0.45 + 0.55, headZ + 0.2)
-		triangle(H, ear, hs * 0.36, 1.2, 0.6, fur)
-		triangle(H, ear * CFrame.new(0, -0.15, -0.32), hs * 0.2, 0.75, 0.1, PINK)
-	end
-	part(H, Vector3.new(hs * 0.56, hs * 0.32, 0.25), o * CFrame.new(0, headY - hs * 0.24, front - 0.1), second)
-	part(H, Vector3.new(0.5, 0.35, 0.2), o * CFrame.new(0, headY - hs * 0.13, front - 0.25), PINK)
-	for _, x in { -1, 1 } do
-		part(H, Vector3.new(0.38, 0.12, 0.1), o * CFrame.new(x * 0.18, headY - hs * 0.3, front - 0.24) * CFrame.Angles(0, 0, x * 0.5), INK) -- a smiling "w"
-		local eye = o * CFrame.new(x * hs * 0.24, headY + hs * 0.06, front - 0.06)
-		part(H, Vector3.new(hs * 0.2, hs * 0.26, 0.15), eye, eyes, "Eye")
-		part(H, Vector3.new(hs * 0.08, hs * 0.08, 0.1), eye * CFrame.new(hs * 0.04, hs * 0.06, -0.06), WHITE)
-		local blush = part(H, Vector3.new(hs * 0.16, hs * 0.08, 0.1), o * CFrame.new(x * hs * 0.37, headY - hs * 0.17, front - 0.06), PINK)
-		blush.Transparency = 0.25
-	end
-
-	-- patterns
-	if pattern == "tabby" then
-		for _, z in { -0.25, 0.05, 0.35 } do
-			part(B, Vector3.new(s.w + 0.1, s.h * 0.55, 0.42), o * CFrame.new(0, s.leg + s.h * 0.75 + 0.03, z * s.d), pc)
-		end
-		for _, x in { -0.28, 0, 0.28 } do
-			part(H, Vector3.new(0.28, hs * 0.22, 0.1), o * CFrame.new(x * hs * 0.6, headY + hs * 0.33, front - 0.06), pc)
-		end
-	elseif pattern == "patches" then
-		part(B, Vector3.new(s.w * 0.55, s.h * 0.55, s.d * 0.4), o * CFrame.new(-s.w * 0.24, s.leg + s.h * 0.75, s.d * 0.18), pc)
-		part(B, Vector3.new(s.w * 0.45, s.h * 0.5, s.d * 0.32), o * CFrame.new(s.w * 0.29, s.leg + s.h * 0.77, -s.d * 0.12), pc2)
-		part(H, Vector3.new(hs * 0.45, hs * 0.4, hs * 0.55), o * CFrame.new(hs * 0.29, headY + hs * 0.27, headZ + 0.05), pc)
-	elseif pattern == "spots" then
-		for _, p in { { -0.3, 0.25 }, { 0.25, -0.1 }, { 0.05, 0.38 }, { -0.15, -0.3 } } do
-			part(B, Vector3.new(0.9, 0.2, 0.9), o * CFrame.new(p[1] * s.w, s.leg + s.h + 0.05, p[2] * s.d), pc)
-		end
-	elseif pattern == "tuxedo" then
-		part(B, Vector3.new(s.w * 0.7, 0.2, s.d * 0.8), o * CFrame.new(0, s.leg - 0.05, 0), second)
-	end
-
-	-- accessories
-	if accessory == "bow" then
-		local bow = o * CFrame.new(-hs * 0.3, topY + 0.2, headZ - 0.3)
-		part(H, Vector3.new(0.9, 0.8, 0.4), bow * CFrame.new(-0.5, 0, 0) * CFrame.Angles(0, 0, 0.3), acc)
-		part(H, Vector3.new(0.9, 0.8, 0.4), bow * CFrame.new(0.5, 0, 0) * CFrame.Angles(0, 0, -0.3), acc)
-		part(H, Vector3.new(0.4, 0.4, 0.45), bow, acc:Lerp(WHITE, 0.3))
-	elseif accessory == "collar" or accessory == "scarf" then
-		local neck = o * CFrame.new(0, s.leg + s.h - 0.15, headZ + hs * 0.25)
-		part(H, Vector3.new(hs * 0.9, 0.45, hs * 0.65), neck, acc)
-		if accessory == "collar" then
-			local bell = part(H, Vector3.new(0.55, 0.55, 0.55), neck * CFrame.new(0, -0.35, -hs * 0.33), GOLD)
-			bell.Shape = Enum.PartType.Ball
-		else
-			part(H, Vector3.new(0.7, 1.4, 0.3), neck * CFrame.new(hs * 0.25, -0.75, -hs * 0.34) * CFrame.Angles(0, 0, 0.2), acc)
-		end
-	elseif accessory == "hat" then
-		part(H, Vector3.new(hs * 0.65, 0.22, hs * 0.65), o * CFrame.new(0, topY + 0.1, headZ), INK)
-		part(H, Vector3.new(hs * 0.4, 1.1, hs * 0.4), o * CFrame.new(0, topY + 0.75, headZ), INK)
-		part(H, Vector3.new(hs * 0.42, 0.25, hs * 0.42), o * CFrame.new(0, topY + 0.45, headZ), acc)
-	elseif accessory == "flowers" then
-		for i = 0, 4 do
-			local a = math.rad(-70 + i * 35)
-			local f = part(H, Vector3.new(0.6, 0.6, 0.6), o * CFrame.new(math.sin(a) * hs * 0.45, topY + 0.1, headZ - math.cos(a) * hs * 0.3), if i % 2 == 0 then acc else hex("ffe066"))
-			f.Shape = Enum.PartType.Ball
-		end
-	elseif accessory == "crown" then
-		local c = o * CFrame.new(0, topY + 0.25, headZ)
-		part(H, Vector3.new(hs * 0.5, 0.35, hs * 0.5), c, GOLD)
-		for _, p in { { -1, -1 }, { 1, -1 }, { -1, 1 }, { 1, 1 } } do
-			part(H, Vector3.new(0.3, 0.7, 0.3), c * CFrame.new(p[1] * hs * 0.21, 0.45, p[2] * hs * 0.21), GOLD)
-		end
-		part(H, Vector3.new(0.35, 0.35, 0.1), c * CFrame.new(0, 0.05, -hs * 0.26), hex("ff4d6d"))
-	end
-	if hasWings then
-		local wingColor = if accessory == "wings" then acc else WHITE
-		for _, x in { -1, 1 } do
-			local rootCf = o * CFrame.new(x * (s.w / 2 + 0.1), s.leg + s.h * 0.9, -0.2)
-			local Wb = bone(if x < 0 then "WingL" else "WingR", rootCf, "Body")
-			local w = rootCf * CFrame.new(x * 0.1, 0, 0) * CFrame.Angles(0, 0, x * -0.5)
-			wedge(Wb, Vector3.new(0.25, 1.8, 2.6), w * CFrame.new(x * 0.7, 0.6, 0) * CFrame.Angles(0, math.pi, 0), wingColor)
-			part(Wb, Vector3.new(0.25, 0.7, 2.6), w * CFrame.new(x * 0.7, -0.6, 0), wingColor)
-		end
-	end
-	if accessory == "halo" or look.aura == "rainbow" then
-		local ringY = topY + 1.6
-		for i = 0, 9 do
-			local a = i / 10 * math.pi * 2
-			local seg = part(H, Vector3.new(0.75, 0.2, 0.3), o * CFrame.new(math.cos(a) * hs * 0.36, ringY, headZ + math.sin(a) * hs * 0.36) * CFrame.Angles(0, -a + math.pi / 2, 0), GOLD)
-			seg.Material = Enum.Material.Neon
+		if spec.bone == "Fx" and spec.neon and #fxColors < 3 and not table.find(fxColors, colors[spec.color]) then
+			table.insert(fxColors, colors[spec.color])
 		end
 	end
 
-	-- tier effects
-	local aura = look.aura
-	if aura == "sparkle" then
-		sparkles(body, { hex("c49bff"), WHITE }, 4, 0.35)
-	elseif aura == "gold" then
-		sparkles(body, { GOLD, hex("fff2a8") }, 7, 0.45)
-	elseif aura == "glow" then
-		sparkles(body, { hex("ff7ad9"), hex("9a6bff") }, 12, 0.6)
+	-- the tier's glow: sparkles in the effect's colours and a soft light (Mythical / Secret)
+	local tier = shape.tier
+	if tier == "Mythical" or tier == "Secret" then
+		if #fxColors == 0 then
+			fxColors = { hex("ff9ae6"), WHITE }
+		end
+		sparkles(root, fxColors, if tier == "Secret" then 8 else 5, 0.45)
 		local l = Instance.new("PointLight")
-		l.Color = hex("ff9ae6")
-		l.Range = 10
+		l.Color = fxColors[1]
+		l.Range = if tier == "Secret" then 14 else 10
 		l.Brightness = 1
-		l.Parent = head
-	elseif aura == "rainbow" then
-		sparkles(body, { hex("ff5a5a"), hex("ffd23f"), hex("5ad67a"), hex("4fb6ff"), hex("b06bff") }, 18, 0.7)
-		local l = Instance.new("PointLight")
-		l.Color = WHITE
-		l.Range = 14
-		l.Brightness = 1.2
-		l.Parent = head
+		l.Parent = root
 	end
 
 	-- mutations (task 2.9): Gold = golden fur + sparkles, Rainbow = rainbow sparkles, Glow = glowing fur
-	if mutation == "Gold" and look.aura ~= "gold" then
-		sparkles(body, { GOLD, hex("fff2a8") }, 6, 0.45)
+	if mutation == "Gold" then
+		sparkles(root, { GOLD, hex("fff2a8") }, 6, 0.45)
 	elseif mutation == "Rainbow" then
-		sparkles(body, { hex("ff5a5a"), hex("ffd23f"), hex("5ad67a"), hex("4fb6ff"), hex("b06bff") }, 10, 0.55)
+		sparkles(root, RAINBOW, 10, 0.55)
 	elseif mutation == "Glow" then
-		for _, d in m:GetDescendants() do
-			if d:IsA("BasePart") and d.Color == fur then
-				d.Material = Enum.Material.Neon
-				d.Color = fur:Lerp(WHITE, 0.15)
-			end
+		for _, p in furParts do
+			p.Material = Enum.Material.Neon
 		end
 		local l = Instance.new("PointLight")
-		l.Color = fur
+		l.Color = colors[1] or WHITE
 		l.Range = 12
 		l.Brightness = 1.4
-		l.Parent = body
+		l.Parent = root
 	end
 
-	-- join the rig: a Joint part per bone, every bone part welded to it, a Motor6D to the parent bone
-	local joints: { [string]: BasePart } = { Root = root }
-	for name, b in bones do
-		local j = part(b, Vector3.new(0.2, 0.2, 0.2), jointAt[name], WHITE, "Joint")
-		j.Transparency = 1
-		j.CastShadow = false
-		joints[name] = j
+	-- join the rig: every bone part welded to its Joint, a Motor6D from the parent bone's Joint
+	for _, b in bones do
+		local j = b:FindFirstChild("Joint") :: BasePart
 		for _, p in b:GetChildren() do
 			if p:IsA("BasePart") and p ~= j then
 				local weld = Instance.new("WeldConstraint")
@@ -343,10 +300,11 @@ function CatModel.build(look: Look, at: CFrame, size: number?): Model
 		end
 		j.Anchored = false
 	end
+	local motorCount = 0
 	for _, name in CatModel.Bones do
 		local j = joints[name]
 		if j then
-			local parentJoint = joints[parentOf[name]]
+			local parentJoint = joints[PARENT[name]] or joints.Body or root
 			local motor = Instance.new("Motor6D")
 			motor.Name = name
 			motor.Part0 = parentJoint
@@ -354,19 +312,14 @@ function CatModel.build(look: Look, at: CFrame, size: number?): Model
 			motor.C0 = parentJoint.CFrame:Inverse() * j.CFrame
 			motor.C1 = CFrame.new()
 			motor.Parent = j
-		end
-	end
-
-	-- pivot at the feet, in the middle under the body
-	root.PivotOffset = root.CFrame:Inverse()
-	m:ScaleTo(CatModel.BaseScale * (size or 1))
-	m:PivotTo(at)
-	local motorCount = 0
-	for _, d in m:GetDescendants() do
-		if d:IsA("Motor6D") then
 			motorCount += 1
 		end
 	end
+
+	-- pivot at the feet, under the middle of the body
+	root.PivotOffset = root.CFrame:Inverse() * CFrame.new(shape.pivot)
+	m:ScaleTo(CatModel.BaseScale * (size or 1))
+	m:PivotTo(at)
 	m:SetAttribute("Bones", motorCount) -- the client waits until this many joints have streamed in
 	m:SetAttribute("Anim", "idle")
 	m.ModelStreamingMode = Enum.ModelStreamingMode.Atomic -- a cat streams in and out whole

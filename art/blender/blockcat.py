@@ -70,6 +70,7 @@ def block(m, center, size, color, frame=Matrix(), studs=True, bevel=0.035, name=
     o.setdefault("rough", 0.32)
     o.setdefault("coat", 0.35)
     obj = m.add(bm, color, name, smooth=False, **o)
+    kit.prim(obj, "Block", frame @ T(*center), size, studs=sides if studs else "none")
     if bevel:
         mod = obj.modifiers.new("Bevel", "BEVEL")
         mod.width = bevel
@@ -707,4 +708,5 @@ def build(name):
     m = Model(name.replace(" ", ""))
     A = base(m, look)
     fn(m, A)
+    m.A = A  # the attach points (the rig and the game exporter need them)
     return m

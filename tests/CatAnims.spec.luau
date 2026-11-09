@@ -23,7 +23,9 @@ for _, clip in CatAnims.Clips do
 		local p = CatAnims.pose(clip, i * 0.01)
 		for k, v in p :: any do
 			check(finite(v), `{clip} {k} finite at {i}`)
-			if k == "bodyY" then
+			if k == "fxYaw" then
+				check(v >= 0 and v < 2 * math.pi, `{clip} fxYaw one turn`)
+			elseif k == "bodyY" then
 				check(math.abs(v) <= 1, `{clip} bodyY within 1 stud`)
 			else
 				check(math.abs(v) <= 1.6, `{clip} {k} within 1.6 rad`)

@@ -5,11 +5,13 @@
 --   local Shared = require("./lib/Shared")      -- from a tests/*.spec.luau file
 --   local DataTemplate = Shared.require("DataTemplate")
 --
--- `script` is a stand-in whose Parent.<Name> points to src/shared/<Name>.luau. Each module is loaded
+-- `script` is a stand-in whose Parent.<Name> points to src/shared/<Name>.luau (Parent.<Folder>.<Name> to
+-- src/shared/<Folder>/<Name>.luau). Each module is loaded
 -- once and cached, like ModuleScripts. Only works for modules that need nothing else from Roblox.
 
 local fs = require("@lune/fs")
 local luau = require("@lune/luau")
+local roblox = require("@lune/roblox")
 
 local ROOT = "src/shared"
 
@@ -18,6 +20,14 @@ local Shared = {}
 local cache: { [string]: any } = {}
 
 type Ref = { __module: string }
+
+local function ref(path: string): Ref
+	return setmetatable({ __module = path }, {
+		__index = function(_, child: string): Ref
+			return ref(`{path}/{child}`)
+		end,
+	}) :: any
+end
 
 local function load(name: string): any
 	if cache[name] ~= nil then
@@ -28,7 +38,7 @@ local function load(name: string): any
 
 	local parent = setmetatable({}, {
 		__index = function(_, child: string): Ref
-			return { __module = child }
+			return ref(child)
 		end,
 	})
 	local fakeScript = { Name = name, Parent = parent }
@@ -41,7 +51,14 @@ local function load(name: string): any
 
 	local chunk = luau.load(fs.readFile(path), {
 		debugName = path,
-		environment = { script = fakeScript, require = fakeRequire },
+		-- Roblox data types for modules that build numbers into them (CatShapes)
+		environment = {
+			script = fakeScript,
+			require = fakeRequire,
+			Vector3 = roblox.Vector3,
+			CFrame = roblox.CFrame,
+			Color3 = roblox.Color3,
+		},
 	})
 	local result = chunk()
 	cache[name] = result

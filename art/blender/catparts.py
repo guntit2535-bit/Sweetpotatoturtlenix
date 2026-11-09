@@ -14,6 +14,7 @@ import bpy
 from mathutils import Matrix, Vector
 
 from blockcat import GOLD, GOLD_DARK, INK, PINK, WHITE, block, hexrgb, shade
+import kit
 from kit import R, T
 
 SILVER = (205, 212, 225)
@@ -83,6 +84,7 @@ def cyl(m, c, r, h, col, bone="B", name="Cyl", fr=None, axis="Z", r2=None, seg=1
     o.setdefault("coat", 0.35)
     obj = m.add(bm, C(col), f"{bone}_{name}", smooth=False, **o)
     obj["shape"] = "Cylinder" if r2 is None else "Cone"
+    kit.prim(obj, "Cyl", (fr or Matrix()) @ T(*c) @ rot, (2 * r, 2 * r, h), r2=float(r if r2 is None else r2))
     return obj
 
 
@@ -100,6 +102,7 @@ def wedge(m, c, s, col, bone="B", name="Wedge", fr=None, **o):
     o.setdefault("coat", 0.35)
     obj = m.add(bm, C(col), f"{bone}_{name}", smooth=False, **o)
     obj["shape"] = "Wedge"
+    kit.prim(obj, "Wedge", (fr or Matrix()) @ T(*c), s)
     return obj
 
 

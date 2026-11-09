@@ -86,7 +86,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 ## Phase 4 — revision round 2, the last free round (developer, 2026-11-09; spec `docs/tasks/phase-4.md`)
 - [~] V1 ★ Cat style board in Blender: one original voxel cat in 3 options (Pixel / Brick / Mix), then the pick on 4 base shapes; the developer and the client approve
 - [~] V2 Fishing pose matching the rod: right hand at the grip, left hand turning the reel handle on the rod
-- [~] V3 Map detail pass: survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
+- [x] V3 Map detail pass (ground details approved 2026-11-09): survey every area, then a real fountain, winding rivers with banks, layered waterfalls, more ground detail per zone
 - [~] V4 New-player tutorial (NOT in the blueprint: the developer decides the price with the client): 7 guided steps, arrows, skip / replay, saved
 - [~] V5 ★ All 400 cats as approved: block cats with LEGO studs, 50 unique designs per tier (docs/Sweetpotato_Cats.xlsx), bones + walk / idle animation, a unique effect round every Mythical / Secret cat
   - [x] V5a design table (300) + one Blender cat per tier + bones / walk preview (art/preview/cats_v1/walk.gif)

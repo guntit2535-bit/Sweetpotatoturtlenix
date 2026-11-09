@@ -31,9 +31,13 @@ local function lineUp(list: { any }, mutation: string?)
 	f.Parent = workspace
 	local face = CFrame.Angles(0, math.pi, 0) -- facing the fountain (+Z)
 	local cols = 10
+	local biggest = 1
+	for _, cat in list do
+		biggest = math.max(biggest, SIZE[cat.Tier] or 1)
+	end
+	local gap = 8 * biggest -- one spacing for the whole grid, so big Secret cats do not overlap the others
 	for i, cat in list do
 		local size = SIZE[cat.Tier] or 1
-		local gap = 8 * size
 		local col, row = (i - 1) % cols, (i - 1) // cols
 		local look = table.clone(cat.Look)
 		look.mutation = mutation

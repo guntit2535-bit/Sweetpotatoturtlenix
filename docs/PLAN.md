@@ -584,3 +584,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   Secret burst is two Trails behind invisible movers (no assets) every Config.CatFx.BurstEvery = 3 s. Studio (Play):
   4 test cats built (13-19 effect parts each), the burst ribbons fly and fade, no errors. The mesh path waits for the
   developer's import (then check the import turn / sizes in Studio).
+- 2026-11-09 V5j meshes imported by the developer (ReplicatedStorage.FxMeshes, Model "Effects"): all 78 found, sizes match
+  FxMeshData. Studio: flames upright with core and glow lined up, bats / hearts / notes / stars facing out, Sun God
+  wheel behind, scan ring, UFOs, magic circles as in Blender. Effect parts per cat: Mythical avg 33 (most 60), Secret
+  avg 38 (most 63); whole cat avg 93 / 109 parts. CatPreview: one grid spacing for the biggest cat.

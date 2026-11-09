@@ -93,6 +93,7 @@ Config.Pen = {
 	LikeCooldown = 2, -- seconds between Like prompts per player (any pen)
 	WanderSpeed = 3, -- studs/s a pen cat walks (client side)
 	RestSeconds = { 3, 9 }, -- a pen cat rests this long between walks
+	FarStepSeconds = 0.4, -- V5i: a walking cat farther than CatAnim.Near moves in steps this often (cheaper)
 }
 
 -- Cat tiers (blueprint §5; R4 option B, docs/economy.md): designs per tier, BASE weight range on a log ladder
@@ -260,8 +261,17 @@ Config.IncomePopup = {
 	Spread = 0.35, -- popups start at random times inside this many seconds (not all at once)
 }
 Config.CatAnim = {
-	Range = 160, -- only cats this close to the camera are animated (studs)
-	RescanSeconds = 1, -- a cat whose joints have not all streamed in yet is looked up again this often
+	Range = 160, -- only cats this close to the camera are animated (studs, x the cat's size)
+	-- V5i (Studio, 480 cats in 8 full pens): moving one block costs ~3 us on a PC, so a frame moves at most
+	-- PartBudget blocks, nearest cats first: closer than Near every frame, up to Mid every MidSeconds; farther
+	-- ground cats hold still (carried cats animate up to Range). Phones (touch, no mouse) use the Phone* numbers.
+	Near = 40,
+	Mid = 100,
+	MidSeconds = 0.1,
+	PartBudget = 900,
+	PhoneRange = 110,
+	PhonePartBudget = 400,
+	RescanSeconds = 1, -- a cat whose bones have not all streamed in yet is looked up again this often
 	FxSpin = 0.9, -- radians a second the things round a Mythical / Secret cat turn
 }
 -- V5h block cats (shared/CatModel, shared/CatShapes): Blender units x BaseScale = studs at size 1.

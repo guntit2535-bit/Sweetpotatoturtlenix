@@ -45,6 +45,14 @@ for _, path in files do
 		print(`  FAIL {path}: first line must be --!strict`)
 		failures += 1
 	end
+	-- a ModuleScript in src must return its module (Roblox: "did not return exactly one value")
+	local isScript = string.find(path, "%.server%.luau$") or string.find(path, "%.client%.luau$")
+	if string.sub(path, 1, 4) == "src/" and not isPackage and not isScript then
+		if not string.find(source, "\nreturn[ ({]") then
+			print(`  FAIL {path}: a module needs a top-level return line`)
+			failures += 1
+		end
+	end
 end
 print(`  {#files} files`)
 

@@ -4,14 +4,15 @@
 -- not extra parts.
 --
 -- Rig ("bones"): an anchored, invisible Root; every bone is a sub-model with an invisible "Joint" part at its
--- pivot, its parts welded to that Joint, and a Motor6D named after the bone inside the Joint:
+-- pivot and its blocks. Every part is anchored (attribute Rig = "anchored"): the client moves the blocks of nearby
+-- cats to animate them. CatModel.joinRig (a carried cat) welds the blocks to their Joint and adds a Motor6D per bone
+-- (Rig = "joints"). Bones:
 --   Root > Body > Head
 --               > Tail1 > Tail2
 --               > LegFL, LegFR, LegBL, LegBR   (a mermaid / genie has no back legs: those bones are left out)
 --               > WingL, WingR                 (only cats with wings)
 --        > Fx                                  (Mythical / Secret: the things round the cat; it spins)
--- The client animates the Motor6D.Transform values (CatAnimController + shared/CatAnims); moving the cat = PivotTo
--- on the model (the anchored Root carries everything). Front = -Z (the face), feet on y = 0 of the given CFrame.
+-- The client animates them (CatAnimController + shared/CatAnims); moving the cat = PivotTo on the model. Front = -Z (the face), feet on y = 0 of the given CFrame.
 -- Parts are not solid and not touchable; only Root can be hit by queries (fishing, clicks).
 --
 --   local cat = CatModel.build(look, CFrame.new(x, 0, z), 1.5)   -- look = Cats.ById[id].Look (+ mutation)
@@ -33,7 +34,7 @@ CatModel.Tag = "Cat" -- CollectionService tag on every cat model (the client ani
 CatModel.Bones = CatShapes.Bones
 CatModel.BaseScale = Config.Cats.BaseScale
 
-local PARENT: { [string]: string } = {
+local PARENT: { [string]: string } = { -- each bone hangs from this one
 	Body = "Root",
 	Head = "Body",
 	Tail1 = "Body",
@@ -46,6 +47,8 @@ local PARENT: { [string]: string } = {
 	WingR = "Body",
 	Fx = "Root",
 }
+
+CatModel.Parent = PARENT
 
 local hex = Color3.fromHex
 local WHITE = Color3.new(1, 1, 1)
@@ -286,21 +289,51 @@ function CatModel.build(look: Look, at: CFrame, size: number?): Model
 		l.Parent = root
 	end
 
-	-- join the rig: every bone part welded to its Joint, a Motor6D from the parent bone's Joint
-	for _, b in bones do
-		local j = b:FindFirstChild("Joint") :: BasePart
-		for _, p in b:GetChildren() do
-			if p:IsA("BasePart") and p ~= j then
-				local weld = Instance.new("WeldConstraint")
-				weld.Part0 = j
-				weld.Part1 = p
-				weld.Parent = p
-				p.Anchored = false
+	-- every part stays anchored: no joints, no physics (480 jointed cats cost ~40 ms of physics a frame in
+	-- Studio). The client poses the blocks itself (CatAnimController); CatModel.joinRig makes a carried cat a
+	-- jointed rig again.
+	local boneCount = 0
+	for _ in bones do
+		boneCount += 1
+	end
+
+	-- pivot at the feet, under the middle of the body
+	root.PivotOffset = root.CFrame:Inverse() * CFrame.new(shape.pivot)
+	m:ScaleTo(CatModel.BaseScale * (size or 1))
+	m:PivotTo(at)
+	m:SetAttribute("Bones", boneCount) -- the client waits until this many bones have streamed in
+	m:SetAttribute("Rig", "anchored")
+	m:SetAttribute("Anim", "idle")
+	m.ModelStreamingMode = Enum.ModelStreamingMode.Atomic -- a cat streams in and out whole
+	CollectionService:AddTag(m, CatModel.Tag)
+	return m
+end
+
+-- A carried cat rides on its carrier's head (CarryService welds its Root to the character): its blocks are welded
+-- to their bone's Joint and the bones joined with Motor6Ds named after them, so the client animates it with
+-- Motor6D.Transform. Few cats are carried at a time, so their physics stays cheap.
+function CatModel.joinRig(m: Model)
+	if m:GetAttribute("Rig") == "joints" then
+		return
+	end
+	local root = m.PrimaryPart :: BasePart
+	local joints: { [string]: BasePart } = { Root = root }
+	for _, name in CatModel.Bones do
+		local b = m:FindFirstChild(name)
+		local j = b and b:FindFirstChild("Joint")
+		if b and j and j:IsA("BasePart") then
+			joints[name] = j
+			for _, p in b:GetChildren() do
+				if p:IsA("BasePart") and p ~= j then
+					local weld = Instance.new("WeldConstraint")
+					weld.Part0 = j
+					weld.Part1 = p
+					weld.Parent = p
+					p.Anchored = false
+				end
 			end
 		end
-		j.Anchored = false
 	end
-	local motorCount = 0
 	for _, name in CatModel.Bones do
 		local j = joints[name]
 		if j then
@@ -312,19 +345,10 @@ function CatModel.build(look: Look, at: CFrame, size: number?): Model
 			motor.C0 = parentJoint.CFrame:Inverse() * j.CFrame
 			motor.C1 = CFrame.new()
 			motor.Parent = j
-			motorCount += 1
+			j.Anchored = false
 		end
 	end
-
-	-- pivot at the feet, under the middle of the body
-	root.PivotOffset = root.CFrame:Inverse() * CFrame.new(shape.pivot)
-	m:ScaleTo(CatModel.BaseScale * (size or 1))
-	m:PivotTo(at)
-	m:SetAttribute("Bones", motorCount) -- the client waits until this many joints have streamed in
-	m:SetAttribute("Anim", "idle")
-	m.ModelStreamingMode = Enum.ModelStreamingMode.Atomic -- a cat streams in and out whole
-	CollectionService:AddTag(m, CatModel.Tag)
-	return m
+	m:SetAttribute("Rig", "joints")
 end
 
 return CatModel

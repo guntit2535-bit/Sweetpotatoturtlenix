@@ -97,8 +97,8 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
     - [x] V5e Legendary: all 50 food / animal cats (`tier_legendary.png`), self-checked, approved 2026-11-09
     - [x] V5f Mythical: all 50 creatures with their effects (`tier_mythical.png`), self-checked, approved 2026-11-09
     - [x] V5g Secret: all 50 gods / cosmic cats with their effects (`tier_secret.png`), self-checked, approved 2026-11-09
-  - [~] V5h into the game: `art/blender/cats_export.py` writes every design as blocks per bone to `src/shared/CatShapeData/<Tier>` (+ `CatDesigns` names); `shared/CatShapes` decodes them; CatModel builds one Part per block on the same rig (Body, Head, Tail1/2, legs, wings, + Fx that spins round Mythical / Secret cats) so CatAnims moves it; studs = Roblox's Studs surface on Plastic (no extra parts, no upload; a finer MaterialVariant option is ready: `art/export/CatStuds_Normal.png`); Mythical / Secret sparkles + light in their effect's colours; Cats data: 400 cats (100/80/70/50/50/50) = 300 designs + 100 colour variants (Basic 50, Rare 30, Epic 20)
-  - [ ] V5i Studio checks: pens with many cats on a phone, book, trade, crate opening, the Caught! card
+  - [x] V5h into the game (approved 2026-11-09): `art/blender/cats_export.py` writes every design as blocks per bone to `src/shared/CatShapeData/<Tier>` (+ `CatDesigns` names); `shared/CatShapes` decodes them; CatModel builds one Part per block on the same rig (Body, Head, Tail1/2, legs, wings, + Fx that spins round Mythical / Secret cats) so CatAnims moves it; studs = Roblox's Studs surface on Plastic (no extra parts, no upload; a finer MaterialVariant option is ready: `art/export/CatStuds_Normal.png`); Mythical / Secret sparkles + light in their effect's colours; Cats data: 400 cats (100/80/70/50/50/50) = 300 designs + 100 colour variants (Basic 50, Rare 30, Epic 20)
+  - [~] V5i Studio checks: full pens (480 cats) made fast enough (anchored blocks, posing budget), carried cats animate, My Cats / book cards checked; a real phone test with `!fillpens` is the developer's
 
 ## Plan changes
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
@@ -116,6 +116,10 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- V5i (2026-11-09): cats on the ground are anchored blocks with no joints (480 jointed cats cost ~40 ms of physics
+  a frame); the client moves the blocks itself, nearest cats first within a block budget (PC 900, phone 400 a
+  frame); cats farther than 100 studs from the camera hold still and do not start walks; a carried cat becomes a
+  jointed rig again. Studio PC with 480 cats in 8 full pens: 12 fps before, 38-42 fps after (54 with none).
 - R8 (2026-11-09): the opening was built in the game from the approved mockup 12 instead of a Blender preview
   video first (the look was already approved with the UI; the real crate meshes and cat models are used), and
   shown as in-game pictures. The crate sounds moved from SoundController into the opening's own timeline so a
@@ -546,3 +550,12 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   (Basic avg 38, Secret avg 83). Studio: all 6 tiers built and compared with the sheets (wedges, wings, halos,
   effects match), pen cats animate (walk / idle / sleep, Fx spins), no errors in Play. Phone performance not
   checked yet (V5i).
+- 2026-11-09 V5h approved. V5i: 480 test cats in 8 full pens took Studio from 54 to 12 fps: the cost was physics of
+  the jointed rigs. Now every ground cat is anchored blocks (CatModel; `CatModel.joinRig` for carried cats) and
+  CatAnimController poses blocks with one BulkMoveTo a frame, nearest first within Config.CatAnim.PartBudget
+  (moving a block costs ~3.5 us in Studio); PenCatsController skips resting cats, moves near walkers by their Root
+  only and far ones in steps; far cats keep resting. Result 38-42 fps with 480 cats. Found and fixed: the carried
+  cat never animated (the character's Animator reset its joints; the pass now runs in PreSimulation). New: the
+  "CatAnimMs" / "PenCatsMs" player attributes (time per frame), `!fillpens N` / `!clearpens` (test cats, not
+  saved), and scripts/check.luau fails a module with no top-level return. Checked in Play: pen cats walk / rest,
+  carried cat animates over the head, My Cats cards and the book (100/80/70/50/50/50) show the new cats.

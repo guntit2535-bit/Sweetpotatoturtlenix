@@ -362,6 +362,35 @@ function PenService:Init()
 		end)
 		return `slots = {n}`
 	end)
+	-- V5i: full pens on a phone without touching any save (Workspace.PenCats.FullPensTest, gone on !clearpens)
+	DebugService.register("fillpens", "!fillpens [N]  N random test cats in each of the 8 pens (default 60, not saved)", function(_, args)
+		local n = math.clamp(Commands.integer(args[1]) or Config.Pen.MaxSlots, 1, Config.Pen.MaxSlots)
+		local old = workspace:FindFirstChild("PenCats") and workspace.PenCats:FindFirstChild("FullPensTest")
+		if old then
+			old:Destroy()
+		end
+		local folder = Instance.new("Folder")
+		folder.Name = "FullPensTest"
+		folder.Parent = workspace:FindFirstChild("PenCats") or workspace
+		for index = 1, Config.Pens.Count do
+			for _ = 1, n do
+				local design = Cats.List[math.random(1, #Cats.List)]
+				local kg = CatRules.rollKg(design.Tier, math.random())
+				local m = CatModel.build(design.Look :: any, randomSpot(index), CatRules.size(design.Tier, kg))
+				m:SetAttribute("PenIndex", index)
+				m.Parent = folder
+			end
+			task.wait()
+		end
+		return `{n * Config.Pens.Count} test cats in the pens (!clearpens removes them)`
+	end)
+	DebugService.register("clearpens", "!clearpens  remove the !fillpens test cats", function()
+		local old = workspace:FindFirstChild("PenCats") and workspace.PenCats:FindFirstChild("FullPensTest")
+		if old then
+			old:Destroy()
+		end
+		return "test cats removed"
+	end)
 end
 
 function PenService:Start()

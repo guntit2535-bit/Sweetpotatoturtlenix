@@ -11,6 +11,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.Shared
 local Config = require(Shared.Config)
 local Cats = require(Shared.Cats)
+local CatModel = require(Shared.CatModel)
 local CatRules = require(Shared.CatRules)
 local Notify = require(script.Parent.Parent.Util.Notify)
 local DataService = require(script.Parent.DataService)
@@ -61,6 +62,7 @@ function CarryService.pickUp(player: Player, w: WildCatService.Wild, mutation: s
 	model:ScaleTo(math.min(model:GetScale() * Config.Carry.Scale, Config.Carry.MaxScale))
 	local scale = model:GetScale()
 	model:PivotTo(root.CFrame * CFrame.new(0, Config.Carry.HeadOffset + 0.6 * scale, 0.4))
+	CatModel.joinRig(model) -- ground cats are anchored blocks; a carried one needs joints to ride along
 	local modelRoot = model.PrimaryPart
 	if modelRoot then
 		modelRoot.Anchored = false

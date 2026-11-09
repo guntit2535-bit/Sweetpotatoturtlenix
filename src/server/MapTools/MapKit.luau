@@ -1052,4 +1052,192 @@ function Kit.rainbow(parent: Instance, cf: CFrame, radius: number)
 	end
 end
 
+----------------------------------------------------------------------------------------------------
+-- V3 part 2: small ground details scattered between the clusters (MapTools/Detail). No collision, no queries,
+-- no shadows: players walk through them and phones only draw them.
+
+local function decor(): Opts
+	return { decor = true, shadow = false }
+end
+
+local function spin(cf: CFrame, rng: Random): CFrame
+	return cf * CFrame.Angles(0, rng:NextNumber(0, math.pi * 2), 0)
+end
+
+-- A clump of grass blades (thin wedges leaning out).
+function Kit.tuft(parent: Instance, cf: CFrame, rng: Random, color: Color3?)
+	local m = M(parent, "Tuft")
+	local base = color or C.Leaf
+	for _ = 1, rng:NextInteger(4, 6) do
+		local h = rng:NextNumber(1.4, 2.6)
+		local c = spin(cf, rng) * CFrame.new(rng:NextNumber(-0.7, 0.7), h / 2 - 0.05, rng:NextNumber(-0.7, 0.7))
+		W(m, Vector3.new(0.34, h, 0.8), c * CFrame.Angles(rng:NextNumber(-0.25, 0.1), 0, 0), base:Lerp(C.Leaf2, rng:NextNumber(0, 0.6)), decor())
+	end
+end
+
+-- A few flat stones.
+function Kit.pebbles(parent: Instance, cf: CFrame, rng: Random, cap: Color3?)
+	local m = M(parent, "Pebbles")
+	for _ = 1, rng:NextInteger(2, 4) do
+		local s = rng:NextNumber(0.8, 1.7)
+		local c = spin(cf, rng) * CFrame.new(rng:NextNumber(-1.6, 1.6), s * 0.2, rng:NextNumber(-1.6, 1.6))
+		P(m, Vector3.new(s * 1.3, s * 0.45, s), c * CFrame.Angles(rng:NextNumber(-0.15, 0.15), 0, rng:NextNumber(-0.15, 0.15)),
+			pick(rng, { C.Stone, C.Stone2, C.Rock }), decor())
+		if cap then
+			P(m, Vector3.new(s * 1.2, 0.12, s * 0.9), c * CFrame.new(0, s * 0.25, 0), cap, decor())
+		end
+	end
+end
+
+-- Toadstools: a stem and a red cap with white dots.
+function Kit.mushroom(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "Mushroom")
+	for k = 1, rng:NextInteger(1, 3) do
+		local s = if k == 1 then rng:NextNumber(1.3, 1.8) else rng:NextNumber(0.7, 1.1)
+		local c = spin(cf, rng) * CFrame.new(if k == 1 then 0 else rng:NextNumber(-1.1, 1.1), 0, if k == 1 then 0 else rng:NextNumber(-1.1, 1.1))
+		P(m, Vector3.new(0.45, 1.0, 0.45) * s, c * CFrame.new(0, 0.5 * s, 0), C.Cream, decor())
+		P(m, Vector3.new(1.5, 0.55, 1.5) * s, c * CFrame.new(0, 1.15 * s, 0), pick(rng, { C.Red, C.Red, C.Orange }), decor())
+		P(m, Vector3.new(1.0, 0.3, 1.0) * s, c * CFrame.new(0, 1.5 * s, 0), C.Red, decor())
+		for _, d in { { -0.45, 0.2 }, { 0.35, -0.4 }, { 0.2, 0.45 } } do
+			P(m, Vector3.new(0.22, 0.08, 0.22) * s, c * CFrame.new(d[1] * s, 1.44 * s, d[2] * s), C.White, decor())
+		end
+	end
+end
+
+-- A fern: leaves fanning out from the ground.
+function Kit.fern(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "Fern")
+	local n = rng:NextInteger(5, 7)
+	for k = 1, n do
+		local a = k / n * math.pi * 2 + rng:NextNumber(-0.2, 0.2)
+		local len = rng:NextNumber(1.6, 2.4)
+		local c = cf * CFrame.Angles(0, a, 0) * CFrame.new(0, 0.45, -len / 2 + 0.2) * CFrame.Angles(0.45, 0, 0)
+		P(m, Vector3.new(0.6, 0.12, len), c, if k % 2 == 0 then C.Leaf else C.LeafDark, decor())
+	end
+end
+
+-- A fallen log with moss on top.
+function Kit.log(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "Log")
+	local len = rng:NextNumber(3.5, 5.5)
+	local c = spin(cf, rng) * CFrame.new(0, 0.55, 0)
+	P(m, Vector3.new(len, 1.1, 1.1), c, C.Trunk, decor())
+	P(m, Vector3.new(0.12, 0.85, 0.85), c * CFrame.new(len / 2 + 0.03, 0, 0), C.Wood, decor())
+	P(m, Vector3.new(0.12, 0.85, 0.85), c * CFrame.new(-len / 2 - 0.03, 0, 0), C.Wood, decor())
+	P(m, Vector3.new(len * 0.5, 0.2, 0.9), c * CFrame.new(rng:NextNumber(-0.5, 0.5), 0.6, 0), C.Moss, decor())
+end
+
+-- A little heap of autumn leaves (or petals: pass the colours).
+function Kit.leafPile(parent: Instance, cf: CFrame, rng: Random, colors: { Color3 }?)
+	local m = M(parent, "Leaves")
+	local cols = colors or { C.Orange, C.Yellow, C.RedDark, C.Gold }
+	for k = 1, rng:NextInteger(5, 8) do
+		local c = spin(cf, rng) * CFrame.new(rng:NextNumber(-1, 1), 0.06 + k * 0.05, rng:NextNumber(-1, 1))
+		P(m, Vector3.new(0.9, 0.08, 0.6), c * CFrame.Angles(rng:NextNumber(-0.3, 0.3), 0, rng:NextNumber(-0.3, 0.3)), pick(rng, cols), decor())
+	end
+end
+
+-- Soft snow humps (balls half in the ground).
+function Kit.snowMound(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "SnowMound")
+	for k = 1, rng:NextInteger(2, 3) do
+		local d = if k == 1 then rng:NextNumber(3, 4.5) else rng:NextNumber(1.8, 2.8)
+		local c = cf * CFrame.new(if k == 1 then 0 else rng:NextNumber(-1.8, 1.8), -d * 0.22, if k == 1 then 0 else rng:NextNumber(-1.8, 1.8))
+		B(m, d, c.Position, if k == 1 then C.Snow else C.SnowShade, decor())
+	end
+end
+
+-- A young snowy pine (a small stack of green tiers with snow on each).
+function Kit.sapling(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "Sapling")
+	local s = rng:NextNumber(0.8, 1.3)
+	local c = spin(cf, rng)
+	P(m, Vector3.new(0.4, 0.8, 0.4) * s, c * CFrame.new(0, 0.4 * s, 0), C.Trunk, decor())
+	local y = 0.8 * s
+	for i, w in { 2.2, 1.6, 1.0 } do
+		local h = 0.75 * s
+		P(m, Vector3.new(w, h, w) * s, c * CFrame.new(0, y + h / 2, 0), if i % 2 == 0 then C.Leaf else C.LeafDark, decor())
+		P(m, Vector3.new(w * 0.92, 0.18, w * 0.92) * s, c * CFrame.new(0, y + h + 0.05, 0), C.Snow, decor())
+		y += h
+	end
+end
+
+-- A frozen puddle.
+function Kit.icePatch(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "IcePatch")
+	local d = rng:NextNumber(3.5, 6)
+	D(m, cf * CFrame.new(0, 0.06, 0), d, 0.12, C.Ice, { decor = true, shadow = false, t = 0.35, refl = 0.25, mat = Enum.Material.Glass })
+	D(m, cf * CFrame.new(rng:NextNumber(-0.6, 0.6), 0.1, rng:NextNumber(-0.6, 0.6)), d * 0.45, 0.06, C.WaterLight, { decor = true, shadow = false, t = 0.4 })
+end
+
+-- Old cobbles in the grass (market streets reaching into the grass).
+function Kit.cobbles(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "Cobbles")
+	local base = spin(cf, rng)
+	for ix = -1, 1 do
+		for iz = -1, 1 do
+			if rng:NextNumber() < 0.8 then
+				local s = rng:NextNumber(1.2, 1.6)
+				P(m, Vector3.new(s, 0.2, s * rng:NextNumber(0.8, 1)), base * CFrame.new(ix * 1.8 + rng:NextNumber(-0.2, 0.2), 0.08, iz * 1.8)
+					* CFrame.Angles(0, rng:NextNumber(-0.2, 0.2), 0), pick(rng, { C.Rock, C.RockDark, C.Stone2 }), decor())
+			end
+		end
+	end
+end
+
+-- A flower pot.
+function Kit.flowerPot(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "FlowerPot")
+	pole(m, cf, 1.6, 1.3, C.Brick, decor())
+	D(m, cf * CFrame.new(0, 1.32, 0), 1.35, 0.08, C.Trunk, decor())
+	for _ = 1, 3 do
+		B(m, 0.6, (cf * CFrame.new(rng:NextNumber(-0.4, 0.4), 1.7 + rng:NextNumber(0, 0.4), rng:NextNumber(-0.4, 0.4))).Position,
+			pick(rng, Kit.FlowerColors), decor())
+	end
+	B(m, 1.1, (cf * CFrame.new(0, 1.55, 0)).Position, C.Leaf2, decor())
+end
+
+-- A grain sack.
+function Kit.sack(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "Sack")
+	local c = spin(cf, rng)
+	P(m, Vector3.new(1.4, 1.5, 1.1), c * CFrame.new(0, 0.75, 0), hex("e2c48e"), decor())
+	P(m, Vector3.new(0.8, 0.35, 0.6), c * CFrame.new(0, 1.65, 0), hex("cfae73"), decor())
+	P(m, Vector3.new(0.9, 0.12, 0.7), c * CFrame.new(0, 1.5, 0), C.WoodDark, decor())
+end
+
+-- A few small crystals poking out of the ground.
+function Kit.crystalBits(parent: Instance, cf: CFrame, rng: Random, color: Color3)
+	local m = M(parent, "CrystalBits")
+	for _ = 1, rng:NextInteger(2, 4) do
+		local h = rng:NextNumber(0.8, 1.8)
+		local c = spin(cf, rng) * CFrame.new(rng:NextNumber(-0.8, 0.8), h * 0.4, rng:NextNumber(-0.8, 0.8))
+		P(m, Vector3.new(0.45, h, 0.45), c * CFrame.Angles(rng:NextNumber(-0.35, 0.35), 0.78, rng:NextNumber(-0.35, 0.35)), color,
+			{ decor = true, shadow = false, mat = Enum.Material.Glass, t = 0.15 })
+	end
+end
+
+-- A soft patch of darker / lighter grass (breaks up the checkerboard) with a tuft on it.
+function Kit.grassPatch(parent: Instance, cf: CFrame, rng: Random, color: Color3?)
+	local m = M(parent, "GrassPatch")
+	local col = color or C.Grass2:Lerp(C.LeafDark, 0.35)
+	for k = 1, rng:NextInteger(2, 3) do
+		local w, d = rng:NextNumber(4, 7), rng:NextNumber(3, 6)
+		P(m, Vector3.new(w, 0.1, d), spin(cf, rng) * CFrame.new(rng:NextNumber(-1.5, 1.5), 0.05 + k * 0.01, rng:NextNumber(-1.5, 1.5)),
+			col:Lerp(C.Leaf2, rng:NextNumber(0, 0.25)), decor())
+	end
+	Kit.tuft(m, cf * CFrame.new(rng:NextNumber(-1, 1), 0, rng:NextNumber(-1, 1)), rng, C.LeafDark)
+end
+
+-- Little flowers on stems.
+function Kit.sprigs(parent: Instance, cf: CFrame, rng: Random)
+	local m = M(parent, "Sprigs")
+	for _ = 1, rng:NextInteger(2, 4) do
+		local h = rng:NextNumber(1.2, 2.1)
+		local c = cf * CFrame.new(rng:NextNumber(-1, 1), 0, rng:NextNumber(-1, 1))
+		P(m, Vector3.new(0.18, h, 0.18), c * CFrame.new(0, h / 2, 0), C.LeafDark, decor())
+		B(m, 0.8, (c * CFrame.new(0, h + 0.15, 0)).Position, pick(rng, Kit.FlowerColors), decor())
+	end
+end
+
 return Kit

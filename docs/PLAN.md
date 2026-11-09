@@ -100,7 +100,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   - [x] V5h into the game (approved 2026-11-09): `art/blender/cats_export.py` writes every design as blocks per bone to `src/shared/CatShapeData/<Tier>` (+ `CatDesigns` names); `shared/CatShapes` decodes them; CatModel builds one Part per block on the same rig (Body, Head, Tail1/2, legs, wings, + Fx that spins round Mythical / Secret cats) so CatAnims moves it; studs = Roblox's Studs surface on Plastic (no extra parts, no upload; a finer MaterialVariant option is ready: `art/export/CatStuds_Normal.png`); Mythical / Secret sparkles + light in their effect's colours; Cats data: 400 cats (100/80/70/50/50/50) = 300 designs + 100 colour variants (Basic 50, Rare 30, Epic 20)
   - [~] V5i Studio checks: full pens (480 cats) made fast enough (anchored blocks, posing budget), carried cats animate, My Cats / book cards checked; a real phone test with `!fillpens` is the developer's
 
-  - [~] V5j effects remade as smooth Blender shapes with an aura (developer 2026-11-09: "the effects look like plain
+  - [x] V5j effects remade as smooth Blender shapes with an aura (developer 2026-11-09: "the effects look like plain
     geometry"): `art/blender/fxshapes.py`; picked: Mythical = A (items orbit the cat, soft ground glow), Secret = B
     (magic circle, ribbons of light shoot up from the ground and fade every 3 s). All 100 built: `tier_mythical.png`,
     `tier_secret.png`, motion in `fx_anim.gif`, approved 2026-11-09. In the game: mesh library `art/export/Effects.fbx`
@@ -588,3 +588,11 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   FxMeshData. Studio: flames upright with core and glow lined up, bats / hearts / notes / stars facing out, Sun God
   wheel behind, scan ring, UFOs, magic circles as in Blender. Effect parts per cat: Mythical avg 33 (most 60), Secret
   avg 38 (most 63); whole cat avg 93 / 109 parts. CatPreview: one grid spacing for the biggest cat.
+- 2026-11-09 V5j approved in game ("ผ่าน"). V3 part 2 (ground detail): new MapKit decorations (tuft, grassPatch, sprigs,
+  pebbles, mushroom, fern, log, leafPile / sakura petals, snowMound, sapling, icePatch, cobbles, flowerPot, sack,
+  crystalBits) and MapTools/Detail scatters clumps per zone (Detail.Clumps 380 / 340 / 330 / 380 / 120) only where a
+  ray hits bare ground with nothing within 2.6 studs (never on roads, water, houses, hiding spots), into
+  Map.Zone<i>.Details (Detail.clear() removes them). 22,000 parts, all decoration (no collision / queries / touch /
+  shadow). Studio: `!wild` 18 hiding in every zone; Backyard 51 -> 49 fps with them. Self-check: details made ~1.5x
+  bigger (too small to see), darker cobbles on the market paving, pink petals instead of autumn leaves in the sakura
+  forest, saplings in the snow (white mounds vanished). Pictures: art/preview/v3/details_before_after.png.

@@ -70,8 +70,8 @@
   4. Save / Publish แล้วบอก Claude
 - [x] **บันทึกของตกแต่งพื้น (V3 ส่วนที่ 2):** (ผ่าน 2026-11-09) Claude วางหญ้า ดอกไม้ เห็ด ก้อนหิน ต้นสนเล็ก ฯลฯ ในทุกโซนแล้ว (อยู่ใน Map > Zone1-5 > Details)
   ดูรูป `art/preview/v3/details_before_after.png` ถ้าชอบ กด Save / Publish ถ้าไม่ชอบ บอก Claude ให้เอาออก (ลบได้ทั้งหมดในคำสั่งเดียว)
-- [ ] **บันทึกแมพใหม่ (V3):** Claude เปลี่ยนน้ำพุ ลำธาร และน้ำตกในแมพให้แล้ว (ของเก่าเก็บไว้ใน ServerStorage > MapBackup_V3)
-  กด Save / Publish ใน Studio ถ้าดูแล้วชอบแบบใหม่ บอก Claude ให้ลบของเก่าทิ้ง
+- [ ] **บันทึกแมพใหม่ (V3):** Claude เปลี่ยนน้ำพุ ลำธาร และน้ำตกในแมพให้แล้ว และลบของเก่า (MapBackup_V3) ทิ้งแล้ว 2026-11-09
+  เหลือกด Save / Publish ใน Studio
 - [x] **ตรวจตารางออกแบบแมว 300 แบบ:** (ผ่าน 2026-11-09) `docs/Sweetpotato_Cats.xlsx`
 - [x] **ตรวจรูปแมวครบ 6 ระดับ (300 แบบ):** (ผ่าน 2026-11-09) เปิดรูปใน `art/preview/cats_v1/` ทีละไฟล์
   `tier_basic.png`, `tier_rare.png`, `tier_epic.png`, `tier_legendary.png`, `tier_mythical.png`, `tier_secret.png`

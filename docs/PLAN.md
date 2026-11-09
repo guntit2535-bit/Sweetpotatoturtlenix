@@ -596,3 +596,5 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
   shadow). Studio: `!wild` 18 hiding in every zone; Backyard 51 -> 49 fps with them. Self-check: details made ~1.5x
   bigger (too small to see), darker cobbles on the market paving, pink petals instead of autumn leaves in the sakura
   forest, saplings in the snow (white mounds vanished). Pictures: art/preview/v3/details_before_after.png.
+- 2026-11-09 developer: "ลบได้": ServerStorage.MapBackup_V3 (19 fountains, 79 creeks, 47 waterfalls, 3,915 instances) deleted in
+  Studio; Upgrade.undo has nothing to put back any more. Waits for the developer's Save / Publish.

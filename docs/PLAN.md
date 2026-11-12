@@ -110,7 +110,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 ## Phase 5 — revision list 3, free (developer, 2026-11-13; table `docs/revision3_plan.md`)
 Developer's answers: everything free (no extra charge), training boosts = permanent steps. Order: bugs, quick UI,
 shop / pen, economy, world.
-- [~] W1 Bugs: phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); holes in the ground (18) filled (100 tiles, BuildMap.groundGaps)
+- [x] W1 Bugs (passed 2026-11-13): phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); holes in the ground (18) filled (100 tiles, BuildMap.groundGaps)
 - [ ] W2 Phone fit at 5 screen sizes (12)
 - [~] W3 Quick UI (built + checked in Studio 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [ ] W4 ★ Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
@@ -636,3 +636,6 @@ shop / pen, economy, world.
   rescan: 0 holes. Item 2 (developer's picture as the direction): `MapTools/Lego.apply()` puts Roblox's Studs surface
   (Plastic) on every ground tile, island top, road / curb and tree block (10,747 parts, `.undo()` restores);
   Build.all() runs it too. Waits for the developer's Save / Publish.
+- 2026-11-13 developer: "ผ่าน" (holes + LEGO ground) and EventArrow.fbx imported into ReplicatedStorage. Checked: 2
+  MeshParts, the tip faces LookVector once the importer's PivotOffset (90 degrees about X) is replaced (EventController
+  does), Play with !mythical: the mesh arrow with its light, 6.3 studs over the root, pointing at the cat (dot 1.000).

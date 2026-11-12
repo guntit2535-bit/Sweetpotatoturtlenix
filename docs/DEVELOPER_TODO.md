@@ -84,7 +84,7 @@
   3. Import 3D -> เลือกไฟล์ `art/export/Effects.fbx` ตรวจว่าผู้สร้าง (Creator) เป็น **กลุ่ม Sweetpotatoturtlenix** แล้วกด Import
   4. ได้ Model ใหม่ใน Workspace ให้ลากไปใส่ใน `ReplicatedStorage > FxMeshes`
   5. กด Save / Publish แล้วบอก Claude (Claude จะตรวจในเกมว่าทุกชิ้นหันถูกทางและขนาดถูก)
-- [ ] **นำเข้าลูกศรอีเวนต์แบบ A (แก้รอบ 3 ข้อ 1):** ไฟล์เดียว 2 ชิ้น (ตัวลูกศร + ขอบขาว)
+- [x] **นำเข้าลูกศรอีเวนต์แบบ A (แก้รอบ 3 ข้อ 1):** (นำเข้าแล้ว 2026-11-13 Claude เช็คแล้ว หัวชี้ไปที่แมวถูก) ไฟล์เดียว 2 ชิ้น (ตัวลูกศร + ขอบขาว)
   1. GitHub Desktop: Fetch origin -> Pull origin
   2. Import 3D -> เลือกไฟล์ `art/export/EventArrow.fbx` ตรวจว่าผู้สร้าง (Creator) เป็น **กลุ่ม Sweetpotatoturtlenix** แล้วกด Import
   3. ได้ Model ชื่อ `EventArrow` ใน Workspace ให้ลากไปไว้ใน `ReplicatedStorage` (ชื่อต้องเป็น `EventArrow`)

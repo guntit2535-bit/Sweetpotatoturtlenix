@@ -23,7 +23,7 @@ local StoreController = {}
 
 local C = Kit.Colors
 local me = Players.LocalPlayer
-local prices: { [string]: string } = {} -- "pass:id" / "product:id" -> "R$ 99"
+local prices: { [string]: string } = {} -- "pass:id" / "product:id" -> "<Robux icon> 99"
 local icons: { [string]: number } = {} -- the same keys -> the icon set in Creator Hub (0 = none yet)
 local PASSES = { { "Speed", "Speed2x" }, { "Cash", "Cash2x" }, { "Strength", "Strength2x" }, { "Lucky", "Lucky" }, { "VIP", "VIP" } }
 
@@ -32,12 +32,12 @@ local function price(kind: string, id: number): string
 	if prices[key] then
 		return prices[key]
 	end
-	prices[key] = "..."
+	prices[key] = Format.robux("...")
 	task.spawn(function()
 		local ok, info = pcall(function()
 			return MarketplaceService:GetProductInfo(id, if kind == "pass" then Enum.InfoType.GamePass else Enum.InfoType.Product)
 		end)
-		prices[key] = if ok and info and info.PriceInRobux then `R$ {info.PriceInRobux}` else "R$ ?"
+		prices[key] = Format.robux(if ok and info and info.PriceInRobux then info.PriceInRobux else "?")
 		icons[key] = if ok and info and type(info.IconImageAssetId) == "number" then info.IconImageAssetId else 0
 		ShopController.redraw()
 	end)

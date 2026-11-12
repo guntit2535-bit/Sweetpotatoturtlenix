@@ -56,4 +56,12 @@ function Format.clock(seconds: number): string
 	return string.format("%d:%02d", s // 60, s % 60)
 end
 
+-- A Robux price with Roblox's own Robux coin icon (the glyph U+E002 that Roblox's fonts draw as the icon; checked
+-- in the game font FredokaOne, 2026-11-13) instead of the letters "R$". `amount` may be a number or "..." / "?".
+Format.RobuxIcon = utf8.char(0xE002)
+
+function Format.robux(amount: number | string): string
+	return `{Format.RobuxIcon} {amount}`
+end
+
 return Format

@@ -1,7 +1,7 @@
 --!strict
 -- W6 (revision 3 item 17): a board beside your own weights and one beside your treadmill sells the next permanent
 -- training boost step for Robux (x2 -> x4 -> x8 .. x64; products TrainW1-6 / TrainT1-6 in Config.Products):
---   x4 STRENGTH · Now x2 · forever · [ R$ 10 ]      (the price Roblox gives this player; MAX at x64)
+--   x4 STRENGTH · Now x2 · forever · [ (Robux icon) 10 ]      (the price Roblox gives this player; MAX at x64)
 -- The button opens Roblox's purchase prompt; ProductService grants it (saved before the thanks toast). A step whose
 -- product id is still 0 says "Not on sale yet".
 
@@ -11,6 +11,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Config = require(Shared:WaitForChild("Config"))
+local Format = require(Shared:WaitForChild("Format"))
 local Lang = require(script.Parent.Parent.Lang)
 local PlayerData = require(script.Parent.Parent.PlayerData)
 local Kit = require(script.Parent.Parent.UI.Kit)
@@ -42,12 +43,12 @@ local function price(id: number): string
 	if prices[id] then
 		return prices[id]
 	end
-	prices[id] = "R$ ..."
+	prices[id] = Format.robux("...")
 	task.spawn(function()
 		local ok, info = pcall(function()
 			return MarketplaceService:GetProductInfo(id, Enum.InfoType.Product)
 		end)
-		prices[id] = if ok and info and info.PriceInRobux then `R$ {info.PriceInRobux}` else "R$ ?"
+		prices[id] = Format.robux(if ok and info and info.PriceInRobux then info.PriceInRobux else "?")
 		refresh()
 	end)
 	return prices[id]

@@ -115,7 +115,7 @@ shop / pen, economy, world.
 - [x] W3 Quick UI (passed 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [x] W4 ★ (passed 2026-11-13: card shop A, pen board, tool icons) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
 - [~] W5 Economy to ~50 h + crate prices (9, 14): option B picked + in Config 2026-11-13 (sim 53 h)
-- [~] W6 Training boost ladder (17): built + checked in Studio 2026-11-13; waits for the 12 product ids
+- [~] W6 Training boost ladder (17): built + checked in Studio 2026-11-13; product ids in
 - [ ] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
 
 ## Plan changes
@@ -680,3 +680,8 @@ shop / pen, economy, world.
   forever · [R$ ..]" (Roblox's purchase prompt), and the next step of each in the Robux tab. Studio (FreshSave):
   `!buy TrainW1`, `!buy TrainW2` -> 4 s of lifting 8 -> 32 Strength. docs/Sweetpotato_Robux.xlsx rows 18-29 added
   (suggested 5 / 10 / 20 / 40 / 80 / 160 R$, the client confirms).
+- 2026-11-13: the developer created the 12 boost products (TrainW1-6 3730700282 .. 3730700439, TrainT1-6
+  3730700488 .. 3730700690), checked in Studio (GetProductInfo: names match, on sale, 4 / 8 / 15 / 30 / 60 / 120 R$ =
+  the regional price of 5 .. 160) and put in Config; Play: both boards show "x2 · R$ 4". The products are named
+  TrainW1 .. in Creator Hub (players see that in the prompt): renaming them is in DEVELOPER_TODO. The Robux sheet was
+  open in Excel, so its id column was not written.

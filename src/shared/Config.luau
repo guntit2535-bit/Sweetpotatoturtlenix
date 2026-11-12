@@ -364,20 +364,20 @@ Config.Products = {
 		{ Key = "SummonMythical", Id = 3729676622, Kind = "Summon" },
 		{ Key = "Starter", Id = 3729676699, Kind = "Starter", Money = 10000, Rod = 6, Treats = { "Luck", "Money" } },
 		-- W6 (revision 3 item 17): permanent training boosts bought one step after another (x2, x4 .. x64), for the
-		-- weights (Strength) and the treadmill (Speed) apart. Ids: the developer creates the 12 products (0 = not on
-		-- sale yet); prices from the client (suggested 5 / 10 / 20 / 40 / 80 / 160 R$, docs/Sweetpotato_Robux.xlsx).
-		{ Key = "TrainW1", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 1 },
-		{ Key = "TrainW2", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 2 },
-		{ Key = "TrainW3", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 3 },
-		{ Key = "TrainW4", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 4 },
-		{ Key = "TrainW5", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 5 },
-		{ Key = "TrainW6", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 6 },
-		{ Key = "TrainT1", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 1 },
-		{ Key = "TrainT2", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 2 },
-		{ Key = "TrainT3", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 3 },
-		{ Key = "TrainT4", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 4 },
-		{ Key = "TrainT5", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 5 },
-		{ Key = "TrainT6", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 6 },
+		-- weights (Strength) and the treadmill (Speed) apart. Ids: created by the developer 2026-11-13 (checked: names, on
+		-- sale); prices 5 / 10 / 20 / 40 / 80 / 160 R$ set in Creator Hub (the client confirms), docs/Sweetpotato_Robux.xlsx.
+		{ Key = "TrainW1", Id = 3730700282, Kind = "TrainBoost", Stat = "Weights", Step = 1 },
+		{ Key = "TrainW2", Id = 3730700315, Kind = "TrainBoost", Stat = "Weights", Step = 2 },
+		{ Key = "TrainW3", Id = 3730700344, Kind = "TrainBoost", Stat = "Weights", Step = 3 },
+		{ Key = "TrainW4", Id = 3730700382, Kind = "TrainBoost", Stat = "Weights", Step = 4 },
+		{ Key = "TrainW5", Id = 3730700410, Kind = "TrainBoost", Stat = "Weights", Step = 5 },
+		{ Key = "TrainW6", Id = 3730700439, Kind = "TrainBoost", Stat = "Weights", Step = 6 },
+		{ Key = "TrainT1", Id = 3730700488, Kind = "TrainBoost", Stat = "Treadmill", Step = 1 },
+		{ Key = "TrainT2", Id = 3730700525, Kind = "TrainBoost", Stat = "Treadmill", Step = 2 },
+		{ Key = "TrainT3", Id = 3730700563, Kind = "TrainBoost", Stat = "Treadmill", Step = 3 },
+		{ Key = "TrainT4", Id = 3730700601, Kind = "TrainBoost", Stat = "Treadmill", Step = 4 },
+		{ Key = "TrainT5", Id = 3730700644, Kind = "TrainBoost", Stat = "Treadmill", Step = 5 },
+		{ Key = "TrainT6", Id = 3730700690, Kind = "TrainBoost", Stat = "Treadmill", Step = 6 },
 	},
 	ReceiptsKept = 100,
 }

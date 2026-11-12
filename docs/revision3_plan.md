@@ -36,3 +36,33 @@ Size: S = under an hour, M = a few hours, L = a day or more. ★ = a look is sho
 3. Shop and pen: 4 ★, 5, 21, 3
 4. Economy: 9 + 14 (options table first), 17
 5. World: 1 ★ arrow mesh, 15, 2 ★
+
+## Status (2026-11-13: all 21 done and passed by the developer)
+
+| # | Item | Done as | Task |
+|---|---|---|---|
+| 1 | Arrow over the head | Blender arrow look A (white rim, event colour, soft light, bobs); the old head was turned wrong | W1 |
+| 2 | Pixel + LEGO ground, paths, trees | Roblox Studs surface on every ground tile, path and tree block (MapTools/Lego, undo kept) | W7 |
+| 3 | Rod / Bat as icons | Blender icons P13_rod / P14_bat on the tools (uploaded by the developer) | W4 |
+| 4 | Shop with big swipe cards | Look A: a rail of tall cards on every tab, swipe + arrows; window sized for phones | W4 |
+| 5 | Pen slots at the farm | Pen tab removed; "PEN SLOTS" board in front of your pen | W4 |
+| 6 | Green ring at the weights | Breathing green rings on your own weights and treadmill spots | W3 |
+| 7 | Bat hits fling | Victim goes into a tumble for the stun: ~40 studs, a carrier ~80-100 | W1 |
+| 8 | Phone fishing bar jumping | Same ticks on phone and server with tick-stamped holds; HOLD follows the finger | W1 |
+| 9 | End game ~50 h | Option B: ~53 h of active play (sim on the real rules), rods / pen slots spread over the game | W5 |
+| 10 | Big stats bottom left | Strength, Speed, money big at the bottom left | W3 |
+| 11 | Icon bar 30% smaller | 70% buttons in a 2-wide grid | W3 |
+| 12 | UI on every phone | Landscape only, one scaling rule, nothing overlaps, HOLD beside the jump button; HUD hugs the edges | W2 |
+| 13 | Rebirth + Rewards middle left | In the left button grid | W3 |
+| 14 | Dearer crates | 40K / 2.5M / 75M / 900M, x3.4 a rebirth (Diamond ~5-8 min of income) | W5 |
+| 15 | Bigger pens | Option B: 44 x 56, the cats' area x2.5 | W7 |
+| 16 | Red line for the cat | A red line on the fishing bar | W3 |
+| 17 | Training boosts 2x / 4x / 8x ... | Permanent steps to x64 for weights and treadmill, 12 developer products, boards at the gym | W6 |
+| 18 | Holes in the map | 100 missing ground tiles added, builder fixed (scan: 0 holes) | W1 |
+| 19 | Settings without a frame | White gear + "Settings" | W3 |
+| 20 | Sell without asking | Sells at once (locked cats never) | W3 |
+| 21 | Sell many at once | Tap to choose many, "Sell N" | W3 |
+
+Also done on the way: Robux prices with the Robux coin icon; crate pictures in colour in the shop and the opening;
+!fillpens fixed. For the client (CLAUDE.md "Scope changes"): the economy numbers, dearer crates, pen slots at the pen,
+the boost ladder (new Robux items), bigger pens and the LEGO ground change the blueprint.

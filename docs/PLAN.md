@@ -114,9 +114,9 @@ shop / pen, economy, world.
 - [x] W2 Phone fit (12): passed 2026-11-13
 - [x] W3 Quick UI (passed 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [x] W4 ★ (passed 2026-11-13: card shop A, pen board, tool icons) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
-- [~] W5 Economy to ~50 h + crate prices (9, 14): option B picked + in Config 2026-11-13 (sim 53 h)
+- [x] W5 Economy to ~50 h + crate prices (9, 14): option B, passed 2026-11-13 (sim 53 h)
 - [x] W6 Training boost ladder (17): passed 2026-11-13 (product ids in)
-- [~] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15: option B built 2026-11-13), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
+- [x] W7 ★ (passed 2026-11-13) Event arrow as a Blender mesh (1, done in W1), bigger pens (15: option B), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
 
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
@@ -694,3 +694,4 @@ shop / pen, economy, world.
   Run in Studio: the pens' cat area 34 x 18 -> 38 x 40 (x2.5); the pen board is now placed from the gate sign. Play:
   !fillpens 60 -> 60 cats spread over the whole area (x -19..16, z -16..20), boards where they were. Found and fixed
   on the way: !fillpens (V5i) failed (Config.Pens -> Config.World.Pens). Waits for the developer's Save / Publish.
+- 2026-11-13 developer: "ผ่าน" (W7). Phase 5 (revision list 3) done: all 21 items, status table in docs/revision3_plan.md.

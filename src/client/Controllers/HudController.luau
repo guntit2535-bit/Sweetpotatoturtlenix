@@ -155,6 +155,7 @@ local function build()
 	bl.Size = UDim2.fromOffset(320, 3 * STAT_H + 24)
 	bl.Parent = gui
 	fitScale(bl, 720)
+	Kit.edge(gui, bl, "left") -- hugs the left edge of a phone (revision 3, after W2)
 	local function statLine(name: string, row: number, color: Color3): TextLabel
 		local line = Instance.new("Frame")
 		line.Name = name
@@ -189,6 +190,9 @@ local function build()
 		else pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 1, -12), Vector2.new(1, 1))
 	eventFrame.BackgroundColor3 = Color3.fromHex("6c4fc4")
 	fitScale(eventFrame, 720)
+	if touch then
+		Kit.edge(gui, eventFrame, "right")
+	end
 	if (Config.UIIcons :: any).Event > 0 then
 		Kit.icon(eventFrame, "Event", 48, UDim2.fromOffset(-14, -6))
 	end

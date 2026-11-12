@@ -134,6 +134,7 @@ local function build(setRemote: RemoteEvent)
 	gear.Position = UDim2.new(1, -10, 0, 8)
 	gear.Size = UDim2.fromOffset(84, 76)
 	gear.Parent = hud
+	Kit.edge(hud, gear, "right") -- hugs the right edge of a phone (revision 3, after W2)
 	local icon = Kit.gear(gear, 48)
 	icon.Position = UDim2.new(0.5, 0, 0, 27)
 	buttonLabel = Kit.text(gear, "Caption", UDim2.new(1, 0, 0, 22), UDim2.new(0, 0, 1, -22), 19, true)

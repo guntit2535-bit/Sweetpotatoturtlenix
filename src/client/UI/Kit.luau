@@ -69,6 +69,62 @@ function Kit.fit(obj: GuiObject, base: number, min: number, touchMin: number?): 
 	return scale
 end
 
+-- Revision 3 (developer, after W2): the HUD hugs the left / right edges of a phone. Roblox keeps every ScreenGui
+-- inside the device's safe area (a notch phone in landscape: ~60 px on both sides); the HUD groups instead sit
+-- Kit.EdgeShare of that gap from the real edge (at least Kit.EdgeMin px), just clear of a notch. Kit.edge(gui, obj,
+-- "left" | "right") places obj that way (and again when the screen changes); Kit.edgeX() is the X offset to use
+-- inside the safe area (negative on a notch phone, about Kit.EdgeMin on a PC).
+Kit.EdgeShare = 0.45
+Kit.EdgeMin = 10
+
+local probe: { none: Frame, safe: Frame }? = nil
+local function sideInset(): number
+	if not probe then
+		local a = Instance.new("ScreenGui")
+		a.Name = "_EdgeProbeNone"
+		a.ScreenInsets = Enum.ScreenInsets.None
+		a.ResetOnSpawn = false
+		a.Enabled = true
+		local fa = Instance.new("Frame")
+		fa.BackgroundTransparency = 1
+		fa.Size = UDim2.fromScale(1, 1)
+		fa.Parent = a
+		a.Parent = playerGui
+		local b = Instance.new("ScreenGui")
+		b.Name = "_EdgeProbeSafe"
+		b.ResetOnSpawn = false
+		local fb = Instance.new("Frame")
+		fb.BackgroundTransparency = 1
+		fb.Size = UDim2.fromScale(1, 1)
+		fb.Parent = b
+		b.Parent = playerGui
+		probe = { none = fa, safe = fb }
+	end
+	local p = probe :: { none: Frame, safe: Frame }
+	return math.max(0, p.safe.AbsolutePosition.X - p.none.AbsolutePosition.X)
+end
+
+function Kit.edgeX(): number
+	local inset = sideInset()
+	return math.max(Kit.EdgeMin, inset * Kit.EdgeShare) - inset
+end
+
+function Kit.edge(gui: ScreenGui, obj: GuiObject, side: string)
+	gui.ClipToDeviceSafeArea = false
+	local function apply()
+		local x = Kit.edgeX()
+		local p = obj.Position
+		obj.Position = if side == "left" then UDim2.new(0, x, p.Y.Scale, p.Y.Offset) else UDim2.new(1, -x, p.Y.Scale, p.Y.Offset)
+	end
+	apply()
+	task.delay(0.5, apply) -- the probe's sizes settle a frame after it is made
+	if workspace.CurrentCamera then
+		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+			task.defer(apply)
+		end)
+	end
+end
+
 function Kit.corner(parent: Instance, radius: number)
 	local c = Instance.new("UICorner")
 	c.CornerRadius = UDim.new(0, radius)

@@ -75,7 +75,10 @@ local function build(pen: Model)
 	local floor = pen:FindFirstChild("Floor")
 	local y = if floor and floor:IsA("BasePart") then floor.Position.Y + floor.Size.Y / 2 else 0.4
 	local cfg = Config.PenBoard
-	local at = Vector3.new(pivot.Position.X, y, pivot.Position.Z) + look * cfg.Forward + right * cfg.Right
+	-- measured from the gate's sign (W7: the pen's centre moved back when the pens grew, the front did not)
+	local sign = pen:FindFirstChild("Sign")
+	local base = if sign and sign:IsA("Model") then sign:GetPivot().Position else pivot.Position
+	local at = Vector3.new(base.X, y, base.Z) + look * cfg.Forward + right * cfg.Right
 	local b = WorldBoard.make("PenUpgradeBoard", CFrame.lookAt(at, at + look))
 	b.button.Activated:Connect(buy)
 	b.prompt.Triggered:Connect(buy)

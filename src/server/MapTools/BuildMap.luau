@@ -183,6 +183,42 @@ end
 ----------------------------------------------------------------------------------------------------
 -- lobby
 
+-- The 8 pens between the roads (Config.World.Pens). W7 (revision 3 item 15): can be run alone on a built map to
+-- rebuild only the pens (e.g. after a size change):
+--   require(game.ServerScriptService.Server.MapTools:Clone().BuildMap).pens()
+-- It replaces Lobby.Pens and moves the lobby's flower beds that a bigger pen would cover out to FlowerAngle.
+function Build.pens(lobby: Instance?)
+	local f = lobby or mapRoot():FindFirstChild("Lobby") or error("Build.pens: Map.Lobby not found")
+	local old = f:FindFirstChild("Pens")
+	if old then
+		old:Destroy()
+	end
+	local rng = Random.new(202)
+	local pens = subFolder(f, "Pens")
+	for i = 1, World.Pens.Count do
+		local deg = (i - 0.5) * 360 / World.Pens.Count
+		Kit.pen(pens, i, polar(deg, World.Pens.Ring), World.Pens.Width, World.Pens.Depth, Kit.RoofColors[i], rng)
+	end
+	if lobby == nil then
+		-- flower beds beside a pen's back corners: out to FlowerAngle from the pen's centre line
+		local step = 360 / World.Pens.Count
+		local moved = 0
+		for _, c in f:GetChildren() do
+			if c:IsA("Model") and c.Name == "Flowers" then
+				local p = c:GetPivot().Position
+				local deg = math.deg(math.atan2(p.Z, p.X))
+				local off = (deg % step) - step / 2 -- signed, from the nearest pen's centre line
+				if math.abs(off) < World.Pens.FlowerAngle - 0.5 then
+					local turn = (math.sign(off) * World.Pens.FlowerAngle - off)
+					c:PivotTo(CFrame.Angles(0, -math.rad(turn), 0) * c:GetPivot())
+					moved += 1
+				end
+			end
+		end
+		print(`[Sweetpotato] pens rebuilt ({World.Pens.Width} x {World.Pens.Depth}), {moved} flower beds moved`)
+	end
+end
+
 function Build.lobby()
 	local f = freshFolder(mapRoot(), "Lobby")
 	local rng = Random.new(101)
@@ -192,11 +228,7 @@ function Build.lobby()
 	Kit.disc(f, CFrame.new(0, 0.36, 0), plazaR * 1.5 - 3, 0.64, C.Stone, { decor = true })
 	Kit.fountain(f, CFrame.new(0, 0.6, 0), 1.5)
 	-- pens between the roads
-	local pens = subFolder(f, "Pens")
-	for i = 1, World.Pens.Count do
-		local deg = (i - 0.5) * 360 / World.Pens.Count
-		Kit.pen(pens, i, polar(deg, World.Pens.Ring), World.Pens.Width, World.Pens.Depth, Kit.RoofColors[i], rng)
-	end
+	Build.pens(f)
 	-- safe-zone edge: a glowing ring with light posts
 	local edge = subFolder(f, "SafeEdge")
 	local r = World.LobbyRadius
@@ -218,7 +250,7 @@ function Build.lobby()
 		local deg = (i - 0.5) * 360 / World.Pens.Count
 		for _, side in { -1, 1 } do
 			Kit.tree(f, polar(deg + side * 15, 136), rng)
-			Kit.flowers(f, polar(deg + side * 9, 128), rng, 5)
+			Kit.flowers(f, polar(deg + side * World.Pens.FlowerAngle, 128), rng, 5)
 		end
 		Kit.bench(f, polar(deg, plazaR + 5) * CFrame.new(0, 0.6, 0) * CFrame.Angles(0, math.pi, 0))
 	end

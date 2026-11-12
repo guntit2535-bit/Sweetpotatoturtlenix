@@ -20,7 +20,9 @@ Config.World = {
 	GroundY = 0,
 	LobbyRadius = 150, -- safe zone edge
 	PlazaRadius = 46,
-	Pens = { Count = 8, Ring = 100, Width = 40, Depth = 34 }, -- pen i at angle (i - 0.5) * 45 degrees
+	-- pen i at angle (i - 0.5) * 45 degrees. W7 (revision 3 item 15, option B): 40 x 34 -> 44 x 56, the front (and the gym,
+	-- the sign) where it was (r 83), the pen grows back toward the lobby edge (Ring = the centre: 83 + Depth / 2)
+	Pens = { Count = 8, Ring = 111, Width = 44, Depth = 56, FlowerAngle = 13 },
 	Roads = { Count = 8, Width = 16 },
 	GateWidth = 24,
 	Tile = { Lobby = 20, Zones = 24 }, -- checkerboard grass tile sizes
@@ -412,9 +414,9 @@ Config.Rods = {
 
 -- Pen expansion with money (task 2.4): +Step slots per purchase up to Config.Pen.MaxSlots.
 Config.PenUpgrade = { Step = 5, Cost = 2000, CostGrowth = 14 } -- W5 option B (was x2.1): 60 slots at ~11 h, not 35 min
--- W4 (revision 3 item 5): the board that sells pen slots, in front of your own pen (studs from the pen's centre:
+-- W4 (revision 3 item 5): the board that sells pen slots, in front of your own pen (studs from the pen's gate sign:
 -- Forward = toward the plaza, Right = toward the weights: between the sign and the weights)
-Config.PenBoard = { Forward = 12, Right = 9 }
+Config.PenBoard = { Forward = 0.7, Right = 9 }
 
 -- Cat treats (task 2.5, blueprint §12): 10 minutes each; buying again adds 10 minutes. Price = the larger
 -- of Base and IncomeSeconds of the player's current income.

@@ -416,7 +416,7 @@ function PenService:Init()
 		local folder = Instance.new("Folder")
 		folder.Name = "FullPensTest"
 		folder.Parent = workspace:FindFirstChild("PenCats") or workspace
-		for index = 1, Config.Pens.Count do
+		for index = 1, Config.World.Pens.Count do
 			for _ = 1, n do
 				local design = Cats.List[math.random(1, #Cats.List)]
 				local kg = CatRules.rollKg(design.Tier, math.random())
@@ -426,7 +426,7 @@ function PenService:Init()
 			end
 			task.wait()
 		end
-		return `{n * Config.Pens.Count} test cats in the pens (!clearpens removes them)`
+		return `{n * Config.World.Pens.Count} test cats in the pens (!clearpens removes them)`
 	end)
 	DebugService.register("clearpens", "!clearpens  remove the !fillpens test cats", function()
 		local old = workspace:FindFirstChild("PenCats") and workspace.PenCats:FindFirstChild("FullPensTest")

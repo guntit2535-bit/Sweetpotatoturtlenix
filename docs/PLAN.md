@@ -116,7 +116,7 @@ shop / pen, economy, world.
 - [x] W4 ★ (passed 2026-11-13: card shop A, pen board, tool icons) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
 - [~] W5 Economy to ~50 h + crate prices (9, 14): option B picked + in Config 2026-11-13 (sim 53 h)
 - [x] W6 Training boost ladder (17): passed 2026-11-13 (product ids in)
-- [ ] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
+- [~] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15: option B built 2026-11-13), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
 
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
@@ -688,3 +688,9 @@ shop / pen, economy, world.
 - 2026-11-13 developer: "ผ่าน" (W6) + Robux prices with the Robux coin icon instead of "R$". Format.robux uses the glyph
   U+E002 that Roblox's fonts draw as the Robux icon (checked in FredokaOne in Studio; no upload); the Robux tab and
   the boost boards use it. The 12 boost products still have Roblox's default grey icon (shown on their shop cards).
+- 2026-11-13: W7 bigger pens, option B picked ("B x2.5"): Config.World.Pens 40 x 34 -> 44 x 56 (Ring 100 -> 111, the
+  front at r 83 as before, so the sign, spawn, weights and treadmill did not move); BuildMap.pens() rebuilds only
+  Lobby.Pens (and Build.lobby uses it) and moves the 16 flower beds from 9 to 13 degrees off the pens' centre lines.
+  Run in Studio: the pens' cat area 34 x 18 -> 38 x 40 (x2.5); the pen board is now placed from the gate sign. Play:
+  !fillpens 60 -> 60 cats spread over the whole area (x -19..16, z -16..20), boards where they were. Found and fixed
+  on the way: !fillpens (V5i) failed (Config.Pens -> Config.World.Pens). Waits for the developer's Save / Publish.

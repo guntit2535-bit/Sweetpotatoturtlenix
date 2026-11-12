@@ -200,10 +200,10 @@ Text.Lines = {
 		en = "Catch cats and bring them home: they make money for you!",
 		th = "จับแมวแล้วพากลับคอก แมวจะหาเงินให้คุณ!",
 	},
-	TutZone = { en = "Follow the yellow arrows out of town.", th = "เดินตามลูกศรสีเหลืองออกไปนอกเมือง" },
+	TutZone = { en = "Follow the yellow arrows out of town to the Backyard.", th = "เดินตามลูกศรสีเหลืองออกจากเมืองไปสนามหลังบ้าน" },
 	TutCatch = {
-		en = "Walk to the glowing cat, take your rod (1) and tap the cat.",
-		th = "เดินไปหาแมวที่เรืองแสง กด 1 ถือเบ็ด แล้วแตะที่แมว",
+		en = "Walk to the glowing cat, take your rod (slot 1) and tap the cat.",
+		th = "เดินไปหาแมวที่เรืองแสง กดช่อง 1 ถือเบ็ด แล้วแตะที่แมว",
 	},
 	TutHold = { en = "Hold the button to keep the cat in the green!", th = "กดค้างที่ปุ่มให้แมวอยู่ในโซนสีเขียว!" },
 	TutCarry = {
@@ -211,8 +211,8 @@ Text.Lines = {
 		th = "เดินตามลูกศรกลับคอกของคุณ ระวังโดนไม้ตี!",
 	},
 	TutTrain = {
-		en = "Stand on your weights: more Strength = heavier cats.",
-		th = "ไปยืนที่ที่ยกเวท พลังเยอะ = จับแมวตัวหนักได้",
+		en = "Stand in the green ring at your weights until you have {kg} kg of Strength.",
+		th = "ไปยืนในวงเขียวที่ยกเวท จนมีพลัง {kg} กก.",
 	},
 	TutShop = { en = "Tap the Shop button: better rods catch easier.", th = "แตะปุ่มร้านค้า เบ็ดที่ดีขึ้นตกแมวง่ายขึ้น" },
 	TutDone = { en = "Here is ${money} to start. Have fun!", th = "รับเงิน ${money} ไปเริ่มต้นเลย ขอให้สนุก!" },

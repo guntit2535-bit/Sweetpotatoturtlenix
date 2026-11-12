@@ -703,3 +703,14 @@ shop / pen, economy, world.
   keeps ReceiptIds, gets the epoch and the current EconVersion (so a new player starts the tutorial and nothing is
   converted); leaderboards read / write "<store>_r<epoch>" (empty boards). Tests in Migrate.spec; Studio FreshSave: a
   new player loads normally. The developer's own save resets on their next Play / join. Bump the epoch to reset again.
+- 2026-11-13 developer (phone pictures): "1 the floor arrows point backwards, 2 check and fix the whole tutorial". Found
+  and fixed: the floor chevrons' bars were turned the wrong way (now checked: they meet toward the target); a new
+  player has 1 kg of Strength and could hold 1 of 51 wild cats (the "nearest catchable" one was 270-303 m away), so the
+  tutorial now trains first: 1 welcome, 2 weights until Config.Tutorial.TrainTo = 15 kg (~8 s), 3 Backyard, 4 catch the
+  nearest cat you can hold (Studio: 7.7 kg at 60 studs), 5 carry home, 6 Shop, 7 done ($1K); the hand / edge emoji are
+  drawn arrows; the edge arrow keeps clear of the bubble; the Shop button gets a glowing frame (an arrow beside it
+  covered the next button). Found on the way: since the bigger pens (W7) a carried cat only went in 22 studs from the
+  floor's centre, 24-28 studs behind the gate: now delivered anywhere on the floor or within Config.Carry.DeliverMargin
+  of the fence. Also the left HUD was cut off on the developer's notch phone: the safe-area gap is now measured per side
+  and again when the phone turns over (Kit.edgeX(side), Kit.insetsChanged). New debug command !catch (wins the bar you
+  are on). Whole tutorial played in Studio with FreshSave, step 1 to done.

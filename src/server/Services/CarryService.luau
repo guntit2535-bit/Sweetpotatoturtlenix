@@ -111,13 +111,21 @@ function CarryService.drop(player: Player): WildCatService.Wild?
 	return w
 end
 
-local function penCentre(player: Player): Vector3?
+-- Is `pos` at the player's own pen? Inside the pen's floor (any size) or within Config.Carry.DeliverMargin of its
+-- fence, the gate side included. (2026-11-13: was "within DeliverRadius of the floor's centre", which the bigger pens
+-- of W7 moved 24-28 studs back from the gate, so standing in the gate no longer delivered.)
+local function atPen(player: Player, pos: Vector3): boolean
 	local index = PenService.penIndex(player)
 	local map = workspace:FindFirstChild("Map")
 	local pens = map and map:FindFirstChild("Lobby") and map.Lobby:FindFirstChild("Pens")
 	local pen = index and pens and pens:FindFirstChild(`Pen{index}`)
 	local floor = pen and pen:FindFirstChild("Floor")
-	return if floor and floor:IsA("BasePart") then floor.Position else nil
+	if not floor or not floor:IsA("BasePart") then
+		return false
+	end
+	local rel = floor.CFrame:PointToObjectSpace(pos)
+	local m = Config.Carry.DeliverMargin
+	return math.abs(rel.X) <= floor.Size.X / 2 + m and math.abs(rel.Z) <= floor.Size.Z / 2 + m and math.abs(rel.Y) < 20
 end
 
 local function deliver(player: Player, c: Carry)
@@ -179,8 +187,7 @@ function CarryService:Start()
 			task.wait(Config.Carry.CheckEvery)
 			for player, c in carrying do
 				local root = rootOf(player)
-				local centre = penCentre(player)
-				if root and centre and (root.Position - centre).Magnitude <= Config.Carry.DeliverRadius then
+				if root and atPen(player, root.Position) then
 					deliver(player, c)
 				end
 			end

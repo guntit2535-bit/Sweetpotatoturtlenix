@@ -54,12 +54,15 @@ local function getColumn(): Frame
 		local mine = f.Size.Y.Offset * Kit.scaleFor(720, 0.55, Kit.TouchMin)
 		-- centred near 0.42 of the screen when there is room, otherwise pushed up just enough
 		local bottom = math.max(statsTop, h * 0.58 - mine / 2)
-		f.Position = UDim2.new(0, Kit.edgeX(), 1, -bottom) -- hugs the left edge (Kit.edge)
+		f.Position = UDim2.new(0, Kit.edgeX("left"), 1, -bottom) -- hugs the left edge (Kit.edge)
 	end
 	gui.ClipToDeviceSafeArea = false
 	place()
 	task.delay(0.5, place)
 	gui:GetPropertyChangedSignal("AbsoluteSize"):Connect(place)
+	Kit.insetsChanged:Connect(function()
+		task.defer(place)
+	end)
 	if workspace.CurrentCamera then
 		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(place)
 	end

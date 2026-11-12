@@ -1,10 +1,11 @@
 --!strict
 -- New-player tutorial (task V4, revision round 2; not in the blueprint). Saved step data.TutorialStep:
 --   1 Welcome            -> by itself after Config.Tutorial.WelcomeSeconds (round 2: every step moves on alone)
---   2 Walk to the Backyard -> the server sees the player leave the lobby (Config.World.LobbyRadius)
---   3 Catch a cat        -> the server sees CarryingCat (a cat caught and carried)
---   4 Carry it home      -> CarryService.Delivered (a cat knocked loose sends the player back to 3)
---   5 Train at the weights -> a training tick (Progress "Train")
+--   2 Get stronger       -> Strength reaches Config.Tutorial.TrainTo at your weights (2026-11-13: training comes
+--                           first: a new player has 1 kg of Strength and can hold almost no cat)
+--   3 Walk to the Backyard -> the server sees the player leave the lobby (Config.World.LobbyRadius)
+--   4 Catch a cat        -> the server sees CarryingCat (a cat caught and carried)
+--   5 Carry it home      -> CarryService.Delivered (a cat knocked loose sends the player back to 4)
 --   6 Open the Shop      -> the client's ack (nothing to win by faking it)
 --   7 All done           -> by itself after Config.Tutorial.DoneSeconds: Config.Tutorial.Reward money the
 --                           first time only, then Done
@@ -16,7 +17,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Config = require(ReplicatedStorage.Shared.Config)
 local Guard = require(script.Parent.Parent.Util.Guard)
-local Progress = require(script.Parent.Parent.Util.Progress)
 local Validate = require(ReplicatedStorage.Shared.Validate)
 local CarryService = require(script.Parent.CarryService)
 local DataService = require(script.Parent.DataService)
@@ -25,7 +25,7 @@ local DebugService = require(script.Parent.DebugService)
 local TutorialService = {}
 
 local T = Config.Tutorial
-local WELCOME, ZONE, CATCH, CARRY, TRAIN, SHOP, FINISH = 1, 2, 3, 4, 5, 6, 7
+local WELCOME, TRAIN, ZONE, CATCH, CARRY, SHOP, FINISH = 1, 2, 3, 4, 5, 6, 7
 local ACKABLE = { [WELCOME] = true, [SHOP] = true, [FINISH] = true }
 
 local lostSince: { [Player]: number } = {} -- step 4: when the carried cat was lost
@@ -101,6 +101,12 @@ local function poll()
 		elseif step == FINISH and held >= T.DoneSeconds then
 			finish(player)
 			continue
+		elseif step == TRAIN then
+			local data = DataService.GetData(player)
+			if data and data.Strength >= T.TrainTo then
+				advance(player, TRAIN)
+			end
+			continue
 		end
 		if step < ZONE or step > CARRY then
 			continue
@@ -130,7 +136,7 @@ end
 
 function TutorialService:Init()
 	Guard.onEvent("Tutorial", T.Rate, onRemote)
-	DebugService.register("tutorial", "!tutorial N  set the tutorial step (1-7, 99 = done)", function(player, args)
+	DebugService.register("tutorial", "!tutorial N  set the tutorial step (1-7, 99 = done; 2 = train, 4 = catch)", function(player, args)
 		local n = tonumber(args[1])
 		if not n then
 			return "usage: !tutorial N"
@@ -151,12 +157,7 @@ function TutorialService:Start()
 		local step = stepOf(player)
 		if step == CARRY or step == CATCH then
 			lostSince[player] = nil
-			setStep(player, TRAIN)
-		end
-	end)
-	Progress.Added:Connect(function(player, kind)
-		if kind == "Train" then
-			advance(player, TRAIN)
+			setStep(player, SHOP)
 		end
 	end)
 	Players.PlayerRemoving:Connect(function(player)

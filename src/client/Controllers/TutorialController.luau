@@ -6,9 +6,11 @@
 --   * yellow arrow chevrons on the ground flowing from the player to the target
 --   * a big bouncing 3D arrow over the target, and the target outlined (Highlight)
 --   * an arrow at the screen edge (with the distance) while the target is off screen
---   * a pointing hand on the button to press (the Shop button; the hold button while fishing)
--- Targets: the Backyard, the nearest cat you can catch, your pen, your weights, the Shop button.
+--   * the button to press: a glowing frame round the Shop button, an arrow at the hold button while fishing
+-- Steps (2026-11-13: training first): 1 welcome, 2 your weights, 3 the Backyard, 4 the nearest cat you can hold,
+-- 5 your pen, 6 the Shop button, 7 done. The pointers are drawn from frames (no emoji).
 
+local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
@@ -26,8 +28,9 @@ local C = Kit.Colors
 local me = Players.LocalPlayer
 local remote: RemoteEvent
 local STEPS = 7
-local TITLE = { "TutT1", "TutT2", "TutT3", "TutT4", "TutT5", "TutT6", "TutT7" }
-local BODY = { "TutWelcome", "TutZone", "TutCatch", "TutCarry", "TutTrain", "TutShop", "TutDone" }
+local TITLE = { "TutT1", "TutT5", "TutT2", "TutT3", "TutT4", "TutT6", "TutT7" }
+local BODY = { "TutWelcome", "TutTrain", "TutZone", "TutCatch", "TutCarry", "TutShop", "TutDone" }
+local TRAIN, ZONE, CATCH, CARRY, SHOP = 2, 3, 4, 5, 6
 local YELLOW = Color3.fromHex("ffd23f")
 local CHEVRONS = 14
 local SPACING = 5
@@ -38,9 +41,11 @@ local body: TextLabel
 local stepLabel: TextLabel
 local dots: { Frame } = {}
 local skipButton: TextButton
-local edge: TextLabel
+local edge: Frame
 local edgeDist: TextLabel -- (not inside the arrow: it would turn with it)
-local hand: TextLabel
+local hand: Frame
+local glow: Frame
+local glowStroke: UIStroke
 local guide: Folder
 local chevrons: { Model } = {}
 local arrow: Model
@@ -69,14 +74,10 @@ end
 
 -- The nearest wild cat this player can catch (Strength >= its kg); any wild cat if none.
 local function nearestCat(root: BasePart): Model?
-	local folder = workspace:FindFirstChild("WildCats")
-	if not folder then
-		return nil
-	end
 	local strength = me:GetAttribute("Strength")
 	local best, bestD, any, anyD = nil, math.huge, nil, math.huge
-	for _, m in folder:GetChildren() do
-		if m:IsA("Model") and m.PrimaryPart then
+	for _, m in CollectionService:GetTagged("WildCat") do
+		if m:IsA("Model") and m.PrimaryPart and m:GetAttribute("State") ~= "carried" then
 			local d = (m.PrimaryPart.Position - root.Position).Magnitude
 			local kg = m:GetAttribute("Kg")
 			local ok = type(kg) == "number" and type(strength) == "number" and kg <= strength
@@ -93,21 +94,24 @@ end
 
 -- The target of a step: a world position and, when there is one, the model to outline.
 local function target(s: number, root: BasePart): (Vector3?, Instance?)
-	if s == 2 then
+	if s == ZONE then
 		local flat = Vector3.new(root.Position.X, 0, root.Position.Z)
 		local dir = if flat.Magnitude > 1 then flat.Unit else Vector3.new(0, 0, -1)
 		return dir * (Config.World.LobbyRadius + 24), nil
-	elseif s == 3 then
+	elseif s == CATCH then
 		if me:GetAttribute("Fishing") ~= nil then
-			return nil, nil -- reeling: the hand points at the hold button instead
+			return nil, nil -- reeling: the pointer shows the hold button instead
 		end
 		local cat = nearestCat(root)
 		return if cat and cat.PrimaryPart then cat.PrimaryPart.Position else nil, cat
-	elseif s == 4 then
+	elseif s == CARRY then
 		local pen = myPen()
 		local spawnPart = pen and pen:FindFirstChild("Spawn")
 		return if spawnPart and spawnPart:IsA("BasePart") then spawnPart.Position else (pen and pen:GetPivot().Position), nil
-	elseif s == 5 then
+	elseif s == TRAIN then
+		if me:GetAttribute("Training") == "weights" then
+			return nil, nil -- already lifting: no arrows in the way
+		end
 		local pen = myPen()
 		local w = pen and pen:FindFirstChild("Weights")
 		local stand = w and w:FindFirstChild("Stand")
@@ -118,11 +122,11 @@ end
 
 -- The button the hand points at (screen), if any.
 local function pointAt(s: number): GuiObject?
-	if s == 6 then
+	if s == SHOP then
 		local gui = me.PlayerGui:FindFirstChild("HudLeft")
 		local b = gui and gui:FindFirstChild("Shop", true)
 		return if b and b:IsA("GuiObject") then b else nil
-	elseif s == 3 and me:GetAttribute("Fishing") ~= nil then
+	elseif s == CATCH and me:GetAttribute("Fishing") ~= nil then
 		local gui = me.PlayerGui:FindFirstChild("FishingGui")
 		local b = gui and gui:FindFirstChild("Hold")
 		return if b and b:IsA("GuiObject") and b.Visible then b else nil
@@ -133,10 +137,10 @@ end
 local function texts(): (string, string)
 	local s = step() or 1
 	local key = BODY[s] or "TutWelcome"
-	if s == 3 and me:GetAttribute("Fishing") ~= nil then
+	if s == CATCH and me:GetAttribute("Fishing") ~= nil then
 		key = "TutHold"
 	end
-	return Lang.text(TITLE[s] or "TutT1"), Lang.text(key, { money = Format.short(Config.Tutorial.Reward) })
+	return Lang.text(TITLE[s] or "TutT1"), Lang.text(key, { money = Format.short(Config.Tutorial.Reward), kg = Config.Tutorial.TrainTo })
 end
 
 local function refresh()
@@ -185,7 +189,9 @@ local function buildWorld()
 		root.Transparency = 1
 		m.PrimaryPart = root
 		for _, side in { -1, 1 } do
-			neon(m, Vector3.new(0.7, 0.15, 2.8), CFrame.new(side * 0.9, 0, 0.8) * CFrame.Angles(0, side * math.rad(-40), 0))
+			-- the two bars meet at the front (-Z), so the ">" points the way to go (2026-11-13: it was turned the
+			-- other way and pointed back at the player)
+			neon(m, Vector3.new(0.7, 0.15, 2.8), CFrame.new(side * 0.9, 0, 0.8) * CFrame.Angles(0, side * math.rad(40), 0))
 		end
 		m.Parent = guide
 		table.insert(chevrons, m)
@@ -209,6 +215,31 @@ local function buildWorld()
 	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 	highlight.Enabled = false
 	highlight.Parent = guide
+end
+
+-- A yellow ">" arrow drawn from two outlined bars (no emoji glyph); it points along +X, turn it with Rotation.
+local function pointer(parent: Instance, name: string, size: number): Frame
+	local f = Instance.new("Frame")
+	f.Name = name
+	f.BackgroundTransparency = 1
+	f.AnchorPoint = Vector2.new(0.5, 0.5)
+	f.Size = UDim2.fromOffset(size, size)
+	f.ZIndex = 20
+	f.Parent = parent
+	for _, side in { -1, 1 } do
+		local bar = Instance.new("Frame")
+		bar.AnchorPoint = Vector2.new(0.5, 0.5)
+		bar.Size = UDim2.fromScale(0.62, 0.2)
+		bar.Position = UDim2.fromScale(0.5, 0.5 + side * 0.17)
+		bar.Rotation = -side * 38
+		bar.BackgroundColor3 = YELLOW
+		bar.BorderSizePixel = 0
+		bar.ZIndex = 20
+		bar.Parent = f
+		Kit.corner(bar, math.floor(size * 0.08))
+		Kit.stroke(bar, 3, nil, true)
+	end
+	return f
 end
 
 local function buildGui()
@@ -269,18 +300,26 @@ local function buildGui()
 		remote:FireServer("skip")
 	end)
 	-- the edge arrow and the pointing hand
-	edge = Kit.text(gui, "Edge", UDim2.fromOffset(84, 84), UDim2.new(), 56, true)
-	edge.AnchorPoint = Vector2.new(0.5, 0.5)
-	edge.Text = "➤"
-	edge.TextColor3 = YELLOW
+	edge = pointer(gui, "Edge", 64)
 	edge.Visible = false
 	edgeDist = Kit.text(gui, "EdgeDist", UDim2.fromOffset(90, 26), UDim2.new(), 22, true)
 	edgeDist.AnchorPoint = Vector2.new(0.5, 0)
 	edgeDist.Visible = false
-	hand = Kit.text(gui, "Hand", UDim2.fromOffset(70, 70), UDim2.new(), 54, true)
-	hand.AnchorPoint = Vector2.new(0.5, 0.5)
-	hand.Text = "👈"
+	hand = pointer(gui, "Hand", 54)
 	hand.Visible = false
+	-- the glowing frame around a left-grid button (it may stick out past the safe area like the grid does)
+	gui.ClipToDeviceSafeArea = false
+	glow = Instance.new("Frame")
+	glow.Name = "Glow"
+	glow.BackgroundTransparency = 1
+	glow.ZIndex = 20
+	glow.Visible = false
+	glow.Parent = gui
+	Kit.corner(glow, 18)
+	glowStroke = Instance.new("UIStroke")
+	glowStroke.Thickness = 5
+	glowStroke.Color = YELLOW
+	glowStroke.Parent = glow
 	local function rescale()
 		local cam = workspace.CurrentCamera
 		local size = cam and cam.ViewportSize or Vector2.new(1000, 700)
@@ -360,6 +399,11 @@ local function update()
 				v = Vector2.new(0, -1)
 			end
 			local p = c2 + v.Unit * math.min(size.X, size.Y) * 0.38
+			-- 2026-11-13: never on top of the bubble at the bottom (it covered it when the target was behind you):
+			-- in the lower half it moves out to the left or right side, still turned toward the target
+			if banner.Visible and p.Y > size.Y * 0.5 then
+				p = Vector2.new(c2.X + (if v.X >= 0 then 1 else -1) * size.X * 0.36, size.Y * 0.5)
+			end
 			edge.Position = UDim2.fromOffset(p.X, p.Y)
 			edge.Rotation = math.deg(math.atan2(v.Y, v.X))
 			edge.Visible = true
@@ -381,15 +425,24 @@ local function update()
 		local nudge = math.sin(now * 6) * 8
 		local cx = b.AbsolutePosition.Y + b.AbsoluteSize.Y / 2 -- the button's middle (same screen space as the hand)
 		if b.AbsolutePosition.X > workspace.CurrentCamera.ViewportSize.X / 2 then
+			-- a button on the right (HOLD): the arrow left of it, pointing right at it
 			hand.Position = UDim2.fromOffset(b.AbsolutePosition.X - 34 - nudge, cx)
-			hand.Text = "👉"
+			hand.Rotation = 0
+			hand.Visible = true
+			glow.Visible = false
 		else
-			hand.Position = UDim2.fromOffset(b.AbsolutePosition.X + b.AbsoluteSize.X + 34 + nudge, cx)
-			hand.Text = "👈"
+			-- 2026-11-13: a button in the left grid (Shop): a glowing frame around it; an arrow beside it covered the
+			-- next button, and above it is off screen (the grid sits near the top)
+			hand.Visible = false
+			local grow = 6 + math.abs(math.sin(now * 4)) * 4
+			glow.Position = UDim2.fromOffset(b.AbsolutePosition.X - grow, b.AbsolutePosition.Y - grow)
+			glow.Size = UDim2.fromOffset(b.AbsoluteSize.X + grow * 2, b.AbsoluteSize.Y + grow * 2)
+			glowStroke.Transparency = 0.15 + 0.35 * math.abs(math.sin(now * 4))
+			glow.Visible = true
 		end
-		hand.Visible = true
 	else
 		hand.Visible = false
+		glow.Visible = false
 	end
 end
 
@@ -408,7 +461,7 @@ function TutorialController.Start(_self: any)
 		local shop = me.PlayerGui:WaitForChild("ShopWindow", 30)
 		if shop and shop:IsA("ScreenGui") then
 			shop:GetPropertyChangedSignal("Enabled"):Connect(function()
-				if step() == 6 and shop.Enabled then
+				if step() == SHOP and shop.Enabled then
 					remote:FireServer("ack", 6)
 				end
 			end)

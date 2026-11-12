@@ -24,6 +24,7 @@ local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
 local ToolAnim = require(script.Parent.Parent.Util.ToolAnim)
 local CarryService = require(script.Parent.CarryService)
+local DebugService = require(script.Parent.DebugService)
 local DataService = require(script.Parent.DataService)
 local MovementService = require(script.Parent.MovementService)
 local WildCatService = require(script.Parent.WildCatService)
@@ -266,6 +267,16 @@ function FishingService:Init()
 	Guard.onEvent("FishHold", Config.Fishing.HoldRate, onHold)
 	Guard.onEvent("FishGiveUp", nil, function(player)
 		finish(player, "FishGaveUp")
+	end)
+	-- test helper (Studio / admins only, like every debug command): fill the bar you are fishing now, so the
+	-- next server tick wins it (the catch, carry and tutorial run as for a real catch)
+	DebugService.register("catch", "!catch  win the fishing bar you are on now", function(player)
+		local s = sessions[player]
+		if not s then
+			return "you are not fishing (cast at a cat first)"
+		end
+		s.bar.meter = 2
+		return "caught on the next tick"
 	end)
 end
 

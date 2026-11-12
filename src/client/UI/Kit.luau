@@ -77,8 +77,14 @@ end
 Kit.EdgeShare = 0.45
 Kit.EdgeMin = 10
 
+-- Fix (developer's phone, 2026-11-13: the left buttons were cut off): the gap is measured per side, and measured
+-- again whenever the safe area moves (turning the phone over swaps the notch to the other side without changing
+-- the screen size, so the old one-side, size-change-only measure went stale).
 local probe: { none: Frame, safe: Frame }? = nil
-local function sideInset(): number
+local insetsChanged = Instance.new("BindableEvent")
+Kit.insetsChanged = insetsChanged.Event
+
+local function probes(): { none: Frame, safe: Frame }
 	if not probe then
 		local a = Instance.new("ScreenGui")
 		a.Name = "_EdgeProbeNone"
@@ -99,25 +105,47 @@ local function sideInset(): number
 		fb.Parent = b
 		b.Parent = playerGui
 		probe = { none = fa, safe = fb }
+		for _, f in { fa, fb } do
+			f:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
+				insetsChanged:Fire()
+			end)
+			f:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+				insetsChanged:Fire()
+			end)
+		end
 	end
-	local p = probe :: { none: Frame, safe: Frame }
-	return math.max(0, p.safe.AbsolutePosition.X - p.none.AbsolutePosition.X)
+	return probe :: { none: Frame, safe: Frame }
 end
 
-function Kit.edgeX(): number
-	local inset = sideInset()
+-- the safe-area gap on that side ("left" | "right"), in px
+local function sideInset(side: string): number
+	local p = probes()
+	if side == "left" then
+		return math.max(0, p.safe.AbsolutePosition.X - p.none.AbsolutePosition.X)
+	end
+	local noneRight = p.none.AbsolutePosition.X + p.none.AbsoluteSize.X
+	local safeRight = p.safe.AbsolutePosition.X + p.safe.AbsoluteSize.X
+	return math.max(0, noneRight - safeRight)
+end
+
+-- the X offset inside the safe area for a piece hugging that side (never closer than EdgeMin to the real edge)
+function Kit.edgeX(side: string?): number
+	local inset = sideInset(side or "left")
 	return math.max(Kit.EdgeMin, inset * Kit.EdgeShare) - inset
 end
 
 function Kit.edge(gui: ScreenGui, obj: GuiObject, side: string)
 	gui.ClipToDeviceSafeArea = false
 	local function apply()
-		local x = Kit.edgeX()
+		local x = Kit.edgeX(side)
 		local p = obj.Position
 		obj.Position = if side == "left" then UDim2.new(0, x, p.Y.Scale, p.Y.Offset) else UDim2.new(1, -x, p.Y.Scale, p.Y.Offset)
 	end
 	apply()
 	task.delay(0.5, apply) -- the probe's sizes settle a frame after it is made
+	Kit.insetsChanged:Connect(function()
+		task.defer(apply)
+	end)
 	if workspace.CurrentCamera then
 		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
 			task.defer(apply)

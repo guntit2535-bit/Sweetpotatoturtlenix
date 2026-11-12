@@ -68,6 +68,7 @@ Config.Tutorial = {
 	Reward = 1000,
 	CheckEvery = 0.5, -- seconds between the server's step checks
 	WelcomeSeconds = 5, -- the welcome step moves on by itself
+	TrainTo = 15, -- step 2 ends at this much Strength (kg): about 3 in 4 Backyard cats can then be held
 	DoneSeconds = 5, -- so does the last one (with the reward)
 	Rate = { maxCalls = 4, window = 1 },
 }
@@ -224,7 +225,7 @@ Config.Carry = {
 	HeadOffset = 2.6, -- studs above the root part (the cat rests on the raised hands, task 2.22)
 	Scale = 0.7, -- a carried cat is shown at this share of its size ...
 	MaxScale = 1.0, -- ... and never bigger than this model scale
-	DeliverRadius = 22, -- studs from the pen centre
+	DeliverMargin = 4, -- a carried cat goes in on the pen's floor or this close to its fence (CarryService; was a 22-stud radius)
 	CheckEvery = 0.25,
 	DroppedSeconds = 60, -- a knocked-loose cat nobody catches goes back into hiding (blueprint §4)
 }

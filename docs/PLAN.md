@@ -714,3 +714,7 @@ shop / pen, economy, world.
   of the fence. Also the left HUD was cut off on the developer's notch phone: the safe-area gap is now measured per side
   and again when the phone turns over (Kit.edgeX(side), Kit.insetsChanged). New debug command !catch (wins the bar you
   are on). Whole tutorial played in Studio with FreshSave, step 1 to done.
+- 2026-11-13 developer (phone picture, step 4): "after walking up to the cat, point at the rod too". Within
+  Config.Fishing.CastRange of the target cat with the rod still in the backpack, the yellow arrow points at the rod's
+  slot in Roblox's hotbar (placed by the hotbar's own rule, 60-px slots 65 apart, centred; measured in Studio, the
+  arrow's tip lands on slot 1's left edge); it goes when the rod is in hand or the player walks away.

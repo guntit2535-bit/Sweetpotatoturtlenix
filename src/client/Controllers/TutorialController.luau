@@ -31,6 +31,7 @@ local STEPS = 7
 local TITLE = { "TutT1", "TutT5", "TutT2", "TutT3", "TutT4", "TutT6", "TutT7" }
 local BODY = { "TutWelcome", "TutTrain", "TutZone", "TutCatch", "TutCarry", "TutShop", "TutDone" }
 local TRAIN, ZONE, CATCH, CARRY, SHOP = 2, 3, 4, 5, 6
+local HOTBAR_SLOT, HOTBAR_STEP = 60, 65 -- Roblox's hotbar: slot size, slot + gap (measured in Studio 2026-11-13)
 local YELLOW = Color3.fromHex("ffd23f")
 local CHEVRONS = 14
 local SPACING = 5
@@ -419,9 +420,37 @@ local function update()
 		edge.Visible = false
 		edgeDist.Visible = false
 	end
+	-- 2026-11-13 (developer): close to the cat with the rod still in the backpack: the arrow points at the rod's
+	-- slot in Roblox's hotbar (a LocalScript cannot read CoreGui, so the slot is placed by the hotbar's own rule:
+	-- 60-px slots, 5 apart, the filled ones centred at the bottom of the screen)
+	local rodSlot: Vector2? = nil
+	if s == CATCH and model and pos and root and root:IsA("BasePart") and character and me:GetAttribute("Fishing") == nil
+		and not character:FindFirstChild("Rod") and (pos - root.Position).Magnitude <= Config.Fishing.CastRange then
+		local backpack = me:FindFirstChildOfClass("Backpack")
+		if backpack and backpack:FindFirstChild("Rod") then
+			local count = 0 -- filled hotbar slots (the tools in the backpack and in hand)
+			for _, container in { backpack, character } do
+				for _, t in container:GetChildren() do
+					if t:IsA("Tool") then
+						count += 1
+					end
+				end
+			end
+			-- the rod is given first (ToolService), so it holds slot 1 (the step text says so too)
+			local area = (hand.Parent :: ScreenGui).AbsoluteSize
+			local centre = area.X / 2 + HOTBAR_STEP * (1 - (count / 2 + 0.5))
+			rodSlot = Vector2.new(centre - HOTBAR_SLOT / 2, area.Y - HOTBAR_STEP / 2 - 2.5)
+		end
+	end
 	-- the hand pointing at a button
 	local b = if s then pointAt(s) else nil
-	if b then
+	if rodSlot then
+		local nudge = math.sin(now * 6) * 8
+		hand.Position = UDim2.fromOffset(rodSlot.X - 34 - nudge, rodSlot.Y)
+		hand.Rotation = 0
+		hand.Visible = true
+		glow.Visible = false
+	elseif b then
 		local nudge = math.sin(now * 6) * 8
 		local cx = b.AbsolutePosition.Y + b.AbsoluteSize.Y / 2 -- the button's middle (same screen space as the hand)
 		if b.AbsolutePosition.X > workspace.CurrentCamera.ViewportSize.X / 2 then

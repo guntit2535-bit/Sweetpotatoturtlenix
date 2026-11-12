@@ -60,3 +60,24 @@ levels when affordable, rebirthing as soon as Strength allows; pen slots 10 + 2 
 
 After rebirth 25 the numbers keep growing until the 99 Sx cap. Real play is slower than the sim (other players
 take cats, the minigame fails, bats drop cats), so B in the sim is roughly 1.5-2x longer for a real player.
+
+---
+
+# W5 (revision 3 items 9 + 14): end game at about 50 hours, dearer crates (2026-11-13)
+
+Simulation: `lune run tools/sim/endgame.luau` (options in `tools/sim/endgame_options.luau`). Unlike the older sims it
+runs the game's own shared modules (Config, CatRules, Shop, Crates, Mutation). One active free player: a cat trip every
+60 s (85 % caught), lifting half the rest of the time, buying weights levels, pen slots and the next rod when it can,
+a crate now and then, rebirthing as soon as it may. End game = rebirth 25.
+
+Today: rebirth 25 at 31 h, but rod 25 at 3 h, 60 pen slots at 35 min, and crates cost seconds of income (the Diamond
+crate, 900K, is under a second of income at the end of the first life).
+
+| Option | Rebirth 1 / 10 / 20 / 25 | Rod 25 | 60 pen slots | Diamond crate | Changes |
+|---|---|---|---|---|---|
+| A faster | 1h45 / 13h / 32h / **44 h** | 28 h | 10 h | ~2-5 min of income | Strength x3.85 a rebirth, rods x5 a level, pen x12 a step, crates half of B |
+| **B (recommended)** | 1h46 / 14h / 37h / **53 h** | 35 h | 11 h | ~5-8 min | x3.8, rods x5.5, pen x14, crates 40K / 2.5M / 75M / 900M |
+| C slower | 1h48 / 15h / 42h / **64 h** | 50 h | 15 h | ~14-16 min | x3.75, rods x6, pen x16, crates x3 of B |
+
+All options: crates x3.4 a rebirth (was x3; income grows about that fast). The sim player never stops, so a real
+player (other players taking cats, bat hits, walking, breaks) takes longer.

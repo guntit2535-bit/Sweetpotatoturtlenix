@@ -184,13 +184,17 @@ Config.WildCats = {
 Config.Fishing = {
 	CastRange = 45, -- studs from the player to the cat
 	KeepRange = 70, -- walking further than this away ends the session
-	TickRate = 15, -- server steps per second
-	SnapshotEvery = 0.2, -- seconds between the server's bar snapshots to the client
+	TickRate = 15, -- server loop runs per second (the bar itself steps in FishingBar.Fixed ticks)
+	SnapshotEvery = 0.25, -- seconds between the server's confirmed bar snapshots to the client
+	-- W1 (phone fix): the client sends each hold change with its tick; the server confirms the bar InputWindow
+	-- seconds behind real time so a phone's late inputs still land on their tick (works up to this ping)
+	InputWindow = 0.5,
+	TickSlack = 30, -- ticks a client may run ahead of the server's clock (jitter)
 	StartMeter = 0.3,
 	Lift = 2.6, -- zone acceleration up while holding (bar lengths / s^2)
 	Gravity = 2.2, -- and down when released
 	MaxVel = 1.4,
-	Bounce = 0.35, -- zone speed kept when it hits an end
+	Bounce = 0.1, -- zone speed kept when it hits an end (W1: was 0.35, the zone bounced off the ends)
 	CastRate = { maxCalls = 3, window = 1 },
 	HoldRate = { maxCalls = 30, window = 1 },
 	Tiers = {
@@ -218,10 +222,13 @@ Config.Bat = {
 	Cooldown = 0.8,
 	Range = 9, -- studs in front of the swinger
 	Arc = 0.3, -- minimum dot product between the swinger's look and the target
-	Knock = 120, -- carrier knocked far: horizontal speed ...
+	-- W1: every hit flings (the client goes into the Physics state for the stun, so the push is not eaten)
+	Knock = 65, -- carrier knocked far: horizontal speed (Studio: 80 = 100-125 studs with the slide) ...
 	KnockUp = 70, -- ... and up
-	SmallKnock = 45, -- a player not carrying a cat is only pushed
-	StunSeconds = 1.2,
+	SmallKnock = 45, -- a player not carrying a cat flies a shorter way (~40 studs)
+	SmallKnockUp = 40,
+	StunSeconds = 1.6,
+	SmallStunSeconds = 0.8,
 	SwingRate = { maxCalls = 4, window = 1 },
 }
 

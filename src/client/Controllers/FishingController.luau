@@ -1,9 +1,12 @@
 --!strict
 -- Fishing on this client (tasks 1.11 / 1.12): using the Rod picks the wild cat you are looking at (within
 -- Config.Fishing.CastRange) and asks Cast; the server answers FishStart and decides everything after that.
--- The bar is drawn from a local copy of the server's state (shared/FishingBar) that every FishState
--- snapshot resets. Hold = left mouse button / Space / the big HOLD button (phones). FishEnd closes it:
--- a "Caught!" card when you won, a toast otherwise.
+-- The bar runs here in the same fixed ticks as on the server (shared/FishingBar.tick); each hold change goes to
+-- the server with its tick, so the server takes the same steps a moment later. A FishState snapshot (the
+-- server's confirmed tick) only corrects the bar when it disagrees: then this client replays its own inputs
+-- from there (W1: no more jumping back on a phone's slow connection). Hold = left mouse button / Space / the
+-- big HOLD button (phones; each touch is followed until it ends). FishEnd closes it: a "Caught!" card when you
+-- won, a toast otherwise.
 
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
@@ -41,21 +44,79 @@ local holdButton: TextButton
 local giveUp: TextButton
 local card: Frame
 
-local active: { id: string, bar: FishingBar.State }? = nil
+type Active = {
+	id: string,
+	bar: FishingBar.State,
+	history: { [number]: { snap: { number }, hold: boolean } }, -- the state before each tick + the input used
+	acc: number, -- real seconds not yet stepped
+	hold: boolean, -- the last input sent to the server
+	done: boolean, -- the meter is full or empty here: wait for FishEnd
+}
+
+local active: Active? = nil
 local holdingMouse = false
 local holdingKey = false
-local holdingButton = false
-local sentHold = false
+local holdTouches: { [InputObject]: boolean } = {} -- touches that began on the HOLD button
 
 local function holding(): boolean
-	return holdingMouse or holdingKey or holdingButton
+	return holdingMouse or holdingKey or next(holdTouches) ~= nil
 end
 
-local function sendHold()
-	local h = holding()
-	if active and h ~= sentHold then
-		sentHold = h
-		holdRemote:FireServer(h)
+local function clearInput()
+	holdingMouse = false
+	holdingKey = false
+	table.clear(holdTouches)
+end
+
+-- Steps the bar in fixed ticks up to now; a hold change is sent with the tick it starts on.
+local function run(a: Active, dt: number)
+	a.acc = math.min(a.acc + dt, 0.5)
+	while a.acc >= FishingBar.Fixed do
+		a.acc -= FishingBar.Fixed
+		if a.done then
+			continue
+		end
+		local h = holding()
+		if h ~= a.hold then
+			a.hold = h
+			holdRemote:FireServer(h, a.bar.tick)
+		end
+		a.history[a.bar.tick] = { snap = FishingBar.snapshot(a.bar), hold = h }
+		if FishingBar.tick(a.bar, h) then
+			a.done = true
+		end
+	end
+end
+
+-- The server's confirmed state at its tick: nothing to do when this client was there too; otherwise take it and
+-- replay this client's own inputs from that tick to now.
+local function reconcile(a: Active, snap: { number })
+	local at = snap[9]
+	if type(at) ~= "number" then
+		FishingBar.apply(a.bar, snap)
+		return
+	end
+	local mine = a.history[at]
+	if not (mine and FishingBar.same(mine.snap, snap)) then
+		-- counted for tests (Studio / phone): should stay 0 or near it
+		gui:SetAttribute("Corrections", (tonumber(gui:GetAttribute("Corrections")) or 0) + 1)
+		local now = a.bar.tick
+		FishingBar.apply(a.bar, snap)
+		a.done = false
+		for k = at, now - 1 do
+			local entry = a.history[k]
+			local h = if entry then entry.hold else a.hold
+			a.history[k] = { snap = FishingBar.snapshot(a.bar), hold = h }
+			if FishingBar.tick(a.bar, h) then
+				a.done = true
+				break
+			end
+		end
+	end
+	for k in a.history do
+		if k < at then
+			a.history[k] = nil
+		end
 	end
 end
 
@@ -229,17 +290,12 @@ local function build()
 	local holdLabel = holdButton:FindFirstChild("Label") :: TextLabel
 	holdLabel.Position = UDim2.new(0, 6, 1, -62)
 	holdLabel.Size = UDim2.new(1, -12, 0, 44)
-	holdButton.MouseButton1Down:Connect(function()
-		holdingButton = true
-		sendHold()
-	end)
-	holdButton.MouseButton1Up:Connect(function()
-		holdingButton = false
-		sendHold()
-	end)
-	holdButton.MouseLeave:Connect(function()
-		holdingButton = false
-		sendHold()
+	-- W1: a touch that starts on the button holds until that finger lifts, even when it slides off the button
+	-- (the old MouseLeave let go as soon as the finger moved a little). The mouse is handled by holdingMouse.
+	holdButton.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Touch then
+			holdTouches[input] = true
+		end
 	end)
 
 	-- the "Caught!" card
@@ -362,20 +418,17 @@ function FishingController.Start(_self: any)
 	UserInputService.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			holdingMouse = true
-			sendHold()
 		elseif input.KeyCode == Enum.KeyCode.Space then
 			holdingKey = true
-			sendHold()
 		end
 	end)
 	UserInputService.InputEnded:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			holdingMouse = false
-			sendHold()
 		elseif input.KeyCode == Enum.KeyCode.Space then
 			holdingKey = false
-			sendHold()
 		end
+		holdTouches[input] = nil
 	end)
 
 	Remotes.event("FishStart").OnClientEvent:Connect(function(id: unknown, tier: unknown, snap: unknown, rod: unknown, easy: unknown)
@@ -384,21 +437,19 @@ function FishingController.Start(_self: any)
 		end
 		local bar = FishingBar.new(0, FishingBar.params(tier, if type(rod) == "number" then rod else 1, easy == true))
 		FishingBar.apply(bar, snap :: { number })
-		active = { id = id, bar = bar }
-		sentHold = false
-		holdingMouse = false
-		holdingKey = false
-		holdingButton = false
+		active = { id = id, bar = bar, history = {}, acc = 0, hold = false, done = false }
+		clearInput()
 		gui.Enabled = true
 		draw()
 	end)
 	Remotes.event("FishState").OnClientEvent:Connect(function(id: unknown, snap: unknown)
 		if active and id == active.id and type(snap) == "table" then
-			FishingBar.apply(active.bar, snap :: { number })
+			reconcile(active, snap :: { number })
 		end
 	end)
 	Remotes.event("FishEnd").OnClientEvent:Connect(function(key: unknown, vars: unknown, caught: unknown)
 		active = nil
+		clearInput()
 		gui.Enabled = false
 		if caught == true and type(vars) == "table" then
 			showCard(vars :: any)
@@ -408,7 +459,7 @@ function FishingController.Start(_self: any)
 	end)
 	RunService.RenderStepped:Connect(function(dt)
 		if active then
-			FishingBar.step(active.bar, dt, holding())
+			run(active, dt)
 			draw()
 		end
 	end)

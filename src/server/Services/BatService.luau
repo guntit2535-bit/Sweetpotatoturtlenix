@@ -87,7 +87,7 @@ local function onSwing(player: Player)
 		Notify.send(target, "BatDropped", { name = player.DisplayName }, "bad")
 		Notify.send(player, "BatHitCat", { name = target.DisplayName }, "good")
 	else
-		knockRemote:FireClient(target, dir * Config.Bat.SmallKnock + Vector3.new(0, Config.Bat.SmallKnock * 0.4, 0), 0)
+		knockRemote:FireClient(target, dir * Config.Bat.SmallKnock + Vector3.new(0, Config.Bat.SmallKnockUp, 0), Config.Bat.SmallStunSeconds)
 	end
 end
 

@@ -1,7 +1,8 @@
 --!strict
 -- The fishing bar minigame as plain maths (task 1.11, blueprint §2). The server steps one state per
 -- fishing player from their hold input and decides the result; the client steps the same state for drawing
--- and is reset by the server's snapshots. Pure: tested by tests/FishingBar.spec.luau.
+-- (both in fixed ticks, FishingBar.tick) and only corrects itself when a server snapshot disagrees.
+-- Pure: tested by tests/FishingBar.spec.luau.
 --
 -- Positions are 0 (bottom) .. 1 (top). The cat moves toward a target that changes every so often; holding
 -- pushes the green zone up, letting go lets it fall. The meter fills while the cat is inside the zone and
@@ -31,6 +32,7 @@ export type State = {
 	nextChange: number, -- seconds until the cat picks a new target
 	meter: number,
 	time: number,
+	tick: number, -- W1: fixed steps taken (FishingBar.tick)
 }
 
 local FishingBar = {}
@@ -72,6 +74,7 @@ function FishingBar.new(seed: number, params: Params): State
 		nextChange = 0,
 		meter = Config.Fishing.StartMeter,
 		time = 0,
+		tick = 0,
 	}
 	return s
 end
@@ -126,14 +129,35 @@ function FishingBar.step(s: State, dt: number, holding: boolean): string?
 	return nil
 end
 
+-- W1 (phone fix): the game runs the bar in fixed steps of Fixed seconds, numbered by s.tick, so the client and the
+-- server take exactly the same steps from the same inputs ("from tick k on, holding = h") and agree to the bit.
+FishingBar.Fixed = 1 / 60
+
+function FishingBar.tick(s: State, holding: boolean): string?
+	local result = FishingBar.step(s, FishingBar.Fixed, holding)
+	s.tick += 1
+	return result
+end
+
 -- What the server sends the client (numbers only) and how the client takes it back.
 function FishingBar.snapshot(s: State): { number }
-	return { s.rng, s.zone, s.vel, s.cat, s.target, s.nextChange, s.meter, s.time }
+	return { s.rng, s.zone, s.vel, s.cat, s.target, s.nextChange, s.meter, s.time, s.tick }
 end
 
 function FishingBar.apply(s: State, snap: { number })
 	s.rng, s.zone, s.vel, s.cat, s.target, s.nextChange, s.meter, s.time =
 		snap[1], snap[2], snap[3], snap[4], snap[5], snap[6], snap[7], snap[8]
+	s.tick = snap[9] or 0
+end
+
+-- true when two snapshots are the same state (the client's prediction matches the server)
+function FishingBar.same(a: { number }, b: { number }): boolean
+	for i = 1, 9 do
+		if math.abs((a[i] or 0) - (b[i] or 0)) > 1e-9 then
+			return false
+		end
+	end
+	return true
 end
 
 return FishingBar

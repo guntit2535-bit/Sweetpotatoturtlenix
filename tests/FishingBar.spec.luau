@@ -86,6 +86,51 @@ for i = 1, 2000 do
 	check(s.zone >= 0 and s.zone <= 1 and s.cat >= 0 and s.cat <= 1 and s.meter >= 0 and s.meter <= 1, "inside the bar")
 end
 
+-- W1: fixed ticks. A "phone" steps ahead with its own inputs; the "server" gets each hold change with its tick
+-- 20 ticks late (a slow connection) and confirms 30 ticks behind: both reach the same states, so the phone never
+-- has to jump back. A replay from a confirmed snapshot (the client's correction) rebuilds the same state too.
+do
+	local params = FishingBar.params(2)
+	local phone = FishingBar.new(4242, params)
+	local server = FishingBar.new(4242, params)
+	local history: { [number]: { number } } = {}
+	local holds: { [number]: boolean } = {}
+	local pending: { { tick: number, hold: boolean, arrives: number } } = {}
+	local serverHold, phoneHold = false, false
+	local agree, compared = true, 0
+	for now = 0, 600 do
+		local h = (now // 23) % 2 == 0
+		if h ~= phoneHold then
+			phoneHold = h
+			table.insert(pending, { tick = phone.tick, hold = h, arrives = now + 20 })
+		end
+		holds[phone.tick] = h
+		history[phone.tick] = FishingBar.snapshot(phone)
+		FishingBar.tick(phone, h)
+		-- the server confirms up to now - 30, taking inputs that have arrived
+		while server.tick < now - 30 do
+			while pending[1] and pending[1].arrives <= now and pending[1].tick <= server.tick do
+				serverHold = (table.remove(pending, 1) :: any).hold
+			end
+			FishingBar.tick(server, serverHold)
+		end
+		if server.tick > 0 and history[server.tick] then
+			compared += 1
+			if not FishingBar.same(history[server.tick], FishingBar.snapshot(server)) then
+				agree = false
+			end
+		end
+	end
+	check(compared > 500 and agree, `phone and late server agree on every tick ({compared} compared)`)
+	-- replay from a snapshot = the same state as stepping straight through
+	local replay = FishingBar.new(1, params)
+	FishingBar.apply(replay, history[100])
+	for k = 100, 399 do
+		FishingBar.tick(replay, holds[k])
+	end
+	check(FishingBar.same(FishingBar.snapshot(replay), history[400]), "replay from a confirmed snapshot matches")
+end
+
 if failures > 0 then
 	error(`FishingBar: {failures} failure(s)`)
 end

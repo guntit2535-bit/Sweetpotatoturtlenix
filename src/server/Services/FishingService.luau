@@ -31,7 +31,10 @@ local WildCatService = require(script.Parent.WildCatService)
 type Session = {
 	wild: WildCatService.Wild,
 	bar: FishingBar.State,
-	holding: boolean,
+	holding: boolean, -- the input at the confirmed tick
+	inputs: { { tick: number, hold: boolean } }, -- W1: hold changes not confirmed yet, in tick order
+	lastInputTick: number,
+	started: number, -- os.clock() when the bar began (tick 0)
 	sinceSnap: number,
 	beam: Beam?,
 }
@@ -143,7 +146,7 @@ local function onCast(player: Player, rawId: unknown)
 	local seed = math.random(1, 2 ^ 30)
 	local easy = Bonus.easy(BonusCtx.of(player, data))
 	local bar = FishingBar.new(seed, FishingBar.params(w.tier, data.RodLevel, easy))
-	sessions[player] = { wild = w, bar = bar, holding = false, sinceSnap = 0, beam = makeBeam(player, w) }
+	sessions[player] = { wild = w, bar = bar, holding = false, inputs = {}, lastInputTick = 0, started = os.clock(), sinceSnap = 0, beam = makeBeam(player, w) }
 	MovementService.setFactor(player, "fishing", 0)
 	player:SetAttribute("Fishing", w.id)
 	-- face the cat and swing the rod (the reel pose follows from the "Fishing" attribute, PlayerAnimController)
@@ -155,12 +158,48 @@ local function onCast(player: Player, rawId: unknown)
 	startRemote:FireClient(player, w.id, w.tier, FishingBar.snapshot(bar), data.RodLevel, easy)
 end
 
-local function onHold(player: Player, raw: unknown)
+local function serverTick(s: Session): number
+	return math.floor((os.clock() - s.started) / FishingBar.Fixed)
+end
+
+-- W1: (holding, tick) = "from the client's bar tick on, holding". The tick never goes back, never before the
+-- confirmed bar, and never more than TickSlack ahead of the server's clock; no tick = now.
+local function onHold(player: Player, raw: unknown, rawTick: unknown)
 	local holding = Validate.boolean(raw)
 	local s = sessions[player]
-	if s and holding ~= nil then
-		s.holding = holding
+	if not s or holding == nil then
+		return
 	end
+	local now = serverTick(s)
+	local t = Validate.integer(rawTick, 0, 1e7) or now
+	local low = math.max(s.lastInputTick, s.bar.tick)
+	t = math.clamp(t, low, math.max(low, now + Config.Fishing.TickSlack))
+	s.lastInputTick = t
+	if #s.inputs >= 64 then
+		local old = table.remove(s.inputs, 1)
+		if old then
+			s.holding = old.hold
+		end
+	end
+	table.insert(s.inputs, { tick = t, hold = holding })
+end
+
+-- Steps the bar up to InputWindow behind real time, taking each hold change on its tick.
+local function advance(s: Session): string?
+	local confirmTo = serverTick(s) - math.floor(Config.Fishing.InputWindow / FishingBar.Fixed)
+	while s.bar.tick < confirmTo do
+		while s.inputs[1] and s.inputs[1].tick <= s.bar.tick do
+			local change = table.remove(s.inputs, 1)
+			if change then
+				s.holding = change.hold
+			end
+		end
+		local result = FishingBar.tick(s.bar, s.holding)
+		if result then
+			return result
+		end
+	end
+	return nil
 end
 
 local function step(dt: number)
@@ -181,7 +220,7 @@ local function step(dt: number)
 			finish(player, "FishGaveUp")
 			continue
 		end
-		local result = FishingBar.step(s.bar, dt, s.holding)
+		local result = advance(s)
 		if result == "win" then
 			local design = Cats.ById[w.kind]
 			local winnerName = player.DisplayName

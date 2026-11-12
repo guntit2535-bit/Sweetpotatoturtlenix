@@ -5,6 +5,7 @@
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local Config = require(Shared:WaitForChild("Config"))
@@ -35,19 +36,25 @@ local function knock(velocity: unknown, stun: unknown)
 	if typeof(velocity) ~= "Vector3" or not root or not root:IsA("BasePart") or not humanoid then
 		return
 	end
-	local seconds = if type(stun) == "number" then stun else 0
-	if seconds > 0 then
-		humanoid.PlatformStand = true
-		root.AssemblyAngularVelocity = Vector3.new(math.random(-8, 8), math.random(-4, 4), math.random(-8, 8))
+	-- W1: the walking Humanoid ate most of the push (a non-carrier moved ~1 stud). Now every hit turns the
+	-- character into a free body (Physics state) for the stun, so it really flies and tumbles, then gets up.
+	local seconds = math.clamp(if type(stun) == "number" then stun else 0, 0.3, 3)
+	local v = velocity :: Vector3
+	humanoid.PlatformStand = true
+	humanoid:ChangeState(Enum.HumanoidStateType.Physics)
+	local spin = Vector3.new(math.random(-8, 8), math.random(-4, 4), math.random(-8, 8))
+	root.AssemblyLinearVelocity = v
+	root.AssemblyAngularVelocity = spin
+	-- the state change can eat the first frame's push: give it again on the next two frames
+	for _ = 1, 2 do
+		RunService.Heartbeat:Wait()
+		root.AssemblyLinearVelocity = Vector3.new(v.X, math.max(root.AssemblyLinearVelocity.Y, v.Y * 0.9), v.Z)
 	end
-	root.AssemblyLinearVelocity = velocity :: Vector3
-	if seconds > 0 then
-		task.delay(seconds, function()
-			humanoid.PlatformStand = false
-			root.AssemblyAngularVelocity = Vector3.zero
-			humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-		end)
-	end
+	task.delay(seconds, function()
+		humanoid.PlatformStand = false
+		root.AssemblyAngularVelocity = Vector3.zero
+		humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+	end)
 end
 
 function BatController.Start(_self: any)

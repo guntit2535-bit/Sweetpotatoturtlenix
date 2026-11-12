@@ -78,6 +78,11 @@ Config.Data = {
 	StartMoney = 0,
 	StartStrength = 1, -- kg: enough for the lightest Basic cats (1 kg)
 	EconVersion = 1, -- R4: saves below this are converted once to the 99 Sx numbers (DataService)
+	-- Reset every player to a new save (developer, 2026-11-13: testers start over). A save whose ResetEpoch is below
+	-- this is wiped to the template the next time that player joins (game passes stay: Roblox keeps them; the
+	-- receipt list is kept so a purchase is never granted twice). The leaderboards start empty too (their store
+	-- names end in "_r<epoch>"). Add 1 to reset everyone again, e.g. just before going public. Never rename StoreName.
+	ResetEpoch = 1,
 	SaveTimeout = 15, -- seconds DataService.SaveAsync waits before giving up (autosave still runs)
 	GetDataRate = { maxCalls = 2, window = 1 }, -- the client asks once on start
 	-- Studio only: Workspace attribute FreshSave = true gives every player a new in-memory save that is

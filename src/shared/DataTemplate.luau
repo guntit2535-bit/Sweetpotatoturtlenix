@@ -57,6 +57,7 @@ export type Data = {
 	EconVersion: number, -- R4: 0 = numbers from before the 99 Sx economy (Migrate converts it once)
 	TutorialStep: number, -- V4: 1-7 while the tutorial runs, Config.Tutorial.Done after; 0 = not decided yet
 	TutorialRewarded: boolean, -- the tutorial's money was given (once)
+	ResetEpoch: number, -- Config.Data.ResetEpoch this save was last reset at (0 = before any reset)
 	Settings: {
 		Language: string, -- "en" (default) or "th"
 		Music: boolean, -- music on (task 2.23)
@@ -108,6 +109,7 @@ DataTemplate.Template = {
 	EconVersion = 0,
 	TutorialStep = 0,
 	TutorialRewarded = false,
+	ResetEpoch = 0,
 	Settings = {
 		Language = "en",
 		Music = true,
@@ -185,6 +187,7 @@ function DataTemplate.sanitize(data: Data): number
 	set("BoostWeights", whole(data.BoostWeights, 0, Config.TrainBoost.Steps, 0))
 	set("BoostTread", whole(data.BoostTread, 0, Config.TrainBoost.Steps, 0))
 	set("EconVersion", whole(data.EconVersion, 0, math.huge, 0))
+	set("ResetEpoch", whole(data.ResetEpoch, 0, math.huge, 0))
 	local step = whole(data.TutorialStep, 0, Config.Tutorial.Done, 0)
 	set("TutorialStep", if step > 7 and step < Config.Tutorial.Done then Config.Tutorial.Done else step)
 	if type(data.TutorialRewarded) ~= "boolean" then

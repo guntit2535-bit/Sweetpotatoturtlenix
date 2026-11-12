@@ -167,6 +167,12 @@ local function onPlayerAdded(player: Player)
 		profile:AddUserId(player.UserId) -- GDPR
 	end
 	profile:Reconcile() -- fill in fields added to the template after this save was made
+	-- the developer's reset of every tester (Config.Data.ResetEpoch): an older save starts over, here, before
+	-- anything reads it (offline income, conversions)
+	local wasPlayed = (profile.Data.NextCatId or 1) > 1
+	if Migrate.reset(profile.Data, DataTemplate.Template) and wasPlayed then
+		log(`reset {player.Name}'s save to a new player (ResetEpoch {Config.Data.ResetEpoch})`)
+	end
 	lastOnlineAtJoin[player] = profile.Data.LastOnline
 	local fixes = DataTemplate.sanitize(profile.Data)
 	if fixes > 0 then

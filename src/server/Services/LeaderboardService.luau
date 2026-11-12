@@ -122,7 +122,8 @@ function LeaderboardService:Start()
 	buildBoards()
 	for key, name in L.Stores do
 		local ok, store = pcall(function()
-			return DataStoreService:GetOrderedDataStore(name)
+			-- a new set of boards for every player reset (Config.Data.ResetEpoch): they start empty
+			return DataStoreService:GetOrderedDataStore(`{name}_r{Config.Data.ResetEpoch}`)
 		end)
 		if ok then
 			stores[key] = store

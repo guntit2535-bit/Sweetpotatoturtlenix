@@ -75,6 +75,27 @@ caught.Stats.Caught = 2
 Migrate.tutorial(caught)
 check(caught.TutorialStep == Config.Tutorial.Done, "anyone who caught a cat has it done")
 
+-- the developer's reset of every tester (Config.Data.ResetEpoch)
+local tester = copy(DataTemplate.Template)
+tester.Money = 5e9
+tester.Rebirths = 4
+tester.NextCatId = 9
+tester.Cats = { k1 = { Kind = "cat001", Kg = 5, Mutation = "", Locked = false } }
+tester.ReceiptIds = { "r1", "r2" }
+tester.BoostWeights = 3
+tester.TutorialStep = Config.Tutorial.Done
+local same = tester
+check(Migrate.reset(tester, DataTemplate.Template), "an old save is reset")
+check(tester == same, "in place (the same table)")
+check(tester.Money == DataTemplate.Template.Money and tester.Rebirths == 0 and next(tester.Cats) == nil, "money, rebirths, cats back to new")
+check(tester.BoostWeights == 0 and tester.TutorialStep == 0 and tester.NextCatId == 1, "boosts and tutorial back to new")
+check(#tester.ReceiptIds == 2 and tester.ReceiptIds[1] == "r1", "the receipts are kept")
+check(tester.ResetEpoch == Config.Data.ResetEpoch and tester.EconVersion == Config.Data.EconVersion, "marked: epoch and economy version")
+check(tester.Settings ~= DataTemplate.Template.Settings and tester.Cats ~= DataTemplate.Template.Cats, "nested tables are copies, not the template's own")
+check(not Migrate.reset(tester, DataTemplate.Template), "only once per epoch")
+Migrate.tutorial(tester)
+check(tester.TutorialStep == 1, "a reset player starts the tutorial")
+
 if failures > 0 then
 	error(`Migrate: {failures} failure(s)`)
 end

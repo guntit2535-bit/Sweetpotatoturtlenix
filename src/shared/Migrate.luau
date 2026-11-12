@@ -80,4 +80,38 @@ function Migrate.tutorial(data: any): boolean
 	return true
 end
 
+local function deepCopy(v: any): any
+	if type(v) ~= "table" then
+		return v
+	end
+	local out = {}
+	for k, x in v do
+		out[k] = deepCopy(x)
+	end
+	return out
+end
+
+-- A save from before the current Config.Data.ResetEpoch becomes a new player's save (the developer's reset of all
+-- testers, 2026-11-13): every field back to `template`, in place (the same table), except the receipt list (never
+-- grant a purchase twice). It is then marked with the epoch and the current EconVersion (nothing to convert).
+-- A brand-new save goes through it once too (it is the template already). Returns true when it reset the save.
+function Migrate.reset(data: any, template: any): boolean
+	if (data.ResetEpoch or 0) >= Config.Data.ResetEpoch then
+		return false
+	end
+	local receipts = data.ReceiptIds
+	for k in data do
+		data[k] = nil
+	end
+	for k, v in template do
+		data[k] = deepCopy(v)
+	end
+	if type(receipts) == "table" then
+		data.ReceiptIds = receipts
+	end
+	data.ResetEpoch = Config.Data.ResetEpoch
+	data.EconVersion = Config.Data.EconVersion
+	return true
+end
+
 return Migrate

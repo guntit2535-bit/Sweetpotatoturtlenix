@@ -698,3 +698,8 @@ shop / pen, economy, world.
 - 2026-11-13: client page for revision list 3 (developer's ask): https://claude.ai/artifact/9ZTmKiw3P3HGqWmrYXJtiN (Thai,
   the earlier client page's game theme, 21 items by the client's numbers in 5 groups, before / after captures from Studio,
   the arrow / pen option sheets, the economy summary; no scope or price statements; files in build/rev3_page, ignored).
+- 2026-11-13 developer: reset every tester to a new player ("ทำแบบ A เลย"). Config.Data.ResetEpoch = 1 (StoreName kept):
+  DataService runs Migrate.reset right after Reconcile: a save below the epoch goes back to the template in place,
+  keeps ReceiptIds, gets the epoch and the current EconVersion (so a new player starts the tutorial and nothing is
+  converted); leaderboards read / write "<store>_r<epoch>" (empty boards). Tests in Migrate.spec; Studio FreshSave: a
+  new player loads normally. The developer's own save resets on their next Play / join. Bump the epoch to reset again.

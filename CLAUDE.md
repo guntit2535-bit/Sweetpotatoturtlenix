@@ -63,6 +63,10 @@ are starting values: they live in Config and are tuned after playtests (simulate
   included: a unique body shape for every cat"): priced separately unless the developer decides otherwise.
   **The client should be told.** Style: block cats with LEGO studs; Basic plain, Rare fashion, Epic costumes,
   Legendary food / animal mixes, Mythical fantasy, Secret gods / cosmic.
+- 2026-11-13, revision list 3 (21 points, `docs/revision3_plan.md`, PLAN phase 5): after the 2 free rounds; the
+  developer decided to do it all **free**. Blueprint changes, **the client should be told**: economy paced to ~50 h
+  with dearer crates, pen slots bought at the pen (no Pen tab), a permanent training boost ladder (2x / 4x / 8x ...
+  developer products for weights and treadmill; the client confirms prices), bigger pens, pixel + LEGO ground.
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,

@@ -107,7 +107,21 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
     (78 meshes, developer imports into ReplicatedStorage.FxMeshes), pieces per cat in CatShapeData `fx`, CatModel builds
     them (Fx spins, FxStill on the ground), CatFxController plays the Secret burst with Trails; meshes not imported yet
 
+## Phase 5 — revision list 3, free (developer, 2026-11-13; table `docs/revision3_plan.md`)
+Developer's answers: everything free (no extra charge), training boosts = permanent steps. Order: bugs, quick UI,
+shop / pen, economy, world.
+- [ ] W1 Bugs: event arrow head (1), bat fling (7), phone fishing bar (8), stray picture in the map (18: needs the developer's screenshot)
+- [ ] W2 Phone fit at 5 screen sizes (12)
+- [ ] W3 Quick UI: Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
+- [ ] W4 ★ Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
+- [ ] W5 Economy to ~50 h + crate prices (9, 14): simulation and options table first
+- [ ] W6 Training boost ladder (17): permanent 2x / 4x / 8x ... steps for weights and treadmill, developer products
+- [ ] W7 ★ Event arrow as a Blender mesh (1), bigger pens (15), pixel + LEGO ground, paths and trees (2)
+
 ## Plan changes
+- 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
+  client should be told: economy paced to ~50 h with dearer crates, the Pen tab moves to the pen, a training
+  boost ladder of developer products (new Robux items, prices from the client), bigger pens.
 - 2026-11-08 (developer, 10-point revision list, "เริ่มทำplan แก้ไขทั้งหมดนี้"): phase 3 above. Models and
   animations now go through Blender with the developer's check before Studio (point 8), item models are
   remade from GPT reference pictures (point 10), the UI is redesigned from GPT mockups (point 6). Numbers grow

@@ -110,7 +110,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 ## Phase 5 — revision list 3, free (developer, 2026-11-13; table `docs/revision3_plan.md`)
 Developer's answers: everything free (no extra charge), training boosts = permanent steps. Order: bugs, quick UI,
 shop / pen, economy, world.
-- [ ] W1 Bugs: event arrow head (1), bat fling (7), phone fishing bar (8), stray picture in the map (18: needs the developer's screenshot)
+- [~] W1 Bugs: phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) 3 Blender looks waiting for the pick (`art/preview/arrow/arrow_options.png`); stray picture in the map (18) needs the developer's screenshot
 - [ ] W2 Phone fit at 5 screen sizes (12)
 - [ ] W3 Quick UI: Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [ ] W4 ★ Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
@@ -612,3 +612,7 @@ shop / pen, economy, world.
   forest, saplings in the snow (white mounds vanished). Pictures: art/preview/v3/details_before_after.png.
 - 2026-11-09 developer: "ลบได้": ServerStorage.MapBackup_V3 (19 fountains, 79 creeks, 47 waterfalls, 3,915 instances) deleted in
   Studio; Upgrade.undo has nothing to put back any more. Waits for the developer's Save / Publish.
+- 2026-11-13: phase 5 W1. Fishing bar in fixed ticks with tick-stamped holds, server confirms 0.5 s behind (Studio with
+  IncomingReplicationLag 0.2 = 460 ms ping: 0 corrections, the bar never jumps back); HOLD follows each touch until it
+  lifts. Bat: the victim goes into the Physics state for the stun (Studio: non-carrier 1.4 -> ~40 studs, carrier
+  ~80-100). Event arrow: 3 Blender looks (A cartoon with a white rim, B LEGO pixel, C chevrons) for the developer.

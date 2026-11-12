@@ -234,7 +234,7 @@ Text.Lines = {
 	RebirthButton = { en = "Rebirth", th = "รีเบิร์ธ" },
 	RebirthTitle = { en = "Rebirth {n}", th = "รีเบิร์ธครั้งที่ {n}" },
 	RebirthNeed = { en = "Needs {strength} Strength (you have {have})", th = "ต้องมีพลัง {strength} (ตอนนี้ {have})" },
-	RebirthGives = { en = "Money x1.5 and Strength x3.95 forever, every cat x3.6 heavier, new zones open", th = "เงิน x1.5 และพลัง x3.95 ถาวร แมวทุกตัวหนักขึ้น x3.6 และเปิดโซนใหม่" },
+	RebirthGives = { en = "Money x1.5 and Strength x3.8 forever, every cat x3.6 heavier, new zones open", th = "เงิน x1.5 และพลัง x3.8 ถาวร แมวทุกตัวหนักขึ้น x3.6 และเปิดโซนใหม่" },
 	RebirthResets = { en = "Resets money, Strength, Speed and the weights / treadmill levels. Cats, rods, shoes and pen stay.", th = "รีเซ็ตเงิน พลัง ความเร็ว และเลเวลยกเวท/ลู่วิ่ง แมว เบ็ด รองเท้า และคอกยังอยู่" },
 	RebirthGo = { en = "Rebirth!", th = "รีเบิร์ธ!" },
 	RebirthYouKeep = { en = "You keep", th = "ยังอยู่" },
@@ -246,7 +246,7 @@ Text.Lines = {
 	RebirthChipStrength = { en = "Strength x{m}", th = "พลัง x{m}" },
 	RebirthChipCats = { en = "Cats x{m} heavier", th = "แมวหนักขึ้น x{m}" },
 	RebirthBar = { en = "Strength {have} / {need} kg ({pct}%)", th = "พลัง {have} / {need} กก. ({pct}%)" },
-	RebirthDone = { en = "Rebirth {n}! Money x1.5, Strength x3.95, cats x3.6 heavier", th = "รีเบิร์ธครั้งที่ {n}! เงิน x1.5 พลัง x3.95 แมวหนักขึ้น x3.6" },
+	RebirthDone = { en = "Rebirth {n}! Money x1.5, Strength x3.8, cats x3.6 heavier", th = "รีเบิร์ธครั้งที่ {n}! เงิน x1.5 พลัง x3.8 แมวหนักขึ้น x3.6" },
 	RebirthMax = { en = "Every rebirth is done!", th = "รีเบิร์ธครบทุกครั้งแล้ว!" },
 	RebirthNotYet = { en = "Not strong enough yet", th = "พลังยังไม่พอ" },
 

@@ -76,7 +76,7 @@ crate, 900K, is under a second of income at the end of the first life).
 | Option | Rebirth 1 / 10 / 20 / 25 | Rod 25 | 60 pen slots | Diamond crate | Changes |
 |---|---|---|---|---|---|
 | A faster | 1h45 / 13h / 32h / **44 h** | 28 h | 10 h | ~2-5 min of income | Strength x3.85 a rebirth, rods x5 a level, pen x12 a step, crates half of B |
-| **B (recommended)** | 1h46 / 14h / 37h / **53 h** | 35 h | 11 h | ~5-8 min | x3.8, rods x5.5, pen x14, crates 40K / 2.5M / 75M / 900M |
+| **B (picked 2026-11-13)** | 1h46 / 14h / 37h / **53 h** | 35 h | 11 h | ~5-8 min | x3.8, rods x5.5, pen x14, crates 40K / 2.5M / 75M / 900M |
 | C slower | 1h48 / 15h / 42h / **64 h** | 50 h | 15 h | ~14-16 min | x3.75, rods x6, pen x16, crates x3 of B |
 
 All options: crates x3.4 a rebirth (was x3; income grows about that fast). The sim player never stops, so a real

@@ -114,7 +114,7 @@ shop / pen, economy, world.
 - [x] W2 Phone fit (12): passed 2026-11-13
 - [x] W3 Quick UI (passed 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [x] W4 ★ (passed 2026-11-13: card shop A, pen board, tool icons) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
-- [ ] W5 Economy to ~50 h + crate prices (9, 14): simulation and options table first
+- [~] W5 Economy to ~50 h + crate prices (9, 14): option B picked + in Config 2026-11-13 (sim 53 h)
 - [ ] W6 Training boost ladder (17): permanent 2x / 4x / 8x ... steps for weights and treadmill, developer products
 - [ ] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
 
@@ -668,3 +668,8 @@ shop / pen, economy, world.
   phone's edges. Roblox keeps ScreenGuis inside the device safe area (the Studio phone: 62 px each side); Kit.edge /
   Kit.edgeX now put those groups 45% of that gap from the real edge (min 10 px; ClipToDeviceSafeArea off): Studio
   phone view 76 -> 28 px from the edge on both sides, clear of a notch; a PC keeps ~10 px.
+- 2026-11-13: W5 option B picked ("B~53 hours") and put in Config: Rebirth.StrengthMult 3.95 -> 3.8, Rods.CostGrowth
+  2.15 -> 5.5, PenUpgrade.CostGrowth 2.1 -> 14, crates 40K / 2.5M / 75M / 900M (were 2K / 25K / 150K / 900K) x3.4 a
+  rebirth (was x3); the rebirth texts say x3.8. tools/sim/endgame.luau on the real Config: rebirth 25 at 52h49, rod 25
+  at 34h45, 60 pen slots at 11h27, Diamond crate ~5-8 min of income. Studio: the new prices load. Saves keep what was
+  bought; nothing to convert.

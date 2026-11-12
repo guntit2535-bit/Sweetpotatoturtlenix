@@ -22,7 +22,7 @@ check(near(Bonus.money(c), 1) and near(Bonus.strength(c), 1) and near(Bonus.luck
 check(not Bonus.easy(c), "no Catnip")
 
 c.rebirths = 2
-check(near(Bonus.money(c), 2.25) and near(Bonus.strength(c), 3.95 ^ 2), "2 rebirths = money x1.5^2, Strength x3.95^2 (R4)")
+check(near(Bonus.money(c), 2.25) and near(Bonus.strength(c), 3.8 ^ 2), "2 rebirths = money x1.5^2, Strength x3.8^2 (W5)")
 c.passes.Cash = true
 c.passes.VIP = true
 check(near(Bonus.money(c), 2.25 * 2 * 1.1), "Cash x2 and VIP +10%")

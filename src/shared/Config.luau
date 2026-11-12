@@ -170,7 +170,8 @@ Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
 -- Base; Cap is the final limit.
 Config.Walk = { Base = 16, Bonus = 9, Scale = 100, Max = 60, Cap = 120, LikeBuff = 2, LikeBuffSeconds = 300 }
 -- Each rebirth (R4): money x1.5, Strength gain x3.95, Speed gain x3.95, every cat in the world x3.6 heavier.
-Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.95, SpeedMult = 3.95, KgMult = 3.6 }
+-- W5 (revision 3 item 9, option B, docs/economy.md): StrengthMult 3.95 -> 3.8, so the 25 rebirths take ~53 h of active play
+Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.8, SpeedMult = 3.95, KgMult = 3.6 }
 
 -- Wild cats at the hiding spots (task 1.10).
 Config.WildCats = {
@@ -384,12 +385,12 @@ Config.Rods = {
 	Materials = { "Wood", "Iron", "Gold", "Crystal", "Cosmic" },
 	Colors = { "c98a4a", "a9b0bf", "f5bf2e", "7fe3ff", "9a6bff" },
 	Cost = 400,
-	CostGrowth = 2.15,
+	CostGrowth = 5.5, -- W5 option B (was 2.15): rod 25 comes at ~35 h instead of 3 h
 	LuckPerLevel = 0.04, -- +4% luck per level above 1
 }
 
 -- Pen expansion with money (task 2.4): +Step slots per purchase up to Config.Pen.MaxSlots.
-Config.PenUpgrade = { Step = 5, Cost = 2000, CostGrowth = 2.1 }
+Config.PenUpgrade = { Step = 5, Cost = 2000, CostGrowth = 14 } -- W5 option B (was x2.1): 60 slots at ~11 h, not 35 min
 -- W4 (revision 3 item 5): the board that sells pen slots, in front of your own pen (studs from the pen's centre:
 -- Forward = toward the plaza, Right = toward the weights: between the sign and the weights)
 Config.PenBoard = { Forward = 12, Right = 9 }
@@ -479,19 +480,20 @@ Config.Trade = {
 }
 
 -- Cat crates (task 2.6, blueprint §12): bought with in-game money, odds (%) shown before buying, no
--- Secret. Costs set so a crate pays itself back in about 3 / 5 / 10 / 20 minutes of its average cat.
+-- Secret. W5 (revision 3 item 14, option B): dearer, x20 / x100 / x500 / x1000 the first prices, so the big crates cost
+-- minutes of income (the Diamond one ~5-8 minutes at the end of a life) instead of seconds.
 Config.Crates = {
 	List = {
-		{ Key = "Paper", Cost = 2000, Color = "e8d6ab", Odds = { Basic = 75, Rare = 22, Epic = 3 } },
-		{ Key = "Wood", Cost = 25000, Color = "c98a4a", Odds = { Basic = 40, Rare = 40, Epic = 17, Legendary = 3 } },
-		{ Key = "Gold", Cost = 150000, Color = "f5bf2e", Odds = { Rare = 50, Epic = 38, Legendary = 12 } },
-		{ Key = "Diamond", Cost = 900000, Color = "7fe3ff", Odds = { Epic = 62, Legendary = 37.5, Mythical = 0.5 } },
+		{ Key = "Paper", Cost = 40000, Color = "e8d6ab", Odds = { Basic = 75, Rare = 22, Epic = 3 } },
+		{ Key = "Wood", Cost = 2.5e6, Color = "c98a4a", Odds = { Basic = 40, Rare = 40, Epic = 17, Legendary = 3 } },
+		{ Key = "Gold", Cost = 75e6, Color = "f5bf2e", Odds = { Rare = 50, Epic = 38, Legendary = 12 } },
+		{ Key = "Diamond", Cost = 900e6, Color = "7fe3ff", Odds = { Epic = 62, Legendary = 37.5, Mythical = 0.5 } },
 	},
 	BuyRate = { maxCalls = 2, window = 1 },
 	RevealSeconds = 1.2, -- (before R8; unused)
 	-- R8: the opening, in seconds from the result: drop in, shake until, lid off until, card done; closes itself
 	Open = { Drop = 1, Shake = 3, Pop = 3.6, Done = 5, AutoClose = 12 },
-	CostRebirth = 3, -- R4: crate prices x3 per rebirth (their cats are x3.6 heavier)
+	CostRebirth = 3.4, -- W5 option B (was 3): income grows about x3.4 a rebirth (their cats are x3.6 heavier)
 }
 
 -- Sound (task 2.23). Ids picked by the developer (docs/Sweetpotato_Sounds.xlsx, 2026-11-08; each checked in Studio:

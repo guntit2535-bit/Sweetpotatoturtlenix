@@ -21,7 +21,7 @@ Remotes.Events = {
 	"SetSetting", -- client -> server: (key, value), task 1.1
 	"PlayerData", -- server -> owner: data snapshot after changes, task 1.2
 	"Notify", -- server -> client: (textKey, vars?, kind?) a toast, task 1.8
-	"SellCat", -- client -> server: (catId), task 1.8
+	"SellCat", -- client -> server: (catId) or ({ catId, ... }) (W3 multi-sell), task 1.8
 	"LockCat", -- client -> server: (catId, locked), task 1.8
 	"Cast", -- client -> server: (wildId) start fishing a wild cat, task 1.11
 	"FishHold", -- client -> server: (holding) the bar input, task 1.11

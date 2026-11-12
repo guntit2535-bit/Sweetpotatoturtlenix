@@ -1,7 +1,8 @@
 --!strict
 -- My Cats window (task 1.8; R9 grid from mockup 04): every cat in the pen as a card with its picture, tier,
--- weight and money per second, best first; tap a card to choose it, then Lock (favourite: cannot be sold or
--- traded) or Sell (tap twice: "Sure?") at the bottom. The client only
+-- weight and money per second, best first; tap cards to choose them (W3: as many as you like, a green tick), then
+-- Sell (at once, every chosen unlocked cat) or Lock (one chosen cat: favourite, cannot be sold or traded) at the
+-- bottom. The client only
 -- asks (SellCat / LockCat); the list redraws from the save copy the server sends back.
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -29,8 +30,7 @@ local countLabel: TextLabel
 local emptyLabel: TextLabel
 local sellRemote: RemoteEvent
 local lockRemote: RemoteEvent
-local armed: { [string]: number } = {} -- cat id -> os.clock() the Sell button was armed
-local selected: string? = nil
+local selected: { [string]: boolean } = {} -- W3: several cats can be chosen at once
 local sellButton: TextButton
 local lockButton: TextButton
 local hint: TextLabel
@@ -82,8 +82,11 @@ local function redraw()
 	countLabel.Text = Lang.text("MyCatsCount", { count = #rows, max = if data then data.PenSlots else Config.Pen.StartSlots })
 	emptyLabel.Visible = #rows == 0
 	emptyLabel.Text = Lang.text("MyCatsEmpty")
-	local chosen: any = nil
+	local chosen: { any } = {}
+	local present: { [string]: boolean } = {}
 	for i, r in rows do
+		present[r.id] = true
+		local isChosen = selected[r.id] == true
 		-- R9 card (mockup 04): picture, tier ribbon, weight, income, lock badge; tap to choose
 		local card = Instance.new("Frame")
 		card.Name = r.id
@@ -92,8 +95,32 @@ local function redraw()
 		card.Parent = list
 		Kit.corner(card, 18)
 		local stroke = Instance.new("UIStroke")
-		stroke.Thickness = if r.id == selected then 5 else 3
-		stroke.Color = if r.id == selected then C.yellow else C.ink
+		stroke.Thickness = if isChosen then 5 else 3
+		stroke.Color = if isChosen then C.yellow else C.ink
+		if isChosen then
+			-- a tick in the corner so a chosen card reads at a glance
+			local tick = Instance.new("Frame")
+			tick.Name = "Tick"
+			tick.Size = UDim2.fromOffset(30, 30)
+			tick.Position = UDim2.new(0, -6, 0, -6)
+			tick.BackgroundColor3 = C.green
+			tick.ZIndex = 4
+			tick.Parent = card
+			Kit.corner(tick, 15)
+			Kit.stroke(tick, 2, nil, true)
+			-- a check mark from two white bars (no font glyph needed)
+			for _, b in { { 8, 4, 11, 18, 45 }, { 15, 4, 17.5, 14.5, -50 } } do
+				local bar = Instance.new("Frame")
+				bar.AnchorPoint = Vector2.new(0.5, 0.5)
+				bar.Size = UDim2.fromOffset(b[1], b[2])
+				bar.Position = UDim2.fromOffset(b[3], b[4])
+				bar.Rotation = b[5]
+				bar.BackgroundColor3 = C.white
+				bar.BorderSizePixel = 0
+				bar.ZIndex = 4
+				bar.Parent = tick
+			end
+		end
 		stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 		stroke.Parent = card
 		local box = Instance.new("Frame")
@@ -163,30 +190,44 @@ local function redraw()
 		tap.ZIndex = 5
 		tap.Parent = card
 		tap.Activated:Connect(function()
-			selected = if selected == r.id then nil else r.id
+			selected[r.id] = if selected[r.id] then nil else true
 			redraw()
 		end)
-		if r.id == selected then
-			chosen = r
+		if isChosen then
+			table.insert(chosen, r)
 		end
 	end
-	if selected and not chosen then
-		selected = nil
+	-- sold or traded cats drop out of the choice
+	for id in selected do
+		if not present[id] then
+			selected[id] = nil
+		end
 	end
-	-- the bottom bar: the chosen cat, Lock and Sell (tap twice)
-	if chosen then
-		local r = chosen
+	-- the bottom bar: Sell (all chosen, unlocked cats, at once), Lock (one chosen cat)
+	if #chosen == 1 then
+		local r = chosen[1]
 		hint.Text = `{r.design.Name} · {Lang.text("CatKg", { kg = Format.money(r.cat.Kg) })}`
 		if r.cat.Mutation and r.cat.Mutation ~= "" then
 			hint.Text = Lang.text("MutTag", { mutation = Lang.text("Mut" .. r.cat.Mutation), mult = Mutation.money(r.cat.Mutation) }) .. " · " .. hint.Text
 		end
-		local isArmed = armed[r.id] and os.clock() - armed[r.id] < 3
-		Kit.setButtonText(sellButton, Lang.text(if isArmed then "SellSure" else "Sell"))
-		Kit.setButtonColor(sellButton, if isArmed then C.coral else C.green)
+		Kit.setButtonText(sellButton, Lang.text("Sell"))
+		Kit.setButtonColor(sellButton, if r.cat.Locked then C.grey else C.green)
 		Kit.setButtonText(lockButton, Lang.text(if r.cat.Locked then "Locked" else "Lock"))
 		Kit.setButtonColor(lockButton, if r.cat.Locked then C.purple else C.tab)
+	elseif #chosen > 1 then
+		local sellable = 0
+		for _, r in chosen do
+			if not r.cat.Locked then
+				sellable += 1
+			end
+		end
+		hint.Text = Lang.text("MyCatsSelected", { count = #chosen })
+		Kit.setButtonText(sellButton, Lang.text("SellCount", { count = sellable }))
+		Kit.setButtonColor(sellButton, if sellable > 0 then C.green else C.grey)
+		Kit.setButtonText(lockButton, Lang.text("Lock"))
+		Kit.setButtonColor(lockButton, C.grey)
 	else
-		hint.Text = Lang.text("MyCatsTap")
+		hint.Text = Lang.text("MyCatsTapMore")
 		Kit.setButtonText(sellButton, Lang.text("Sell"))
 		Kit.setButtonColor(sellButton, C.grey)
 		Kit.setButtonText(lockButton, Lang.text("Lock"))
@@ -241,26 +282,35 @@ local function build()
 	hint = Kit.text(window.body, "Hint", UDim2.new(1, -312, 0, 52), UDim2.new(0, 308, 1, -62), 20)
 	hint.TextXAlignment = Enum.TextXAlignment.Left
 	hint.TextWrapped = true
+	-- W3 (revision 3 item 20): sells at once, no "Sure?" (locked cats are never sold: the server skips them)
 	sellButton.Activated:Connect(function()
-		local id = selected
-		if not id then
+		local data = PlayerData.get()
+		local ids: { string } = {}
+		for id in selected do
+			local cat = data and (data.Cats :: any)[id]
+			if cat and not cat.Locked then
+				table.insert(ids, id)
+			end
+		end
+		if #ids == 0 then
 			return
 		end
-		if armed[id] and os.clock() - armed[id] < 3 then
-			armed[id] = nil
-			sellRemote:FireServer(id)
-		else
-			armed[id] = os.clock()
-			redraw()
-			task.delay(3.1, redraw)
+		for _, id in ids do
+			selected[id] = nil
 		end
+		sellRemote:FireServer(if #ids == 1 then ids[1] else ids)
 	end)
 	lockButton.Activated:Connect(function()
-		local id = selected
+		local only: string? = nil
+		local n = 0
+		for id in selected do
+			only = id
+			n += 1
+		end
 		local data = PlayerData.get()
-		local cat = id and data and (data.Cats :: any)[id]
+		local cat = n == 1 and only and data and (data.Cats :: any)[only]
 		if cat then
-			lockRemote:FireServer(id, not cat.Locked)
+			lockRemote:FireServer(only, not cat.Locked)
 		end
 	end)
 end

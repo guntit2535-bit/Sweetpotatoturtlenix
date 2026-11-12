@@ -1,6 +1,6 @@
 --!strict
 -- The Rewards window (tasks 2.11 - 2.16): Daily (7-day login), Gifts (playtime), Quests, Codes, Group.
--- A Rewards button on the right (under Rebirth) with a red "!" while something can be claimed (player
+-- A Rewards button in the HUD's left column (W3, next to Rebirth) with a red "!" while something can be claimed (player
 -- attribute RewardsReady). The client only asks (ClaimReward / RedeemCode); RewardsService decides.
 
 local Players = game:GetService("Players")
@@ -14,6 +14,7 @@ local Rewards = require(Shared:WaitForChild("Rewards"))
 local Lang = require(script.Parent.Parent.Lang)
 local PlayerData = require(script.Parent.Parent.PlayerData)
 local Kit = require(script.Parent.Parent.UI.Kit)
+local Hud = require(script.Parent.Parent.UI.Hud)
 
 local RewardsController = {}
 
@@ -203,25 +204,18 @@ function RewardsController.Start(_self: any)
 	pad.PaddingLeft = UDim.new(0, 4)
 	pad.Parent = list
 
-	-- the button under Rebirth (right side)
-	local gui = Kit.screen("RewardsButton", 2)
-	openButton = Kit.button(gui, "Open", C.green, UDim2.fromOffset(150, 44), UDim2.new())
-	local holder = openButton.Parent :: Frame
-	-- R9: the icon on the left, the label beside it
-	Kit.icon(openButton, "Rewards", 40, UDim2.fromOffset(4, 2))
-	local openLabel = openButton:FindFirstChild("Label") :: TextLabel
-	openLabel.Position = UDim2.fromOffset(44, 0)
-	openLabel.Size = UDim2.new(1, -50, 1, 0)
-	local scale = Instance.new("UIScale")
-	scale.Parent = holder
-	local camera = workspace.CurrentCamera
-	local s = if camera then math.clamp(camera.ViewportSize.Y / 720, 0.6, 1) else 1
-	scale.Scale = s
-	holder.AnchorPoint = Vector2.new(1, 0)
-	holder.Position = UDim2.new(1, -12, 0, 104 + 160 * s + 12 + 52 * s)
+	-- W3 (revision 3 item 13): a button in the HUD's left column (middle left), next to Rebirth
+	openButton = Hud.leftButton("Rewards", "RewardsButton", C.green, 6, function()
+		if window.isOpen() then
+			window.setOpen(false)
+		else
+			redraw()
+			window.setOpen(true)
+		end
+	end)
 	badge = Instance.new("Frame")
-	badge.Size = UDim2.fromOffset(24, 24)
-	badge.Position = UDim2.new(1, -14, 0, -10)
+	badge.Size = UDim2.fromOffset(22, 22)
+	badge.Position = UDim2.new(1, -12, 0, -10)
 	badge.BackgroundColor3 = Color3.fromHex("ff3b3b")
 	badge.ZIndex = 5
 	badge.Parent = openButton
@@ -230,14 +224,6 @@ function RewardsController.Start(_self: any)
 	local bang = Kit.text(badge, "Bang", UDim2.fromScale(1, 1), UDim2.new(), 18, true)
 	bang.Text = "!"
 	bang.ZIndex = 6
-	openButton.Activated:Connect(function()
-		if window.isOpen() then
-			window.setOpen(false)
-		else
-			redraw()
-			window.setOpen(true)
-		end
-	end)
 	refreshBadge()
 	me:GetAttributeChangedSignal("RewardsReady"):Connect(refreshBadge)
 	PlayerData.changed:Connect(function()

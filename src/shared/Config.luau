@@ -89,6 +89,7 @@ Config.Pen = {
 	StartSlots = 10,
 	MaxSlots = 60,
 	SellRate = { maxCalls = 4, window = 1 },
+	SellMany = 120, -- W3: most cats one SellCat call may sell (multi-select in My Cats)
 	LockRate = { maxCalls = 6, window = 1 },
 	LikeCooldown = 2, -- seconds between Like prompts per player (any pen)
 	WanderSpeed = 3, -- studs/s a pen cat walks (client side)
@@ -137,6 +138,7 @@ Config.TreadmillFx = {
 -- LookEvery weights levels (dumbbell > barbell > bench > machine > giant barbell).
 Config.Gym = {
 	StandRadius = 3.6,
+	RingSegments = 24, -- W3: the green ring on your own training spots (client decoration)
 	LookEvery = 5,
 	UpgradeRate = { maxCalls = 3, window = 1 },
 	-- R2: stepping on the spot locks the player there (walk speed 0) until a jump (StopTraining)

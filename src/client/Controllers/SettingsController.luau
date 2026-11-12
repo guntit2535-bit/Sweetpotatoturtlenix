@@ -124,19 +124,19 @@ local function build(setRemote: RemoteEvent)
 	end)
 
 	-- the gear button (top right, under Roblox's own top bar)
+	-- W3 (revision 3 item 19): no frame, only a white gear and the word "Settings" under it
 	local hud = Kit.screen("SettingsButton", 1)
-	local gear = Kit.button(hud, "Gear", C.purple, UDim2.fromOffset(64, 64), UDim2.new(1, -78, 0, 10))
-	Kit.setButtonText(gear, "")
-	-- R9: purple cat-ear button with the gear icon (Config.UIIcons.Settings; the drawn gear until uploaded)
-	Kit.ears(gear.Parent :: Instance, 22, { 0.24, 0.76 }, C.purple, Color3.fromHex("e2ccff"))
-	local Config = require(ReplicatedStorage.Shared.Config) :: any
-	if Config.UIIcons.Settings > 0 then
-		Kit.icon(gear, "Settings", 44, UDim2.new(0.5, -22, 0, 2))
-	else
-		local icon = Kit.gear(gear, 34)
-		icon.Position = UDim2.new(0.5, 0, 0.42, 0)
-	end
-	buttonLabel = Kit.text(gear, "Caption", UDim2.new(1, 8, 0, 18), UDim2.new(0, -4, 1, -20), 15, true)
+	local gear = Instance.new("TextButton")
+	gear.Name = "Gear"
+	gear.BackgroundTransparency = 1
+	gear.Text = ""
+	gear.AnchorPoint = Vector2.new(1, 0)
+	gear.Position = UDim2.new(1, -10, 0, 8)
+	gear.Size = UDim2.fromOffset(84, 76)
+	gear.Parent = hud
+	local icon = Kit.gear(gear, 48)
+	icon.Position = UDim2.new(0.5, 0, 0, 27)
+	buttonLabel = Kit.text(gear, "Caption", UDim2.new(1, 0, 0, 22), UDim2.new(0, 0, 1, -22), 19, true)
 	gear.Activated:Connect(function()
 		window.setOpen(not window.isOpen())
 	end)

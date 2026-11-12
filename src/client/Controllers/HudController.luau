@@ -1,13 +1,13 @@
 --!strict
 -- The HUD (task 1.17, blueprint §16), phone first:
---   left    Shop, x2 Speed (big, softly blinking), My Cats (MyCatsController), Trade
---   right   Strength (kg) + weights and treadmill levels, under the Settings gear
---   bottom-left   Speed and money (+ money per second)
+--   left (middle)  a grid of small buttons: Shop | x2 Speed, My Cats | Trade, Rebirth | Rewards (UI/Hud, W3)
+--   top-right      the Settings gear (SettingsController)
+--   bottom-left    Strength, Speed and money, big (+ money per second) (W3)
 --   bottom-centre the hotbar (Roblox's own: Bat + Rod)
 --   bottom-right  the event countdown (workspace attributes from EventService, task 1.18)
 -- Every number comes from the player's attributes (DataService / PenService).
 -- R9 cute-cat look (art/source/gpt_ui/01_hud): cream panels with cat ears and navy outlines, icons from
--- Config.UIIcons (the drawn coin / dumbbell until they are uploaded).
+-- Config.UIIcons (the drawn coin until it is uploaded).
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -29,10 +29,8 @@ local HudController = {}
 local C = Kit.Colors
 local me = Players.LocalPlayer
 
+local STAT_H = 52 -- W3: one bottom-left stat line (icon size and text height)
 local strengthValue: TextLabel
-local strengthTitle: TextLabel
-local weightsLine: TextLabel
-local treadLine: TextLabel
 local speedLabel: TextLabel
 local moneyLabel: TextLabel
 local incomeLabel: TextLabel
@@ -93,41 +91,9 @@ local function coin(parent: Instance, size: number, pos: UDim2)
 	inner.Parent = c
 end
 
-local function dumbbell(parent: Instance, pos: UDim2)
-	if (Config.UIIcons :: any).Strength > 0 then
-		Kit.icon(parent, "Strength", 44, pos - UDim2.fromOffset(0, 10))
-		return
-	end
-	local d = Instance.new("Frame")
-	d.BackgroundTransparency = 1
-	d.Size = UDim2.fromOffset(46, 24)
-	d.Position = pos
-	d.Parent = parent
-	local barF = Instance.new("Frame")
-	barF.AnchorPoint = Vector2.new(0.5, 0.5)
-	barF.Position = UDim2.fromScale(0.5, 0.5)
-	barF.Size = UDim2.new(1, -8, 0, 6)
-	barF.BackgroundColor3 = C.grey
-	barF.Parent = d
-	Kit.stroke(barF, 2, nil, true)
-	for _, x in { 0, 1 } do
-		local w = Instance.new("Frame")
-		w.AnchorPoint = Vector2.new(x, 0.5)
-		w.Position = UDim2.fromScale(x, 0.5)
-		w.Size = UDim2.fromOffset(12, 24)
-		w.BackgroundColor3 = C.coral
-		w.Parent = d
-		Kit.corner(w, 4)
-		Kit.stroke(w, 2, nil, true)
-	end
-end
-
 local function refresh()
-	strengthTitle.Text = Lang.text("StrengthLabel")
 	strengthValue.Text = Lang.text("KgValue", { kg = Format.short(num("Strength")) })
-	weightsLine.Text = Lang.text("WeightsLv", { level = math.max(1, num("WeightsLevel")), max = Config.Weights.Levels })
-	treadLine.Text = Lang.text("TreadLv", { level = math.max(1, num("TreadLevel")), max = Config.Treadmill.Levels })
-	speedLabel.Text = Lang.text("SpeedValue", { speed = Format.money(num("Speed")) })
+	speedLabel.Text = Format.short(num("Speed"))
 	moneyLabel.Text = "$" .. Format.short(num("Money"))
 	incomeLabel.Text = Lang.text("IncomeRate", { money = Format.money(num("Income")) })
 end
@@ -187,64 +153,44 @@ local function build()
 	speedText()
 	Hud.leftButton("Trade", "TradeButton", C.purple, 4, TradeController.toggle)
 
-	-- right: Strength panel under the gear
+	-- W3 (revision 3 item 10): Strength, Speed and money big at the bottom left, no panels: a big icon and a
+	-- big outlined number per line (the old right-hand Strength panel with the gym levels is gone; the levels
+	-- are on the gym's own upgrade boards)
 	local gui = Kit.screen("HudStats", 2)
-	local right = Instance.new("Frame")
-	right.Name = "Strength"
-	right.AnchorPoint = Vector2.new(1, 0)
-	right.Position = UDim2.new(1, -12, 0, 104)
-	right.Size = UDim2.fromOffset(210, 160)
-	right.BackgroundColor3 = C.panel
-	right.Parent = gui
-	Kit.corner(right, 22)
-	Kit.stroke(right, 4, nil, true)
-	Kit.ears(right, 30, { 0.22, 0.78 })
-	fitScale(right, 720)
-	dumbbell(right, UDim2.fromOffset(12, 12))
-	strengthTitle = Kit.text(right, "Title", UDim2.new(1, -72, 0, 24), UDim2.fromOffset(66, 12), 20)
-	strengthTitle.TextXAlignment = Enum.TextXAlignment.Left
-	strengthTitle.TextColor3 = C.muted
-	strengthValue = Kit.text(right, "Value", UDim2.new(1, -16, 0, 44), UDim2.fromOffset(8, 40), 38)
-	strengthValue.TextScaled = true
-	for i, nameKey in { "Weights", "Treadmill" } do
-		local line = Instance.new("Frame")
-		line.Name = nameKey .. "Pill"
-		line.Size = UDim2.new(1, -20, 0, 26)
-		line.Position = UDim2.fromOffset(10, 88 + (i - 1) * 32)
-		line.BackgroundColor3 = C.soft
-		line.Parent = right
-		Kit.corner(line, 13)
-		Kit.stroke(line, 2, C.peach, true)
-		local t = Kit.text(line, nameKey, UDim2.new(1, -12, 1, 0), UDim2.fromOffset(6, 0), 18)
-		if i == 1 then
-			weightsLine = t
-		else
-			treadLine = t
-		end
-	end
-
-	-- bottom-left: speed + money
 	local bl = Instance.new("Frame")
 	bl.Name = "BottomLeft"
 	bl.BackgroundTransparency = 1
 	bl.AnchorPoint = Vector2.new(0, 1)
-	bl.Position = UDim2.new(0, 12, 1, -12)
-	bl.Size = UDim2.fromOffset(250, 104)
+	bl.Position = UDim2.new(0, 12, 1, -10)
+	bl.Size = UDim2.fromOffset(320, 3 * STAT_H + 24)
 	bl.Parent = gui
 	fitScale(bl, 720)
-	local sp = pill(bl, "Speed", UDim2.fromOffset(190, 40), UDim2.fromOffset(0, 0), Vector2.zero)
-	Kit.icon(sp, "Speed", 40, UDim2.fromOffset(2, 0))
-	speedLabel = Kit.text(sp, "Text", UDim2.new(1, -50, 1, 0), UDim2.fromOffset(44, 0), 22)
-	speedLabel.TextXAlignment = Enum.TextXAlignment.Left
-	speedLabel.TextColor3 = Color3.fromHex("1f7ad6")
-	local mo = pill(bl, "Money", UDim2.fromOffset(250, 54), UDim2.fromOffset(0, 48), Vector2.zero)
-	coin(mo, 40, UDim2.fromOffset(7, 7))
-	moneyLabel = Kit.text(mo, "Money", UDim2.new(0, 120, 1, 0), UDim2.fromOffset(54, 0), 30)
-	moneyLabel.TextXAlignment = Enum.TextXAlignment.Left
-	moneyLabel.TextColor3 = Color3.fromHex("2f9a3a")
-	incomeLabel = Kit.text(mo, "Income", UDim2.new(0, 80, 1, 0), UDim2.new(1, -88, 0, 0), 18)
-	incomeLabel.TextXAlignment = Enum.TextXAlignment.Right
-	incomeLabel.TextColor3 = Color3.fromHex("2f9a3a")
+	local function statLine(name: string, row: number, color: Color3): TextLabel
+		local line = Instance.new("Frame")
+		line.Name = name
+		line.BackgroundTransparency = 1
+		line.Size = UDim2.new(1, 0, 0, STAT_H)
+		line.Position = UDim2.fromOffset(0, (row - 1) * STAT_H)
+		line.Parent = bl
+		local t = Kit.text(line, "Value", UDim2.new(1, -STAT_H - 8, 1, 0), UDim2.fromOffset(STAT_H + 6, 0), STAT_H - 10, true)
+		t.TextXAlignment = Enum.TextXAlignment.Left
+		t.TextColor3 = color
+		t.TextWrapped = false
+		local stroke = t:FindFirstChildOfClass("UIStroke")
+		if stroke then
+			stroke.Thickness = 3.5
+		end
+		return t
+	end
+	strengthValue = statLine("Strength", 1, Color3.fromHex("ff7a7a"))
+	Kit.icon(bl:FindFirstChild("Strength") :: Instance, "Strength", STAT_H, UDim2.new())
+	speedLabel = statLine("Speed", 2, Color3.fromHex("8fdcff"))
+	Kit.icon(bl:FindFirstChild("Speed") :: Instance, "Speed", STAT_H, UDim2.new())
+	moneyLabel = statLine("Money", 3, Color3.fromHex("6dea6d"))
+	coin(bl:FindFirstChild("Money") :: Instance, STAT_H - 6, UDim2.fromOffset(3, 3))
+	incomeLabel = Kit.text(bl, "Income", UDim2.new(1, -STAT_H - 8, 0, 22), UDim2.fromOffset(STAT_H + 8, 3 * STAT_H), 20, true)
+	incomeLabel.TextXAlignment = Enum.TextXAlignment.Left
+	incomeLabel.TextColor3 = Color3.fromHex("b8ffb8")
 
 	-- bottom-right: event countdown
 	eventFrame = pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 1, -12), Vector2.new(1, 1))

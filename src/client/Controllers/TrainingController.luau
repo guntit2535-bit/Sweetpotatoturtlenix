@@ -7,6 +7,7 @@
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
@@ -136,6 +137,73 @@ local function refreshPrompts()
 	end
 end
 
+-- W3 (revision 3 item 6): a glowing green ring on the floor of your own pen's weights and treadmill spots, so new
+-- players see where to stand to train (hidden on the spot you are training on). Client only, decoration.
+local rings: { [string]: Model } = {}
+
+local function makeRing(radius: number): Model
+	local m = Instance.new("Model")
+	m.Name = "TrainingRing"
+	local n = Config.Gym.RingSegments
+	local green = Color3.fromHex("4dff6a")
+	local function part(name: string): Part
+		local p = Instance.new("Part")
+		p.Name = name
+		p.Anchored = true
+		p.CanCollide = false
+		p.CanQuery = false
+		p.CanTouch = false
+		p.CastShadow = false
+		p.Material = Enum.Material.Neon
+		p.Color = green
+		p.Parent = m
+		return p
+	end
+	for i = 1, n do
+		local a = (i - 0.5) / n * math.pi * 2
+		local seg = part("Seg")
+		seg.Size = Vector3.new(0.75, 0.16, 2 * math.pi * radius / n * 1.08)
+		seg.CFrame = CFrame.Angles(0, -a, 0) * CFrame.new(radius, 0, 0)
+	end
+	local fill = part("Fill")
+	fill.Shape = Enum.PartType.Cylinder
+	fill.Size = Vector3.new(0.06, radius * 2 - 0.4, radius * 2 - 0.4)
+	fill.CFrame = CFrame.Angles(0, 0, math.pi / 2)
+	m.PrimaryPart = fill
+	return m
+end
+
+local function refreshRings()
+	local mine = myPen()
+	local training = me:GetAttribute("Training")
+	for _, which in { "Weights", "Treadmill" } do
+		local model = mine and mine:FindFirstChild(which)
+		local stand = model and model:FindFirstChild("Stand")
+		local show = stand and stand:IsA("BasePart") and training ~= string.lower(which)
+		local ring = rings[which]
+		if not show then
+			if ring then
+				ring.Parent = nil
+			end
+			continue
+		end
+		local s = stand :: BasePart
+		if not ring then
+			ring = makeRing(Config.Gym.StandRadius)
+			rings[which] = ring
+		end
+		-- sit on whatever floor is under the spot (the lobby tiles, the treadmill belt)
+		local params = RaycastParams.new()
+		params.FilterType = Enum.RaycastFilterType.Exclude
+		params.FilterDescendantsInstances = { ring :: Model, me.Character :: any }
+		local hit = workspace:Raycast(s.Position + Vector3.new(0, 4, 0), Vector3.new(0, -12, 0), params)
+		local y = if hit then hit.Position.Y else s.Position.Y - s.Size.Y / 2
+		local r = ring :: Model
+		r:PivotTo(CFrame.new(s.Position.X, y + 0.08, s.Position.Z) * CFrame.Angles(0, 0, math.pi / 2))
+		r.Parent = workspace
+	end
+end
+
 -- R2: while locked on a spot, a jump (Space, the phone's jump button) asks the server to let go; a hint says so.
 local function setupJumpToStop()
 	local stop = Remotes.event("StopTraining")
@@ -201,10 +269,22 @@ function TrainingController.Start(_self: any)
 	task.spawn(function()
 		while true do
 			refreshPrompts()
+			refreshRings()
 			task.wait(2)
 		end
 	end)
-	local _ = Config
+	me:GetAttributeChangedSignal("Training"):Connect(refreshRings)
+	-- the rings breathe so they catch the eye
+	RunService.Heartbeat:Connect(function()
+		local a = 0.15 + 0.15 * math.sin(os.clock() * 3)
+		for _, ring in rings do
+			for _, part in ring:GetChildren() do
+				if part:IsA("BasePart") then
+					part.Transparency = if part.Name == "Fill" then 0.45 + a else a
+				end
+			end
+		end
+	end)
 end
 
 return TrainingController

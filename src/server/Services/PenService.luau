@@ -218,29 +218,73 @@ end
 
 -- Remotes ------------------------------------------------------------------------------------------
 
-local function onSell(player: Player, rawId: unknown)
-	local id = Validate.id(rawId)
+-- W3 (revision 3 items 20 + 21): SellCat(id) or SellCat({ id, ... }) sells at once (no "Sure?"); every id is
+-- checked (owned, not locked, no repeats, at most Config.Pen.SellMany) and all go in one save change.
+local function onSell(player: Player, raw: unknown)
 	local data = DataService.GetData(player)
-	if not id or not data then
+	if not data then
 		return
 	end
-	local cat = data.Cats[id]
-	if not cat then
+	local ids: { string } = {}
+	local seen: { [string]: boolean } = {}
+	local function take(v: unknown)
+		local id = Validate.id(v)
+		if id and not seen[id] and #ids < Config.Pen.SellMany then
+			seen[id] = true
+			table.insert(ids, id)
+		end
+	end
+	if type(raw) == "table" then
+		local n = 0
+		for _, v in raw :: { unknown } do
+			n += 1
+			if n > Config.Pen.SellMany then
+				break
+			end
+			take(v)
+		end
+	else
+		take(raw)
+	end
+	local bonus = Bonus.money(BonusCtx.of(player, data))
+	local sold: { string } = {}
+	local total = 0
+	local lockedSkipped = false
+	local firstName = "?"
+	for _, id in ids do
+		local cat = data.Cats[id]
+		if cat then
+			if cat.Locked then
+				lockedSkipped = true
+			else
+				local design = Cats.ById[cat.Kind]
+				total += if design then math.floor(CatRules.sellPrice(design.Tier, cat.Kg) * Mutation.money(cat.Mutation) * bonus) else 0
+				if #sold == 0 and design then
+					firstName = design.Name
+				end
+				table.insert(sold, id)
+			end
+		end
+	end
+	if #sold == 0 then
+		if lockedSkipped then
+			Notify.send(player, "CatIsLocked", nil, "bad")
+		end
 		return
 	end
-	if cat.Locked then
-		Notify.send(player, "CatIsLocked", nil, "bad")
-		return
-	end
-	local design = Cats.ById[cat.Kind]
-	local price = if design then math.floor(CatRules.sellPrice(design.Tier, cat.Kg) * Mutation.money(cat.Mutation) * Bonus.money(BonusCtx.of(player, data))) else 0
 	DataService.Update(player, function(d)
-		d.Cats[id] = nil
-		d.Money += price
-		d.Stats.Sold += 1
+		for _, id in sold do
+			d.Cats[id] = nil
+		end
+		d.Money += total
+		d.Stats.Sold += #sold
 	end)
 	refreshCats(player)
-	Notify.send(player, "SoldCat", { name = if design then design.Name else "?", money = Format.short(price) }, "good")
+	if #sold == 1 then
+		Notify.send(player, "SoldCat", { name = firstName, money = Format.short(total) }, "good")
+	else
+		Notify.send(player, "SoldCats", { count = #sold, money = Format.short(total) }, "good")
+	end
 end
 
 local function onLock(player: Player, rawId: unknown, rawLocked: unknown)

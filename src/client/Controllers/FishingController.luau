@@ -214,35 +214,18 @@ local function build()
 	zoneFrame.Parent = bar
 	Kit.corner(zoneFrame, 12)
 	Kit.stroke(zoneFrame, 2, Color3.fromHex("1f7a2c"), true)
+	-- W3 (revision 3 item 16): the cat is a red line across the bar (was a cat face)
 	catIcon = Instance.new("Frame")
 	catIcon.Name = "Cat"
 	catIcon.AnchorPoint = Vector2.new(0.5, 0.5)
 	catIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-	catIcon.Size = UDim2.fromOffset(46, 40)
-	catIcon.BackgroundColor3 = Color3.fromHex("f2a65a")
+	catIcon.Size = UDim2.new(1, 8, 0, 7)
+	catIcon.BackgroundColor3 = Color3.fromHex("ff2b2b")
+	catIcon.BorderSizePixel = 0
 	catIcon.ZIndex = 3
 	catIcon.Parent = bar
-	Kit.corner(catIcon, 10)
-	Kit.stroke(catIcon, 3, nil, true)
-	for _, x in { 0.3, 0.7 } do
-		local eye = Instance.new("Frame")
-		eye.AnchorPoint = Vector2.new(0.5, 0.5)
-		eye.Position = UDim2.fromScale(x, 0.45)
-		eye.Size = UDim2.fromOffset(7, 9)
-		eye.BackgroundColor3 = C.ink
-		eye.ZIndex = 4
-		eye.Parent = catIcon
-		Kit.corner(eye, 4)
-		local ear = Instance.new("Frame")
-		ear.AnchorPoint = Vector2.new(0.5, 0.5)
-		ear.Position = UDim2.new(x, 0, 0, -2)
-		ear.Size = UDim2.fromOffset(13, 13)
-		ear.Rotation = 45
-		ear.BackgroundColor3 = Color3.fromHex("f2a65a")
-		ear.ZIndex = 2
-		ear.Parent = catIcon
-		Kit.stroke(ear, 3, nil, true)
-	end
+	Kit.corner(catIcon, 3)
+	Kit.stroke(catIcon, 2, nil, true)
 
 	local meter = Instance.new("Frame")
 	meter.Name = "Meter"

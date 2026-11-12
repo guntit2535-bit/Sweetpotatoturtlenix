@@ -110,9 +110,9 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 ## Phase 5 — revision list 3, free (developer, 2026-11-13; table `docs/revision3_plan.md`)
 Developer's answers: everything free (no extra charge), training boosts = permanent steps. Order: bugs, quick UI,
 shop / pen, economy, world.
-- [~] W1 Bugs: phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) 3 Blender looks waiting for the pick (`art/preview/arrow/arrow_options.png`); stray picture in the map (18) needs the developer's screenshot
+- [~] W1 Bugs: phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); stray picture in the map (18) needs the developer's screenshot
 - [ ] W2 Phone fit at 5 screen sizes (12)
-- [ ] W3 Quick UI: Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
+- [~] W3 Quick UI (built + checked in Studio 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [ ] W4 ★ Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
 - [ ] W5 Economy to ~50 h + crate prices (9, 14): simulation and options table first
 - [ ] W6 Training boost ladder (17): permanent 2x / 4x / 8x ... steps for weights and treadmill, developer products
@@ -137,6 +137,13 @@ shop / pen, economy, world.
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- W3 (2026-11-13): the left buttons became a 2-wide grid (Shop | x2 Speed, My Cats | Trade, Rebirth | Rewards) at
+  70% size, so Rebirth and Rewards sit middle left without a taller column; the right-hand Strength panel is gone
+  (Strength now big at the bottom left with Speed and money; the weights / treadmill levels stay on their Upgrade
+  prompts at the pen); the Settings gear is the drawn white gear (the uploaded Settings icon is a cat face, not a
+  gear); Lock works on one chosen cat, Sell on every chosen unlocked cat (one SellCat call, max 120); the training
+  rings show only at your own pen and hide on the spot you are training on. To fix in W2: on a fresh save the
+  tutorial card overlaps the fishing bar.
 - V5i (2026-11-09): cats on the ground are anchored blocks with no joints (480 jointed cats cost ~40 ms of physics
   a frame); the client moves the blocks itself, nearest cats first within a block budget (PC 900, phone 400 a
   frame); cats farther than 100 studs from the camera hold still and do not start walks; a carried cat becomes a
@@ -619,3 +626,7 @@ shop / pen, economy, world.
 - 2026-11-13: arrow look A picked. `art/blender/arrow_export.py` -> `art/export/EventArrow.fbx` (ArrowBody tinted + white
   ArrowRim, 1,280 tris); EventController clones ReplicatedStorage.EventArrow (SmoothPlastic, soft light, bobs) and until
   it is imported draws a part arrow with a proper two-wedge head (checked in Studio with !mythical). Import = developer.
+- 2026-11-13: phase 5 W3 in Studio: new HUD (grid 70%, big bottom-left stats, frameless gear), My Cats multi-select
+  (FreshSave: 3 chosen incl. 1 locked -> "Sell 2", sold 2 for $81K, the locked one stayed), red line on the fishing
+  bar, green rings at both own training spots (on the tiles and on the treadmill belt). Rojo had stopped mid-edit;
+  restarted, the developer reconnected.

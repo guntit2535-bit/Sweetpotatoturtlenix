@@ -1,5 +1,5 @@
 --!strict
--- Rebirth on this client (task 2.7): a Rebirth button under the Strength panel opens a window with the
+-- Rebirth on this client (task 2.7): a Rebirth button in the HUD's left column (W3) opens a window with the
 -- Strength needed, what it gives and what it resets; the server checks and does it (Rebirth remote).
 -- R9 (mockup 07): "you keep" / "you reset" cards around a glowing cat, "Rebirth 3 -> 4", bonus chips from
 -- Config.Rebirth, a Strength progress bar and the big button.
@@ -16,6 +16,7 @@ local CatPortrait = require(script.Parent.Parent.UI.CatPortrait)
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
+local Hud = require(script.Parent.Parent.UI.Hud)
 
 local RebirthController = {}
 
@@ -146,24 +147,8 @@ function RebirthController.Start(_self: any)
 		remote:FireServer()
 		window.setOpen(false)
 	end)
-	-- the button under the Strength panel
-	local gui = Kit.screen("RebirthButton", 2)
-	open = Kit.button(gui, "Open", C.purple, UDim2.fromOffset(150, 44), UDim2.new(1, -162, 0, 252))
-	local holder = open.Parent :: Frame
-	-- R9: the icon on the left, the label beside it
-	Kit.icon(open, "Rebirth", 40, UDim2.fromOffset(4, 2))
-	local openLabel = open:FindFirstChild("Label") :: TextLabel
-	openLabel.Position = UDim2.fromOffset(44, 0)
-	openLabel.Size = UDim2.new(1, -50, 1, 0)
-	local scale = Instance.new("UIScale")
-	scale.Parent = holder
-	-- right under the Strength panel (HudController: top 92, height 150, scaled the same way)
-	local camera = workspace.CurrentCamera
-	local s = if camera then math.clamp(camera.ViewportSize.Y / 720, 0.6, 1) else 1
-	scale.Scale = s
-	holder.AnchorPoint = Vector2.new(1, 0)
-	holder.Position = UDim2.new(1, -12, 0, 104 + 160 * s + 12)
-	open.Activated:Connect(function()
+	-- W3 (revision 3 item 13): a button in the HUD's left column (middle left), after Trade
+	open = Hud.leftButton("Rebirth", "RebirthButton", C.purple, 5, function()
 		refresh()
 		window.setOpen(not window.isOpen())
 	end)

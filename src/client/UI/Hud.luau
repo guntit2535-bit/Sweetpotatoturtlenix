@@ -1,5 +1,5 @@
 --!strict
--- The HUD's left column of big buttons (blueprint §16: Shop, x2 Speed, My Cats, Trade). Controllers add
+-- The HUD's left column of big buttons (blueprint §16: Shop, x2 Speed, My Cats, Trade; W3: + Rebirth, Rewards). Controllers add
 -- their own button: Hud.leftButton("MyCats", "MyCatsButton", Kit.Colors.yellow, 3, onClick).
 -- R9 cute-cat look (art/source/gpt_ui/01_hud): square jelly buttons with cat ears, the icon on top
 -- (Config.UIIcons[name], a white paw until it is uploaded) and the label under it. Phones get a smaller column.
@@ -12,7 +12,13 @@ local Hud = {}
 local column: Frame? = nil
 local labels: { [TextButton]: string } = {}
 
-local SIZE = Vector2.new(104, 88)
+-- W3 (revision 3 items 11 + 13): 30% smaller than R9's 104 x 88, two to a row, Rebirth and Rewards join the
+-- column (middle left): Shop | x2 Speed, My Cats | Trade, Rebirth | Rewards.
+local K = 0.7
+local SIZE = Vector2.new(math.floor(104 * K), math.floor(88 * K))
+local GAP = Vector2.new(10, 20) -- the row gap leaves room for the ears
+local PER_ROW = 2
+local ROWS = 3
 
 local function getColumn(): Frame
 	if column then
@@ -24,12 +30,14 @@ local function getColumn(): Frame
 	f.BackgroundTransparency = 1
 	f.AnchorPoint = Vector2.new(0, 0.5)
 	f.Position = UDim2.new(0, 14, 0.42, 0)
-	f.Size = UDim2.fromOffset(SIZE.X + 8, 4 * (SIZE.Y + 22))
+	f.Size = UDim2.fromOffset(PER_ROW * SIZE.X + (PER_ROW - 1) * GAP.X + 6, ROWS * SIZE.Y + ROWS * GAP.Y)
 	f.Parent = gui
-	local layout = Instance.new("UIListLayout")
-	layout.Padding = UDim.new(0, 22) -- room for the ears
+	local layout = Instance.new("UIGridLayout")
+	layout.CellSize = UDim2.fromOffset(SIZE.X, SIZE.Y)
+	layout.CellPadding = UDim2.fromOffset(GAP.X, GAP.Y)
+	layout.FillDirectionMaxCells = PER_ROW
 	layout.SortOrder = Enum.SortOrder.LayoutOrder
-	layout.VerticalAlignment = Enum.VerticalAlignment.Center
+	layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 	layout.Parent = f
 	-- phones: a smaller column
 	local scale = Instance.new("UIScale")
@@ -59,11 +67,16 @@ function Hud.leftButton(name: string, textKey: string, color: Color3, order: num
 	holder.LayoutOrder = order
 	-- cat ears in the button's colour, the icon on top, the label underneath
 	local h, s, v = color:ToHSV()
-	Kit.ears(holder, 30, { 0.24, 0.76 }, color, Color3.fromHSV(h, s * 0.45, math.min(1, v * 1.1)))
-	Kit.icon(face, name, 46, UDim2.new(0.5, -23, 0, 5))
+	Kit.ears(holder, math.floor(30 * K), { 0.24, 0.76 }, color, Color3.fromHSV(h, s * 0.45, math.min(1, v * 1.1)))
+	local icon = math.floor(46 * K)
+	Kit.icon(face, name, icon, UDim2.new(0.5, -icon / 2, 0, 3))
 	local label = face:FindFirstChild("Label") :: TextLabel
-	label.Size = UDim2.new(1, -10, 0, 30)
-	label.Position = UDim2.new(0, 5, 1, -33)
+	label.Size = UDim2.new(1, -6, 0, math.floor(30 * K))
+	label.Position = UDim2.new(0, 3, 1, -math.floor(30 * K) - 2)
+	local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
+	if limit then
+		limit.MaxTextSize = 17
+	end
 	Kit.setButtonText(face, Lang.text(textKey))
 	labels[face] = textKey
 	face.Activated:Connect(onClick)

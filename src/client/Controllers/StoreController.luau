@@ -44,43 +44,32 @@ local function price(kind: string, id: number): string
 	return prices[key]
 end
 
-local function card(list: ScrollingFrame, order: number, title: string, line: string, color: Color3, iconKey: string?): Frame
-	-- R9 row (mockup 03); the item's Creator Hub picture fills the picture box once it has loaded
-	local row, chip = Kit.row(list, order, title, line, color)
-	local icon = if iconKey then icons[iconKey] else nil
-	if icon and icon ~= 0 then
-		-- the item's own picture from Creator Hub, a bit bigger than the chip. The coloured chip stays until the
-		-- picture has loaded (a new icon can stay unloaded for a while during Roblox's review).
-		local img = Instance.new("ImageLabel")
-		img.BackgroundTransparency = 1
-		img.Size = UDim2.fromOffset(74, 74)
-		img.Position = UDim2.fromOffset(-4, -4)
-		img.Image = `rbxassetid://{icon}`
-		img.Parent = chip
-		local function shown()
-			if img.IsLoaded then
-				chip.BackgroundTransparency = 1
-				local sq = chip:FindFirstChild("Color")
-				if sq then
-					sq:Destroy()
-				end
-				local s = chip:FindFirstChildOfClass("UIStroke")
-				if s then
-					s.Enabled = false
-				end
-			end
-		end
-		img:GetPropertyChangedSignal("IsLoaded"):Connect(shown)
-		shown()
-	end
-	return row
-end
+type Button = { text: string, color: Color3, onClick: (() -> ())? }
 
-local function action(row: Frame, text: string, color: Color3, onClick: (() -> ())?)
-	local b = Kit.rowButton(row, text, color)
-	if onClick then
-		b.Activated:Connect(onClick)
-	end
+-- W4: a card on the shop's rail; the item's Creator Hub picture fills the picture box once it has loaded (the
+-- coloured chip stays until then: a new icon can stay unloaded for a while during Roblox's review)
+local function card(list: ScrollingFrame, order: number, title: string, line: string, color: Color3, iconKey: string, button: Button)
+	ShopController.card(list, order, {
+		title = title,
+		color = color,
+		lines = { { line } },
+		picture = function(box: Frame): boolean
+			local icon = icons[iconKey]
+			if not icon or icon == 0 then
+				return false
+			end
+			local img = Instance.new("ImageLabel")
+			img.BackgroundTransparency = 1
+			img.AnchorPoint = Vector2.new(0.5, 0.5)
+			img.Position = UDim2.fromScale(0.5, 0.5)
+			img.Size = UDim2.fromScale(0.95, 0.95)
+			img.ScaleType = Enum.ScaleType.Fit
+			img.Image = `rbxassetid://{icon}`
+			img.Parent = box
+			return true
+		end,
+		button = button,
+	})
 end
 
 local function drawRobux(list: ScrollingFrame)
@@ -92,16 +81,13 @@ local function drawRobux(list: ScrollingFrame)
 		if id ~= 0 then
 			price("pass", id) -- also loads the icon of an owned pass
 		end
-		local row = card(list, order, Lang.text("Pass" .. name), Lang.text("Pass" .. name .. "Desc"), C.sky, `pass:{id}`)
-		if me:GetAttribute(`Pass{name}`) == true then
-			action(row, Lang.text("Owned2"), C.purple)
-		elseif id == 0 then
-			action(row, Lang.text("NotOnSaleYet"), C.grey)
-		else
-			action(row, price("pass", id), C.green, function()
+		local button: Button = if me:GetAttribute(`Pass{name}`) == true
+			then { text = Lang.text("Owned2"), color = C.purple }
+			elseif id == 0 then { text = Lang.text("NotOnSaleYet"), color = C.grey }
+			else { text = price("pass", id), color = C.green, onClick = function()
 				MarketplaceService:PromptGamePassPurchase(me, id)
-			end)
-		end
+			end }
+		card(list, order, Lang.text("Pass" .. name), Lang.text("Pass" .. name .. "Desc"), C.sky, `pass:{id}`, button)
 	end
 	local data = PlayerData.get() or {}
 	local income = me:GetAttribute("Income")
@@ -138,14 +124,12 @@ local function drawRobux(list: ScrollingFrame)
 			if p.Id ~= 0 then
 				price("product", p.Id)
 			end
-			local row = card(list, order, title, line, C.yellow, `product:{p.Id}`)
-			if p.Id == 0 then
-				action(row, Lang.text("NotOnSaleYet"), C.grey)
-			else
-				action(row, price("product", p.Id), C.green, function()
+			local button: Button = if p.Id == 0
+				then { text = Lang.text("NotOnSaleYet"), color = C.grey }
+				else { text = price("product", p.Id), color = C.green, onClick = function()
 					MarketplaceService:PromptProductPurchase(me, p.Id)
-				end)
-			end
+				end }
+			card(list, order, title, line, C.yellow, `product:{p.Id}`, button)
 		end
 	end
 end

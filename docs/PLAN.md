@@ -648,3 +648,10 @@ shop / pen, economy, world.
   countdown moves under the gear on touch (the jump button covered it); the tutorial bubble hides while fishing and
   while a window is open (it covered both). Text in the big windows is small on the smallest phones (window scale
   ~0.5): the shop becomes big swipe cards in W4. Waits for the developer's Save / Publish (ScreenOrientation).
+- 2026-11-13: W4 look A picked ("A card rail"). UI/ShopCard (rail of 140-px cards, swipe, settles on the nearest
+  card, arrows 3 cards at a time, opens on the item in use with the next one beside it); the Shop window is 700 x 340
+  so a phone keeps it at ~0.8 (Studio phone view: readable); every tab is cards (rods with 3 stat lines, shoes,
+  treats, crates with every tier's chance in its colour, Robux with the Creator Hub icon). Pen tab removed; pen slots
+  at a board in front of your own pen (PenBoardController, client-built, SurfaceGui button + prompt; FreshSave: Buy
+  $2K -> 10 to 15 slots, next $4.2K). Known, older than W4: the crate meshes show grey in the game (textures load;
+  the crates' UVs / palette do not match), the shop shows them grey too.

@@ -1,7 +1,10 @@
 --!strict
--- The Shop window (tasks 2.1 - 2.5): tabs Rods / Shoes / Pen / Treats / Crates (crates: CrateController adds
--- its tab content through ShopController.setCratesBuilder). Prices come from shared/Shop (the same numbers
--- the server charges); the client only asks (BuyItem) and redraws from the save copy.
+-- The Shop window (tasks 2.1 - 2.5; W4 = revision 3 items 4 + 5): tabs Rods / Shoes / Treats / Crates / Robux, each a
+-- rail of tall cards swiped left / right (UI/ShopCard, look A). Crates and Robux fill their tab through
+-- setCratesBuilder / setRobuxBuilder with ShopController.card. The Pen tab is gone: pen slots are bought at the
+-- board in front of your pen (PenBoardController). Prices come from shared/Shop (the same numbers the server
+-- charges); the client only asks (BuyItem) and redraws from the save copy. The window is wide and short so it
+-- stays big on a phone (W2: 700 x 340 keeps ~0.8 scale on a 375 px tall screen).
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -15,11 +18,12 @@ local Lang = require(script.Parent.Parent.Lang)
 local PlayerData = require(script.Parent.Parent.PlayerData)
 local Kit = require(script.Parent.Parent.UI.Kit)
 local ItemPortrait = require(script.Parent.Parent.UI.ItemPortrait)
+local ShopCard = require(script.Parent.Parent.UI.ShopCard)
 
 local ShopController = {}
 
 local C = Kit.Colors
-local TABS = { "Rods", "Shoes", "Pen", "Treats", "Crates", "Robux" }
+local TABS = { "Rods", "Shoes", "Treats", "Crates", "Robux" }
 local window: Kit.Window
 local list: ScrollingFrame
 local tabButtons: { [string]: TextButton } = {}
@@ -27,68 +31,78 @@ local current = "Rods"
 local buyRemote: RemoteEvent
 local cratesBuilder: ((list: ScrollingFrame) -> ())? = nil
 local robuxBuilder: ((list: ScrollingFrame) -> ())? = nil
+local jumpNext = false -- show the next thing to buy when a tab is opened
 
-local function card(order: number, title: string, line: string, color: Color3): Frame
-	local row = Kit.row(list, order, title, line, color) -- R9 row (mockup 02)
-	return row
+export type CardOptions = ShopCard.Options
+
+-- One card on the open tab's rail (used by CrateController / StoreController too).
+function ShopController.card(rail: ScrollingFrame, order: number, o: CardOptions): Frame
+	return ShopCard.make(rail, order, o)
 end
 
--- A Buy button, or a grey label when owned / locked.
-local function action(row: Frame, state: string, cost: number?, onBuy: () -> ())
-	local text, color = "", C.grey
+-- A picture filler for ShopCard: the item's mesh (R5) seen from `view`.
+local function mesh(id: string, view: Vector3?): (box: Frame) -> boolean
+	return function(box: Frame): boolean
+		return ItemPortrait.make(box, id, view) ~= nil
+	end
+end
+
+-- The button of an item bought in order (rods, shoes).
+local function ladderButton(state: string, cost: number?, onBuy: () -> ()): { text: string, color: Color3, onClick: (() -> ())? }
 	if state == "buy" then
-		text, color = Lang.text("Buy", { cost = Format.short(cost or 0) }), C.green
+		return { text = Lang.text("Buy", { cost = Format.short(cost or 0) }), color = C.green, onClick = onBuy }
 	elseif state == "inuse" then
-		text, color = Lang.text("InUse"), C.purple
+		return { text = Lang.text("InUse"), color = C.purple }
 	elseif state == "owned" then
-		text, color = Lang.text("Owned"), C.grey
-	else
-		text, color = Lang.text("BuyPrevious"), C.grey
+		return { text = Lang.text("Owned"), color = C.grey }
 	end
-	local b = Kit.rowButton(row, text, color)
-	if state == "buy" then
-		b.Activated:Connect(onBuy)
-	end
+	return { text = Lang.text("BuyPreviousShort"), color = C.grey }
 end
 
-local function drawRods(data: { [string]: any })
+local function drawRods(data: { [string]: any }): number
 	local have = data.RodLevel or 1
+	local base = FishingBar.params(1, 1)
 	for level = 1, Config.Rods.Levels do
 		local m, n = Shop.rodMaterial(level)
 		local p = FishingBar.params(1, level)
-		local base = FishingBar.params(1, 1)
 		local zone = math.floor((p.zone / base.zone - 1) * 100 + 0.5)
 		local fill = math.floor((p.fill / base.fill - 1) * 100 + 0.5)
 		local luck = math.floor((level - 1) * Config.Rods.LuckPerLevel * 100 + 0.5)
-		local row = card(level, Lang.text("RodName", { material = Lang.text("Mat" .. Config.Rods.Materials[m]), n = n }),
-			Lang.text("RodEffect", { zone = zone, fill = fill, luck = luck }), Color3.fromHex(Config.Rods.Colors[m]))
-		ItemPortrait.onRow(row, "Rod" .. level, Vector3.new(1, 0.15, -0.3)) -- R5: the rod's mesh
 		local state = if level == have then "inuse" elseif level < have then "owned" elseif level == have + 1 then "buy" else "locked"
-		action(row, state, Shop.rodCost(level), function()
-			buyRemote:FireServer("Rod", level)
-		end)
+		ShopCard.make(list, level, {
+			title = Lang.text("RodName", { material = Lang.text("Mat" .. Config.Rods.Materials[m]), n = n }),
+			color = Color3.fromHex(Config.Rods.Colors[m]),
+			lines = {
+				{ Lang.text("StatZone", { n = zone }) },
+				{ Lang.text("StatMeter", { n = fill }) },
+				{ Lang.text("StatLuck", { n = luck }) },
+			},
+			picture = mesh("Rod" .. level, Vector3.new(1, 0.15, -0.3)),
+			button = ladderButton(state, Shop.rodCost(level), function()
+				buyRemote:FireServer("Rod", level)
+			end),
+			highlight = state == "inuse",
+		})
 	end
+	return have
 end
 
-local function drawShoes(data: { [string]: any })
+local function drawShoes(data: { [string]: any }): number
 	local have = data.Shoes or 0
 	for pair, s in Config.Shoes.List do
-		local row = card(pair, Lang.text("Shoe" .. s.Key), Lang.text("ShoeEffect", { speed = s.Speed }), C.sky)
-		ItemPortrait.onRow(row, "Shoe_" .. s.Key, Vector3.new(-1, 0.55, -0.6))
 		local state = if pair == have then "inuse" elseif pair < have then "owned" elseif pair == have + 1 then "buy" else "locked"
-		action(row, state, s.Cost, function()
-			buyRemote:FireServer("Shoes", pair)
-		end)
+		ShopCard.make(list, pair, {
+			title = Lang.text("Shoe" .. s.Key),
+			color = C.sky,
+			lines = { { Lang.text("ShoeEffect", { speed = s.Speed }) } },
+			picture = mesh("Shoe_" .. s.Key, Vector3.new(-1, 0.55, -0.6)),
+			button = ladderButton(state, s.Cost, function()
+				buyRemote:FireServer("Shoes", pair)
+			end),
+			highlight = state == "inuse",
+		})
 	end
-end
-
-local function drawPen(data: { [string]: any })
-	local slots = data.PenSlots or Config.Pen.StartSlots
-	local row = card(1, Lang.text("PenItem", { n = Config.PenUpgrade.Step }),
-		if slots >= Config.Pen.MaxSlots then Lang.text("PenMax") else Lang.text("PenEffect", { now = slots, next = math.min(Config.Pen.MaxSlots, slots + Config.PenUpgrade.Step) }), C.yellow)
-	action(row, if slots >= Config.Pen.MaxSlots then "owned" else "buy", Shop.penCost(data.PenBuys or 0), function()
-		buyRemote:FireServer("Pen", 0)
-	end)
+	return math.max(1, have)
 end
 
 local function localIncome(): number
@@ -101,17 +115,20 @@ local function drawTreats(data: { [string]: any })
 	local boosts = data.Boosts or {}
 	local now = workspace:GetServerTimeNow()
 	for i, t in Config.Treats.List do
-		local ends = boosts[t.Key] or 0
-		local left = ends - now
-		local line = Lang.text("Treat" .. t.Name .. "Desc")
+		local left = (boosts[t.Key] or 0) - now
+		local lines: { ShopCard.Line } = { { Lang.text("Treat" .. t.Name .. "Desc") } }
 		if left > 0 then
-			line ..= "  ·  " .. Lang.text("TreatLeft", { time = Format.clock(left) })
+			table.insert(lines, { Lang.text("TreatLeft", { time = Format.clock(left) }), C.green })
 		end
-		local row = card(i, Lang.text("Treat" .. t.Name), line, if t.Key == "Money" then C.yellow elseif t.Key == "Luck" then C.green else C.purple)
-		ItemPortrait.onRow(row, "Treat_" .. t.Name, Vector3.new(0.4, 0.35, -1))
-		action(row, "buy", Shop.treatCost(t.Key, income), function()
-			buyRemote:FireServer("Treat", t.Key)
-		end)
+		ShopCard.make(list, i, {
+			title = Lang.text("Treat" .. t.Name),
+			color = if t.Key == "Money" then C.yellow elseif t.Key == "Luck" then C.green else C.purple,
+			lines = lines,
+			picture = mesh("Treat_" .. t.Name, Vector3.new(0.4, 0.35, -1)),
+			button = { text = Lang.text("Buy", { cost = Format.short(Shop.treatCost(t.Key, income)) }), color = C.green, onClick = function()
+				buyRemote:FireServer("Treat", t.Key)
+			end },
+		})
 	end
 end
 
@@ -124,24 +141,26 @@ local function redraw()
 		Kit.setButtonText(b, Lang.text("Tab" .. tab))
 		Kit.setButtonColor(b, if tab == current then C.yellow else C.tab)
 	end
-	for _, c in list:GetChildren() do
-		if c:IsA("Frame") then
-			c:Destroy()
-		end
-	end
+	local keep = list.CanvasPosition
+	ShopCard.clear(list)
 	local data = PlayerData.get() or {}
+	local first = 1 -- the card to show first: the one before the next thing to buy
 	if current == "Rods" then
-		drawRods(data)
+		first = drawRods(data)
 	elseif current == "Shoes" then
-		drawShoes(data)
-	elseif current == "Pen" then
-		drawPen(data)
+		first = drawShoes(data)
 	elseif current == "Treats" then
 		drawTreats(data)
 	elseif current == "Crates" and cratesBuilder then
 		cratesBuilder(list)
 	elseif current == "Robux" and robuxBuilder then
 		robuxBuilder(list)
+	end
+	if jumpNext then
+		jumpNext = false
+		ShopCard.jumpTo(list, first)
+	else
+		list.CanvasPosition = keep
 	end
 end
 
@@ -156,6 +175,7 @@ end
 -- Opens the window on a tab (the x2 Speed button opens Robux).
 function ShopController.openTab(tab: string)
 	current = tab
+	jumpNext = true
 	redraw()
 	window.setOpen(true)
 end
@@ -170,13 +190,14 @@ function ShopController.toggle()
 	if window.isOpen() then
 		window.setOpen(false)
 	else
+		jumpNext = true
 		redraw()
 		window.setOpen(true)
 	end
 end
 
 local function build()
-	window = Kit.window({ name = "ShopWindow", width = 720, height = 560, color = C.coral })
+	window = Kit.window({ name = "ShopWindow", width = 700, height = 340, color = C.coral })
 	-- R9 (mockup 02): the player's money in a pill at the top right of the window
 	local moneyPill = Instance.new("Frame")
 	moneyPill.Name = "Money"
@@ -199,9 +220,9 @@ local function build()
 	local tabs = Instance.new("Frame")
 	tabs.Name = "Tabs"
 	tabs.BackgroundTransparency = 1
-	tabs.Size = UDim2.new(1, 0, 0, 50)
+	tabs.Size = UDim2.new(1, 0, 0, 40)
 	tabs.Parent = window.body
-	tabs.Position = UDim2.fromOffset(0, 8)
+	tabs.Position = UDim2.fromOffset(0, 4)
 	local layout = Instance.new("UIListLayout")
 	layout.FillDirection = Enum.FillDirection.Horizontal
 	layout.Padding = UDim.new(0, 6)
@@ -211,33 +232,16 @@ local function build()
 		if tab == "Shoes" and not Config.Shoes.Enabled then
 			continue
 		end
-		local b = Kit.button(tabs, tab, C.tab, UDim2.fromOffset(100, 42), UDim2.new())
+		local b = Kit.button(tabs, tab, C.tab, UDim2.fromOffset(96, 36), UDim2.new())
 		;(b.Parent :: Frame).LayoutOrder = i
 		b.Activated:Connect(function()
 			current = tab
+			jumpNext = true
 			redraw()
 		end)
 		tabButtons[tab] = b
 	end
-	list = Instance.new("ScrollingFrame")
-	list.Name = "List"
-	list.BackgroundTransparency = 1
-	list.BorderSizePixel = 0
-	list.Position = UDim2.fromOffset(0, 60)
-	list.Size = UDim2.new(1, 0, 1, -60)
-	list.AutomaticCanvasSize = Enum.AutomaticSize.Y
-	list.CanvasSize = UDim2.new()
-	list.ScrollBarThickness = 8
-	list.ScrollBarImageColor3 = C.ink
-	list.Parent = window.body
-	local l2 = Instance.new("UIListLayout")
-	l2.Padding = UDim.new(0, 8)
-	l2.SortOrder = Enum.SortOrder.LayoutOrder
-	l2.Parent = list
-	local pad = Instance.new("UIPadding")
-	pad.PaddingTop = UDim.new(0, 4)
-	pad.PaddingLeft = UDim.new(0, 4)
-	pad.Parent = list
+	list = ShopCard.rail(window.body, 48)
 end
 
 function ShopController.Start(_self: any)

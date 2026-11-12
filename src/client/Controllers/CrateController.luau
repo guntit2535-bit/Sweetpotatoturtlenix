@@ -32,52 +32,30 @@ local C = Kit.Colors
 local buyRemote: RemoteEvent
 
 local function drawTab(list: ScrollingFrame)
+	-- W4: one card per crate on the shop's rail: the crate's mesh, every tier's chance in its colour (shown before
+	-- buying, blueprint §12), and the price
+	local rb = Players.LocalPlayer:GetAttribute("Rebirths")
 	for i, crate in Config.Crates.List do
-		local row = Instance.new("Frame")
-		row.Name = crate.Key
-		row.LayoutOrder = i
-		row.Size = UDim2.new(1, -12, 0, 104)
-		row.BackgroundColor3 = C.soft
-		row.Parent = list
-		Kit.corner(row, 14)
-		Kit.stroke(row, 3, nil, true)
-		local box = Instance.new("Frame")
-		box.Size = UDim2.fromOffset(64, 64)
-		box.Position = UDim2.fromOffset(12, 20)
-		box.BackgroundColor3 = Color3.fromHex(crate.Color)
-		box.Parent = row
-		Kit.corner(box, 10)
-		Kit.stroke(box, 3, nil, true)
-		-- R5: the crate's mesh over its colour
-		if ItemPortrait.make(box, "Crate_" .. crate.Key) then
-			box.BackgroundColor3 = C.panel
-		end
-		local name = Kit.text(row, "Name", UDim2.new(1, -260, 0, 30), UDim2.fromOffset(88, 8), 24)
-		name.TextXAlignment = Enum.TextXAlignment.Left
-		name.Text = Lang.text("Crate" .. crate.Key)
-		-- the odds, one chip per tier
-		local odds = Instance.new("Frame")
-		odds.BackgroundTransparency = 1
-		odds.Position = UDim2.fromOffset(88, 44)
-		odds.Size = UDim2.new(1, -260, 0, 50)
-		odds.Parent = row
-		local grid = Instance.new("UIGridLayout")
-		grid.CellSize = UDim2.fromOffset(118, 22)
-		grid.CellPadding = UDim2.fromOffset(6, 4)
-		grid.Parent = odds
+		local lines = {}
 		for _, o in Crates.odds(crate.Key) do
 			local t = Config.Tiers[o.tier]
-			local chip = Kit.text(odds, t.Key, UDim2.new(), UDim2.new(), 16, true)
-			chip.Text = `{Lang.text("Tier" .. t.Key)} {o.percent}%`
-			chip.TextColor3 = Color3.fromHex(t.Color)
-			chip.TextXAlignment = Enum.TextXAlignment.Left
+			table.insert(lines, { `{Lang.text("Tier" .. t.Key)} {o.percent}%`, Color3.fromHex(t.Color) })
 		end
-		local b = Kit.button(row, "Buy", C.green, UDim2.fromOffset(150, 50), UDim2.new(1, -162, 0.5, -27))
-		local rb = Players.LocalPlayer:GetAttribute("Rebirths")
-		Kit.setButtonText(b, Lang.text("Buy", { cost = Format.short(Crates.cost(crate.Key, if type(rb) == "number" then rb else 0)) }))
-		b.Activated:Connect(function()
-			buyRemote:FireServer(crate.Key)
-		end)
+		ShopController.card(list, i, {
+			title = Lang.text("Crate" .. crate.Key),
+			color = Color3.fromHex(crate.Color),
+			lines = lines :: any,
+			picture = function(box: Frame): boolean
+				return ItemPortrait.make(box, "Crate_" .. crate.Key) ~= nil
+			end,
+			button = {
+				text = Lang.text("Buy", { cost = Format.short(Crates.cost(crate.Key, if type(rb) == "number" then rb else 0)) }),
+				color = C.green,
+				onClick = function()
+					buyRemote:FireServer(crate.Key)
+				end,
+			},
+		})
 	end
 end
 

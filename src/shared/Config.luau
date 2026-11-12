@@ -387,6 +387,9 @@ Config.Rods = {
 
 -- Pen expansion with money (task 2.4): +Step slots per purchase up to Config.Pen.MaxSlots.
 Config.PenUpgrade = { Step = 5, Cost = 2000, CostGrowth = 2.1 }
+-- W4 (revision 3 item 5): the board that sells pen slots, in front of your own pen (studs from the pen's centre:
+-- Forward = toward the plaza, Right = toward the weights: between the sign and the weights)
+Config.PenBoard = { Forward = 12, Right = 9 }
 
 -- Cat treats (task 2.5, blueprint §12): 10 minutes each; buying again adds 10 minutes. Price = the larger
 -- of Base and IncomeSeconds of the player's current income.

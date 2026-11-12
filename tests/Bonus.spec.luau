@@ -58,6 +58,26 @@ w.shoes = 8
 w.likeBuff = true
 check(Bonus.walk(1e12, w) == Config.Walk.Cap, "capped")
 
+-- W6: training boost steps: x2 each, for ever, on top of rebirths and the Strength pass
+local b = Bonus.ctx()
+check(Bonus.strength(b) == 1 and Bonus.speedGain(b) == 1, "no boost: x1")
+b.boostWeights = 3
+b.boostTread = 6
+check(Bonus.strength(b) == 8, "3 weights steps = x8 Strength")
+check(Bonus.speedGain(b) == 64, "6 treadmill steps = x64 Speed")
+b.passes.Strength = true
+b.rebirths = 1
+check(near(Bonus.strength(b), 8 * 2 * Config.Rebirth.StrengthMult), "steps x pass x rebirth")
+check(near(Bonus.speedGain(b), 64 * Config.Rebirth.SpeedMult), "treadmill steps x rebirth")
+local steps = 0
+for _, p in Config.Products.List do
+	if p.Kind == "TrainBoost" then
+		steps += 1
+		check(p.Step >= 1 and p.Step <= Config.TrainBoost.Steps and (p.Stat == "Weights" or p.Stat == "Treadmill"), `{p.Key} step / stat`)
+	end
+end
+check(steps == 2 * Config.TrainBoost.Steps, "a product for every step of both")
+
 if failures > 0 then
 	error(`Bonus: {failures} failure(s)`)
 end

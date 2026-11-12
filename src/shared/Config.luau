@@ -338,6 +338,12 @@ Config.Passes = {
 	VIP = { Id = 2075422198, Money = 0.10 }, -- VIP tag + 10% money
 }
 
+-- W6 (revision 3 item 17): training boost steps (products TrainW1-6 / TrainT1-6 below): step n = x Mult ^ n gain,
+-- for ever; PriceHint = the suggested Robux price of each step (the real price is set in Creator Hub).
+Config.TrainBoost = { Steps = 6, Mult = 2, PriceHint = { 5, 10, 20, 40, 80, 160 } }
+-- its boards: studs from the training spot, Side = away from the pen's middle, Forward = toward the plaza
+Config.TrainBoostBoard = { Side = 6, Forward = 0, Scale = 0.8 }
+
 -- Developer products (milestone 2, blueprint §13). Ids from the group's experience (2026-11-08); the client
 -- confirms every price. Money packs pay Seconds of the buyer's income (at least Base).
 Config.Products = {
@@ -357,6 +363,21 @@ Config.Products = {
 		{ Key = "ServerLuck", Id = 3729676540, Kind = "ServerLuck" },
 		{ Key = "SummonMythical", Id = 3729676622, Kind = "Summon" },
 		{ Key = "Starter", Id = 3729676699, Kind = "Starter", Money = 10000, Rod = 6, Treats = { "Luck", "Money" } },
+		-- W6 (revision 3 item 17): permanent training boosts bought one step after another (x2, x4 .. x64), for the
+		-- weights (Strength) and the treadmill (Speed) apart. Ids: the developer creates the 12 products (0 = not on
+		-- sale yet); prices from the client (suggested 5 / 10 / 20 / 40 / 80 / 160 R$, docs/Sweetpotato_Robux.xlsx).
+		{ Key = "TrainW1", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 1 },
+		{ Key = "TrainW2", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 2 },
+		{ Key = "TrainW3", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 3 },
+		{ Key = "TrainW4", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 4 },
+		{ Key = "TrainW5", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 5 },
+		{ Key = "TrainW6", Id = 0, Kind = "TrainBoost", Stat = "Weights", Step = 6 },
+		{ Key = "TrainT1", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 1 },
+		{ Key = "TrainT2", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 2 },
+		{ Key = "TrainT3", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 3 },
+		{ Key = "TrainT4", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 4 },
+		{ Key = "TrainT5", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 5 },
+		{ Key = "TrainT6", Id = 0, Kind = "TrainBoost", Stat = "Treadmill", Step = 6 },
 	},
 	ReceiptsKept = 100,
 }

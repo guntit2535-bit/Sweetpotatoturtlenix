@@ -4,7 +4,8 @@
 -- tests/Bonus.spec.luau checks each rule alone and together.
 --
 --   Bonus.money(ctx)      rebirths x1.5 each, x2 Cash pass, VIP +10%, Golden Fish x2, book bonuses
---   Bonus.strength(ctx)   rebirths x3.95 each (R4), x2 Strength pass
+--   Bonus.strength(ctx)   rebirths x3.8 each (W5), x2 Strength pass, x2 per weights boost step (W6)
+--   Bonus.speedGain(ctx)  treadmill Speed per step: rebirths x SpeedMult each, x2 per treadmill boost step (W6)
 --   Bonus.luck(ctx)       rod level, Lucky pass x2, Lucky Treat x1.5, luck x3 product, server luck
 --   Bonus.easy(ctx)       Catnip active
 --   Bonus.walk(speedStat, ctx)  walk speed in studs/s
@@ -22,6 +23,8 @@ export type Ctx = {
 	serverLuckUntil: number,
 	likeBuff: boolean,
 	bookMoney: number, -- extra money share from the collection book (0.05 = +5%)
+	boostWeights: number, -- W6: training boost steps bought (0 .. Config.TrainBoost.Steps)
+	boostTread: number,
 }
 
 local Bonus = {}
@@ -59,7 +62,12 @@ function Bonus.strength(ctx: Ctx): number
 	if ctx.passes.Strength then
 		m *= 2
 	end
-	return m
+	return m * Config.TrainBoost.Mult ^ ctx.boostWeights
+end
+
+-- W6: Speed gained per treadmill step (x the treadmill level's own gain): the rebirth factor x the boost steps.
+function Bonus.speedGain(ctx: Ctx): number
+	return Config.Rebirth.SpeedMult ^ ctx.rebirths * Config.TrainBoost.Mult ^ ctx.boostTread
 end
 
 function Bonus.luck(ctx: Ctx): number
@@ -119,6 +127,8 @@ function Bonus.ctx(): Ctx
 		serverLuckUntil = 0,
 		likeBuff = false,
 		bookMoney = 0,
+		boostWeights = 0,
+		boostTread = 0,
 	}
 end
 

@@ -118,6 +118,14 @@ local function drawRobux(list: ScrollingFrame)
 			show = not data.StarterBought
 		elseif p.Kind == "Luck3" then
 			line = Lang.text("ProductLuck3Desc")
+		elseif p.Kind == "TrainBoost" then
+			-- W6: only the next step of each (the one the board at the weights / treadmill sells)
+			local have = (if p.Stat == "Weights" then data.BoostWeights else data.BoostTread) or 0
+			local short = if p.Stat == "Weights" then "W" else "T"
+			local mult = Config.TrainBoost.Mult ^ p.Step
+			show = p.Step == have + 1
+			title = Lang.text("TrainBoostTitle" .. short, { mult = mult })
+			line = Lang.text("TrainBoostDesc" .. short, { mult = mult })
 		end
 		if show then
 			order += 1

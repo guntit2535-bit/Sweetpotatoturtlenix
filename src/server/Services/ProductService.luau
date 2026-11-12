@@ -77,6 +77,11 @@ local function apply(player: Player, p: any, d: any): (string, (() -> ())?)
 		return "ProductSummonMythical", function()
 			EventService.summon("Mythical")
 		end
+	elseif p.Kind == "TrainBoost" then
+		-- W6: the step is kept even if bought out of order (never lose a purchase); it never goes down
+		local key = if p.Stat == "Weights" then "BoostWeights" else "BoostTread"
+		d[key] = math.clamp(math.max(d[key] or 0, p.Step), 0, Config.TrainBoost.Steps)
+		return if p.Stat == "Weights" then "ProductTrainW" else "ProductTrainT", nil
 	elseif p.Kind == "Starter" then
 		d.StarterBought = true
 		d.Money += p.Money
@@ -136,7 +141,7 @@ function ProductService:Init()
 	DebugService.register("buy", "!buy <ProductKey>  run a product's grant with a fake receipt", function(player, args)
 		local p = byKey(args[1] or "")
 		if not p then
-			return "usage: !buy CashS (Slots1..3, CashS/M/L/XL, Strength, Luck3, ServerLuck, SummonMythical, Starter)"
+			return "usage: !buy CashS (Slots1..3, CashS/M/L/XL, Strength, Luck3, ServerLuck, SummonMythical, Starter, TrainW1..6, TrainT1..6)"
 		end
 		local decision = grant(player, p, `debug_{os.clock()}`)
 		local d = DataService.GetData(player)

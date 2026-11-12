@@ -52,6 +52,8 @@ export type Data = {
 	GroupClaimed: boolean, -- the group reward (task 2.16)
 	SlotBuys: number, -- +20 slot products bought (task 2.19)
 	StarterBought: boolean, -- the starter pack (once)
+	BoostWeights: number, -- W6: training boost steps bought for the weights, 0 .. Config.TrainBoost.Steps
+	BoostTread: number, -- W6: the same for the treadmill
 	EconVersion: number, -- R4: 0 = numbers from before the 99 Sx economy (Migrate converts it once)
 	TutorialStep: number, -- V4: 1-7 while the tutorial runs, Config.Tutorial.Done after; 0 = not decided yet
 	TutorialRewarded: boolean, -- the tutorial's money was given (once)
@@ -101,6 +103,8 @@ DataTemplate.Template = {
 	GroupClaimed = false,
 	SlotBuys = 0,
 	StarterBought = false,
+	BoostWeights = 0,
+	BoostTread = 0,
 	EconVersion = 0,
 	TutorialStep = 0,
 	TutorialRewarded = false,
@@ -178,6 +182,8 @@ function DataTemplate.sanitize(data: Data): number
 		set(key, whole((data :: any)[key], 0, math.huge, 0))
 	end
 	set("SlotBuys", whole(data.SlotBuys, 0, math.huge, 0))
+	set("BoostWeights", whole(data.BoostWeights, 0, Config.TrainBoost.Steps, 0))
+	set("BoostTread", whole(data.BoostTread, 0, Config.TrainBoost.Steps, 0))
 	set("EconVersion", whole(data.EconVersion, 0, math.huge, 0))
 	local step = whole(data.TutorialStep, 0, Config.Tutorial.Done, 0)
 	set("TutorialStep", if step > 7 and step < Config.Tutorial.Done then Config.Tutorial.Done else step)

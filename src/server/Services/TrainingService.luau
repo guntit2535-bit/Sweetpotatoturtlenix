@@ -383,7 +383,7 @@ local function tick()
 					d.Strength = CatRules.cap(d.Strength + gain)
 				end)
 			elseif training == "Treadmill" then
-				local gain = CatRules.treadGain(data.TreadLevel) * CatRules.rebirthSpeed(data.Rebirths)
+				local gain = CatRules.treadGain(data.TreadLevel) * Bonus.speedGain(BonusCtx.of(player, data)) -- W6: x boost steps
 				DataService.UpdateQuiet(player, function(d)
 					d.Speed = CatRules.cap(d.Speed + gain)
 				end)

@@ -27,6 +27,8 @@ function BonusCtx.of(player: Player, data: any): Bonus.Ctx
 		ctx.boosts = data.Boosts
 		ctx.speedPassOn = data.SpeedPassOn
 		ctx.bookMoney = BonusCtx.bookMoney(data)
+		ctx.boostWeights = data.BoostWeights or 0
+		ctx.boostTread = data.BoostTread or 0
 	end
 	for _, name in BonusCtx.PassNames do
 		ctx.passes[name] = player:GetAttribute(`Pass{name}`) == true

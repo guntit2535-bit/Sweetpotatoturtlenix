@@ -113,7 +113,7 @@ shop / pen, economy, world.
 - [x] W1 Bugs (passed 2026-11-13): phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); holes in the ground (18) filled (100 tiles, BuildMap.groundGaps)
 - [x] W2 Phone fit (12): passed 2026-11-13
 - [x] W3 Quick UI (passed 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
-- [~] W4 ★ (look A picked 2026-11-13; built, checked in Studio; tool icons wait for the upload) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
+- [~] W4 ★ (look A picked 2026-11-13; built + checked in Studio, tool icons in) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
 - [ ] W5 Economy to ~50 h + crate prices (9, 14): simulation and options table first
 - [ ] W6 Training boost ladder (17): permanent 2x / 4x / 8x ... steps for weights and treadmill, developer products
 - [ ] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
@@ -661,3 +661,6 @@ shop / pen, economy, world.
   the shop preloads ReplicatedStorage.ItemModels at start (Studio: the 4 crates in colour). Tool icons (item 3):
   `art/blender/tool_icons.py` -> ui_icons/P13_rod.png, P14_bat.png (Blender, dark outline); ToolService sets
   Tool.TextureId from Config.UIIcons.Rod / Bat once the developer uploads them (0 = names as before).
+- 2026-11-13: tool icons uploaded by the developer (P13_rod 137425277592316, P14_bat 71320313933012), checked in
+  Studio (GetProductInfo: image, group 565190385, preload Success) and put in Config.UIIcons; in Play both tools
+  carry their TextureId (Studio captures do not show Roblox's own hotbar, so the look is the developer's check).

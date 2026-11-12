@@ -110,13 +110,13 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 ## Phase 5 — revision list 3, free (developer, 2026-11-13; table `docs/revision3_plan.md`)
 Developer's answers: everything free (no extra charge), training boosts = permanent steps. Order: bugs, quick UI,
 shop / pen, economy, world.
-- [~] W1 Bugs: phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); stray picture in the map (18) needs the developer's screenshot
+- [~] W1 Bugs: phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); holes in the ground (18) filled (100 tiles, BuildMap.groundGaps)
 - [ ] W2 Phone fit at 5 screen sizes (12)
 - [~] W3 Quick UI (built + checked in Studio 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [ ] W4 ★ Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
 - [ ] W5 Economy to ~50 h + crate prices (9, 14): simulation and options table first
 - [ ] W6 Training boost ladder (17): permanent 2x / 4x / 8x ... steps for weights and treadmill, developer products
-- [ ] W7 ★ Event arrow as a Blender mesh (1), bigger pens (15), pixel + LEGO ground, paths and trees (2)
+- [ ] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
 
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
@@ -630,3 +630,9 @@ shop / pen, economy, world.
   (FreshSave: 3 chosen incl. 1 locked -> "Sell 2", sold 2 for $81K, the locked one stayed), red line on the fishing
   bar, green rings at both own training spots (on the tiles and on the treadmill belt). Rojo had stopped mid-edit;
   restarted, the developer reconnected.
+- 2026-11-13: item 18 was holes ("รู"), not a picture: a 1-stud raycast scan found long thin holes at the lobby edge
+  (16 spots, the 20-stud lobby tiles and 24-stud zone tiles did not meet) and before the snow ledge (24 spots).
+  BuildMap's zone-tile rule now overlaps both; `BuildMap.groundGaps()` added the 100 missing tiles to the place;
+  rescan: 0 holes. Item 2 (developer's picture as the direction): `MapTools/Lego.apply()` puts Roblox's Studs surface
+  (Plastic) on every ground tile, island top, road / curb and tree block (10,747 parts, `.undo()` restores);
+  Build.all() runs it too. Waits for the developer's Save / Publish.

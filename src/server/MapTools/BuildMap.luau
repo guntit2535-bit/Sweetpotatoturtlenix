@@ -266,6 +266,19 @@ local function zoneAt(r: number): number
 	return #World.Zones
 end
 
+-- Does a 24-stud zone tile centred at radius r belong on the ground? The old rule (before revision 3) left long thin
+-- holes: next to the lobby (its 20-stud tiles stop at r 150, the zone tiles started at r 133 by their centres)
+-- and before the snow ledge (zone tiles stopped at r 858, the ledge starts at r 848). The new rule overlaps both:
+-- zone tiles start 1.2 tiles inside the lobby edge (the lobby tiles sit 0.05 higher, so they win) and run on under
+-- the snow ledge.
+local function zoneTileWanted(r: number, old: boolean): boolean
+	local T = World.Tile.Zones
+	if old then
+		return r <= World.Zones[4].Outer - T * 0.5 and r >= World.LobbyRadius - T * 0.7
+	end
+	return r <= World.Zones[4].Outer - 4 and r >= World.LobbyRadius - T * 1.2
+end
+
 function Build.ground()
 	local f = freshFolder(mapRoot(), "Ground")
 	local lobby = subFolder(f, "Lobby")
@@ -281,21 +294,50 @@ function Build.ground()
 		end
 	end
 	T = World.Tile.Zones
-	local edge = World.Zones[4].Outer - T * 0.5 -- the snow ledge covers the rest up to the cliff
-	n = math.ceil(edge / T)
-	for ix = -n, n do
-		local row = subFolder(f, `Row{ix + n}`)
-		for iz = -n, n do
+	local n2 = math.ceil((World.Zones[4].Outer - T * 0.5) / T) -- the row names of the first build
+	for ix = -n2, n2 do
+		local row = subFolder(f, `Row{ix + n2}`)
+		for iz = -n2, n2 do
 			local x, z = ix * T, iz * T
-			local r = math.sqrt(x * x + z * z)
-			if r <= edge and r >= World.LobbyRadius - T * 0.7 then
-				local zone = zoneAt(r)
-				local c = GROUND[zone][(ix + iz) % 2 + 1]
+			if zoneTileWanted(math.sqrt(x * x + z * z), false) then
+				local c = GROUND[zoneAt(math.sqrt(x * x + z * z))][(ix + iz) % 2 + 1]
 				Kit.part(row, Vector3.new(T, 2, T), CFrame.new(x, -1, z), c, { shadow = false, name = "Tile" })
 			end
 		end
 	end
 	print(`[Sweetpotato] ground built ({#f:GetDescendants()} tiles)`)
+end
+
+-- W1 / revision 3 item 18: the place built before this fix has long thin holes where the lobby's 20-stud tiles
+-- meet the zones' 24-stud tiles (16 spots at r ~142) and inside the snow ledge (24 spots at r ~847). Adds only
+-- the zone tiles the old rule left out and the new rule wants; nothing else is touched. Run once:
+--   require(game.ServerScriptService.Server.MapTools:Clone().BuildMap).groundGaps()
+function Build.groundGaps()
+	local f = mapRoot():FindFirstChild("Ground") or error("Build.groundGaps: Map.Ground not found")
+	local T = World.Tile.Zones
+	local have: { [string]: boolean } = {}
+	for _, d in f:GetDescendants() do
+		if d:IsA("BasePart") and d.Name == "Tile" and math.abs(d.Size.X - T) < 0.01 then
+			have[`{math.round(d.Position.X / T)},{math.round(d.Position.Z / T)}`] = true
+		end
+	end
+	local n2 = math.ceil((World.Zones[4].Outer - T * 0.5) / T) -- the row names of the first build
+	local added = 0
+	for ix = -n2, n2 do
+		for iz = -n2, n2 do
+			local x, z = ix * T, iz * T
+			local r = math.sqrt(x * x + z * z)
+			if zoneTileWanted(r, false) and not zoneTileWanted(r, true) and not have[`{ix},{iz}`] then
+				local row = f:FindFirstChild(`Row{ix + n2}`) or subFolder(f, `Row{ix + n2}`)
+				local c = GROUND[zoneAt(r)][(ix + iz) % 2 + 1]
+				local p = Kit.part(row, Vector3.new(T, 2, T), CFrame.new(x, -1, z), c, { shadow = false, name = "Tile" })
+				p:SetAttribute("GapFill", true)
+				added += 1
+			end
+		end
+	end
+	print(`[Sweetpotato] ground gaps: {added} tiles added`)
+	return added
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -766,6 +808,7 @@ function Build.all()
 		Build.zone(i)
 	end
 	Build.sky()
+	require(script.Parent.Lego).apply() -- revision 3: LEGO studs on the ground, paths and trees
 end
 
 return Build

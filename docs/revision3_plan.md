@@ -25,7 +25,7 @@ Size: S = under an hour, M = a few hours, L = a day or more. ★ = a look is sho
 | 15 | Bigger farm (60 cats is too crowded) | Pens in the lobby ring | Bigger pens: the lobby ring grows (MapTools rebuild of the lobby) | new | L |
 | 16 | Fishing: a red line instead of the cat icon | Cat icon on the bar | Red marker line | new | S |
 | 17 | Training boosts 2x 5 R$, 4x 10 R$, 8x 20 R$ ... | x2 Strength pass only | A ladder of developer products (the developer creates them, the client confirms prices) | new | M |
-| 18 | A picture in the map | ? | Needs a screenshot / place | bug | S |
+| 18 | Holes in the map ("รู", long thin lines) | Lobby tiles (20) and zone tiles (24) did not meet; gap before the snow ledge | Builder rule overlaps; 100 missing tiles added to the place (scan: 0 holes) | bug | S |
 | 19 | Settings button: no frame, only the gear + "Settings" | Framed button | Frameless gear + label | new | S |
 | 20 | Selling a cat: no "are you sure?" | Confirm dialog | Sell at once (locked cats still cannot be sold) | new | S |
 | 21 | Pick several cats to sell at once | One at a time | Select mode in My Cats + "Sell N" (one server call, checked, saved before shown) | new | M |

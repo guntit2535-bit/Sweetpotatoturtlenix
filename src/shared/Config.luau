@@ -240,6 +240,9 @@ Config.Events = {
 	EscapeSeconds = 180,
 	BeamHeight = 400,
 }
+-- W1 (revision 3 item 1): the arrow over your head during an event (look A, art/blender/arrow_export.py).
+-- Yaw = extra turn (degrees) if the imported mesh's tip does not face the event.
+Config.EventArrow = { Scale = 0.8, Height = 6.5, Bob = 0.3, BobSpeed = 2.5, Light = 1.2, Yaw = 0 }
 
 -- Cat animation on the clients (shared/CatAnims clips on the CatModel rig).
 -- R9: UI icons from the developer's GPT pictures (art/export/ui_icons, 512 px), uploaded to the group; 0 = not

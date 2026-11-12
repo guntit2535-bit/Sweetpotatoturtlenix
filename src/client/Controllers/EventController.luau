@@ -21,27 +21,63 @@ local arrow: Model? = nil
 local banner: TextLabel
 local tint: ColorCorrectionEffect
 
+local function decor(part: BasePart)
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.CastShadow = false
+end
+
+-- W1 (revision 3 item 1, look A): the Blender arrow (ReplicatedStorage.EventArrow from art/export/EventArrow.fbx:
+-- ArrowBody tinted, ArrowRim white) with a soft light. Until it is imported, a part arrow (shaft + a two-wedge
+-- head; the old single wedge was turned wrong and read as an "L").
 local function makeArrow(color: Color3): Model
-	local m = Instance.new("Model")
-	m.Name = "EventArrow"
-	local function p(size: Vector3, cf: CFrame, isWedge: boolean?)
-		local part: BasePart = if isWedge then Instance.new("WedgePart") else Instance.new("Part")
-		part.Size = size
-		part.CFrame = cf
-		part.Color = color
-		part.Material = Enum.Material.Neon
-		part.Anchored = true
-		part.CanCollide = false
-		part.CanQuery = false
-		part.CanTouch = false
-		part.CastShadow = false
-		part.Parent = m
-		return part
+	local cfg = Config.EventArrow
+	local src = ReplicatedStorage:FindFirstChild("EventArrow")
+	local body: BasePart? = nil
+	local m: Model
+	if src and src:IsA("Model") and src:FindFirstChild("ArrowBody") then
+		m = src:Clone()
+		for _, d in m:GetDescendants() do
+			if d:IsA("BasePart") then
+				decor(d)
+				d.Material = Enum.Material.SmoothPlastic
+				d.Color = if d.Name == "ArrowBody" then color else Color3.new(1, 1, 1)
+			end
+		end
+		body = m:FindFirstChild("ArrowBody") :: BasePart
+		m.PrimaryPart = body
+		m:ScaleTo(cfg.Scale)
+		local b = body :: BasePart
+		b.PivotOffset = CFrame.Angles(0, math.rad(cfg.Yaw), 0):Inverse()
+	else
+		m = Instance.new("Model")
+		local function p(size: Vector3, cf: CFrame, isWedge: boolean?): BasePart
+			local part: BasePart = if isWedge then Instance.new("WedgePart") else Instance.new("Part")
+			part.Size = size
+			part.CFrame = cf
+			part.Color = color
+			part.Material = Enum.Material.Neon
+			decor(part)
+			part.Parent = m
+			return part
+		end
+		local shaft = p(Vector3.new(0.6, 0.3, 2.4), CFrame.new(0, 0, 0.6))
+		-- head: two wedges lying flat, their straight edges meeting on the centre line, tip forward (-Z)
+		local w, len = 0.9, 1.4
+		p(Vector3.new(0.3, w, len), CFrame.new(-w / 2, 0, -1.2) * CFrame.Angles(0, 0, math.pi / 2), true)
+		p(Vector3.new(0.3, w, len), CFrame.new(w / 2, 0, -1.2) * CFrame.Angles(0, 0, -math.pi / 2), true)
+		m.PrimaryPart = shaft
+		shaft.PivotOffset = CFrame.new(0, 0, -0.6)
+		body = shaft
 	end
-	local shaft = p(Vector3.new(0.6, 0.3, 2.4), CFrame.new(0, 0, 0.6))
-	m.PrimaryPart = shaft
-	-- head: a wedge pointing forward (-Z), lying flat
-	p(Vector3.new(0.3, 1.8, 1.4), CFrame.new(0, 0, -1.2) * CFrame.Angles(math.pi / 2, 0, 0) * CFrame.Angles(0, 0, math.pi / 2), true)
+	m.Name = "EventArrow"
+	local light = Instance.new("PointLight")
+	light.Color = color
+	light.Brightness = cfg.Light
+	light.Range = 10
+	light.Parent = body
 	m.Parent = workspace
 	return m
 end
@@ -94,7 +130,8 @@ local function step()
 	local pos = workspace:GetAttribute("LiveEventPos")
 	local root = me.Character and me.Character:FindFirstChild("HumanoidRootPart")
 	if arrow and typeof(pos) == "Vector3" and root and root:IsA("BasePart") then
-		local from = root.Position + Vector3.new(0, 6.5, 0)
+		local cfg = Config.EventArrow
+		local from = root.Position + Vector3.new(0, cfg.Height + math.sin(os.clock() * cfg.BobSpeed) * cfg.Bob, 0)
 		local target = Vector3.new(pos.X, from.Y, pos.Z)
 		if (target - from).Magnitude > 1 then
 			arrow:PivotTo(CFrame.lookAt(from, target))

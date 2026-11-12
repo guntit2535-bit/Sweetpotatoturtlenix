@@ -84,6 +84,12 @@
   3. Import 3D -> เลือกไฟล์ `art/export/Effects.fbx` ตรวจว่าผู้สร้าง (Creator) เป็น **กลุ่ม Sweetpotatoturtlenix** แล้วกด Import
   4. ได้ Model ใหม่ใน Workspace ให้ลากไปใส่ใน `ReplicatedStorage > FxMeshes`
   5. กด Save / Publish แล้วบอก Claude (Claude จะตรวจในเกมว่าทุกชิ้นหันถูกทางและขนาดถูก)
+- [ ] **นำเข้าลูกศรอีเวนต์แบบ A (แก้รอบ 3 ข้อ 1):** ไฟล์เดียว 2 ชิ้น (ตัวลูกศร + ขอบขาว)
+  1. GitHub Desktop: Fetch origin -> Pull origin
+  2. Import 3D -> เลือกไฟล์ `art/export/EventArrow.fbx` ตรวจว่าผู้สร้าง (Creator) เป็น **กลุ่ม Sweetpotatoturtlenix** แล้วกด Import
+  3. ได้ Model ชื่อ `EventArrow` ใน Workspace ให้ลากไปไว้ใน `ReplicatedStorage` (ชื่อต้องเป็น `EventArrow`)
+  4. บอก Claude (Claude จะเช็คว่าหัวลูกศรชี้ไปทางแมวถูก แล้วค่อย Save / Publish)
+- [ ] **รูปหลงในแมพ (แก้รอบ 3 ข้อ 18):** ส่งภาพหน้าจอที่เห็นรูปนั้น บอกว่าอยู่โซนไหน
 - [ ] **ทดสอบคอกเต็มบนมือถือจริง (V5i):** Publish แล้วเข้าเกมด้วยมือถือ พิมพ์ในแชต `!fillpens` (ใส่แมวทดสอบคอกละ 60 ตัว ครบ 8 คอก ไม่บันทึกลงเซฟ)
   เดินดูในล็อบบี้และในคอก แล้วบอก Claude ว่าลื่นไหม กระตุกตรงไหน เสร็จแล้วพิมพ์ `!clearpens`
 - [ ] **Publish หลังนำแมวเข้าเกม:** แมวในเซฟทดสอบของคุณจะกลายเป็นแบบใหม่ (เลขแมวเดิมชี้ไปแบบใหม่) เป็นเรื่องปกติก่อนเปิดเกม

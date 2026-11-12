@@ -1,6 +1,7 @@
 """Revision 3 item 1: the event arrow over the player's head, 3 looks for approval (Mythical pink / Secret teal).
 Run: blender -b --factory-startup -P art/blender/arrow_options.py -- <pillow path> [cell px]
-Writes art/preview/arrow/arrow_options.png. The picked look is exported as one mesh (arrow_export, next step).
+Writes art/preview/arrow/arrow_options.png. Picked 2026-11-13: A (art/blender/arrow_export.py imports the shapes
+from here; the renders run only when this file is the script).
 """
 import math
 import os
@@ -8,8 +9,10 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-args = sys.argv[sys.argv.index("--") + 1:]
-sys.path.insert(0, args[0])
+MAIN = __name__ == "__main__"
+args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+if args:
+    sys.path.insert(0, args[0])
 CELL = int(args[1]) if len(args) > 1 else 520
 
 import bmesh  # noqa: E402
@@ -151,44 +154,49 @@ def player():
     box("Head", (1.2, 1.2, 1.2), (0, 0, 4.6), skin)
 
 
-files = []
-for ci, (tier, rgb) in enumerate(COLORS):
-    for key, fn, _ in LOOKS:
-        sc = kit.new_scene()
-        sc.cycles.samples = 40
-        player()
-        fn(rgb)
-        # float over the head (Config: 6.5 studs above the root = ~4 above the head), turned toward the event
-        for o in bpy.context.scene.objects:
-            if o.name.startswith(("Arrow", "Brick", "Stud", "Chevron")):
-                o.location.z += 8.2
-                o.rotation_euler.z = math.radians(-35)
-        bpy.context.view_layer.update()
-        objs = [o for o in bpy.context.scene.objects if o.type == "MESH" and o.name != "Ground"]
-        p = os.path.join(OUT, f"_a{len(files):02d}.png")
-        kit.frame_camera(objs, p, direction=(-1.0, 0.35, 0.75), lens=50, pad=1.1, res=CELL)
-        files.append(p)
-        print("rendered", tier, key)
+def main():
+    files = []
+    for ci, (tier, rgb) in enumerate(COLORS):
+        for key, fn, _ in LOOKS:
+            sc = kit.new_scene()
+            sc.cycles.samples = 40
+            player()
+            fn(rgb)
+            # float over the head (Config: 6.5 studs above the root = ~4 above the head), turned toward the event
+            for o in bpy.context.scene.objects:
+                if o.name.startswith(("Arrow", "Brick", "Stud", "Chevron")):
+                    o.location.z += 8.2
+                    o.rotation_euler.z = math.radians(-35)
+            bpy.context.view_layer.update()
+            objs = [o for o in bpy.context.scene.objects if o.type == "MESH" and o.name != "Ground"]
+            p = os.path.join(OUT, f"_a{len(files):02d}.png")
+            kit.frame_camera(objs, p, direction=(-1.0, 0.35, 0.75), lens=50, pad=1.1, res=CELL)
+            files.append(p)
+            print("rendered", tier, key)
 
-from PIL import Image, ImageDraw, ImageFont  # noqa: E402
+    from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 
-HEAD = 64
-sheet = Image.new("RGB", (len(LOOKS) * CELL, HEAD + len(COLORS) * (CELL + 40)), (212, 220, 234))
-dr = ImageDraw.Draw(sheet)
-try:
-    big = ImageFont.truetype("tahomabd.ttf", 26)
-    small = ImageFont.truetype("tahoma.ttf", 20)
-except OSError:
-    big = small = ImageFont.load_default()
-for i, (_, _, label) in enumerate(LOOKS):
-    dr.text((i * CELL + 18, 18), label, fill=(40, 44, 70), font=big)
-for k, p in enumerate(files):
-    row, col = divmod(k, len(LOOKS))
-    y = HEAD + row * (CELL + 40)
-    sheet.paste(Image.open(p).convert("RGB"), (col * CELL, y))
-    if col == 0:
-        dr.text((12, y + CELL + 8), f"อีเวนต์ {COLORS[row][0]}", fill=(40, 44, 70), font=small)
-    os.remove(p)
-out = os.path.join(OUT, "arrow_options.png")
-sheet.save(out)
-print("wrote", out)
+    HEAD = 64
+    sheet = Image.new("RGB", (len(LOOKS) * CELL, HEAD + len(COLORS) * (CELL + 40)), (212, 220, 234))
+    dr = ImageDraw.Draw(sheet)
+    try:
+        big = ImageFont.truetype("tahomabd.ttf", 26)
+        small = ImageFont.truetype("tahoma.ttf", 20)
+    except OSError:
+        big = small = ImageFont.load_default()
+    for i, (_, _, label) in enumerate(LOOKS):
+        dr.text((i * CELL + 18, 18), label, fill=(40, 44, 70), font=big)
+    for k, p in enumerate(files):
+        row, col = divmod(k, len(LOOKS))
+        y = HEAD + row * (CELL + 40)
+        sheet.paste(Image.open(p).convert("RGB"), (col * CELL, y))
+        if col == 0:
+            dr.text((12, y + CELL + 8), f"อีเวนต์ {COLORS[row][0]}", fill=(40, 44, 70), font=small)
+        os.remove(p)
+    out = os.path.join(OUT, "arrow_options.png")
+    sheet.save(out)
+    print("wrote", out)
+
+
+if MAIN:
+    main()

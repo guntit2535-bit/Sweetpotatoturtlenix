@@ -616,3 +616,6 @@ shop / pen, economy, world.
   IncomingReplicationLag 0.2 = 460 ms ping: 0 corrections, the bar never jumps back); HOLD follows each touch until it
   lifts. Bat: the victim goes into the Physics state for the stun (Studio: non-carrier 1.4 -> ~40 studs, carrier
   ~80-100). Event arrow: 3 Blender looks (A cartoon with a white rim, B LEGO pixel, C chevrons) for the developer.
+- 2026-11-13: arrow look A picked. `art/blender/arrow_export.py` -> `art/export/EventArrow.fbx` (ArrowBody tinted + white
+  ArrowRim, 1,280 tris); EventController clones ReplicatedStorage.EventArrow (SmoothPlastic, soft light, bobs) and until
+  it is imported draws a part arrow with a proper two-wedge head (checked in Studio with !mythical). Import = developer.

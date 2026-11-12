@@ -247,6 +247,15 @@ end
 function ShopController.Start(_self: any)
 	buyRemote = Remotes.event("BuyItem")
 	build()
+	-- W4: load the item textures early so the shop's pictures have their colours the first time
+	task.spawn(function()
+		local folder = ReplicatedStorage:FindFirstChild("ItemModels")
+		if folder then
+			pcall(function()
+				game:GetService("ContentProvider"):PreloadAsync({ folder })
+			end)
+		end
+	end)
 	PlayerData.changed:Connect(ShopController.redraw)
 	Lang.changed:Connect(ShopController.redraw)
 end

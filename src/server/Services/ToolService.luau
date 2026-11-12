@@ -84,10 +84,19 @@ local function dress(tool: Tool, id: string, scale: number): boolean
 	return true
 end
 
+-- W4 (revision 3 item 3): the hotbar shows the tool's picture instead of its name once the icon is uploaded
+-- (Config.UIIcons.Rod / Bat, art/export/ui_icons/P13_rod.png, P14_bat.png); 0 = the name as before. The tools keep
+-- their names "Rod" / "Bat" (the scripts find them by name).
+local function iconOf(key: string): string
+	local id = (Config.UIIcons :: any)[key]
+	return if type(id) == "number" and id > 0 then `rbxassetid://{id}` else ""
+end
+
 -- The handle is the grip, its long side along Y; the rest is welded to it.
 local function makeBat(): Tool
 	local tool = Instance.new("Tool")
 	tool.Name = "Bat"
+	tool.TextureId = iconOf("Bat")
 	tool.CanBeDropped = false
 	tool.RequiresHandle = true
 	local handle = part(tool, "Handle", Vector3.new(0.5, 1.6, 0.5), CFrame.new(), NAVY, Enum.PartType.Block)
@@ -107,6 +116,7 @@ end
 local function makeRod(): Tool
 	local tool = Instance.new("Tool")
 	tool.Name = "Rod"
+	tool.TextureId = iconOf("Rod")
 	tool.CanBeDropped = false
 	tool.RequiresHandle = true
 	local handle = part(tool, "Handle", Vector3.new(0.45, 1.4, 0.45), CFrame.new(), DARK)

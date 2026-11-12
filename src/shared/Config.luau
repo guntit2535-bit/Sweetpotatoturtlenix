@@ -263,6 +263,9 @@ Config.UIIcons = {
 	Strength = 113897153531168, -- P10
 	Speed = 85724074076774, -- P11
 	Event = 104266026635909, -- P12
+	-- W4 (revision 3 item 3): hotbar pictures for the tools, 0 = not uploaded yet (the hotbar shows the names)
+	Rod = 0, -- P13_rod
+	Bat = 0, -- P14_bat
 }
 
 -- R3: "+$X" popups over your own pen cats every income tick, and "+$total" by the money pill.

@@ -3,6 +3,7 @@
 -- from the front three-quarter, filling `parent`. Returns nil when the mesh is not imported (the caller keeps
 -- its colour chip).
 
+local ContentProvider = game:GetService("ContentProvider")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
@@ -35,6 +36,24 @@ function ItemPortrait.make(parent: GuiObject, id: string, view: Vector3?): Viewp
 	cam.Parent = vf
 	vf.CurrentCamera = cam
 	vf.Parent = parent
+	-- W4: a ViewportFrame does not draw again when a mesh's texture finishes loading, so an item seen for the first
+	-- time (the crates: their palette was never used in the world yet) stayed grey. Load the textures, then put the
+	-- model back in so the frame draws it again with its colours.
+	task.spawn(function()
+		local parts = {}
+		for _, d in model:GetDescendants() do
+			if d:IsA("MeshPart") then
+				table.insert(parts, d)
+			end
+		end
+		pcall(function()
+			ContentProvider:PreloadAsync(parts)
+		end)
+		if vf.Parent then
+			model.Parent = nil
+			model.Parent = vf
+		end
+	end)
 	return vf
 end
 

@@ -113,7 +113,7 @@ shop / pen, economy, world.
 - [x] W1 Bugs (passed 2026-11-13): phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); holes in the ground (18) filled (100 tiles, BuildMap.groundGaps)
 - [x] W2 Phone fit (12): passed 2026-11-13
 - [x] W3 Quick UI (passed 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
-- [ ] W4 ★ (mockup A / B sent 2026-11-13: https://claude.ai/artifact/CdjjgLzmYcnuWuG6c6S4e4) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
+- [~] W4 ★ (look A picked 2026-11-13; built, checked in Studio; tool icons wait for the upload) Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
 - [ ] W5 Economy to ~50 h + crate prices (9, 14): simulation and options table first
 - [ ] W6 Training boost ladder (17): permanent 2x / 4x / 8x ... steps for weights and treadmill, developer products
 - [ ] W7 ★ Event arrow as a Blender mesh (1, done in W1), bigger pens (15), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
@@ -655,3 +655,9 @@ shop / pen, economy, world.
   at a board in front of your own pen (PenBoardController, client-built, SurfaceGui button + prompt; FreshSave: Buy
   $2K -> 10 to 15 slots, next $4.2K). Known, older than W4: the crate meshes show grey in the game (textures load;
   the crates' UVs / palette do not match), the shop shows them grey too.
+- 2026-11-13: W4 follow-ups (developer: "Yes, fix both"). Grey crates: the meshes are coloured in the world; a
+  ViewportFrame does not redraw when a texture finishes loading, and the crate palette was never used before the
+  shop, so the shop / opening pictures stayed grey. ItemPortrait now preloads the model's textures and re-adds it;
+  the shop preloads ReplicatedStorage.ItemModels at start (Studio: the 4 crates in colour). Tool icons (item 3):
+  `art/blender/tool_icons.py` -> ui_icons/P13_rod.png, P14_bat.png (Blender, dark outline); ToolService sets
+  Tool.TextureId from Config.UIIcons.Rod / Bat once the developer uploads them (0 = names as before).

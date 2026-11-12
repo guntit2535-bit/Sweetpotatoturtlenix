@@ -695,3 +695,6 @@ shop / pen, economy, world.
   !fillpens 60 -> 60 cats spread over the whole area (x -19..16, z -16..20), boards where they were. Found and fixed
   on the way: !fillpens (V5i) failed (Config.Pens -> Config.World.Pens). Waits for the developer's Save / Publish.
 - 2026-11-13 developer: "ผ่าน" (W7). Phase 5 (revision list 3) done: all 21 items, status table in docs/revision3_plan.md.
+- 2026-11-13: client page for revision list 3 (developer's ask): https://claude.ai/artifact/9ZTmKiw3P3HGqWmrYXJtiN (Thai,
+  the earlier client page's game theme, 21 items by the client's numbers in 5 groups, before / after captures from Studio,
+  the arrow / pen option sheets, the economy summary; no scope or price statements; files in build/rev3_page, ignored).

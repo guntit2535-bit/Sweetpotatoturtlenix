@@ -9,6 +9,8 @@ local Kit = require(script.Parent.Kit)
 
 local Hud = {}
 
+Hud.StatsHeight = 180 -- W2: the bottom-left stats block as drawn (HudController: 3 lines of 52 + the income line)
+
 local column: Frame? = nil
 local labels: { [TextButton]: string } = {}
 
@@ -39,17 +41,25 @@ local function getColumn(): Frame
 	layout.SortOrder = Enum.SortOrder.LayoutOrder
 	layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
 	layout.Parent = f
-	-- phones: a smaller column
-	local scale = Instance.new("UIScale")
-	scale.Parent = f
-	local function fit()
-		local camera = workspace.CurrentCamera
-		local h = if camera then camera.ViewportSize.Y else 720
-		scale.Scale = math.clamp(h / 800, 0.5, 1)
+	-- phones: a smaller column, but never too small for a finger (W2); its bottom stays above the bottom-left stats
+	-- (HudController: 180 px tall drawn, Kit.fit(720, 0.6), 10 from the bottom) and it never climbs above the middle
+	Kit.fit(f, 720, 0.55, Kit.TouchMin)
+	f.AnchorPoint = Vector2.new(0, 1)
+	local function place()
+		local h = gui.AbsoluteSize.Y -- the screen under Roblox's top bar
+		if h <= 0 then
+			h = 720
+		end
+		local statsTop = 10 + Hud.StatsHeight * Kit.scaleFor(720, 0.6) + 14
+		local mine = f.Size.Y.Offset * Kit.scaleFor(720, 0.55, Kit.TouchMin)
+		-- centred near 0.42 of the screen when there is room, otherwise pushed up just enough
+		local bottom = math.max(statsTop, h * 0.58 - mine / 2)
+		f.Position = UDim2.new(0, 14, 1, -bottom)
 	end
-	fit()
+	place()
+	gui:GetPropertyChangedSignal("AbsoluteSize"):Connect(place)
 	if workspace.CurrentCamera then
-		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(place)
 	end
 	Lang.changed:Connect(function()
 		for face, key in labels do

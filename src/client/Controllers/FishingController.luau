@@ -194,6 +194,9 @@ local function build()
 		scale.Scale = math.clamp(h / 640, 0.55, 1)
 	end
 	fit()
+	if workspace.CurrentCamera then
+		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+	end
 
 	local bar = Instance.new("Frame")
 	bar.Name = "Bar"
@@ -250,7 +253,8 @@ local function build()
 		giveUpRemote:FireServer()
 	end)
 
-	hint = Kit.text(gui, "Hint", UDim2.new(0.7, 0, 0, 40), UDim2.new(0.15, 0, 0, 70), 28, true)
+	-- W2: left of the bar panel (it crossed the bar on phones), two lines at most
+	hint = Kit.text(gui, "Hint", UDim2.new(0.3, 0, 0, 56), UDim2.new(0.19, 0, 0, 8), 28, true)
 	hint.TextScaled = true
 
 	holdButton = Kit.button(gui, "Hold", C.green, UDim2.fromOffset(150, 150), UDim2.new(1, -170, 1, -190))
@@ -258,6 +262,26 @@ local function build()
 	local hs = Instance.new("UIScale")
 	hs.Parent = holdHolder
 	hs.Scale = if UserInputService.TouchEnabled then 1 else 0.7
+	-- W2: on touch screens HOLD sits just left of Roblox's jump button (small screens: 70 px at the corner; bigger
+	-- ones: 120 px, 170 from the right, which the old spot covered), and the bar panel left of HOLD
+	local function layout()
+		local camera = workspace.CurrentCamera
+		local view = if camera then camera.ViewportSize else Vector2.new(1280, 720)
+		if not UserInputService.TouchEnabled then
+			holdHolder.Position = UDim2.new(1, -170, 1, -190)
+			panel.Position = UDim2.new(1, -190, 0.45, 0)
+		elseif math.min(view.X, view.Y) <= 500 then
+			holdHolder.Position = UDim2.new(1, -262, 1, -168)
+			panel.Position = UDim2.new(1, -290, 0.45, 0)
+		else
+			holdHolder.Position = UDim2.new(1, -345, 1, -200)
+			panel.Position = UDim2.new(1, -370, 0.45, 0)
+		end
+	end
+	layout()
+	if workspace.CurrentCamera then
+		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(layout)
+	end
 	-- round: change the kit's corners (a second UICorner would be ignored)
 	for _, part in { holdButton :: Instance, holdHolder:FindFirstChild("Lip") } do
 		if part then

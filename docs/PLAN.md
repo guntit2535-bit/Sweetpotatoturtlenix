@@ -111,7 +111,7 @@ milestone 2 starts). Scope: `docs/BLUEPRINT.md`. ★ = the developer approves a 
 Developer's answers: everything free (no extra charge), training boosts = permanent steps. Order: bugs, quick UI,
 shop / pen, economy, world.
 - [x] W1 Bugs (passed 2026-11-13): phone fishing bar (8) and bat fling (7) fixed + checked in Studio; event arrow (1) look A in the game (EventArrow.fbx, the developer imports); holes in the ground (18) filled (100 tiles, BuildMap.groundGaps)
-- [ ] W2 Phone fit at 5 screen sizes (12)
+- [~] W2 Phone fit (12): built + checked in the Studio phone view 2026-11-13; real phones = the developer
 - [~] W3 Quick UI (built + checked in Studio 2026-11-13, multi-sell (21) done here too): Settings gear without frame (19), sell without asking (20), red line instead of the cat icon (16), icon bar 70% (11), Rebirth + Rewards middle left (13), big Money / Speed / Strength bottom left (10), green ring at the training spots (6)
 - [ ] W4 ★ Shop as big swipe cards (4), pen slots on a board at each pen, Pen tab removed (5), multi-select sell (21), Rod / Bat icons (3)
 - [ ] W5 Economy to ~50 h + crate prices (9, 14): simulation and options table first
@@ -639,3 +639,12 @@ shop / pen, economy, world.
 - 2026-11-13 developer: "ผ่าน" (holes + LEGO ground) and EventArrow.fbx imported into ReplicatedStorage. Checked: 2
   MeshParts, the tip faces LookVector once the importer's PivotOffset (90 degrees about X) is replaced (EventController
   does), Play with !mythical: the mesh arrow with its light, 6.3 studs over the root, pointing at the cat (dot 1.000).
+- 2026-11-13: phase 5 W2 (phone fit), checked in Studio's phone view (749 x 381, touch, jump button): the place's
+  StarterGui.ScreenOrientation Sensor -> LandscapeSensor (the client sets it too) so phones never turn the game to
+  portrait; Kit.fit / Kit.scaleFor = one scaling rule (shorter side, follows rotation) with a touch floor of 0.7 so
+  the left buttons stay finger-sized; the left grid's bottom stays above the bottom-left stats (they overlapped);
+  windows fit under Roblox's top bar (GetGuiInset); fishing: HOLD sits left of Roblox's jump button on small and big
+  touch screens (it covered the big one), the bar panel left of HOLD, the hint line left of the panel; the event
+  countdown moves under the gear on touch (the jump button covered it); the tutorial bubble hides while fishing and
+  while a window is open (it covered both). Text in the big windows is small on the smallest phones (window scale
+  ~0.5): the shop becomes big swipe cards in W4. Waits for the developer's Save / Publish (ScreenOrientation).

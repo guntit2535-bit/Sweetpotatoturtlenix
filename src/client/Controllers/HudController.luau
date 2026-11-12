@@ -42,18 +42,8 @@ local function num(name: string): number
 	return if type(v) == "number" then v else 0
 end
 
-local function fitScale(parent: Instance, base: number)
-	local scale = Instance.new("UIScale")
-	scale.Parent = parent
-	local function fit()
-		local camera = workspace.CurrentCamera
-		local h = if camera then camera.ViewportSize.Y else 720
-		scale.Scale = math.clamp(h / base, 0.6, 1)
-	end
-	fit()
-	if workspace.CurrentCamera then
-		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
-	end
+local function fitScale(parent: GuiObject, base: number)
+	Kit.fit(parent, base, 0.6)
 end
 
 local function pill(parent: Instance, name: string, size: UDim2, pos: UDim2, anchor: Vector2): Frame
@@ -192,8 +182,11 @@ local function build()
 	incomeLabel.TextXAlignment = Enum.TextXAlignment.Left
 	incomeLabel.TextColor3 = Color3.fromHex("b8ffb8")
 
-	-- bottom-right: event countdown
-	eventFrame = pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 1, -12), Vector2.new(1, 1))
+	-- bottom-right: event countdown (W2: on touch screens top-right under the gear, clear of Roblox's jump button)
+	local touch = game:GetService("UserInputService").TouchEnabled
+	eventFrame = if touch
+		then pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 0, 92), Vector2.new(1, 0))
+		else pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 1, -12), Vector2.new(1, 1))
 	eventFrame.BackgroundColor3 = Color3.fromHex("6c4fc4")
 	fitScale(eventFrame, 720)
 	if (Config.UIIcons :: any).Event > 0 then
@@ -205,6 +198,11 @@ local function build()
 end
 
 function HudController.Start(_self: any)
+	-- W2 (revision 3 item 12): phones stay in landscape (turning either way), the layout is made for it; the place
+	-- had Sensor, which let a phone turn the game to portrait
+	pcall(function()
+		(me:WaitForChild("PlayerGui") :: PlayerGui).ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
+	end)
 	build()
 	refresh()
 	for _, attr in { "Strength", "WeightsLevel", "TreadLevel", "Speed", "Money", "Income" } do

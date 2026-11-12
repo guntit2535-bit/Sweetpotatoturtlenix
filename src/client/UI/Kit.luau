@@ -42,6 +42,33 @@ function Kit.screen(name: string, order: number?): ScreenGui
 	return gui
 end
 
+-- W2 (revision 3 item 12): one scaling rule for HUD pieces on every screen. The piece is drawn for a 1280 x 720
+-- screen; it shrinks with the shorter side (h / base, or w / (base * 16 / 9) on narrow screens) between `min` and
+-- 1, and follows the screen when it changes (rotation, window resize). On touch screens the floor is at least
+-- Kit.TouchMin so buttons stay big enough for a finger.
+Kit.TouchMin = 0.7
+
+function Kit.scaleFor(base: number, min: number, touchMin: number?): number
+	local UserInputService = game:GetService("UserInputService")
+	local floor = if UserInputService.TouchEnabled then math.max(min, touchMin or 0) else min
+	local camera = workspace.CurrentCamera
+	local view = if camera then camera.ViewportSize else Vector2.new(1280, 720)
+	return math.clamp(math.min(view.Y / base, view.X / (base * 16 / 9)), floor, 1)
+end
+
+function Kit.fit(obj: GuiObject, base: number, min: number, touchMin: number?): UIScale
+	local scale = obj:FindFirstChildOfClass("UIScale") or Instance.new("UIScale")
+	scale.Parent = obj
+	local function apply()
+		scale.Scale = Kit.scaleFor(base, min, touchMin)
+	end
+	apply()
+	if workspace.CurrentCamera then
+		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(apply)
+	end
+	return scale
+end
+
 function Kit.corner(parent: Instance, radius: number)
 	local c = Instance.new("UICorner")
 	c.CornerRadius = UDim.new(0, radius)
@@ -346,6 +373,13 @@ export type Window = {
 }
 
 local openWindow: Window? = nil
+-- W2: fires when a window opens or closes (the tutorial bubble hides behind open windows)
+local windowChanged = Instance.new("BindableEvent")
+Kit.windowChanged = windowChanged.Event
+
+function Kit.anyWindowOpen(): boolean
+	return openWindow ~= nil
+end
 
 export type WindowOptions = { name: string, width: number, height: number, color: Color3? }
 
@@ -429,7 +463,9 @@ function Kit.window(opts: WindowOptions): Window
 	local function fit(): number
 		local camera = workspace.CurrentCamera
 		local view = if camera then camera.ViewportSize else Vector2.new(1280, 720)
-		return math.min(1, (view.X - 24) / opts.width, (view.Y - 70) / (opts.height + 10))
+		-- W2: measured under Roblox's top bar (GetGuiInset), with room for the title banner and ears above the panel
+		local inset = game:GetService("GuiService"):GetGuiInset()
+		return math.min(1, (view.X - 24) / opts.width, (view.Y - inset.Y - 40) / (opts.height + 10))
 	end
 	local function setOpen(open: boolean)
 		if open then
@@ -447,6 +483,7 @@ function Kit.window(opts: WindowOptions): Window
 				openWindow = nil
 			end
 		end
+		windowChanged:Fire()
 	end
 	window = {
 		gui = gui,

@@ -141,7 +141,9 @@ end
 
 local function refresh()
 	local s = step()
-	banner.Visible = s ~= nil
+	-- W2: hidden while fishing (it covered the fishing bar on phones, and the bar has its own "hold" line on top)
+	-- and while a window is open (it floated over the window's content)
+	banner.Visible = s ~= nil and me:GetAttribute("Fishing") == nil and not Kit.anyWindowOpen()
 	if not s then
 		return
 	end
@@ -398,6 +400,7 @@ function TutorialController.Start(_self: any)
 	refresh()
 	me:GetAttributeChangedSignal("Tutorial"):Connect(refresh)
 	me:GetAttributeChangedSignal("Fishing"):Connect(refresh)
+	Kit.windowChanged:Connect(refresh)
 	Lang.changed:Connect(refresh)
 	RunService.RenderStepped:Connect(update)
 	-- step 6: opening the Shop window counts

@@ -851,3 +851,6 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   and the awning covered the face even at x1.35 on a step), so they stand on the plaza beside their stall's front corner
   at x1.25, turned 15 degrees toward the middle (MapKit shopkeeper, BuildMap.market rebuilt). Play: the arm waves, she
   bobs and turns toward a near player. Captures art/preview/npc/ingame_*.jpg. Publish needed.
+- 2026-11-15 developer: "ผ่าน" (NPCs + easy rebirths). Every player reset again (Config.Data.ResetEpoch 1 -> 2: saves
+  start over on their next join, receipts kept, new empty leaderboards). Last payment: 4,000 + 200 (revision list 4)
+  + 200 (new map) = 4,400 THB; client page with every system and the latest changes being made.

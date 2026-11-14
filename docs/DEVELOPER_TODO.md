@@ -141,3 +141,4 @@
   2. Home -> Import 3D -> `art/export/NPCs.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import
   3. ลากทั้ง 4 ชิ้น (NPC_Shop, NPC_Shop_Arm, NPC_Sell, NPC_Sell_Arm) ใส่โฟลเดอร์ `NPCs` (ห้ามแก้ชื่อ)
   4. บอก Claude ว่า "นำเข้า NPC แล้ว"
+- [ ] **รีเซ็ตผู้เล่นทุกคนเป็นผู้เล่นใหม่ (2026-11-15):** Pull แล้ว Publish ใครเคยเล่น (รวมเซฟของคุณ) จะเริ่มใหม่ตอนเข้าเกมครั้งถัดไป กระดานอันดับเริ่มว่าง สิ่งที่ซื้อด้วย Robux ไม่หาย (game pass ยังอยู่)

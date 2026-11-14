@@ -75,6 +75,10 @@ are starting values: they live in Config and are tuned after playtests (simulate
 - 2026-11-15, map restyle (client, PLAN phase 6 X4): the map's decoration (ground, trees, props, pens, fences) is
   remade in a "cute + pixel + LEGO pattern" style, the layout stays; 3 Blender looks first. A remake beyond the
   blueprint's revision rounds: priced later with revision 4. **The client should be told.**
+- 2026-11-15, price (developer): the last payment = milestone 2 **4,000** + the revision round the developer calls
+  "รอบที่ 3" (revision list 4, `docs/revision4_plan.md`) **200** + the new map (X4 restyle) **200** = **4,400 THB**.
+  Also added at the client's request after X4 (inside that price): the two shopkeeper NPCs and the easy first
+  rebirths (Config.RebirthNeed.Early). Every player reset again (Config.Data.ResetEpoch 2) before the delivery.
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,

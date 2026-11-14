@@ -83,7 +83,7 @@ Config.Data = {
 	-- this is wiped to the template the next time that player joins (game passes stay: Roblox keeps them; the
 	-- receipt list is kept so a purchase is never granted twice). The leaderboards start empty too (their store
 	-- names end in "_r<epoch>"). Add 1 to reset everyone again, e.g. just before going public. Never rename StoreName.
-	ResetEpoch = 1,
+	ResetEpoch = 2, -- 2026-11-15: reset again before the delivery (developer: "รีเซ็ตผู้เล่นทุกคนให้เป็นผู้เล่นใหม่")
 	SaveTimeout = 15, -- seconds DataService.SaveAsync waits before giving up (autosave still runs)
 	GetDataRate = { maxCalls = 2, window = 1 }, -- the client asks once on start
 	-- Studio only: Workspace attribute FreshSave = true gives every player a new in-memory save that is

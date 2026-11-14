@@ -366,7 +366,9 @@ Config.Passes = {
 
 -- W6 (revision 3 item 17): training boost steps (products TrainW1-6 / TrainT1-6 below): step n = x Mult ^ n gain,
 -- for ever; PriceHint = the suggested Robux price of each step (the real price is set in Creator Hub).
-Config.TrainBoost = { Steps = 6, Mult = 2, PriceHint = { 5, 10, 20, 40, 80, 160 } }
+-- Developer 2026-11-15: no longer sold (Sold = false: no store cards, no boards at the gym). A player who already
+-- bought a step keeps its effect (Bonus), and a late receipt is still granted (ProductService), as paid for.
+Config.TrainBoost = { Sold = false, Steps = 6, Mult = 2, PriceHint = { 5, 10, 20, 40, 80, 160 } }
 -- its boards: studs from the training spot, Side = away from the pen's middle, Forward = toward the plaza
 Config.TrainBoostBoard = { Side = 6, Forward = 0, Scale = 0.8 }
 

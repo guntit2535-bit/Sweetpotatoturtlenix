@@ -855,3 +855,7 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   start over on their next join, receipts kept, new empty leaderboards). Last payment: 4,000 + 200 (revision list 4)
   + 200 (new map) = 4,400 THB; client page with every system and the latest changes published: https://claude.ai/artifact/2jWeC54Anw8BwKBnUzt7cz
   (source build/delivery/index.html + 18 in-game captures in build/delivery/img, not in git). Publish needed for the reset.
+- 2026-11-15 developer: remove the x2 Strength / x2 Speed cards from the Robux store, from the whole game. These were the
+  permanent training boost ladder (W6, products TrainW1-6 / TrainT1-6): Config.TrainBoost.Sold = false hides the store
+  cards and the boards at the gym; an owner keeps the effect and a late receipt is still granted. Play: Robux tab shows
+  Lucky, VIP, slots, 4 cash packs, strength pack, luck x3, server luck, summon, starter; no gym boards. Publish needed.

@@ -131,6 +131,9 @@ local function check()
 end
 
 function TrainBoostController.Start(_self: any)
+	if not Config.TrainBoost.Sold then
+		return -- developer 2026-11-15: the boosts are no longer sold
+	end
 	PlayerData.changed:Connect(refresh)
 	Lang.changed:Connect(refresh)
 	task.spawn(function()

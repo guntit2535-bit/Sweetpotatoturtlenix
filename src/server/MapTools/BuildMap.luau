@@ -890,6 +890,14 @@ end
 --   require(T.BuildMap).restyle(); for i = 1, 3 do require(T.Water).zone(i) end; require(T.Detail).all()
 function Build.restyle()
 	Build.lobbyPlants()
+	-- the plaza fountain (Build.lobby's, same place and size)
+	local lobby = mapRoot():FindFirstChild("Lobby")
+	local old = lobby and lobby:FindFirstChild("Fountain")
+	if lobby and old then
+		old:Destroy()
+		Kit.fountain(lobby, CFrame.new(0, 0.6, 0), 1.5)
+	end
+	Build.walls() -- the zone gates (torii)
 	Build.pens()
 	for i = 1, 4 do
 		Build.zone(i)

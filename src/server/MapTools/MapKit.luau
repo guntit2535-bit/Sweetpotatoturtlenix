@@ -68,6 +68,27 @@ Kit.RoofColors = { C.Red, C.Yellow, C.Purple, C.Blue, C.Orange, C.Teal, C.Pink, 
 Kit.FlowerColors = { C.Pink, C.Yellow, hex("b58cff"), hex("ff6f8a"), C.White, C.Orange }
 -- X4: the LEGO flower mesh for each of Kit.FlowerColors
 local FLOWER_IDS = { "Flower_Pink", "Flower_Yellow", "Flower_Lilac", "Flower_Red", "Flower_White", "Flower_Orange" }
+
+-- X4 batch 2: which voxel variant (1..n) a roof / awning colour gets (its place in Kit.RoofColors)
+local function roofIndex(color: Color3?, n: number): number
+	for i, c in Kit.RoofColors do
+		if color and math.abs(c.R - color.R) + math.abs(c.G - color.G) + math.abs(c.B - color.B) < 0.03 then
+			return (i - 1) % n + 1
+		end
+	end
+	return 1
+end
+
+-- X4 batch 2: the voxel crystal nearest a crystal colour (pink, blue or purple)
+local function crystalId(color: Color3): string
+	local h = color:ToHSV()
+	if h > 0.85 or h < 0.05 then
+		return "Crystals_Pink"
+	elseif h > 0.68 then
+		return "Crystals_Purple"
+	end
+	return "Crystals_Blue"
+end
 Kit.FruitColors = { C.Red, C.Yellow, C.Purple, C.Orange, hex("7bd04a") }
 
 -- Created-part counter: the builder yields every so often so Studio stays responsive.
@@ -224,6 +245,33 @@ end
 -- An invisible box that blocks players where a mesh prop should (a trunk, a rock).
 function Kit.blocker(parent: Instance, size: Vector3, cf: CFrame): Part
 	return P(parent, size, cf, C.White, { t = 1, name = "Blocker", shadow = false })
+end
+
+-- X4 batch 2: swaps a finished part-built prop for its voxel mesh. The prop is built the old way first (so every
+-- random number is drawn as before and the layout stays), then its decoration parts go, its solid parts stay as
+-- invisible blockers (same collisions and queries as before), and the mesh is placed at `cf`. false (nothing
+-- changed) while the mesh is not imported.
+function Kit.voxelize(m: Instance, id: string, cf: CFrame, scale: number?): boolean
+	if not Kit.hasMesh(id) then
+		return false
+	end
+	for _, d in m:GetDescendants() do
+		if d:IsA("BasePart") and d.Parent then
+			if d.CanCollide then
+				d.Transparency = 1
+				d.CastShadow = false
+				for _, c in d:GetChildren() do
+					if c:IsA("Decal") or c:IsA("Texture") or c:IsA("SurfaceGui") or c:IsA("Beam") then
+						c:Destroy()
+					end
+				end
+			else
+				d:Destroy()
+			end
+		end
+	end
+	Kit.mesh(m, id, cf, scale)
+	return true
 end
 
 -- Gable roof, ridge along local X. cf = centre of the roof's base (top of the walls).
@@ -396,6 +444,7 @@ function Kit.bamboo(parent: Instance, cf: CFrame, rng: Random)
 		pole(m, foot * CFrame.new(0, h * 0.55, 0), 1.45, 0.5, hex("4f9f3a"), { decor = true })
 		P(m, Vector3.new(3.6, 1.6, 3.6), foot * CFrame.new(0, h, 0) * CFrame.Angles(0, rng:NextNumber(0, 1.5), 0), C.Leaf2, { decor = true })
 	end
+	Kit.voxelize(m, "Bamboo", cf) -- X4 batch 2: the voxel mesh
 end
 
 function Kit.crystals(parent: Instance, cf: CFrame, rng: Random, color: Color3, big: boolean?): (Model, Spot)
@@ -415,6 +464,7 @@ function Kit.crystals(parent: Instance, cf: CFrame, rng: Random, color: Color3, 
 		P(m, Vector3.new(w * 0.72, w * 0.72, w), foot * CFrame.new(0, h, 0) * CFrame.Angles(0, 0, math.rad(45)), color, { mat = Enum.Material.Neon, t = 0.12, decor = true })
 		local _ = i
 	end
+	Kit.voxelize(m, crystalId(color), cf, s) -- X4 batch 2: the voxel mesh
 	return m, { kind = "rock", pos = (cf * CFrame.new(0, 1, 5 * s)).Position }
 end
 
@@ -488,17 +538,21 @@ function Kit.lamp(parent: Instance, cf: CFrame, light: boolean?)
 end
 
 function Kit.crate(parent: Instance, cf: CFrame, rng: Random, fruit: Color3?)
-	P(parent, Vector3.new(2.6, 1.6, 2.2), at(cf, 0, 0.8, 0), C.Wood)
+	local m = M(parent, "FruitCrate") -- X4: in its own model so it can turn voxel (was loose parts)
+	P(m, Vector3.new(2.6, 1.6, 2.2), at(cf, 0, 0.8, 0), C.Wood)
 	local c = fruit or pick(rng, Kit.FruitColors)
 	for i = -1, 1 do
-		B(parent, 1, at(cf, i * 0.8, 1.9, rng:NextNumber(-0.4, 0.4)).Position, c, { decor = true })
+		B(m, 1, at(cf, i * 0.8, 1.9, rng:NextNumber(-0.4, 0.4)).Position, c, { decor = true })
 	end
+	Kit.voxelize(m, "FruitCrate", cf) -- X4 batch 2: the voxel mesh
 end
 
 function Kit.barrel(parent: Instance, cf: CFrame)
-	pole(parent, cf, 2.6, 3.2, C.WoodDark)
-	pole(parent, cf * CFrame.new(0, 0.6, 0), 2.75, 0.3, C.Navy, { decor = true })
-	pole(parent, cf * CFrame.new(0, 2.3, 0), 2.75, 0.3, C.Navy, { decor = true })
+	local m = M(parent, "Barrel") -- X4: in its own model (was loose parts)
+	pole(m, cf, 2.6, 3.2, C.WoodDark)
+	pole(m, cf * CFrame.new(0, 0.6, 0), 2.75, 0.3, C.Navy, { decor = true })
+	pole(m, cf * CFrame.new(0, 2.3, 0), 2.75, 0.3, C.Navy, { decor = true })
+	Kit.voxelize(m, "Barrel", cf) -- X4 batch 2: the voxel mesh
 end
 
 function Kit.bench(parent: Instance, cf: CFrame)
@@ -526,6 +580,7 @@ function Kit.snowman(parent: Instance, cf: CFrame)
 	for _, x in { -1, 1 } do
 		P(m, Vector3.new(3, 0.3, 0.3), at(cf, x * 3, 6.6, 0) * CFrame.Angles(0, 0, x * 0.5), C.Trunk, { decor = true })
 	end
+	Kit.voxelize(m, "Snowman", cf) -- X4 batch 2: the voxel mesh
 end
 
 function Kit.stoneLantern(parent: Instance, cf: CFrame)
@@ -536,6 +591,7 @@ function Kit.stoneLantern(parent: Instance, cf: CFrame)
 	P(m, Vector3.new(1.7, 1.3, 2.5), at(cf, 0, 4.4, 0), C.Lamp, { mat = Enum.Material.Neon, decor = true })
 	P(m, Vector3.new(3.4, 0.8, 3.4), at(cf, 0, 5.8, 0), C.Stone2)
 	P(m, Vector3.new(1, 0.8, 1), at(cf, 0, 6.6, 0), C.Stone2, { decor = true })
+	Kit.voxelize(m, "StoneLantern", cf) -- X4 batch 2: the voxel mesh
 end
 
 function Kit.torii(parent: Instance, cf: CFrame): Model
@@ -551,6 +607,7 @@ function Kit.torii(parent: Instance, cf: CFrame): Model
 		W(m, Vector3.new(2.2, 0.9, 1.6), at(cf, x * 9.6, 14.2, 0) * CFrame.Angles(0, x * math.pi / 2, 0), C.Black, { decor = true })
 	end
 	P(m, Vector3.new(1.2, 2, 0.8), at(cf, 0, 11.7, 0), C.Black, { decor = true })
+	Kit.voxelize(m, "Torii", cf) -- X4 batch 2: the voxel mesh
 	return m
 end
 
@@ -578,6 +635,7 @@ function Kit.house(parent: Instance, cf: CFrame, rng: Random, roof: Color3?): (M
 	end
 	P(m, Vector3.new(0.9, 1.2, 0.9), at(cf, -4.7, 6.2, -d / 2 - 0.6), C.Lamp, { mat = Enum.Material.Neon, decor = true })
 	P(m, Vector3.new(3.4, 3, 0.4), at(cf, -w / 2 - 0.2, 6, 0) * CFrame.Angles(0, math.pi / 2, 0), C.Window, { refl = 0.15 })
+	Kit.voxelize(m, `House_{roofIndex(rc, 3)}`, cf) -- X4 batch 2: the voxel mesh
 	return m, { kind = "roof", pos = at(cf, -w / 4, h + 7.6, 0).Position }
 end
 
@@ -599,6 +657,7 @@ function Kit.shop(parent: Instance, cf: CFrame, rng: Random, color: Color3?): (M
 		local stripe = if i % 2 == 0 then c else C.White
 		P(m, Vector3.new(w / 6, 0.4, 3.4), at(cf, -w / 2 + w / 12 + i * w / 6, 6.8, -d / 2 - 1.6) * CFrame.Angles(-0.35, 0, 0), stripe, { decor = true })
 	end
+	Kit.voxelize(m, `Shop_{roofIndex(c, 3)}`, cf) -- X4 batch 2: the voxel mesh
 	return m, { kind = "roof", pos = at(cf, 2, h + 1.6, 0).Position }
 end
 
@@ -625,6 +684,7 @@ function Kit.stall(parent: Instance, cf: CFrame, rng: Random, color: Color3?)
 			P(m, Vector3.new(0.6, 0.6, 1.8), at(cf, i * 1.2 + 1, 3.6, 1.2), C.Blue, { decor = true })
 		end
 	end
+	Kit.voxelize(m, `Stall_{roofIndex(c, 2)}`, cf) -- X4 batch 2: the voxel mesh
 end
 
 function Kit.pavilion(parent: Instance, cf: CFrame, post: Color3, roof: Color3, trim: Color3, floor: Color3): (Model, Spot)
@@ -648,6 +708,7 @@ function Kit.pavilion(parent: Instance, cf: CFrame, post: Color3, roof: Color3, 
 	for _, x in { -1, 1 } do
 		P(m, Vector3.new(0.5, 0.8, d - 2), at(cf, x * (w / 2 - 1), 3.6, 0), post, { decor = true })
 	end
+	Kit.voxelize(m, "Pavilion", cf) -- X4 batch 2: the voxel mesh
 	return m, { kind = "roof", pos = at(cf, w / 4, 17.9, 0).Position }
 end
 
@@ -671,6 +732,7 @@ function Kit.cabin(parent: Instance, cf: CFrame, rng: Random): (Model, Spot)
 		pole(m, at(cf, w / 2 + 2, 0.8 + i * 1.2, -2) * CFrame.Angles(math.pi / 2, 0, 0), 1.2, 4, C.Trunk, { decor = true })
 		local _ = rng
 	end
+	Kit.voxelize(m, "Cabin", cf) -- X4 batch 2: the voxel mesh
 	return m, { kind = "roof", pos = at(cf, -w / 4, h + 7.7, 0).Position }
 end
 
@@ -680,6 +742,7 @@ function Kit.doghouse(parent: Instance, cf: CFrame)
 	gable(m, at(cf, 0, 4, 0), 6, 6, 2.6, C.Blue)
 	P(m, Vector3.new(2.2, 2.6, 0.3), at(cf, 0, 1.3, -2.55), C.Black, { decor = true })
 	D(m, at(cf, 0, 0.3, -4.5), 1.8, 0.6, C.Red, { decor = true })
+	Kit.voxelize(m, "Doghouse", cf) -- X4 batch 2: the voxel mesh
 end
 
 function Kit.clothesline(parent: Instance, cf: CFrame, rng: Random)
@@ -691,6 +754,7 @@ function Kit.clothesline(parent: Instance, cf: CFrame, rng: Random)
 	for i = -1, 1 do
 		P(m, Vector3.new(2.6, 3, 0.2), at(cf, i * 3.6, 5, 0), pick(rng, { C.Yellow, C.Blue, C.Pink, C.White }), { decor = true })
 	end
+	Kit.voxelize(m, "Clothesline", cf) -- X4 batch 2: the voxel mesh
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -856,6 +920,10 @@ function Kit.creek(parent: Instance, cf: CFrame, rng: Random, styleName: string,
 		end
 	end
 	-- the bridge (unchanged: the hiding spot sits under it)
+	local beforeBridge: { [Instance]: boolean } = {}
+	for _, c in m:GetChildren() do
+		beforeBridge[c] = true
+	end
 	local deck = if styleName == "stone" then C.Stone else if styleName == "red" then C.Red else C.Wood
 	local rail = if styleName == "stone" then C.Stone2 else if styleName == "red" then C.Red else C.Wood
 	local bw = if styleName == "stone" then 9 else 7
@@ -873,6 +941,21 @@ function Kit.creek(parent: Instance, cf: CFrame, rng: Random, styleName: string,
 			P(m, Vector3.new(1, 4.4, 1), at(cf, x * (bw / 2 - 0.3), 2.2, s * 10), rail)
 			P(m, Vector3.new(1.2, 0.6, 1.2), at(cf, x * (bw / 2 - 0.3), 4.6, s * 10), if styleName == "red" then C.Yellow else C.White, { decor = true })
 		end
+	end
+	-- X4 batch 2: the voxel bridge over the same invisible deck and ramps (they stay as the walkable parts)
+	local bridgeId = `Bridge_{if styleName == "stone" then "Stone" elseif styleName == "red" then "Red" else "Wood"}`
+	if Kit.hasMesh(bridgeId) then
+		for _, c in m:GetChildren() do
+			if not beforeBridge[c] and c:IsA("BasePart") then
+				if c.CanCollide then
+					c.Transparency = 1
+					c.CastShadow = false
+				else
+					c:Destroy()
+				end
+			end
+		end
+		Kit.mesh(m, bridgeId, cf)
 	end
 	m:SetAttribute("Style", styleName)
 	m:SetAttribute("Frozen", frozen == true)
@@ -959,6 +1042,7 @@ function Kit.mountain(parent: Instance, cf: CFrame, rng: Random)
 		P(m, Vector3.new(t[1] - 4, 1.4, t[3] - 4), base * CFrame.new(0, y + t[2] + 0.7, 0), C.Snow, { decor = true })
 		y += t[2]
 	end
+	Kit.voxelize(m, "Mountain", base) -- X4 batch 2: the voxel mesh
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -1043,6 +1127,18 @@ function Kit.fountain(parent: Instance, cf: CFrame, s: number)
 		for k = 0, 2 do
 			local b = k * 2.1 + i
 			B(m, 0.7 * s, p + Vector3.new(math.cos(b) * 0.6 * s, 1.7 * s, math.sin(b) * 0.6 * s), Kit.FlowerColors[(i + k) % #Kit.FlowerColors + 1], { decor = true })
+		end
+	end
+	-- X4 batch 2: the voxel fountain (scaled), keeping the spray on top
+	if Kit.hasMesh("Fountain") then
+		e.Parent = nil
+		Kit.voxelize(m, "Fountain", cf, s)
+		local mesh = m:FindFirstChild("Fountain")
+		if mesh then
+			local spout = Instance.new("Attachment")
+			spout.Parent = mesh
+			spout.WorldPosition = (cf * CFrame.new(0, 11.6 * s, 0)).Position
+			e.Parent = spout
 		end
 	end
 	m:SetAttribute("Scale", s)
@@ -1342,6 +1438,7 @@ function Kit.pebbles(parent: Instance, cf: CFrame, rng: Random, cap: Color3?)
 			P(m, Vector3.new(s * 1.2, 0.12, s * 0.9), c * CFrame.new(0, s * 0.25, 0), cap, decor())
 		end
 	end
+	Kit.voxelize(m, "Pebbles", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- Toadstools: a stem and a red cap with white dots.
@@ -1357,6 +1454,7 @@ function Kit.mushroom(parent: Instance, cf: CFrame, rng: Random)
 			P(m, Vector3.new(0.22, 0.08, 0.22) * s, c * CFrame.new(d[1] * s, 1.44 * s, d[2] * s), C.White, decor())
 		end
 	end
+	Kit.voxelize(m, "Mushroom", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A fern: leaves fanning out from the ground.
@@ -1369,6 +1467,7 @@ function Kit.fern(parent: Instance, cf: CFrame, rng: Random)
 		local c = cf * CFrame.Angles(0, a, 0) * CFrame.new(0, 0.45, -len / 2 + 0.2) * CFrame.Angles(0.45, 0, 0)
 		P(m, Vector3.new(0.6, 0.12, len), c, if k % 2 == 0 then C.Leaf else C.LeafDark, decor())
 	end
+	Kit.voxelize(m, "Fern", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A fallen log with moss on top.
@@ -1380,6 +1479,7 @@ function Kit.log(parent: Instance, cf: CFrame, rng: Random)
 	P(m, Vector3.new(0.12, 0.85, 0.85), c * CFrame.new(len / 2 + 0.03, 0, 0), C.Wood, decor())
 	P(m, Vector3.new(0.12, 0.85, 0.85), c * CFrame.new(-len / 2 - 0.03, 0, 0), C.Wood, decor())
 	P(m, Vector3.new(len * 0.5, 0.2, 0.9), c * CFrame.new(rng:NextNumber(-0.5, 0.5), 0.6, 0), C.Moss, decor())
+	Kit.voxelize(m, "Log", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A little heap of autumn leaves (or petals: pass the colours).
@@ -1390,6 +1490,7 @@ function Kit.leafPile(parent: Instance, cf: CFrame, rng: Random, colors: { Color
 		local c = spin(cf, rng) * CFrame.new(rng:NextNumber(-1, 1), 0.06 + k * 0.05, rng:NextNumber(-1, 1))
 		P(m, Vector3.new(0.9, 0.08, 0.6), c * CFrame.Angles(rng:NextNumber(-0.3, 0.3), 0, rng:NextNumber(-0.3, 0.3)), pick(rng, cols), decor())
 	end
+	Kit.voxelize(m, "LeafPile", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- Soft snow humps (balls half in the ground).
@@ -1400,6 +1501,7 @@ function Kit.snowMound(parent: Instance, cf: CFrame, rng: Random)
 		local c = cf * CFrame.new(if k == 1 then 0 else rng:NextNumber(-1.8, 1.8), -d * 0.22, if k == 1 then 0 else rng:NextNumber(-1.8, 1.8))
 		B(m, d, c.Position, if k == 1 then C.Snow else C.SnowShade, decor())
 	end
+	Kit.voxelize(m, "SnowMound", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A young snowy pine (a small stack of green tiers with snow on each).
@@ -1415,6 +1517,7 @@ function Kit.sapling(parent: Instance, cf: CFrame, rng: Random)
 		P(m, Vector3.new(w * 0.92, 0.18, w * 0.92) * s, c * CFrame.new(0, y + h + 0.05, 0), C.Snow, decor())
 		y += h
 	end
+	Kit.voxelize(m, "Sapling", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A frozen puddle.
@@ -1423,6 +1526,7 @@ function Kit.icePatch(parent: Instance, cf: CFrame, rng: Random)
 	local d = rng:NextNumber(3.5, 6)
 	D(m, cf * CFrame.new(0, 0.06, 0), d, 0.12, C.Ice, { decor = true, shadow = false, t = 0.35, refl = 0.25, mat = Enum.Material.Glass })
 	D(m, cf * CFrame.new(rng:NextNumber(-0.6, 0.6), 0.1, rng:NextNumber(-0.6, 0.6)), d * 0.45, 0.06, C.WaterLight, { decor = true, shadow = false, t = 0.4 })
+	Kit.voxelize(m, "IcePatch", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- Old cobbles in the grass (market streets reaching into the grass).
@@ -1438,6 +1542,7 @@ function Kit.cobbles(parent: Instance, cf: CFrame, rng: Random)
 			end
 		end
 	end
+	Kit.voxelize(m, "Cobbles", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A flower pot.
@@ -1450,6 +1555,7 @@ function Kit.flowerPot(parent: Instance, cf: CFrame, rng: Random)
 			pick(rng, Kit.FlowerColors), decor())
 	end
 	B(m, 1.1, (cf * CFrame.new(0, 1.55, 0)).Position, C.Leaf2, decor())
+	Kit.voxelize(m, "FlowerPot", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A grain sack.
@@ -1459,6 +1565,7 @@ function Kit.sack(parent: Instance, cf: CFrame, rng: Random)
 	P(m, Vector3.new(1.4, 1.5, 1.1), c * CFrame.new(0, 0.75, 0), hex("e2c48e"), decor())
 	P(m, Vector3.new(0.8, 0.35, 0.6), c * CFrame.new(0, 1.65, 0), hex("cfae73"), decor())
 	P(m, Vector3.new(0.9, 0.12, 0.7), c * CFrame.new(0, 1.5, 0), C.WoodDark, decor())
+	Kit.voxelize(m, "Sack", cf) -- X4 batch 2: the voxel mesh
 end
 
 -- A few small crystals poking out of the ground.
@@ -1470,6 +1577,7 @@ function Kit.crystalBits(parent: Instance, cf: CFrame, rng: Random, color: Color
 		P(m, Vector3.new(0.45, h, 0.45), c * CFrame.Angles(rng:NextNumber(-0.35, 0.35), 0.78, rng:NextNumber(-0.35, 0.35)), color,
 			{ decor = true, shadow = false, mat = Enum.Material.Glass, t = 0.15 })
 	end
+	Kit.voxelize(m, crystalId(color), cf, 0.3) -- X4 batch 2: the voxel mesh
 end
 
 -- A soft patch of darker / lighter grass (breaks up the checkerboard) with a tuft on it.

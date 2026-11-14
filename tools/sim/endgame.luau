@@ -8,7 +8,8 @@
 --     succeed; tries up to 6 cats per trip for one it can hold; a caught cat goes into the pen (the best ones stay)
 --   - lifts weights LIFT of the remaining time; buys the next weights level, pen slots and rods when it can, and a
 --     crate when the best one costs under CRATE_SHARE of its money (at most one a CRATE_GAP)
---   - rebirths as soon as Strength reaches the need (cats, pen slots and rods stay; money, Strength, levels reset)
+--   - rebirths as soon as Strength reaches the need (cats, pen slots and rods stay; money and Strength reset; the
+--     weights level too unless Config.Rebirth.KeepLevels, X2)
 -- "End game" = rebirth 25 (the last one). Also printed: when rod 25 and 60 pen slots are bought.
 -- Real play is slower than this (other players take cats, bat hits, walking between zones, breaks): see W5 in
 -- docs/economy.md for how the options were read.
@@ -156,7 +157,10 @@ local function run(seed: number): Result
 			r += 1
 			res.reb[r] = t
 			res.inc[r] = inc -- income per second at the end of the life just finished
-			money, strength, wl = 0, 0, 1
+			money, strength = 0, 0
+			if not (Config.Rebirth :: any).KeepLevels then
+				wl = 1 -- X2: only when a rebirth resets the levels
+			end
 		end
 		t += STEP
 	end

@@ -32,11 +32,11 @@ Config.World = {
 	-- Gate: enter with Strength >= Strength x Rebirth.KgMult ^ rebirths (R4) OR Rebirths >= Rebirths. Odds: tier key -> weight (%).
 	-- KgSkew overrides Config.KgSkew (lower = heavier cats). Cats: wild cats kept in the zone at once.
 	Zones = {
-		{ Key = "Backyard", Inner = 150, Outer = 330, Strength = 0, Rebirths = 0, Cats = 18, Odds = { Basic = 90, Rare = 10 } },
-		{ Key = "TownMarket", Inner = 330, Outer = 510, Strength = 100, Rebirths = 1, Cats = 18, Odds = { Basic = 30, Rare = 60, Epic = 10 } },
-		{ Key = "Forest", Inner = 510, Outer = 690, Strength = 1e4, Rebirths = 2, Cats = 18, Odds = { Rare = 35, Epic = 55, Legendary = 10 } },
-		{ Key = "SnowMountain", Inner = 690, Outer = 870, Strength = 1e6, Rebirths = 4, Cats = 18, Odds = { Epic = 45, Legendary = 55 } },
-		{ Key = "SkyIslands", Inner = 870, Outer = 1050, Strength = 1e7, Rebirths = 6, Cats = 18, Odds = { Epic = 20, Legendary = 80 }, KgSkew = 0.8 },
+		{ Key = "Backyard", Inner = 150, Outer = 330, Strength = 0, Rebirths = 0, Cats = 36, Odds = { Basic = 90, Rare = 10 } },
+		{ Key = "TownMarket", Inner = 330, Outer = 510, Strength = 100, Rebirths = 1, Cats = 36, Odds = { Basic = 30, Rare = 60, Epic = 10 } },
+		{ Key = "Forest", Inner = 510, Outer = 690, Strength = 1e4, Rebirths = 2, Cats = 36, Odds = { Rare = 35, Epic = 55, Legendary = 10 } },
+		{ Key = "SnowMountain", Inner = 690, Outer = 870, Strength = 1e6, Rebirths = 4, Cats = 36, Odds = { Epic = 45, Legendary = 55 } },
+		{ Key = "SkyIslands", Inner = 870, Outer = 1050, Strength = 1e7, Rebirths = 6, Cats = 36, Odds = { Epic = 20, Legendary = 80 }, KgSkew = 0.8 },
 	},
 	HideSpotsPerZone = { Min = 30, Max = 60 },
 }
@@ -180,7 +180,9 @@ Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
 Config.Walk = { Base = 16, Bonus = 9, Scale = 100, Max = 60, Cap = 120, LikeBuff = 2, LikeBuffSeconds = 300 }
 -- Each rebirth (R4): money x1.5, Strength gain x3.95, Speed gain x3.95, every cat in the world x3.6 heavier.
 -- W5 (revision 3 item 9, option B, docs/economy.md): StrengthMult 3.95 -> 3.8, so the 25 rebirths take ~53 h of active play
-Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.8, SpeedMult = 3.95, KgMult = 3.6 }
+Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.8, SpeedMult = 3.95, KgMult = 3.6,
+	KeepLevels = true, -- X2 (revision 4 item 6, 2026-11-14): a rebirth keeps the weights / treadmill levels (was: back to 1)
+}
 
 -- Wild cats at the hiding spots (task 1.10).
 Config.WildCats = {
@@ -228,13 +230,17 @@ Config.Carry = {
 	MaxScale = 1.0, -- ... and never bigger than this model scale
 	DeliverMargin = 4, -- a carried cat goes in on the pen's floor or this close to its fence (CarryService; was a 22-stud radius)
 	CheckEvery = 0.25,
+	PutRate = { maxCalls = 4, window = 1 }, -- X2: the PutInPen remote
 	ShowIcon = false, -- X1 (revision 4 item 1): no floating cat icon over carriers (CarryIconController)
 	DroppedSeconds = 60, -- a knocked-loose cat nobody catches goes back into hiding (blueprint §4)
 }
 Config.Bat = {
 	Cooldown = 0.8,
-	Range = 9, -- studs in front of the swinger
-	Arc = 0.3, -- minimum dot product between the swinger's look and the target
+	-- X2 (revision 4 item 21, "too hard to hit"): reach 9 -> 14 studs, arc 0.3 (73 deg each side) -> -0.25 (104 deg:
+	-- the whole front half and a bit to the sides), height 8 -> 10; a carrier in reach is picked first (BatService)
+	Range = 14, -- studs from the swinger
+	Arc = -0.25, -- minimum dot product between the swinger's look and the target
+	Height = 10, -- studs up / down
 	-- W1: every hit flings (the client goes into the Physics state for the stun, so the push is not eaten)
 	Knock = 65, -- carrier knocked far: horizontal speed (Studio: 80 = 100-125 studs with the slide) ...
 	KnockUp = 70, -- ... and up

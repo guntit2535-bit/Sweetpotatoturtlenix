@@ -14,7 +14,6 @@ local Remotes = require(Shared.Remotes)
 local Guard = require(script.Parent.Parent.Util.Guard)
 local Notify = require(script.Parent.Parent.Util.Notify)
 local Progress = require(script.Parent.Parent.Util.Progress)
-local ToolAnim = require(script.Parent.Parent.Util.ToolAnim)
 local CarryService = require(script.Parent.CarryService)
 local DataService = require(script.Parent.DataService)
 local FishingService = require(script.Parent.FishingService)
@@ -52,22 +51,29 @@ local function onSwing(player: Player)
 		return
 	end
 	lastSwing[player] = now
-	ToolAnim.play(bat, "Slash")
+	-- X2 (revision 4 item 21): every client plays the baseball swing from this (PlayerAnimController)
+	player:SetAttribute("SwingAt", workspace:GetServerTimeNow())
 	if inLobby(root.Position) then
 		return
 	end
+	-- X2 (revision 4 item 21: "too hard to hit"): a longer reach and a wide arc, and a carrier in reach is
+	-- always picked before anyone else (the one worth hitting)
 	local look = root.CFrame.LookVector
 	local best: Player? = nil
 	local bestDist = math.huge
+	local bestCarrier = false
 	for _, other in Players:GetPlayers() do
 		local r = rootOf(other)
 		if other ~= player and r and alive(other) and not FishingService.isFishing(other) and not inLobby(r.Position) then
 			local offset = r.Position - root.Position
 			local flat = Vector3.new(offset.X, 0, offset.Z)
 			local dist = flat.Magnitude
-			if dist <= Config.Bat.Range and dist > 0.01 and look:Dot(flat.Unit) >= Config.Bat.Arc and math.abs(offset.Y) < 8 and dist < bestDist then
+			local carrier = CarryService.isCarrying(other)
+			local better = (carrier and not bestCarrier) or (carrier == bestCarrier and dist < bestDist)
+			if dist <= Config.Bat.Range and dist > 0.01 and look:Dot(flat.Unit) >= Config.Bat.Arc and math.abs(offset.Y) < Config.Bat.Height and better then
 				best = other
 				bestDist = dist
+				bestCarrier = carrier
 			end
 		end
 	end

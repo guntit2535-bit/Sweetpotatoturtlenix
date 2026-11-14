@@ -24,6 +24,8 @@ local function hookTool(tool: Instance)
 			if os.clock() - last >= Config.Bat.Cooldown then
 				last = os.clock()
 				swingRemote:FireServer()
+				-- X2: swing at once on this screen (the server's SwingAt follows for everyone else)
+				player:SetAttribute("SwingAt", workspace:GetServerTimeNow())
 			end
 		end)
 	end

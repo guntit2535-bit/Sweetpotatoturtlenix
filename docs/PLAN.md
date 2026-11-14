@@ -121,8 +121,8 @@ shop / pen, economy, world.
 ## Phase 6 — revision list 4 (developer, 2026-11-14; table `docs/revision4_plan.md`)
 Developer's answers: build first, price talked later; item 23 = only the three x2 passes + the HUD x2 button;
 item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line to the cat and home.
-- [~] X1 Quick fixes (built + checked in Studio 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
-- [ ] X2 Rules: rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
+- [x] X1 Quick fixes (passed 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
+- [~] X2 Rules (built + checked in Studio 2026-11-15): rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
 - [ ] X3 ★ Looks (renders / mockups first): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
 - [ ] X4 ★ Map: Terrain water ~6 studs deep (11), walls clear of gate pillars + detail pass (14)
 
@@ -741,3 +741,12 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   false; no HUD x2 button; owners keep the effect). Also: the tutorial's edge arrow showed on top of open windows (now hidden
   while one is open) and moves to 0.25 of the width so it clears the Rebirth button. Checked in Studio (PC view):
   HUD, labels, Codes tab, Shop tabs (no Shoes) and Robux cards (no x2), Rebirth window, treadmill ring.
+- 2026-11-14 developer: "ผ่าน" (X1). X2 next.
+- 2026-11-15 X2 built: rebirth keeps the weights / treadmill levels (Config.Rebirth.KeepLevels; Studio: levels 10 / 8
+  kept through a rebirth); end-game sim 52h47 (resetting them: 52h49, so no price change needed: re-buying the levels
+  was always quick); 36 wild cats per zone (was 18; !wild: 36 hiding in each zone); the "Put in pen" button
+  (ActionController, PutInPen remote, player attribute AtPen from CarryService; nothing goes in by itself; the
+  tutorial glows round the button; above the hotbar, above the tutorial bubble while it shows); the bat reaches 14
+  studs (was 9) over the whole front half (Arc -0.25), up to 10 up / down, and picks a carrier first; the bat swing is
+  a baseball swing posed on every client (PlayerPoses "swing" from SwingAt, waist turn on R15; checked at wind-up,
+  contact and follow-through). Not testable alone in Studio: a hit on another player (needs 2 players).

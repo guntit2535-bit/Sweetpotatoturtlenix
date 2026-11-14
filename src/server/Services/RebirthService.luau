@@ -1,7 +1,7 @@
 --!strict
 -- Rebirth (task 2.7, blueprint §11; SKY PUTT's RebirthService): up to Config.Rebirth.Max times. Needs Strength
--- >= CatRules.rebirthNeed(rebirths). Resets money, Strength, Speed and the weights / treadmill levels; keeps
--- cats, the book, rods, shoes and pen slots; every rebirth gives x1.5 money and x1.5 Strength for good
+-- >= CatRules.rebirthNeed(rebirths). Resets money, Strength and Speed; keeps cats, the book, rods, pen slots and
+-- (X2, Config.Rebirth.KeepLevels) the weights / treadmill levels; every rebirth gives x1.5 money and x1.5 Strength for good
 -- (shared/Bonus) and opens zones by rebirth count (Config.World.Zones[i].Rebirths). Saved before the toast.
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -37,8 +37,10 @@ local function onRebirth(player: Player)
 		d.MoneyFrac = 0
 		d.Strength = Config.Data.StartStrength
 		d.Speed = 0
-		d.WeightsLevel = 1
-		d.TreadLevel = 1
+		if not Config.Rebirth.KeepLevels then
+			d.WeightsLevel = 1
+			d.TreadLevel = 1
+		end
 	end)
 	DataService.SaveAsync(player)
 	Notify.send(player, "RebirthDone", { n = data.Rebirths }, "good")

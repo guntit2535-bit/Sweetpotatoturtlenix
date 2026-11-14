@@ -2,8 +2,9 @@
 -- Carrying a caught cat home (task 1.13, blueprint §3; HatchRush's carry over the head).
 -- The winner of a fishing contest holds the cat over their head (welded to the HumanoidRootPart, so it
 -- moves smoothly with them); player attributes CarryingCat (kind) / CarryingTier draw the floating icon on
--- every client. Reaching their own pen in the lobby puts the cat in (saved before the toast). Full pen =
--- they keep carrying. A bat hit, dying or leaving drops the cat where they are (WildCatService.drop).
+-- every client. At their own pen the player gets a "Put in pen" button (X2, revision 4 item 16: was automatic):
+-- the server sets the player attribute AtPen while they carry a cat there, the client asks with PutInPen, the
+-- server checks again and puts it in (saved before the toast). Full pen = they keep carrying. A bat hit, dying or leaving drops the cat where they are (WildCatService.drop).
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -45,6 +46,7 @@ local function clear(player: Player)
 	carrying[player] = nil
 	player:SetAttribute("CarryingCat", nil)
 	player:SetAttribute("CarryingTier", nil)
+	player:SetAttribute("AtPen", nil)
 end
 
 -- The fishing winner takes the wild cat.
@@ -130,7 +132,7 @@ end
 
 local function deliver(player: Player, c: Carry)
 	if not PenService.hasRoom(player) then
-		if os.clock() - c.lastFullNote > 5 then
+		if os.clock() - c.lastFullNote > 1 then
 			c.lastFullNote = os.clock()
 			local data = DataService.GetData(player)
 			Notify.send(player, "PenFull", { max = if data then data.PenSlots else Config.Pen.StartSlots }, "bad")
@@ -156,7 +158,18 @@ local function deliver(player: Player, c: Carry)
 	end)
 end
 
+-- X2: the "Put in pen" button (the client only asks; carrying and the pen are checked here)
+local function onPutInPen(player: Player)
+	local c = carrying[player]
+	local root = rootOf(player)
+	if c and root and atPen(player, root.Position) then
+		deliver(player, c)
+	end
+end
+
 function CarryService:Init()
+	local Guard = require(script.Parent.Parent.Util.Guard)
+	Guard.onEvent("PutInPen", Config.Carry.PutRate, onPutInPen)
 	local DebugService = require(script.Parent.DebugService)
 	DebugService.register("drop", "!drop  drop the cat you carry (as if hit by a bat)", function(player)
 		local w = CarryService.drop(player)
@@ -185,10 +198,11 @@ function CarryService:Start()
 	task.spawn(function()
 		while true do
 			task.wait(Config.Carry.CheckEvery)
-			for player, c in carrying do
+			for player in carrying do
 				local root = rootOf(player)
-				if root and atPen(player, root.Position) then
-					deliver(player, c)
+				local here = root ~= nil and atPen(player, root.Position)
+				if player:GetAttribute("AtPen") ~= (if here then true else nil) then
+					player:SetAttribute("AtPen", if here then true else nil) -- shows the client's button
 				end
 			end
 		end

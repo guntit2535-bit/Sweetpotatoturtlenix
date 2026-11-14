@@ -4,7 +4,8 @@
 -- (shared/PlayerPoses). Done each frame after the Animator, on the shoulder joints' Transform values, so the
 -- legs keep walking and nothing has to be uploaded. Works for R15 and R6, and for both joint kinds Roblox uses
 -- (Motor6D, and AnimationConstraint on the newer avatars): the pose is turned from the torso's axes into
--- each joint's own axes. The cast and bat swing are the default tool "Slash" (server, ToolAnim).
+-- each joint's own axes. The cast is the default tool "Slash" (server, ToolAnim); X2: the bat swing is the "swing"
+-- pose here (player attribute SwingAt).
 -- R6 task: "Training" = "weights" -> the two-hand curl, which also bends the elbows (R15 only: a rig without
 -- elbows is left to TrainingController's cheer).
 -- V2: reeling on R15 with the mesh rod: the rod is in the left hand (ToolService) and the right hand is placed
@@ -26,6 +27,7 @@ type Rig = {
 	leftElbow: Instance?,
 	leftWrist: Instance?,
 	rightWrist: Instance?,
+	waist: Instance?,
 	weight: number,
 	kind: string?,
 }
@@ -38,6 +40,7 @@ local LEFT = { LeftShoulder = true, ["Left Shoulder"] = true }
 
 local function scan(rig: Rig)
 	rig.right, rig.left, rig.rightElbow, rig.leftElbow, rig.leftWrist, rig.rightWrist = nil, nil, nil, nil, nil, nil
+	rig.waist = nil
 	for _, d in rig.character:GetDescendants() do
 		if d:IsA("Motor6D") or d:IsA("AnimationConstraint") then
 			if RIGHT[d.Name] then
@@ -52,6 +55,8 @@ local function scan(rig: Rig)
 				rig.leftWrist = d
 			elseif d.Name == "RightWrist" then
 				rig.rightWrist = d
+			elseif d.Name == "Waist" then
+				rig.waist = d
 			end
 		end
 	end
@@ -87,6 +92,20 @@ local function apply(joint: Instance?, x: number, z: number, weight: number)
 	local target = r:Inverse() * CFrame.Angles(x, 0, z) * r
 	local j = joint :: any
 	j.Transform = (j.Transform :: CFrame):Lerp(target, weight)
+end
+
+-- X2: the waist turned round the torso's up axis (the swing).
+local function applyYaw(joint: Instance?, y: number, weight: number)
+	local r: CFrame
+	if joint and joint:IsA("Motor6D") then
+		r = joint.C0.Rotation
+	elseif joint and joint:IsA("AnimationConstraint") and joint.Attachment0 then
+		r = joint.Attachment0.CFrame.Rotation
+	else
+		return
+	end
+	local j = joint :: any
+	j.Transform = (j.Transform :: CFrame):Lerp(r:Inverse() * CFrame.Angles(0, y, 0) * r, weight)
 end
 
 -- A joint's pivot in the world and the part it hangs from (Motor6D: Part0 * C0; AnimationConstraint: its
@@ -172,8 +191,11 @@ local function step(dt: number)
 	local eye = camera and camera.CFrame.Position
 	local now = os.clock()
 	local rate = dt / math.max(Config.PlayerAnim.Blend, 0.01)
+	local serverNow = workspace:GetServerTimeNow()
 	for _, player in Players:GetPlayers() do
-		local kind = PlayerPoses.kindOf(player:GetAttribute("CarryingCat"), player:GetAttribute("Fishing"), player:GetAttribute("Training"))
+		local swingAt = player:GetAttribute("SwingAt")
+		local swingAge = if type(swingAt) == "number" then serverNow - swingAt else nil
+		local kind = PlayerPoses.kindOf(player:GetAttribute("CarryingCat"), player:GetAttribute("Fishing"), player:GetAttribute("Training"), swingAge)
 		local rig = if kind or rigs[player] then rigOf(player) else nil
 		if rig and kind == "curl" and not rig.rightElbow then
 			kind = nil -- R6: no elbows, the cheer plays instead
@@ -184,9 +206,14 @@ local function step(dt: number)
 			if kind then
 				rig.kind = kind
 			end
-			rig.weight = math.clamp(rig.weight + (if kind and near then rate else -rate), 0, 1)
+			-- X2: the swing is quick, so it blends in and out much faster than the held poses
+			local r2 = if rig.kind == "swing" then dt / 0.06 else rate
+			rig.weight = math.clamp(rig.weight + (if kind and near then r2 else -r2), 0, 1)
 			if rig.weight > 0 and rig.kind then
-				local a = PlayerPoses.arms(rig.kind, now + player.UserId % 7)
+				local a = if rig.kind == "swing" then PlayerPoses.arms("swing", swingAge or PlayerPoses.SwingTime) else PlayerPoses.arms(rig.kind, now + player.UserId % 7)
+				if a.wy then
+					applyYaw(rig.waist, a.wy, rig.weight)
+				end
 				local w = rig.weight * rig.weight * (3 - 2 * rig.weight)
 				-- V2 reel on R15: the rod is in the left hand (ToolService's LeftGrip), the right hand on the crank
 				local hand = rig.character:FindFirstChild("LeftHand")

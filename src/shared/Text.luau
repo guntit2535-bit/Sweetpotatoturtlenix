@@ -85,7 +85,8 @@ Text.Lines = {
 	FishEscaped = { en = "The cat got away!", th = "แมวหนีไปแล้ว!" },
 	FishGaveUp = { en = "You stopped fishing", th = "เลิกตกแมวแล้ว" },
 	CatBusy = { en = "That cat can't be fished right now", th = "ตอนนี้ตกแมวตัวนี้ไม่ได้" },
-	CarryHint = { en = "Carry it to your pen! Watch out for bats!", th = "ถือกลับไปใส่คอก! ระวังโดนตี!" },
+	CarryHint = { en = "Carry it to your pen and press Put in pen! Watch out for bats!", th = "ถือกลับคอก แล้วกด ใส่คอก! ระวังโดนตี!" },
+	PutInPen = { en = "Put in pen", th = "ใส่คอก" }, -- X2: the button at your pen while carrying a cat
 	CatHome = { en = "{name} is in your pen!", th = "{name} เข้าคอกแล้ว!" },
 	BatDropped = { en = "{name} knocked your cat loose!", th = "{name} ตีแมวของคุณหลุดมือ!" },
 	BatHitCat = { en = "You knocked {name}'s cat loose! Catch it!", th = "คุณตีแมวของ {name} หลุดแล้ว! รีบตกเลย!" },
@@ -207,8 +208,8 @@ Text.Lines = {
 	},
 	TutHold = { en = "Hold the button to keep the cat in the green!", th = "กดค้างที่ปุ่มให้แมวอยู่ในโซนสีเขียว!" },
 	TutCarry = {
-		en = "Follow the arrows to your pen. Watch out for bats!",
-		th = "เดินตามลูกศรกลับคอกของคุณ ระวังโดนไม้ตี!",
+		en = "Follow the line to your pen and press Put in pen. Watch out for bats!",
+		th = "เดินตามเส้นกลับคอก แล้วกดปุ่ม ใส่คอก ระวังโดนไม้ตี!",
 	},
 	TutTrain = {
 		en = "Stand in the green ring at your weights until you have {kg} kg of Strength.",

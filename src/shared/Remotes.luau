@@ -47,6 +47,7 @@ Remotes.Events = {
 	"ToggleSpeed", -- client -> server: the x2 Speed switch (owners of the pass), task 2.18
 	"StopTraining", -- client -> server: a jump while locked on the weights / treadmill spot, task R2
 	"Tutorial", -- client -> server: ack + step, skip or replay (task V4)
+	"PutInPen", -- client -> server: put the carried cat in my pen (X2, revision 4 item 16)
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

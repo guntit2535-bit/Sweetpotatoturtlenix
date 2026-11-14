@@ -127,6 +127,12 @@ local function pointAt(s: number): GuiObject?
 		local gui = me.PlayerGui:FindFirstChild("HudLeft")
 		local b = gui and gui:FindFirstChild("Shop", true)
 		return if b and b:IsA("GuiObject") then b else nil
+	elseif s == CARRY and me:GetAttribute("AtPen") == true then
+		-- X2: at the pen, the glowing frame goes round the "Put in pen" button (ActionController)
+		local gui = me.PlayerGui:FindFirstChild("ActionButton")
+		local spot = gui and gui:FindFirstChild("Spot")
+		local b = spot and spot:FindFirstChild("PutInPen", true)
+		return if b and b:IsA("GuiObject") and (spot :: GuiObject).Visible then b else nil
 	elseif s == CATCH and me:GetAttribute("Fishing") ~= nil then
 		local gui = me.PlayerGui:FindFirstChild("FishingGui")
 		local b = gui and gui:FindFirstChild("Hold")

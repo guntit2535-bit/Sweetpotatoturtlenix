@@ -840,3 +840,4 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   0.6}: R1 0h24, R2 0h42, R3 1h05, R4 1h49, R5 3h06, end 49h20; B {0.001, 0.01, 0.08, 0.3, 0.7}: R1 0h22, R2 0h37,
   R3 0h53, R5 2h10, end 48h23; C = A + Growth 4.02: R1 0h24, R2 0h42, R3 1h05, R5 3h09, end 53h17 (recommended:
   easy start, the ~50 h end kept). (1) NPC looks being made in Blender (art/blender/npcs.py).
+- 2026-11-15 NPC concepts (art/blender/npcs.py, art/preview/npc/): A chibi voxel (4.5 studs, big head, closest to the cats; needs a 2-stud step behind the counter) / B blocky avatar (5.5 studs, wave visible over the counter). Shop girl pink (twin tails, cat-ear headband, apron), Sell girl mint (ginger bob, overalls, coin badge, notepad). ~1k tris each.

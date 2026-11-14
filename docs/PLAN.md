@@ -124,7 +124,7 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
 - [x] X1 Quick fixes (passed 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
 - [x] X2 Rules (passed 2026-11-15): rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
 - [x] X3 ★ Looks (passed 2026-11-15, crates imported): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
-- [~] X4 ★ Map restyle (client, 2026-11-15; S1-S3 built 2026-11-15, S4 buildings next): new look for the decoration (ground, trees, bushes, flowers, rocks, paths, pens, fences), "cute + pixel + LEGO"; 3 Blender looks first; water (11) and the walls (14) are redone inside it
+- [x] X4 ★ Map restyle (passed 2026-11-15): new look for the decoration (ground, trees, bushes, flowers, rocks, paths, pens, fences), "cute + pixel + LEGO"; 3 Blender looks first; water (11) and the walls (14) are redone inside it
 
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
@@ -833,3 +833,4 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
 - 2026-11-15 developer: "เอาก้อนกลมๆตรงน้ำออกทั้งหมด". WaterGrid.clearRound / clearAllRound: every ball (bank stones,
   snow lumps, foam under the falls, lily flowers) and the grey stepping stones in the creek / waterfall models went to
   the backup (2,356 parts); lily pads, reeds and bridges stay. Grid water now calls it itself.
+- 2026-11-15 developer: "ผ่าน" (X4, the map restyle). Phase 6 (revision list 4) done.

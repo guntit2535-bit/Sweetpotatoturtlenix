@@ -834,3 +834,9 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   snow lumps, foam under the falls, lily flowers) and the grey stepping stones in the creek / waterfall models went to
   the backup (2,356 parts); lily pads, reeds and bridges stay. Grid water now calls it itself.
 - 2026-11-15 developer: "ผ่าน" (X4, the map restyle). Phase 6 (revision list 4) done.
+- 2026-11-15 client (through the developer): (1) cute girl NPCs in the two plaza stalls, (2) rebirths 1-2 easy, then
+  slowly harder. (2) CatRules.rebirthNeed now scales rebirth n by Config.RebirthNeed.Early[n] (none set yet: no change
+  until picked). Sim (active player): now R1 1h46, R2 2h53, R3 4h03, R5 6h34, end 52h48; A Early {0.003, 0.03, 0.2,
+  0.6}: R1 0h24, R2 0h42, R3 1h05, R4 1h49, R5 3h06, end 49h20; B {0.001, 0.01, 0.08, 0.3, 0.7}: R1 0h22, R2 0h37,
+  R3 0h53, R5 2h10, end 48h23; C = A + Growth 4.02: R1 0h24, R2 0h42, R3 1h05, R5 3h09, end 53h17 (recommended:
+  easy start, the ~50 h end kept). (1) NPC looks being made in Blender (art/blender/npcs.py).

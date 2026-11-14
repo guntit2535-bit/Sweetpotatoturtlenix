@@ -202,7 +202,7 @@ for _, o in OPTIONS do
 	local m = runs[2]
 	print(`== {o.name}`)
 	print(`  zones (first life): 2 {clock(m.zones[2])} | 3 {clock(m.zones[3])} | 4 {clock(m.zones[4])} | 5 {clock(m.zones[5])}`)
-	print(`  rebirth 1 {clock(m.reb[1])} | 5 {clock(m.reb[5])} | 10 {clock(m.reb[10])} | 15 {clock(m.reb[15])} | 20 {clock(m.reb[20])} | 25 {clock(m.reb[25])}`)
+	print(`  rebirth 1 {clock(m.reb[1])} | 2 {clock(m.reb[2])} | 3 {clock(m.reb[3])} | 4 {clock(m.reb[4])} | 5 {clock(m.reb[5])} | 10 {clock(m.reb[10])} | 15 {clock(m.reb[15])} | 20 {clock(m.reb[20])} | 25 {clock(m.reb[25])}`)
 	-- crate prices in minutes of income at the end of lives 1 / 5 / 15 (the next life's prices)
 	local mins = {}
 	for _, k in { 1, 5, 15 } do

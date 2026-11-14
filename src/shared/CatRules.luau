@@ -149,8 +149,10 @@ function CatRules.rebirthNeed(rebirths: number): number?
 	if rebirths >= Config.Rebirth.Max then
 		return nil
 	end
-	local r = Config.RebirthNeed
-	return math.floor(r.Strength * r.Growth ^ rebirths)
+	local r = Config.RebirthNeed :: any
+	-- (client, 2026-11-15: the first rebirths easy, then harder): Early[n] scales rebirth n's need, 1 after the list
+	local early = if r.Early then (r.Early[rebirths + 1] or 1) else 1
+	return math.floor(r.Strength * r.Growth ^ rebirths * early)
 end
 
 -- A zone opens with enough Strength (x KgMult per rebirth, R4) or enough rebirths (blueprint §1).

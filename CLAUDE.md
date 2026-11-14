@@ -72,6 +72,9 @@ are starting values: they live in Config and are tuned after playtests (simulate
   **the client should be told**: the x2 Speed / x2 Cash / x2 Strength passes and the x2 Speed button removed (§13),
   shoes dropped (`Config.Shoes.Enabled = false`), rebirth keeps the weights / treadmill levels, no Shop button (a
   stall in the middle of the map).
+- 2026-11-15, map restyle (client, PLAN phase 6 X4): the map's decoration (ground, trees, props, pens, fences) is
+  remade in a "cute + pixel + LEGO pattern" style, the layout stays; 3 Blender looks first. A remake beyond the
+  blueprint's revision rounds: priced later with revision 4. **The client should be told.**
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,

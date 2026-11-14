@@ -124,7 +124,7 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
 - [x] X1 Quick fixes (passed 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
 - [x] X2 Rules (passed 2026-11-15): rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
 - [x] X3 ★ Looks (passed 2026-11-15, crates imported): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
-- [ ] X4 ★ Map: Terrain water ~6 studs deep (11), walls clear of gate pillars + detail pass (14)
+- [ ] X4 ★ Map restyle (client, 2026-11-15, replaces the old X4 detail pass): new look for the decoration (ground, trees, bushes, flowers, rocks, paths, pens, fences), "cute + pixel + LEGO"; 3 Blender looks first; water (11) and the walls (14) are redone inside it
 
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
@@ -776,3 +776,12 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   the developer: import Crates.fbx (DEVELOPER_TODO), publish. Until then the 3 new crates show a plain square in the
   shop and the old 4 keep their old meshes.
 - 2026-11-15 developer: "นำเข้าแล้ว ผ่าน" (X3). Checked in Studio: ItemModels.Crates holds the 14 new meshes (7 bodies + 7 lids), the Market is in the place. X4 (water, walls, map detail) next.
+- 2026-11-15 client (through the developer): fixing the map in many places is not OK; remake the map's decoration
+  (ground, trees, pens, fences, the rest of the props) in a "cute + pixel + LEGO pattern" style, layout kept. The
+  developer asked for 3 looks made in Blender first. X4 becomes this restyle; the water (item 11) and the walls (item
+  14) are done inside it. Not in the blueprint as a remake: priced later with the rest of revision 4 (developer's
+  earlier answer), the client should be told.
+- 2026-11-15 X4 looks rendered (art/blender/mapstyle.py + mapstyle_sheet.py, art/preview/mapstyle/style_A/B/C.png): A LEGO
+  bricks (glossy, studs everywhere), B pixel voxel (matte voxel props, 3-green pixel ground with studs), C cute toy
+  blocks (pastel rounded blocks, faces). Page https://claude.ai/artifact/FURQNfZjUrRSes9GXL1DVe. Recommended B (all three
+  words, matches the voxel cats; props as merged Blender meshes like the cats for phones).

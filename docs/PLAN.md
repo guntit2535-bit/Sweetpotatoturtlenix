@@ -122,7 +122,7 @@ shop / pen, economy, world.
 Developer's answers: build first, price talked later; item 23 = only the three x2 passes + the HUD x2 button;
 item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line to the cat and home.
 - [x] X1 Quick fixes (passed 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
-- [~] X2 Rules (built + checked in Studio 2026-11-15): rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
+- [x] X2 Rules (passed 2026-11-15): rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
 - [ ] X3 ★ Looks (renders / mockups first): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
 - [ ] X4 ★ Map: Terrain water ~6 studs deep (11), walls clear of gate pillars + detail pass (14)
 
@@ -750,3 +750,11 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   studs (was 9) over the whole front half (Arc -0.25), up to 10 up / down, and picks a carrier first; the bat swing is
   a baseball swing posed on every client (PlayerPoses "swing" from SwingAt, waist turn on R15; checked at wind-up,
   contact and follow-through). Not testable alone in Studio: a hit on another player (needs 2 players).
+- 2026-11-15 developer: "ผ่าน" (X2). X3 next: options first.
+- 2026-11-15 X3 options (look first, nothing built in the game yet): page https://claude.ai/artifact/Eupx2B9gzzpyDCmTAAaTGQ
+  with in-game Studio captures (art/preview/x3): left HUD open look A (icons only) / B (icons on a dark disc); plaza
+  shop + sell booth A (market stalls) / B (shop house + wagon), benches and lamps gone; pen floor A (wood deck + rug) /
+  B (pastel tiles) / C (garden); home marker A (pin + HOME + distance) / B (+ a light pillar); tutorial line A (glowing
+  ribbon) / B (paw prints); crates 3 looks (art/blender/crates_v2.py: A LEGO block, B cat-head chest, C gift box) and a
+  7-crate ladder (Paper 40K, Wood 600K, Iron 8M, Gold 75M, Ruby 300M, Diamond 900M, Cosmic 3B or 6B; sim 52h48 either
+  way). Recommended: 2A 3A 4A 9B 9-3A 12A 13A. The Studio preview parts were removed and the benches / lamps put back.

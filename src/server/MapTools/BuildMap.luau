@@ -219,6 +219,36 @@ function Build.pens(lobby: Instance?)
 	end
 end
 
+-- X3 (revision 4 items 13, 18, 8): the shop stall and the sell booth on the plaza (Config.Market), facing out
+-- toward the pens. Run alone on a built map it also takes the old plaza benches and lamps away:
+--   require(game.ServerScriptService.Server.MapTools:Clone().BuildMap).market()
+function Build.market(lobby: Instance?)
+	local f = lobby or mapRoot():FindFirstChild("Lobby") or error("Build.market: Map.Lobby not found")
+	local old = f:FindFirstChild("Market")
+	if old then
+		old:Destroy()
+	end
+	local removed = 0
+	if lobby == nil then
+		for _, c in f:GetChildren() do
+			if c:IsA("Model") and (c.Name == "Bench" or c.Name == "Lamp") then
+				c:Destroy()
+				removed += 1
+			end
+		end
+	end
+	local market = subFolder(f, "Market")
+	local M = Config.Market
+	local function spot(deg: number): CFrame
+		local a = math.rad(deg)
+		local p = Vector3.new(math.cos(a) * M.Radius, 0.6, math.sin(a) * M.Radius)
+		return CFrame.lookAt(p, Vector3.new(p.X * 2, p.Y, p.Z * 2))
+	end
+	Kit.shopStall(market, spot(M.ShopAngle))
+	Kit.sellBooth(market, spot(M.SellAngle))
+	print(`[Sweetpotato] market built on the plaza ({removed} benches / lamps removed)`)
+end
+
 function Build.lobby()
 	local f = freshFolder(mapRoot(), "Lobby")
 	local rng = Random.new(101)
@@ -231,18 +261,15 @@ function Build.lobby()
 	Build.pens(f)
 	-- X1 (revision 4 item 15, 2026-11-14): no glowing yellow ring and light posts at the safe-zone edge any more
 	-- (Build.removeSafeEdge() takes them out of a built map)
-	-- trees, flowers and benches
+	-- trees and flowers (X3, revision 4 item 8: no benches or lamps on the plaza any more)
 	for i = 1, World.Pens.Count do
 		local deg = (i - 0.5) * 360 / World.Pens.Count
 		for _, side in { -1, 1 } do
 			Kit.tree(f, polar(deg + side * 15, 136), rng)
 			Kit.flowers(f, polar(deg + side * World.Pens.FlowerAngle, 128), rng, 5)
 		end
-		Kit.bench(f, polar(deg, plazaR + 5) * CFrame.new(0, 0.6, 0) * CFrame.Angles(0, math.pi, 0))
 	end
-	for _, deg in roadAngles() do
-		Kit.lamp(f, polar(deg + 13, plazaR - 3, 0.6), true)
-	end
+	Build.market(f)
 	-- one neutral spawn on the plaza until PenService spawns players at their pen
 	local old = workspace:FindFirstChild("SpawnLocation")
 	if old then

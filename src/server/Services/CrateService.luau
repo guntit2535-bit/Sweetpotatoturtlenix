@@ -86,7 +86,7 @@ end
 function CrateService:Init()
 	resultRemote = Remotes.event("CrateResult")
 	Guard.onEvent("BuyCrate", Config.Crates.BuyRate, onBuy)
-	DebugService.register("crate", "!crate <Paper|Wood|Gold|Diamond> N  roll N crates (nothing given) and print the tiers", function(_, args)
+	DebugService.register("crate", "!crate <Paper|Wood|Iron|Gold|Ruby|Diamond|Cosmic> N  roll N crates (nothing given) and print the tiers", function(_, args)
 		local key = args[1]
 		local n = math.clamp(Commands.integer(args[2]) or 1000, 1, 1000000)
 		if not key or not Crates.get(key) then

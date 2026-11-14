@@ -14,6 +14,10 @@ local Config = require(Shared.Config)
 local Cats = require(Shared.Cats)
 local CatModel = require(Shared.CatModel)
 local CatRules = require(Shared.CatRules)
+local Bonus = require(Shared.Bonus)
+local Format = require(Shared.Format)
+local Mutation = require(Shared.Mutation)
+local BonusCtx = require(script.Parent.Parent.Util.BonusCtx)
 local Notify = require(script.Parent.Parent.Util.Notify)
 local DataService = require(script.Parent.DataService)
 local PenService = require(script.Parent.PenService)
@@ -47,6 +51,7 @@ local function clear(player: Player)
 	player:SetAttribute("CarryingCat", nil)
 	player:SetAttribute("CarryingTier", nil)
 	player:SetAttribute("AtPen", nil)
+	player:SetAttribute("AtBooth", nil)
 end
 
 -- The fishing winner takes the wild cat.
@@ -158,6 +163,53 @@ local function deliver(player: Player, c: Carry)
 	end)
 end
 
+-- X3 (revision 4 item 18): standing on the sell booth's pad on the plaza (BuildMap.market)?
+local function atBooth(pos: Vector3): boolean
+	local map = workspace:FindFirstChild("Map")
+	local market = map and map:FindFirstChild("Lobby") and map.Lobby:FindFirstChild("Market")
+	local booth = market and market:FindFirstChild("SellBooth")
+	local pad = booth and booth:FindFirstChild("Pad")
+	if not pad or not pad:IsA("BasePart") then
+		return false
+	end
+	local d = Vector3.new(pos.X - pad.Position.X, 0, pos.Z - pad.Position.Z).Magnitude
+	return d <= Config.Market.PadRange and math.abs(pos.Y - pad.Position.Y) < 12
+end
+
+-- What the carried cat sells for: the same as selling it from the pen (tier, this player's kg, mutation, money bonus).
+local function carriedValue(player: Player, c: Carry): number
+	local data = DataService.GetData(player)
+	local design = Cats.ById[c.kind]
+	if not data or not design then
+		return 0
+	end
+	local kg = CatRules.kgFor(c.kg, data.Rebirths)
+	return math.floor(CatRules.sellPrice(design.Tier, kg) * Mutation.money(c.mutation) * Bonus.money(BonusCtx.of(player, data)))
+end
+
+-- X3: SellCarried from the "Sell" button at the booth. Saved before the toast.
+local function onSellCarried(player: Player)
+	local c = carrying[player]
+	local root = rootOf(player)
+	if not c or not root or not atBooth(root.Position) then
+		return
+	end
+	local value = carriedValue(player, c)
+	DataService.Update(player, function(d)
+		d.Money = CatRules.cap(d.Money + value)
+		d.Stats.Sold += 1
+	end)
+	clear(player)
+	if c.model.Parent then
+		c.model:Destroy()
+	end
+	task.spawn(function()
+		DataService.SaveAsync(player)
+		local design = Cats.ById[c.kind]
+		Notify.send(player, "SoldCat", { name = if design then design.Name else "?", money = Format.short(value) }, "good")
+	end)
+end
+
 -- X2: the "Put in pen" button (the client only asks; carrying and the pen are checked here)
 local function onPutInPen(player: Player)
 	local c = carrying[player]
@@ -170,6 +222,7 @@ end
 function CarryService:Init()
 	local Guard = require(script.Parent.Parent.Util.Guard)
 	Guard.onEvent("PutInPen", Config.Carry.PutRate, onPutInPen)
+	Guard.onEvent("SellCarried", Config.Carry.PutRate, onSellCarried)
 	local DebugService = require(script.Parent.DebugService)
 	DebugService.register("drop", "!drop  drop the cat you carry (as if hit by a bat)", function(player)
 		local w = CarryService.drop(player)
@@ -198,11 +251,17 @@ function CarryService:Start()
 	task.spawn(function()
 		while true do
 			task.wait(Config.Carry.CheckEvery)
-			for player in carrying do
+			for player, c in carrying do
 				local root = rootOf(player)
 				local here = root ~= nil and atPen(player, root.Position)
 				if player:GetAttribute("AtPen") ~= (if here then true else nil) then
 					player:SetAttribute("AtPen", if here then true else nil) -- shows the client's button
+				end
+				-- X3: at the sell booth the button shows what the cat sells for
+				local booth = root ~= nil and atBooth(root.Position)
+				local value = if booth then carriedValue(player, c) else nil
+				if player:GetAttribute("AtBooth") ~= value then
+					player:SetAttribute("AtBooth", value)
 				end
 			end
 		end

@@ -21,6 +21,7 @@ local Format = require(Shared:WaitForChild("Format"))
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
+local MarketController = require(script.Parent.MarketController)
 
 local TutorialController = {}
 
@@ -109,6 +110,10 @@ local function target(s: number, root: BasePart): (Vector3?, Instance?)
 		local pen = myPen()
 		local spawnPart = pen and pen:FindFirstChild("Spawn")
 		return if spawnPart and spawnPart:IsA("BasePart") then spawnPart.Position else (pen and pen:GetPivot().Position), nil
+	elseif s == SHOP then
+		-- X3: the Shop is the stall on the plaza; the arrows lead to its pad
+		local pad = MarketController.shopPad()
+		return if pad then pad.Position else nil, if pad then pad.Parent else nil
 	elseif s == TRAIN then
 		if me:GetAttribute("Training") == "weights" then
 			return nil, nil -- already lifting: no arrows in the way
@@ -123,11 +128,7 @@ end
 
 -- The button the hand points at (screen), if any.
 local function pointAt(s: number): GuiObject?
-	if s == SHOP then
-		local gui = me.PlayerGui:FindFirstChild("HudLeft")
-		local b = gui and gui:FindFirstChild("Shop", true)
-		return if b and b:IsA("GuiObject") then b else nil
-	elseif s == CARRY and me:GetAttribute("AtPen") == true then
+	if s == CARRY and me:GetAttribute("AtPen") == true then
 		-- X2: at the pen, the glowing frame goes round the "Put in pen" button (ActionController)
 		local gui = me.PlayerGui:FindFirstChild("ActionButton")
 		local spot = gui and gui:FindFirstChild("Spot")

@@ -10,6 +10,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
+local Format = require(Shared:WaitForChild("Format"))
 local Remotes = require(Shared:WaitForChild("Remotes"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
@@ -23,16 +24,34 @@ local spot: Frame
 local button: TextButton
 local pulse: UIScale
 
+-- X3: the same button sells the carried cat at the plaza's sell booth (AtBooth = what it sells for)
+local function mode(): string?
+	if me:GetAttribute("CarryingCat") == nil or Kit.anyWindowOpen() then
+		return nil
+	elseif me:GetAttribute("AtPen") == true then
+		return "pen"
+	elseif type(me:GetAttribute("AtBooth")) == "number" then
+		return "sell"
+	end
+	return nil
+end
+
 local function refresh()
-	local show = me:GetAttribute("AtPen") == true and me:GetAttribute("CarryingCat") ~= nil and not Kit.anyWindowOpen()
-	spot.Visible = show
-	if show then
+	local m = mode()
+	spot.Visible = m ~= nil
+	if m == "pen" then
 		Kit.setButtonText(button, Lang.text("PutInPen"))
+		Kit.setButtonColor(button, Kit.Colors.green)
+	elseif m == "sell" then
+		local v = me:GetAttribute("AtBooth")
+		Kit.setButtonText(button, Lang.text("SellCarried", { money = Format.short(if type(v) == "number" then v else 0) }))
+		Kit.setButtonColor(button, Kit.Colors.yellow)
 	end
 end
 
 function ActionController.Start(_self: any)
 	local remote = Remotes.event("PutInPen")
+	local sellRemote = Remotes.event("SellCarried")
 	local gui = Kit.screen("ActionButton", 6)
 	gui.ClipToDeviceSafeArea = false -- same screen space as the tutorial's glow frame
 	spot = Instance.new("Frame")
@@ -63,7 +82,11 @@ function ActionController.Start(_self: any)
 	limit.MaxTextSize = 36
 	limit.Parent = label
 	button.Activated:Connect(function()
-		remote:FireServer()
+		if mode() == "sell" then
+			sellRemote:FireServer()
+		else
+			remote:FireServer()
+		end
 	end)
 	RunService.RenderStepped:Connect(function()
 		if spot.Visible then
@@ -79,7 +102,7 @@ function ActionController.Start(_self: any)
 			spot.Position = UDim2.fromOffset(gui.AbsoluteSize.X / 2, bottom)
 		end
 	end)
-	for _, attr in { "AtPen", "CarryingCat" } do
+	for _, attr in { "AtPen", "AtBooth", "CarryingCat" } do
 		me:GetAttributeChangedSignal(attr):Connect(refresh)
 	end
 	Kit.windowChanged:Connect(refresh)

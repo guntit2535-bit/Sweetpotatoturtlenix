@@ -14,13 +14,20 @@ local function check(ok: boolean, message: string)
 	end
 end
 
+-- X3 (revision 4 item 9): 7 crates, prices rising, odds as agreed 2026-11-15
 local blueprint = {
 	Paper = { Basic = 75, Rare = 22, Epic = 3 },
-	Wood = { Basic = 40, Rare = 40, Epic = 17, Legendary = 3 },
+	Wood = { Basic = 50, Rare = 38, Epic = 11, Legendary = 1 },
+	Iron = { Basic = 25, Rare = 45, Epic = 26, Legendary = 4 },
 	Gold = { Rare = 50, Epic = 38, Legendary = 12 },
-	Diamond = { Epic = 62, Legendary = 37.5, Mythical = 0.5 },
+	Ruby = { Rare = 25, Epic = 50, Legendary = 24.7, Mythical = 0.3 },
+	Diamond = { Epic = 55, Legendary = 44.3, Mythical = 0.7 },
+	Cosmic = { Epic = 35, Legendary = 63, Mythical = 2 },
 }
-check(#Config.Crates.List == 4, "4 crates")
+check(#Config.Crates.List == 7, "7 crates")
+for i = 2, #Config.Crates.List do
+	check(Config.Crates.List[i].Cost > Config.Crates.List[i - 1].Cost, `crate {i} dearer than crate {i - 1}`)
+end
 for key, want in blueprint do
 	local c = Crates.get(key)
 	check(c ~= nil, `{key} exists`)

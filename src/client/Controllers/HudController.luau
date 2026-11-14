@@ -19,7 +19,6 @@ local Format = require(Shared:WaitForChild("Format"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
 local Hud = require(script.Parent.Parent.UI.Hud)
-local ShopController = require(script.Parent.ShopController)
 local StoreController = require(script.Parent.StoreController)
 local ToastController = require(script.Parent.ToastController)
 local TradeController = require(script.Parent.TradeController)
@@ -113,7 +112,7 @@ local function build()
 	local soon = function()
 		ToastController.show("ComingSoon", nil, "info")
 	end
-	Hud.leftButton("Shop", "ShopButton", C.coral, 1, ShopController.toggle)
+	-- X3 (revision 4 item 13): no Shop button; the Shop is a stall on the plaza (MarketController)
 	-- X1 (revision 4 item 23): the x2 Speed button only while the pass is sold
 	local speed = if Config.Passes.Speed2x.Sold ~= false then Hud.leftButton("Speed2x", "Speed2xButton", C.sky, 2, StoreController.speedButton) else nil
 	if speed then

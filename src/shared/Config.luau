@@ -327,6 +327,13 @@ Config.Cats = {
 	ShadowMin = 0.6, -- parts smaller than this (studs) cast no shadow (eyes, noses, trims): lighter on phones
 }
 -- Player arm poses (task 2.22, shared/PlayerPoses): carrying a cat and reeling, drawn by every client.
+-- X3 (revision 4 items 13 + 18): the shop stall and the sell booth on the plaza (BuildMap.market). Angles in
+-- degrees round the plaza centre, Radius in studs; PadRange = studs from a pad's centre that count as on it.
+Config.Market = { ShopAngle = 112.5, SellAngle = 67.5, Radius = 31, PadRange = 5, CheckEvery = 0.2 }
+
+-- X3 (revision 4 item 3, small pin): the home pin over your own pen (HomeMarkerController). Size = circle px.
+Config.HomeMarker = { Size = 30, Height = 22, HideWithin = 60 }
+
 Config.PlayerAnim = {
 	Range = 160, -- only players this close to the camera are posed (studs)
 	Blend = 0.25, -- seconds to ease into / out of a pose
@@ -524,10 +531,15 @@ Config.Trade = {
 -- minutes of income (the Diamond one ~5-8 minutes at the end of a life) instead of seconds.
 Config.Crates = {
 	List = {
+		-- X3 (revision 4 item 9, developer 2026-11-15 "9B 9-3A"): 7 crates on a price ladder (Iron, Ruby, Cosmic new; Wood
+		-- 2.5M -> 600K, Diamond's odds moved up under Cosmic). Sim: the end game stays 52h48 (tools/sim). No Secret.
 		{ Key = "Paper", Cost = 40000, Color = "e8d6ab", Odds = { Basic = 75, Rare = 22, Epic = 3 } },
-		{ Key = "Wood", Cost = 2.5e6, Color = "c98a4a", Odds = { Basic = 40, Rare = 40, Epic = 17, Legendary = 3 } },
+		{ Key = "Wood", Cost = 600e3, Color = "c98a4a", Odds = { Basic = 50, Rare = 38, Epic = 11, Legendary = 1 } },
+		{ Key = "Iron", Cost = 8e6, Color = "b8c2d6", Odds = { Basic = 25, Rare = 45, Epic = 26, Legendary = 4 } },
 		{ Key = "Gold", Cost = 75e6, Color = "f5bf2e", Odds = { Rare = 50, Epic = 38, Legendary = 12 } },
-		{ Key = "Diamond", Cost = 900e6, Color = "7fe3ff", Odds = { Epic = 62, Legendary = 37.5, Mythical = 0.5 } },
+		{ Key = "Ruby", Cost = 300e6, Color = "ff4d6d", Odds = { Rare = 25, Epic = 50, Legendary = 24.7, Mythical = 0.3 } },
+		{ Key = "Diamond", Cost = 900e6, Color = "7fe3ff", Odds = { Epic = 55, Legendary = 44.3, Mythical = 0.7 } },
+		{ Key = "Cosmic", Cost = 3e9, Color = "6b4cff", Odds = { Epic = 35, Legendary = 63, Mythical = 2 } },
 	},
 	BuyRate = { maxCalls = 2, window = 1 },
 	RevealSeconds = 1.2, -- (before R8; unused)

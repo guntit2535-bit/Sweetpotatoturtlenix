@@ -87,6 +87,9 @@ Text.Lines = {
 	CatBusy = { en = "That cat can't be fished right now", th = "ตอนนี้ตกแมวตัวนี้ไม่ได้" },
 	CarryHint = { en = "Carry it to your pen and press Put in pen! Watch out for bats!", th = "ถือกลับคอก แล้วกด ใส่คอก! ระวังโดนตี!" },
 	PutInPen = { en = "Put in pen", th = "ใส่คอก" }, -- X2: the button at your pen while carrying a cat
+	SellCarried = { en = "Sell ${money}", th = "ขาย ${money}" }, -- X3: the button at the plaza's sell booth
+	ShopSign = { en = "SHOP", th = "ร้านค้า" }, -- X3: the plaza stall's sign
+	SellSign = { en = "SELL", th = "ขายแมว" }, -- X3: the sell booth's sign
 	CatHome = { en = "{name} is in your pen!", th = "{name} เข้าคอกแล้ว!" },
 	BatDropped = { en = "{name} knocked your cat loose!", th = "{name} ตีแมวของคุณหลุดมือ!" },
 	BatHitCat = { en = "You knocked {name}'s cat loose! Catch it!", th = "คุณตีแมวของ {name} หลุดแล้ว! รีบตกเลย!" },
@@ -184,6 +187,9 @@ Text.Lines = {
 	CrateWood = { en = "Wood Crate", th = "กล่องไม้" },
 	CrateGold = { en = "Gold Crate", th = "กล่องทอง" },
 	CrateDiamond = { en = "Diamond Crate", th = "กล่องเพชร" },
+	CrateIron = { en = "Iron Crate", th = "กล่องเหล็ก" }, -- X3: 7 crates
+	CrateRuby = { en = "Ruby Crate", th = "กล่องทับทิม" },
+	CrateCosmic = { en = "Cosmic Crate", th = "กล่องจักรวาล" },
 	CrateOdds = { en = "Chances:", th = "โอกาส:" },
 	CrateGot = { en = "You got {name}!", th = "ได้ {name}!" },
 	CrateOpening = { en = "Opening...", th = "กำลังเปิด..." },
@@ -215,7 +221,7 @@ Text.Lines = {
 		en = "Stand in the green ring at your weights until you have {kg} kg of Strength.",
 		th = "ไปยืนในวงเขียวที่ยกเวท จนมีพลัง {kg} กก.",
 	},
-	TutShop = { en = "Tap the Shop button: better rods catch easier.", th = "แตะปุ่มร้านค้า เบ็ดที่ดีขึ้นตกแมวง่ายขึ้น" },
+	TutShop = { en = "Walk to the Shop in the middle of town: better rods catch easier.", th = "เดินไปร้านค้ากลางเมือง เบ็ดที่ดีขึ้นตกแมวง่ายขึ้น" },
 	TutDone = { en = "Here is ${money} to start. Have fun!", th = "รับเงิน ${money} ไปเริ่มต้นเลย ขอให้สนุก!" },
 	TutNext = { en = "Next", th = "ต่อไป" },
 	TutGo = { en = "Let's go!", th = "ไปกันเลย!" },

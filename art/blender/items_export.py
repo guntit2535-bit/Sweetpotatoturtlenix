@@ -32,6 +32,7 @@ import kit  # noqa: E402
 kit.RES = float(args[1]) if len(args) > 1 else 0.5
 
 import crates  # noqa: E402
+import crates_v2  # noqa: E402
 import items  # noqa: E402
 import shoes  # noqa: E402
 import treats  # noqa: E402
@@ -58,8 +59,15 @@ def family_jobs(family):
         jobs += [(f"Treat_{n}", lambda n=n: treats.treat(n), 3000, None) for n in treats.NAMES]
         return jobs
     if family == "Crates":
-        return [(f"Crate_{k}", k, 7000, None) for k in crates.LOOKS]
+        # X3 (revision 4 item 9, look B): the 7 cat-head chests of crates_v2 (was crates.py's 4 boxes)
+        return [(f"Crate_{k}", k, 7000, None) for k in CRATE_TIERS]
     raise ValueError(family)
+
+
+CRATE_TIERS = ("Paper", "Wood", "Iron", "Gold", "Ruby", "Diamond", "Cosmic")
+CRATE_LOOK = "B"
+LID_Z = 1.0  # look B: every part wholly above the collar's middle is the cat-head lid
+HINGE_V2 = Vector((0, 0.86 + 0.07, 1.02))  # look B: the back edge of the collar band
 
 
 def evaluated(objs):
@@ -168,18 +176,12 @@ def export_family(family, manifest):
         offset = grip if grip is not None else Vector()
         if family == "Crates":
             key = build
-            closed = crates.crate(key, 0.0)
+            closed = crates_v2.crate(CRATE_LOOK, key)
             bpy.context.view_layer.update()
             parts = evaluated(closed.objects)
-            # find the lid: the parts that move when the lid opens
-            probe = crates.crate(key, 0.3)
-            bpy.context.view_layer.update()
-            lid = []
-            for a, b in zip(closed.objects, probe.objects):
-                va = a.matrix_world @ a.data.vertices[0].co
-                vb = b.matrix_world @ b.data.vertices[0].co
-                lid.append((va - vb).length > 1e-4)
-            hinge = Vector((0, crates.HY + 0.06, crates.H - 0.27))
+            # the lid: the parts that sit wholly above the seam (the head, its ears and face, stars on it)
+            lid = [min(v.co.z for v in me.vertices) > LID_Z for me, _, _ in parts]
+            hinge = HINGE_V2
             extra = {"hinge": rbx(hinge)}
             add(item_id, [p for p, l in zip(parts, lid) if not l], offset, max_tris, extra)
             add(item_id + "_Lid", [p for p, l in zip(parts, lid) if l], offset, max_tris // 2, extra)

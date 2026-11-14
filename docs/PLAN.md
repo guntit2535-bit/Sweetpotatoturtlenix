@@ -123,7 +123,7 @@ Developer's answers: build first, price talked later; item 23 = only the three x
 item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line to the cat and home.
 - [x] X1 Quick fixes (passed 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
 - [x] X2 Rules (passed 2026-11-15): rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
-- [ ] X3 ★ Looks (renders / mockups first): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
+- [~] X3 ★ Looks (built 2026-11-15, waiting for the crate import): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
 - [ ] X4 ★ Map: Terrain water ~6 studs deep (11), walls clear of gate pillars + detail pass (14)
 
 ## Plan changes
@@ -758,3 +758,20 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   ribbon) / B (paw prints); crates 3 looks (art/blender/crates_v2.py: A LEGO block, B cat-head chest, C gift box) and a
   7-crate ladder (Paper 40K, Wood 600K, Iron 8M, Gold 75M, Ruby 300M, Diamond 900M, Cosmic 3B or 6B; sim 52h48 either
   way). Recommended: 2A 3A 4A 9B 9-3A 12A 13A. The Studio preview parts were removed and the benches / lamps put back.
+- 2026-11-15 developer picks: "ข้อ3 หมุดบ้านใหญ่เกินไป เอาเล็กๆแค่พอมองเห็นพอ ข้อ4เอาเป็นลูกศรชี้นำทาง ส่วนที่เหลือใช้ตามแนะนำ":
+  2A (icons only), 3A small, 4 = the floor arrows (no line), 9B (cat-head chest) with Cosmic $3B, 12A (wood deck + rug),
+  13A (market stall + sell booth; plaza benches and lamps gone).
+- 2026-11-15 X3 built (checked in Studio with a fresh save): left HUD open buttons (icon 84 + label, no square / ears;
+  Hud.leftButton); small home pin (HomeMarkerController, Config.HomeMarker: 30 px pink circle + house + metres over your
+  pen, always on top, hidden within 60 studs; off screen a copy along the top middle slid to home's side; note: Studio
+  captures do not draw AlwaysOnTop billboards); item 4 kept as the floor arrows (developer); pens rebuilt with a wooden
+  deck + round rug (MapKit.pen, the cat Area lifted 0.13 so cats stand on the planks); the market on the plaza
+  (BuildMap.market: ShopStall + SellBooth with glowing pads and client-written signs, benches / lamps removed; run in
+  the place); MarketController opens the Shop when you step on the shop pad (tutorial step 6 now leads there and
+  finished on it); no HUD Shop button; the sell booth: CarryService AtBooth (= the price) + SellCarried remote, the
+  action button reads "Sell $X" (same price as selling from the pen; saved before the toast; Studio: 145 for a 1.2 kg
+  Basic); 7 crates (Config.Crates, Iron / Ruby / Cosmic texts, Crates.spec), the cat-head chest (crates_v2 look B)
+  exported for all 7 tiers to art/export/Crates.fbx (lid = the head, hinge at the collar's back; 14 meshes, 29k tris;
+  preview art/preview/x3/crates_B_7.png); the stale Crate_Diamond glass entries dropped from the manifest. Waiting for
+  the developer: import Crates.fbx (DEVELOPER_TODO), publish. Until then the 3 new crates show a plain square in the
+  shop and the old 4 keep their old meshes.

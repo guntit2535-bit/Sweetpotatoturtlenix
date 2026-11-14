@@ -112,3 +112,11 @@
 - [x] **อัปโหลดไอคอน UI 12 รูป (R9):** (ได้ครบ 12 เลข ใส่ในเกมแล้ว 2026-11-08) ใน Studio เปิด View -> Asset Manager -> Bulk Import (ปุ่มลูกศรขึ้น) เลือกไฟล์ทั้ง 12 ไฟล์ในโฟลเดอร์
   `art/export/ui_icons/` (P01_shop.png ถึง P12_event.png ไม่ต้องเลือก _review.png) ตอนอัปโหลดให้เลือกเจ้าของเป็น **กลุ่ม Sweetpotatoturtlenix**
   เสร็จแล้วคลิกขวาที่แต่ละรูป -> Copy Asset ID แล้วส่งเลขมาให้ Claude (บอกว่าเลขไหนเป็นรูปไหน) ระหว่างรอเกมใช้รูปอุ้งเท้าแทน
+
+## รอบแก้ 4 · X3 (2026-11-15)
+- [ ] **นำเข้ากล่องสุ่มหัวแมว 7 แบบ** (ไฟล์ `art/export/Crates.fbx`):
+  1. Studio -> Explorer -> ReplicatedStorage -> ItemModels -> โฟลเดอร์ `Crates` -> ลบของเก่าทั้งหมดในโฟลเดอร์นี้ (Crate_Paper ... Crate_Diamond_Lid_Glass รวม 10 ชิ้น)
+  2. แท็บ Home -> Import 3D -> เลือก `art/export/Crates.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> ไม่ต้องติ๊กอะไรเพิ่ม -> Import
+  3. ลากชิ้นที่ได้ (Crate_Paper, Crate_Paper_Lid ... Crate_Cosmic_Lid รวม 14 ชิ้น) ใส่โฟลเดอร์ `Crates` เดิม (ชื่อต้องตรง ห้ามแก้ชื่อ)
+  4. บอก Claude ว่า "นำเข้ากล่องแล้ว" Claude จะเช็คหน้าตาในร้านกับตอนเปิดกล่องให้
+- [ ] **File -> Publish to Roblox** หลังนำเข้าเสร็จ (แมพในไฟล์เปลี่ยนแล้ว: พื้นคอกไม้ + พรม, ร้านค้ากับซุ้มขายกลางแมพ, เอาม้านั่ง เสาไฟ และวงแสงเหลืองออก)

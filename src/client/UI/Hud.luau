@@ -1,8 +1,9 @@
 --!strict
 -- The HUD's left column of big buttons (blueprint §16: Shop, x2 Speed, My Cats, Trade; W3: + Rebirth, Rewards). Controllers add
 -- their own button: Hud.leftButton("MyCats", "MyCatsButton", Kit.Colors.yellow, 3, onClick).
--- R9 cute-cat look (art/source/gpt_ui/01_hud): square jelly buttons with cat ears, the icon on top
--- (Config.UIIcons[name], a white paw until it is uploaded) and the label under it. Phones get a smaller column.
+-- X3 (revision 4 item 2, look 2A): open buttons, no jelly square and no ears: a big icon (Config.UIIcons[name], a
+-- white paw until it is uploaded) with an outlined label under it; it sinks a little when pressed. Phones get a
+-- smaller column.
 
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Kit)
@@ -14,11 +15,10 @@ Hud.StatsHeight = 210 -- W2: the bottom-left stats block as drawn (HudController
 local column: Frame? = nil
 local labels: { [TextButton]: string } = {}
 
--- W3 (revision 3 items 11 + 13): 30% smaller than R9's 104 x 88, two to a row, Rebirth and Rewards join the
--- column (middle left): Shop | x2 Speed, My Cats | Trade, Rebirth | Rewards.
-local K = 0.7
-local SIZE = Vector2.new(math.floor(104 * K), math.floor(88 * K))
-local GAP = Vector2.new(10, 20) -- the row gap leaves room for the ears
+-- W3: two to a row (middle left). X3: a 96 x 100 cell per button, the icon 84 px, the label under it.
+local SIZE = Vector2.new(96, 100)
+local ICON = 84
+local GAP = Vector2.new(6, 10)
 local PER_ROW = 2
 local ROWS = 2 -- X1: Shop | My Cats, Trade | Rewards (x2 Speed gone, Rebirth on the right)
 
@@ -75,22 +75,38 @@ local function getColumn(): Frame
 	return f
 end
 
+-- `color` is kept for the callers (the old jelly look used it); X3's open buttons do not draw it.
 function Hud.leftButton(name: string, textKey: string, color: Color3, order: number, onClick: () -> ()): TextButton
+	local _ = color
 	local col = getColumn()
-	local face = Kit.button(col, name, color, UDim2.fromOffset(SIZE.X, SIZE.Y), UDim2.new())
-	local holder = face.Parent :: Frame
-	holder.LayoutOrder = order
-	-- cat ears in the button's colour, the icon on top, the label underneath
-	local h, s, v = color:ToHSV()
-	Kit.ears(holder, math.floor(30 * K), { 0.24, 0.76 }, color, Color3.fromHSV(h, s * 0.45, math.min(1, v * 1.1)))
-	local icon = math.floor(46 * K)
-	Kit.icon(face, name, icon, UDim2.new(0.5, -icon / 2, 0, 3))
-	local label = face:FindFirstChild("Label") :: TextLabel
-	label.Size = UDim2.new(1, -6, 0, math.floor(30 * K))
-	label.Position = UDim2.new(0, 3, 1, -math.floor(30 * K) - 2)
-	local limit = label:FindFirstChildOfClass("UITextSizeConstraint")
-	if limit then
-		limit.MaxTextSize = 17
+	local face = Instance.new("TextButton")
+	face.Name = name
+	face.LayoutOrder = order
+	face.BackgroundTransparency = 1
+	face.AutoButtonColor = false
+	face.Text = ""
+	face.Size = UDim2.fromOffset(SIZE.X, SIZE.Y)
+	face.Parent = col
+	local icon = Kit.icon(face, name, ICON, UDim2.new(0.5, -ICON / 2, 0, -4))
+	local label = Kit.text(face, "Label", UDim2.new(1, 12, 0, 28), UDim2.new(0, -6, 1, -24), 22, true)
+	label.TextScaled = true
+	local limit = Instance.new("UITextSizeConstraint")
+	limit.MaxTextSize = 24
+	limit.Parent = label
+	local stroke = label:FindFirstChildOfClass("UIStroke")
+	if stroke then
+		stroke.Thickness = 3
+	end
+	-- press feedback: the icon sinks a little
+	local press = Instance.new("UIScale")
+	press.Parent = icon
+	face.MouseButton1Down:Connect(function()
+		press.Scale = 0.9
+	end)
+	for _, ev in { face.MouseButton1Up, face.MouseLeave } do
+		ev:Connect(function()
+			press.Scale = 1
+		end)
 	end
 	Kit.setButtonText(face, Lang.text(textKey))
 	labels[face] = textKey

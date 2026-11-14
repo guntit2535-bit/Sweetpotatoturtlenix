@@ -24,6 +24,10 @@ local C = {
 	Grass1 = hex("86dc5e"),
 	Grass2 = hex("69c94c"),
 	PenGrass = hex("9be56f"),
+	Deck1 = hex("e0a868"), -- X3: pen deck planks (two tones) and the rug
+	Deck2 = hex("d29654"),
+	RugPink = hex("ffb3cf"),
+	RugCream = hex("fff1f6"),
 	Leaf = hex("4fbf3f"),
 	Leaf2 = hex("78d957"),
 	LeafDark = hex("3c9e38"),
@@ -907,11 +911,95 @@ function Kit.fountain(parent: Instance, cf: CFrame, s: number)
 	return m
 end
 
+----------------------------------------------------------------------------------------------------
+-- X3 (revision 4 items 13 + 18, look 13A): the market on the plaza. cf = the stall's centre on the ground, front
+-- (-Z) toward the customers. Each has a "SignBoard" (the client writes the word on it, in the player's language)
+-- and a glowing "Pad" in front: stand on it to shop / to sell the cat you carry.
+
+local function scalloped(parent: Instance, cf: CFrame, w: number, d: number, a: Color3, b: Color3)
+	local n = 7
+	for i = 1, n do
+		local x = -w / 2 + (i - 0.5) * w / n
+		W(parent, Vector3.new(w / n, 2.4, d), cf * CFrame.new(x, 0, 0) * CFrame.Angles(0, math.pi, 0), if i % 2 == 1 then a else b)
+		B(parent, w / n * 0.9, (cf * CFrame.new(x, -1.3, -d / 2)).Position, if i % 2 == 1 then a else b, { decor = true })
+	end
+end
+
+local function signEars(parent: Instance, cf: CFrame, w: number, color: Color3)
+	for _, x in { -w * 0.32, w * 0.32 } do
+		W(parent, Vector3.new(0.6, w * 0.22, w * 0.18), cf * CFrame.new(x, w * 0.11, 0) * CFrame.Angles(0, math.pi / 2, 0), color)
+	end
+end
+
+local function pad(parent: Instance, cf: CFrame, d: number, color: Color3)
+	D(parent, cf * CFrame.new(0, 0.05, 0), d + 1.2, 0.1, C.White, { decor = true, shadow = false, mat = Enum.Material.Neon })
+	D(parent, cf * CFrame.new(0, 0.1, 0), d, 0.1, color, { decor = true, shadow = false, mat = Enum.Material.Neon, name = "Pad" })
+end
+
+function Kit.shopStall(parent: Instance, cf: CFrame): Model
+	local m = M(parent, "ShopStall")
+	local pinkBody, cream = hex("ff8fb8"), hex("fffaf0")
+	P(m, Vector3.new(16, 0.6, 11), cf * CFrame.new(0, 0.3, 0), hex("e9d3a8"))
+	P(m, Vector3.new(14, 3.2, 2.4), cf * CFrame.new(0, 2.2, -3.6), pinkBody)
+	P(m, Vector3.new(14.6, 0.5, 3), cf * CFrame.new(0, 4, -3.6), cream)
+	for _, x in { -6.8, 6.8 } do
+		for _, z in { -4.6, 4.6 } do
+			P(m, Vector3.new(0.8, 9, 0.8), cf * CFrame.new(x, 5, z), C.Wood)
+		end
+	end
+	P(m, Vector3.new(14, 6, 0.6), cf * CFrame.new(0, 3.6, 4.6), hex("ffe2ee"))
+	-- shelves of crates behind the counter (the crate colours of the shop)
+	for i, x in { -4.5, 0, 4.5 } do
+		P(m, Vector3.new(3.4, 0.4, 1.6), cf * CFrame.new(x, 4.5, 3.8), C.WoodDark)
+		P(m, Vector3.new(2, 2, 2), cf * CFrame.new(x, 5.7, 3.8), ({ hex("e8d6ab"), hex("f5bf2e"), hex("7fe3ff") })[i])
+	end
+	scalloped(m, cf * CFrame.new(0, 10.4, -1.4), 16, 9, hex("ff5fa2"), cream)
+	local board = P(m, Vector3.new(10, 3, 0.6), cf * CFrame.new(0, 13.6, -4.6), hex("ffd23f"), { name = "SignBoard" })
+	signEars(m, board.CFrame * CFrame.new(0, 1.5, 0), 10, hex("ffd23f"))
+	-- a ginger shop cat on the counter
+	P(m, Vector3.new(1.8, 1.6, 1.4), cf * CFrame.new(-4.6, 5.1, -3.6), C.Orange)
+	pad(m, cf * CFrame.new(0, 0, -9.5), 7, hex("ff5fa2"))
+	return m
+end
+
+function Kit.sellBooth(parent: Instance, cf: CFrame): Model
+	local m = M(parent, "SellBooth")
+	local green, cream = hex("6dd36d"), hex("fffaf0")
+	P(m, Vector3.new(11, 0.6, 9), cf * CFrame.new(0, 0.3, 0), hex("e9d3a8"))
+	P(m, Vector3.new(9, 3.2, 2.2), cf * CFrame.new(0, 2.2, -2.6), green)
+	P(m, Vector3.new(9.6, 0.5, 2.8), cf * CFrame.new(0, 4, -2.6), cream)
+	for _, x in { -4.4, 4.4 } do
+		for _, z in { -3.6, 3.6 } do
+			P(m, Vector3.new(0.7, 8, 0.7), cf * CFrame.new(x, 4.5, z), C.Wood)
+		end
+	end
+	P(m, Vector3.new(9, 5, 0.6), cf * CFrame.new(0, 3.1, 3.6), hex("e4ffe0"))
+	-- a weighing scale and a big coin on the counter
+	P(m, Vector3.new(0.5, 1.4, 0.5), cf * CFrame.new(2.2, 5, -2.6), hex("9aa7bd"))
+	D(m, cf * CFrame.new(2.2, 5.8, -2.6), 2.4, 0.25, hex("d8dde8"))
+	D(m, cf * CFrame.new(-2.6, 5.6, -2.6) * CFrame.Angles(0, 0, math.pi / 2), 2.2, 0.4, hex("ffcf33"))
+	scalloped(m, cf * CFrame.new(0, 9.4, -1.2), 11, 7.4, hex("2fbf5a"), hex("fff6c2"))
+	P(m, Vector3.new(8, 2.6, 0.6), cf * CFrame.new(0, 12.3, -3.6), hex("2fbf5a"), { name = "SignBoard" })
+	pad(m, cf * CFrame.new(0, 0, -8), 6, hex("2fbf5a"))
+	return m
+end
+
 -- One player pen. cf = pen centre on the ground, LookVector toward the plaza (front = -Z).
 function Kit.pen(parent: Instance, index: number, cf: CFrame, w: number, d: number, roof: Color3, rng: Random): Model
 	local m = M(parent, `Pen{index}`)
 	m:SetAttribute("Index", index)
-	P(m, Vector3.new(w, 0.4, d), at(cf, 0, 0.2, 0), C.PenGrass, { name = "Floor" })
+	-- X3 (revision 4 item 12, look 12A): a wooden deck (two-tone planks) with a round pink rug in the middle; the
+	-- Floor part stays (the game reads its bounds), the planks and rug are decoration on top of it
+	P(m, Vector3.new(w, 0.4, d), at(cf, 0, 0.2, 0), C.Deck2, { name = "Floor" })
+	local deck = M(m, "Deck")
+	local planks = math.floor(d / 2)
+	for i = 1, planks do
+		local z = -d / 2 + (i - 0.5) * d / planks
+		P(deck, Vector3.new(w, 0.06, d / planks - 0.14), at(cf, 0, 0.43, z), if i % 2 == 0 then C.Deck1 else C.Deck2, { decor = true, shadow = false })
+	end
+	for k, rug in { { 22, C.RugPink }, { 17, C.RugCream }, { 12, C.RugPink } } do
+		D(deck, at(cf, 0, 0.46 + k * 0.02, 2), rug[1], 0.04, rug[2], { decor = true, shadow = false })
+	end
 	local hw, hd = w / 2, d / 2
 	local gap = 6
 	local function fenceL(a: Vector3, b: Vector3)
@@ -978,7 +1066,7 @@ function Kit.pen(parent: Instance, index: number, cf: CFrame, w: number, d: numb
 	P(wt, Vector3.new(4, 1, 4), wc * CFrame.new(0, 2, -2), C.White, { name = "Stand", t = 1, decor = true })
 	-- invisible helpers for the game code
 	P(m, Vector3.new(4, 1, 4), cf * CFrame.new(0, 0.9, -hd + 4), C.White, { name = "Spawn", t = 1, decor = true })
-	P(m, Vector3.new(w - 6, 1, d - 16), cf * CFrame.new(0, 0.9, -3), C.White, { name = "Area", t = 1, decor = true })
+	P(m, Vector3.new(w - 6, 1, d - 16), cf * CFrame.new(0, 1.03, -3), C.White, { name = "Area", t = 1, decor = true })
 	return m
 end
 

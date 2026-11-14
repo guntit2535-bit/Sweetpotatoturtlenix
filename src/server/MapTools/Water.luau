@@ -35,7 +35,7 @@ end
 local function surfaces(model: Model): { BasePart }
 	local out = {}
 	for _, p in model:GetDescendants() do
-		if p:IsA("BasePart") and p.Material == Enum.Material.Glass and p.Position.Y < 1.5 then
+		if p:IsA("Part") and p.Material == Enum.Material.Glass and p.Position.Y < 1.5 then
 			local thin = if p.Shape == Enum.PartType.Cylinder then p.Size.X < 0.6 else p.Size.Y < 0.6
 			if thin then
 				table.insert(out, p)
@@ -161,7 +161,7 @@ function Water.model(model: Model): boolean
 	local backup = backupFolder()
 	for _, p in model:GetDescendants() do
 		if p:IsA("BasePart") then
-			local rim = p.Shape == Enum.PartType.Cylinder and p.Size.X < 0.5 and p.Size.Y > 13 and near(p.Color, SAND)
+			local rim = p:IsA("Part") and p.Shape == Enum.PartType.Cylinder and p.Size.X < 0.5 and p.Size.Y > 13 and near(p.Color, SAND)
 			if table.find(list, p) or near(p.Color, DEEP) or rim or p.Name == "Flow" then
 				p.Parent = backup
 			end
@@ -197,7 +197,7 @@ function Water.refill(): number
 	local T = workspace.Terrain
 	local n = 0
 	for _, p in backupFolder():GetChildren() do
-		if p:IsA("BasePart") and p.Material == Enum.Material.Glass and p.Position.Y < 1.5 then
+		if p:IsA("Part") and p.Material == Enum.Material.Glass and p.Position.Y < 1.5 then
 			local turn = CFrame.Angles(0, yawOf(p), 0)
 			if p.Shape == Enum.PartType.Cylinder then
 				T:FillCylinder(CFrame.new(p.Position.X, -2, p.Position.Z), 4, p.Size.Y / 2 + 3, Enum.Material.Air)

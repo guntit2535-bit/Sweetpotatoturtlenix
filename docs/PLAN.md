@@ -812,3 +812,9 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   parts as invisible blockers, drops its decoration, places the mesh; bridges keep their deck / ramps invisible; the
   fountain keeps its spray; only autumn leaf piles go voxel; the voxel cabin's roof spot 0.6 lower. Waiting for the
   developer's re-import of the full MapProps.fbx.
+- 2026-11-15 X4 S4 built in the place (developer re-imported the 69-mesh MapProps; the Output's "could not grant
+  permission" lines were for older asset ids and the new palette texture still processing: a preload of all 69 meshes +
+  textures came back 138 / 138 OK). Rebuilt: lobby plants + plaza fountain, walls (voxel torii gates), pens, zones 1-4,
+  sky, LEGO, water (fix: Water skips MeshParts when reading Shape), details, pixel ground. Play: !wild 36 a zone, server
+  60 fps, no errors; the map holds 8,760 meshes and 29k parts. Captures art/preview/mapstyle/ingame2_*.jpg. Still part-
+  built (small): benches, the plaza market stalls (X3), waterfalls' rock and falls, sky islands' edges, signs.

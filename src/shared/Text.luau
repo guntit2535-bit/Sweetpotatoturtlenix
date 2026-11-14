@@ -236,12 +236,12 @@ Text.Lines = {
 	RebirthTitle = { en = "Rebirth {n}", th = "รีเบิร์ธครั้งที่ {n}" },
 	RebirthNeed = { en = "Needs {strength} Strength (you have {have})", th = "ต้องมีพลัง {strength} (ตอนนี้ {have})" },
 	RebirthGives = { en = "Money x1.5 and Strength x3.8 forever, every cat x3.6 heavier, new zones open", th = "เงิน x1.5 และพลัง x3.8 ถาวร แมวทุกตัวหนักขึ้น x3.6 และเปิดโซนใหม่" },
-	RebirthResets = { en = "Resets money, Strength, Speed and the weights / treadmill levels. Cats, rods and pen stay.", th = "รีเซ็ตเงิน พลัง ความเร็ว และเลเวลยกเวท/ลู่วิ่ง แมว เบ็ด และคอกยังอยู่" },
+	RebirthResets = { en = "Resets money, Strength and Speed. Cats, rods, pen and training levels stay.", th = "รีเซ็ตเงิน พลัง และความเร็ว แมว เบ็ด คอก และเลเวลเครื่องฝึกยังอยู่" }, -- X2: levels kept
 	RebirthGo = { en = "Rebirth!", th = "รีเบิร์ธ!" },
 	RebirthYouKeep = { en = "You keep", th = "ยังอยู่" },
 	RebirthYouReset = { en = "You reset", th = "รีเซ็ต" },
-	RebirthKeeps = { en = "Your cats, rods and pen", th = "แมว เบ็ด และคอก" }, -- X1: shoes are gone
-	RebirthResetsShort = { en = "Money, Strength, Speed, weights and treadmill levels", th = "เงิน พลัง ความเร็ว และเลเวลยกเวท / ลู่วิ่ง" },
+	RebirthKeeps = { en = "Your cats, rods, pen and weights / treadmill levels", th = "แมว เบ็ด คอก และเลเวลยกเวท / ลู่วิ่ง" }, -- X1 no shoes, X2 levels kept
+	RebirthResetsShort = { en = "Money, Strength and Speed", th = "เงิน พลัง และความเร็ว" },
 	RebirthStep = { en = "Rebirth {from} -> {to}", th = "รีเบิร์ธ {from} -> {to}" },
 	RebirthChipMoney = { en = "Money x{m}", th = "เงิน x{m}" },
 	RebirthChipStrength = { en = "Strength x{m}", th = "พลัง x{m}" },

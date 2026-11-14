@@ -118,6 +118,14 @@ shop / pen, economy, world.
 - [x] W6 Training boost ladder (17): passed 2026-11-13 (product ids in)
 - [x] W7 ★ (passed 2026-11-13) Event arrow as a Blender mesh (1, done in W1), bigger pens (15: option B), pixel + LEGO ground, paths and trees (2, done 2026-11-13: MapTools/Lego)
 
+## Phase 6 — revision list 4 (developer, 2026-11-14; table `docs/revision4_plan.md`)
+Developer's answers: build first, price talked later; item 23 = only the three x2 passes + the HUD x2 button;
+item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line to the cat and home.
+- [ ] X1 Quick fixes: carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
+- [ ] X2 Rules: rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
+- [ ] X3 ★ Looks (renders / mockups first): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
+- [ ] X4 ★ Map: Terrain water ~6 studs deep (11), walls clear of gate pillars + detail pass (14)
+
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
   client should be told: economy paced to ~50 h with dearer crates, the Pen tab moves to the pen, a training
@@ -718,3 +726,6 @@ shop / pen, economy, world.
   Config.Fishing.CastRange of the target cat with the rod still in the backpack, the yellow arrow points at the rod's
   slot in Roblox's hotbar (placed by the hotbar's own rule, 60-px slots 65 apart, centred; measured in Studio, the
   arrow's tip lands on slot 1's left edge); it goes when the rod is in hand or the player walks away.
+- 2026-11-14 developer: revision list 4 (23 items, 13 pictures + a video; the "yellow line" in the video is the lobby's
+  glowing safe-zone ring). Plan in docs/revision4_plan.md, phase 6 (X1-X4). Answers: build first, price later; item 23
+  only the three x2 passes; item 6 rebirth keeps the training levels; item 4 train first + a guide line.

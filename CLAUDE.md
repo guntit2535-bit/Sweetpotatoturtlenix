@@ -67,6 +67,11 @@ are starting values: they live in Config and are tuned after playtests (simulate
   developer decided to do it all **free**. Blueprint changes, **the client should be told**: economy paced to ~50 h
   with dearer crates, pen slots bought at the pen (no Pen tab), a permanent training boost ladder (2x / 4x / 8x ...
   developer products for weights and treadmill; the client confirms prices), bigger pens, pixel + LEGO ground.
+- 2026-11-14, revision list 4 (23 points, `docs/revision4_plan.md`, PLAN phase 6): built first, **price talked
+  later** (new: home marker, shop stall, sell booth, put-in-pen button, 7 crates, Terrain water). Blueprint changes,
+  **the client should be told**: the x2 Speed / x2 Cash / x2 Strength passes and the x2 Speed button removed (§13),
+  shoes dropped (`Config.Shoes.Enabled = false`), rebirth keeps the weights / treadmill levels, no Shop button (a
+  stall in the middle of the map).
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,

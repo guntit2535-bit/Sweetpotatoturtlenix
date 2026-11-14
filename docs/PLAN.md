@@ -818,3 +818,10 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   sky, LEGO, water (fix: Water skips MeshParts when reading Shape), details, pixel ground. Play: !wild 36 a zone, server
   60 fps, no errors; the map holds 8,760 meshes and 29k parts. Captures art/preview/mapstyle/ingame2_*.jpg. Still part-
   built (small): benches, the plaza market stalls (X3), waterfalls' rock and falls, sky islands' edges, signs.
+- 2026-11-15 developer (not passed): the plaza fountain has no running water, the square pad under the flowers looks
+  odd, and every creek / pool "looks messy, like geometry shapes". Fixed: the voxel fountain keeps its glass pools,
+  falling streams and spray (Kit.voxelize skips parts marked VoxelKeep); no leaf pad under the LEGO flowers (its random
+  turn still drawn). Water redesigned on the world's 4-stud grid (MapTools/WaterGrid: water cells flush with the ground
+  and 8 deep, tiles cut in axis-aligned runs, a shore ring), two shore looks prototyped on two Backyard creeks: A sand
+  plates, B a raised two-grey stone border (art/preview/mapstyle/water_A_sand.jpg, water_B_stone.jpg). Waiting for the
+  pick; meanwhile the place has fresh ground tiles and only those two creeks have water.

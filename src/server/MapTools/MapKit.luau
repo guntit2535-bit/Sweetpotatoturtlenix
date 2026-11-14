@@ -256,7 +256,7 @@ function Kit.voxelize(m: Instance, id: string, cf: CFrame, scale: number?): bool
 		return false
 	end
 	for _, d in m:GetDescendants() do
-		if d:IsA("BasePart") and d.Parent then
+		if d:IsA("BasePart") and d.Parent and d:GetAttribute("VoxelKeep") ~= true then -- (VoxelKeep: e.g. a fountain's water)
 			if d.CanCollide then
 				d.Transparency = 1
 				d.CastShadow = false
@@ -423,12 +423,17 @@ end
 
 function Kit.flowers(parent: Instance, cf: CFrame, rng: Random, n: number?)
 	local m = M(parent, "Flowers")
-	P(m, Vector3.new(6.5, 0.5, 6.5), at(cf, 0, 0.25, 0) * CFrame.Angles(0, rng:NextNumber(0, 1.5), 0), C.Leaf2, { decor = true, shadow = false })
+	-- the leaf pad under the flowers (X4: none under the LEGO flowers, the developer did not like the square; the
+	-- turn is still drawn so the layout keeps its random numbers)
+	local padTurn = rng:NextNumber(0, 1.5)
+	if not Kit.hasMesh("Flower_Pink") then
+		P(m, Vector3.new(6.5, 0.5, 6.5), at(cf, 0, 0.25, 0) * CFrame.Angles(0, padTurn, 0), C.Leaf2, { decor = true, shadow = false })
+	end
 	for _ = 1, math.min(n or 5, 5) do
 		local x, z = rng:NextNumber(-2.6, 2.6), rng:NextNumber(-2.6, 2.6)
 		-- X4: look A's LEGO flower in the same colour (Kit.FlowerColors order), else the old ball
 		local k = rng:NextInteger(1, #Kit.FlowerColors)
-		if not Kit.mesh(m, FLOWER_IDS[k], at(cf, x, 0.5, z) * CFrame.Angles(0, x * 2, 0), 1.2) then
+		if not Kit.mesh(m, FLOWER_IDS[k], at(cf, x, 0.02, z) * CFrame.Angles(0, x * 2, 0), 1.2) then
 			B(m, 1.3, at(cf, x, 0.9, z).Position, Kit.FlowerColors[k], { decor = true, shadow = false })
 		end
 	end
@@ -1133,6 +1138,12 @@ function Kit.fountain(parent: Instance, cf: CFrame, s: number)
 	-- X4 batch 2: the voxel fountain (scaled), keeping the spray on top
 	if Kit.hasMesh("Fountain") then
 		e.Parent = nil
+		-- the water stays: the pools (glass), the falling streams (Flow beams) and the splashes
+		for _, d in m:GetDescendants() do
+			if d:IsA("BasePart") and (d.Material == Enum.Material.Glass or d.Name == "Flow" or d.Name == "Splash") then
+				d:SetAttribute("VoxelKeep", true)
+			end
+		end
 		Kit.voxelize(m, "Fountain", cf, s)
 		local mesh = m:FindFirstChild("Fountain")
 		if mesh then

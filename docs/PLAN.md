@@ -847,3 +847,7 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   shopkeeper(): a hidden 2-stud step, the body and arm meshes and an "NpcSpot" in each stall; NpcController (client)
   bobs them, waves the arm and turns them toward a player within 40 studs. Waiting for the import of NPCs.fbx, then
   BuildMap.market().
+- 2026-11-15 NPCs in the place (developer imported NPCs.fbx; preload 8 / 8). Behind the counter they hid (the counter
+  and the awning covered the face even at x1.35 on a step), so they stand on the plaza beside their stall's front corner
+  at x1.25, turned 15 degrees toward the middle (MapKit shopkeeper, BuildMap.market rebuilt). Play: the arm waves, she
+  bobs and turns toward a near player. Captures art/preview/npc/ingame_*.jpg. Publish needed.

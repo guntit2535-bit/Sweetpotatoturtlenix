@@ -10,7 +10,7 @@ local RunService = game:GetService("RunService")
 local NpcController = {}
 
 local me = Players.LocalPlayer
-local SHOULDER = CFrame.new(1, 2, 0) -- in her feet's space (MapKit: the arm's origin)
+local SHOULDER = Vector3.new(1, 2, 0) -- in her feet's space at scale 1 (MapKit: the arm's origin x the "Scale" attribute)
 local NEAR = 40 -- studs: she looks at a player this close
 local MAX_TURN = math.rad(55)
 
@@ -21,6 +21,7 @@ type Npc = {
 	arm: BasePart?,
 	bodyOff: CFrame,
 	armOff: CFrame?,
+	shoulder: CFrame,
 	yaw: number,
 	phase: number,
 }
@@ -42,13 +43,16 @@ local function scan()
 			local arm = stall and stall:FindFirstChild(`NPC_{who}_Arm`)
 			if body and body:IsA("BasePart") then
 				local base = spot.CFrame
+				local sc = spot:GetAttribute("Scale")
+				local shoulder = CFrame.new(SHOULDER * (if type(sc) == "number" then sc else 1))
 				npcs[spot] = {
 					spot = spot,
 					base = base,
 					body = body,
 					arm = if arm and arm:IsA("BasePart") then arm else nil,
 					bodyOff = base:ToObjectSpace(body.CFrame),
-					armOff = if arm and arm:IsA("BasePart") then SHOULDER:Inverse() * base:ToObjectSpace(arm.CFrame) else nil,
+					armOff = if arm and arm:IsA("BasePart") then shoulder:Inverse() * base:ToObjectSpace(arm.CFrame) else nil,
+					shoulder = shoulder,
 					yaw = 0,
 					phase = if who == "Sell" then 1.7 else 0,
 				}
@@ -88,7 +92,7 @@ function NpcController.Start(_self: any)
 			n.body.CFrame = feet * n.bodyOff
 			if n.arm and n.armOff then
 				local wave = math.sin(t * 5 + n.phase) * 0.4
-				n.arm.CFrame = feet * SHOULDER * CFrame.Angles(0, 0, wave) * n.armOff
+				n.arm.CFrame = feet * n.shoulder * CFrame.Angles(0, 0, wave) * n.armOff
 			end
 		end
 	end)

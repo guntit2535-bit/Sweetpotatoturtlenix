@@ -136,7 +136,7 @@
   4. บอก Claude ว่า "นำเข้าชุดเต็มแล้ว" Claude จะสร้างแมพใหม่ทั้งหมดให้
 
 ## NPC คนขาย + รีเบิร์ธง่ายช่วงแรก (2026-11-15)
-- [ ] **นำเข้า NPC สาวคนขาย 2 คน** (ไฟล์ `art/export/NPCs.fbx`, 4 ชิ้น: ตัว + แขนโบกมือ ของแต่ละคน):
+- [x] **นำเข้า NPC สาวคนขาย 2 คน** (ทำแล้ว 2026-11-15) (ไฟล์ `art/export/NPCs.fbx`, 4 ชิ้น: ตัว + แขนโบกมือ ของแต่ละคน):
   1. Explorer -> ReplicatedStorage -> ItemModels -> คลิกขวา -> Insert Object -> Folder -> ตั้งชื่อ `NPCs`
   2. Home -> Import 3D -> `art/export/NPCs.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import
   3. ลากทั้ง 4 ชิ้น (NPC_Shop, NPC_Shop_Arm, NPC_Sell, NPC_Sell_Arm) ใส่โฟลเดอร์ `NPCs` (ห้ามแก้ชื่อ)

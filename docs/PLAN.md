@@ -785,3 +785,11 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   bricks (glossy, studs everywhere), B pixel voxel (matte voxel props, 3-green pixel ground with studs), C cute toy
   blocks (pastel rounded blocks, faces). Page https://claude.ai/artifact/FURQNfZjUrRSes9GXL1DVe. Recommended B (all three
   words, matches the voxel cats; props as merged Blender meshes like the cats for phones).
+- 2026-11-15 X4 picks: look B + look A's LEGO flowers ("ลูกค้าเลือกBแต่ดอกไม้ลูกค้าขอเอาดอกไม้แบบA"). Plan
+  docs/tasks/x4_map_restyle.md. Done so far: MapKit mesh path (Kit.mesh / hasMesh / blocker; trees, blossoms, pines,
+  bushes, rocks, LEGO flowers, tufts, fences, lamps, the pen house and gate use the voxel meshes once imported, with the
+  same random draws so rebuilt zones keep their layout and spots); MapTools/Pixel (pixel + stud ground texture on every
+  tile / road top, art/export/PixelGround.png, waiting for the upload); MapTools/Water run on zones 1-3: 78 creeks /
+  pools are Terrain water 5.6 deep in trenches cut through the tiles (old water parts in ServerStorage.MapBackup_X4;
+  Snow Mountain keeps its ice); walls rebuilt to stop at each gate's side (item 14, checked at a torii and a wood gate).
+  The voxel prop kit is being made in Blender (art/blender/voxprops.py).

@@ -120,3 +120,7 @@
   3. ลากชิ้นที่ได้ (Crate_Paper, Crate_Paper_Lid ... Crate_Cosmic_Lid รวม 14 ชิ้น) ใส่โฟลเดอร์ `Crates` เดิม (ชื่อต้องตรง ห้ามแก้ชื่อ)
   4. บอก Claude ว่า "นำเข้ากล่องแล้ว" Claude จะเช็คหน้าตาในร้านกับตอนเปิดกล่องให้
 - [ ] **File -> Publish to Roblox** หลังนำเข้าเสร็จ (แมพในไฟล์เปลี่ยนแล้ว: พื้นคอกไม้ + พรม, ร้านค้ากับซุ้มขายกลางแมพ, เอาม้านั่ง เสาไฟ และวงแสงเหลืองออก)
+
+## แมพใหม่ X4 (2026-11-15)
+- [ ] **อัปโหลดลายพื้นพิกเซล** `art/export/PixelGround.png`: Creator Hub -> Development Items -> Decals (หรือ Asset Manager -> Import -> Images) -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> อัปโหลด -> ส่งเลข id ของรูป (Image id) ให้ Claude
+- [ ] **Publish** หลังจาก Claude ทำแมพเสร็จ (น้ำจริงกับกำแพงใหม่แก้ในไฟล์แมพแล้ว)

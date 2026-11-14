@@ -66,6 +66,8 @@ Kit.Colors = C
 
 Kit.RoofColors = { C.Red, C.Yellow, C.Purple, C.Blue, C.Orange, C.Teal, C.Pink, hex("6ccf4a") }
 Kit.FlowerColors = { C.Pink, C.Yellow, hex("b58cff"), hex("ff6f8a"), C.White, C.Orange }
+-- X4: the LEGO flower mesh for each of Kit.FlowerColors
+local FLOWER_IDS = { "Flower_Pink", "Flower_Yellow", "Flower_Lilac", "Flower_Red", "Flower_White", "Flower_Orange" }
 Kit.FruitColors = { C.Red, C.Yellow, C.Purple, C.Orange, hex("7bd04a") }
 
 -- Created-part counter: the builder yields every so often so Studio stays responsive.
@@ -172,6 +174,58 @@ local function pick<T>(rng: Random, list: { T }): T
 end
 Kit.pick = pick
 
+----------------------------------------------------------------------------------------------------
+-- X4 (map restyle, look B "pixel voxel"): props made in Blender (art/blender/voxprops.py, family MapProps)
+-- and imported by the developer into ReplicatedStorage.ItemModels. Kit.mesh(parent, id, cf, scale) places an
+-- anchored copy with its foot at cf (front = cf's LookVector), or returns nil while the mesh is not imported, so
+-- every prop below keeps its old part-built look until then. The meshes never collide or take queries: a prop
+-- that should block players adds an invisible box (Kit.blocker). Every caller still draws the same random
+-- numbers as before, so a rebuilt zone keeps its layout and hiding spots.
+local meshData: { [string]: any }? = nil
+local function data(): { [string]: any }
+	if not meshData then
+		local ReplicatedStorage = game:GetService("ReplicatedStorage")
+		local module = ReplicatedStorage:FindFirstChild("Shared") and ReplicatedStorage.Shared:FindFirstChild("ItemModelData")
+		meshData = if module and module:IsA("ModuleScript") then (require(module:Clone()) :: any) else {}
+	end
+	return meshData :: { [string]: any }
+end
+
+function Kit.hasMesh(id: string): boolean
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	local folder = ReplicatedStorage:FindFirstChild("ItemModels")
+	local found = folder and folder:FindFirstChild(id, true)
+	return found ~= nil and found:IsA("MeshPart") and data()[id] ~= nil
+end
+
+function Kit.mesh(parent: Instance, id: string, cf: CFrame, scale: number?, name: string?): MeshPart?
+	if not Kit.hasMesh(id) then
+		return nil
+	end
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	local original = (ReplicatedStorage :: any).ItemModels:FindFirstChild(id, true) :: MeshPart
+	local entry = data()[id]
+	local s = scale or 1
+	-- the 3D importer turns a mesh 180 degrees about Y (Config.ItemModels.Flip, shared/ItemModels)
+	local part = original:Clone()
+	part.Name = name or id
+	part.Size = entry.size * s
+	part.CFrame = cf * CFrame.new(-entry.center.X * s, entry.center.Y * s, -entry.center.Z * s)
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.CastShadow = true
+	part.Parent = parent
+	bump()
+	return part
+end
+
+-- An invisible box that blocks players where a mesh prop should (a trunk, a rock).
+function Kit.blocker(parent: Instance, size: Vector3, cf: CFrame): Part
+	return P(parent, size, cf, C.White, { t = 1, name = "Blocker", shadow = false })
+end
+
 -- Gable roof, ridge along local X. cf = centre of the roof's base (top of the walls).
 function Kit.gable(parent: Instance, cf: CFrame, w: number, d: number, h: number, color: Color3, o: Opts?)
 	local half = d / 2
@@ -187,9 +241,20 @@ end
 ----------------------------------------------------------------------------------------------------
 -- Plants and rocks
 
-function Kit.tree(parent: Instance, cf: CFrame, rng: Random, leaf: Color3?, leaf2: Color3?): Model
+function Kit.tree(parent: Instance, cf: CFrame, rng: Random, leaf: Color3?, leaf2: Color3?, meshKind: string?): Model
 	local m = M(parent, "Tree")
 	local h = rng:NextInteger(7, 10)
+	-- X4: the voxel tree (Tree_1-3, Blossom_1-2), turned by its height; the same 6 draws as the part tree
+	local kind = meshKind or "Tree"
+	local id = `{kind}_{(h - 7) % (if kind == "Tree" then 3 else 2) + 1}`
+	if Kit.hasMesh(id) then
+		for _ = 1, 6 do
+			rng:NextNumber()
+		end
+		Kit.mesh(m, id, cf * CFrame.Angles(0, h * 1.7, 0), 0.94 + (h - 7) * 0.04)
+		Kit.blocker(m, Vector3.new(2.6, 9, 2.6), at(cf, 0, 4.5, 0))
+		return m
+	end
 	local a = leaf or C.Leaf
 	local b = leaf2 or C.Leaf2
 	P(m, Vector3.new(3, h, 3), at(cf, 0, h / 2, 0), C.Trunk)
@@ -204,7 +269,7 @@ function Kit.tree(parent: Instance, cf: CFrame, rng: Random, leaf: Color3?, leaf
 end
 
 function Kit.blossom(parent: Instance, cf: CFrame, rng: Random): Model
-	local m = Kit.tree(parent, cf, rng, C.Pink, C.PinkLight)
+	local m = Kit.tree(parent, cf, rng, C.Pink, C.PinkLight, "Blossom")
 	m.Name = "BlossomTree"
 	if rng:NextNumber() < 0.35 then
 		local e = Instance.new("ParticleEmitter")
@@ -218,7 +283,7 @@ function Kit.blossom(parent: Instance, cf: CFrame, rng: Random): Model
 		e.LightEmission = 0.2
 		local first = m:FindFirstChildWhichIsA("BasePart")
 		if first then
-			e.Parent = m:GetChildren()[2]
+			e.Parent = m:FindFirstChildOfClass("MeshPart") or m:GetChildren()[2]
 		end
 	end
 	return m
@@ -227,6 +292,11 @@ end
 function Kit.pine(parent: Instance, cf: CFrame, rng: Random, snowy: boolean): Model
 	local m = M(parent, "Pine")
 	local s = rng:NextNumber(0.85, 1.2)
+	local id = `{if snowy then "PineSnow" else "Pine"}_{if s < 1.025 then 1 else 2}`
+	if Kit.mesh(m, id, cf * CFrame.Angles(0, s * 9, 0), s) then
+		Kit.blocker(m, Vector3.new(2, 6, 2) * s, at(cf, 0, 3 * s, 0))
+		return m
+	end
 	P(m, Vector3.new(2, 4, 2) * s, at(cf, 0, 2 * s, 0), C.Trunk)
 	local tiers = { { 13, 4.5, 6 }, { 10, 4, 10 }, { 6.5, 3.5, 13.5 } }
 	for _, t in tiers do
@@ -241,6 +311,30 @@ end
 function Kit.bush(parent: Instance, cf: CFrame, rng: Random, color: Color3?, extra: string?): (Model, Spot)
 	local m = M(parent, "Bush")
 	local c = color or C.Leaf
+	-- X4: the voxel bush; the same draws as the part bush (4 x 2, then 3 x (angle, colour?, height))
+	local id = if extra == "snow" then "Bush_Snow" elseif extra == "berries" then "Bush_Berry" else "Bush_1"
+	if Kit.hasMesh(id) then
+		local first = rng:NextNumber()
+		for i = 1, 7 do
+			rng:NextNumber()
+			local _ = i
+		end
+		for _ = 1, 3 do
+			rng:NextNumber()
+			if extra ~= "berries" then
+				rng:NextInteger(1, #Kit.FlowerColors)
+			end
+			rng:NextNumber()
+		end
+		if id == "Bush_1" and first > 0.5 and Kit.hasMesh("Bush_2") then
+			id = "Bush_2"
+		end
+		local bush = Kit.mesh(m, id, cf * CFrame.Angles(0, first * 6.28, 0), 1)
+		if bush then
+			bush.CanQuery = true -- like the part bush: players walk through, queries kept (R1)
+		end
+		return m, { kind = "bush", pos = at(cf, 0, 1.5, 0).Position }
+	end
 	B(m, 7.5, at(cf, 0, 3, 0).Position, c, { walk = true })
 	for i = 1, 4 do
 		local a = i * math.pi / 2 + rng:NextNumber(-0.3, 0.3)
@@ -263,6 +357,12 @@ function Kit.rock(parent: Instance, cf: CFrame, rng: Random, cap: string?): (Mod
 	local yaw = CFrame.Angles(0, rng:NextNumber(0, math.pi), 0)
 	local base = cf * yaw
 	local s = rng:NextNumber(0.9, 1.3)
+	-- X4: the voxel rock (Rock_1-2, Rock_Moss, Rock_Snow) with an invisible block for collisions
+	local id = if cap == "moss" then "Rock_Moss" elseif cap == "snow" then "Rock_Snow" elseif s < 1.1 then "Rock_1" else "Rock_2"
+	if Kit.mesh(m, id, base, s * 0.95) then
+		Kit.blocker(m, Vector3.new(7.4, 5, 6) * s, base * CFrame.new(0, 2.5 * s, 0))
+		return m, { kind = "rock", pos = (cf * CFrame.new(0, 1, 6 * s)).Position }
+	end
 	P(m, Vector3.new(8, 5.5, 6.5) * s, base * CFrame.new(0, 2.6 * s, 0) * CFrame.Angles(0.08, 0, 0.1), C.Rock)
 	P(m, Vector3.new(4.5, 3.5, 4.5) * s, base * CFrame.new(3.5 * s, 1.6 * s, 2 * s) * CFrame.Angles(0, 0.6, -0.12), C.RockDark)
 	if cap == "moss" then
@@ -278,7 +378,11 @@ function Kit.flowers(parent: Instance, cf: CFrame, rng: Random, n: number?)
 	P(m, Vector3.new(6.5, 0.5, 6.5), at(cf, 0, 0.25, 0) * CFrame.Angles(0, rng:NextNumber(0, 1.5), 0), C.Leaf2, { decor = true, shadow = false })
 	for _ = 1, math.min(n or 5, 5) do
 		local x, z = rng:NextNumber(-2.6, 2.6), rng:NextNumber(-2.6, 2.6)
-		B(m, 1.3, at(cf, x, 0.9, z).Position, pick(rng, Kit.FlowerColors), { decor = true, shadow = false })
+		-- X4: look A's LEGO flower in the same colour (Kit.FlowerColors order), else the old ball
+		local k = rng:NextInteger(1, #Kit.FlowerColors)
+		if not Kit.mesh(m, FLOWER_IDS[k], at(cf, x, 0.5, z) * CFrame.Angles(0, x * 2, 0), 1.2) then
+			B(m, 1.3, at(cf, x, 0.9, z).Position, Kit.FlowerColors[k], { decor = true, shadow = false })
+		end
 	end
 end
 
@@ -323,6 +427,24 @@ function Kit.fence(parent: Instance, a: Vector3, b: Vector3, color: Color3?)
 	local len = (b - a).Magnitude
 	local dir = CFrame.lookAt(a, b)
 	local n = math.max(1, math.floor(len / 3.5))
+	-- X4: voxel posts and rails (the rail mesh is stretched along its length); they block like the part fence
+	if Kit.hasMesh("FencePost") and Kit.hasMesh("FenceRail") then
+		for i = 0, n do
+			local post = Kit.mesh(m, "FencePost", dir * CFrame.new(0, 0, -len * i / n))
+			if post then
+				post.CanCollide = true
+			end
+		end
+		for _, y in { 1.1, 2.6 } do
+			local rail = Kit.mesh(m, "FenceRail", dir * CFrame.new(0, y, -len / 2))
+			if rail then
+				rail.Size = Vector3.new(rail.Size.X, rail.Size.Y, len)
+				rail.CFrame = dir * CFrame.new(0, y + rail.Size.Y / 2, -len / 2)
+				rail.CanCollide = true
+			end
+		end
+		return
+	end
 	for i = 0, n do
 		local cfp = dir * CFrame.new(0, 2, -len * i / n)
 		P(m, Vector3.new(1, 4, 1), cfp, c)
@@ -335,6 +457,18 @@ end
 
 function Kit.lamp(parent: Instance, cf: CFrame, light: boolean?)
 	local m = M(parent, "Lamp")
+	local mesh = Kit.mesh(m, "Lamp", cf)
+	if mesh then
+		Kit.blocker(m, Vector3.new(0.8, 9, 0.8), at(cf, 0, 4.5, 0))
+		if light then
+			local pl = Instance.new("PointLight")
+			pl.Range = 16
+			pl.Brightness = 1.2
+			pl.Color = C.Lamp
+			pl.Parent = mesh
+		end
+		return
+	end
 	pole(m, cf, 0.8, 9, C.WoodDark)
 	P(m, Vector3.new(0.5, 0.5, 2.6), at(cf, 0, 8.6, -1.2), C.WoodDark, { decor = true })
 	local l = P(m, Vector3.new(1.8, 2.2, 1.8), at(cf, 0, 7.2, -2.3), C.Lamp, { mat = Enum.Material.Neon, decor = true })
@@ -1013,27 +1147,40 @@ function Kit.pen(parent: Instance, index: number, cf: CFrame, w: number, d: numb
 	-- cat house at the back with cat-ear roof and a paw sign
 	local house = M(m, "CatHouse")
 	local hc = cf * CFrame.new(0, 0, hd - 6)
-	P(house, Vector3.new(12, 7, 8), hc * CFrame.new(0, 3.9, 0), C.Cream)
-	gable(house, hc * CFrame.new(0, 7.4, 0), 14, 10.5, 4.5, roof)
-	for _, x in { -4.6, 4.6 } do
-		W(house, Vector3.new(2.6, 3, 1.6), hc * CFrame.new(x, 12.2, -1.2), roof)
-		W(house, Vector3.new(1.4, 1.8, 0.4), hc * CFrame.new(x, 11.9, -2.1), C.PinkLight, { decor = true })
-	end
-	P(house, Vector3.new(4.4, 4.6, 0.3), hc * CFrame.new(0, 2.7, -4.05), C.Black, { decor = true })
-	local paw = hc * CFrame.new(0, 6.3, -4.1)
-	B(house, 1.4, (paw * CFrame.new(0, -0.3, 0)).Position, C.Orange, { decor = true, shadow = false })
-	for i = -1, 1 do
-		B(house, 0.6, (paw * CFrame.new(i * 0.75, 0.75 - math.abs(i) * 0.2, 0)).Position, C.Orange, { decor = true, shadow = false })
+	-- X4: the voxel cat house (its door faces the gate) with a block for collisions, else the part house
+	if Kit.mesh(house, "CatHouse", hc * CFrame.new(0, 0.4, 0)) then
+		Kit.blocker(house, Vector3.new(12, 7, 8), hc * CFrame.new(0, 3.9, 0))
+	else
+		P(house, Vector3.new(12, 7, 8), hc * CFrame.new(0, 3.9, 0), C.Cream)
+		gable(house, hc * CFrame.new(0, 7.4, 0), 14, 10.5, 4.5, roof)
+		for _, x in { -4.6, 4.6 } do
+			W(house, Vector3.new(2.6, 3, 1.6), hc * CFrame.new(x, 12.2, -1.2), roof)
+			W(house, Vector3.new(1.4, 1.8, 0.4), hc * CFrame.new(x, 11.9, -2.1), C.PinkLight, { decor = true })
+		end
+		P(house, Vector3.new(4.4, 4.6, 0.3), hc * CFrame.new(0, 2.7, -4.05), C.Black, { decor = true })
+		local paw = hc * CFrame.new(0, 6.3, -4.1)
+		B(house, 1.4, (paw * CFrame.new(0, -0.3, 0)).Position, C.Orange, { decor = true, shadow = false })
+		for i = -1, 1 do
+			B(house, 0.6, (paw * CFrame.new(i * 0.75, 0.75 - math.abs(i) * 0.2, 0)).Position, C.Orange, { decor = true, shadow = false })
+		end
 	end
 	-- (round 2: no decorations inside the pen, only the house and the green floor)
 	-- name sign as an arch over the gate (text is added by the game: PenService)
 	local sign = M(m, "Sign")
 	local sc = cf * CFrame.new(0, 0, -hd - 0.8)
+	-- X4: the voxel gate arch around the name board (the board stays a part: PenService writes on it)
+	local gateMesh = Kit.mesh(sign, "PenGate", sc)
 	for _, x in { -gap - 0.2, gap + 0.2 } do
-		P(sign, Vector3.new(1, 11, 1), sc * CFrame.new(x, 5.5, 0), C.WoodDark)
-		P(sign, Vector3.new(1.4, 0.6, 1.4), sc * CFrame.new(x, 11.3, 0), C.White, { decor = true })
+		if gateMesh then
+			Kit.blocker(sign, Vector3.new(1, 11, 1), sc * CFrame.new(x, 5.5, 0))
+		else
+			P(sign, Vector3.new(1, 11, 1), sc * CFrame.new(x, 5.5, 0), C.WoodDark)
+			P(sign, Vector3.new(1.4, 0.6, 1.4), sc * CFrame.new(x, 11.3, 0), C.White, { decor = true })
+		end
 	end
-	P(sign, Vector3.new(14, 4.4, 0.8), sc * CFrame.new(0, 9, 0), C.WoodDark)
+	if not gateMesh then
+		P(sign, Vector3.new(14, 4.4, 0.8), sc * CFrame.new(0, 9, 0), C.WoodDark)
+	end
 	P(sign, Vector3.new(13, 3.6, 0.4), sc * CFrame.new(0, 9, -0.45), C.Wood, { name = "Board" })
 	-- training corner in front of the pen: treadmill on the left, dumbbell rack on the right
 	local tm = M(m, "Treadmill")
@@ -1156,7 +1303,17 @@ end
 function Kit.tuft(parent: Instance, cf: CFrame, rng: Random, color: Color3?)
 	local m = M(parent, "Tuft")
 	local base = color or C.Leaf
-	for _ = 1, rng:NextInteger(4, 6) do
+	-- X4: a pixel tuft (Tuft_1-2); the same draws as the blades (6 each)
+	local n = rng:NextInteger(4, 6)
+	local id = if n % 2 == 0 then "Tuft_1" else "Tuft_2"
+	if Kit.hasMesh(id) then
+		for _ = 1, n * 6 do
+			rng:NextNumber()
+		end
+		Kit.mesh(m, id, cf * CFrame.Angles(0, n * 1.3, 0), 1.1)
+		return
+	end
+	for _ = 1, n do
 		local h = rng:NextNumber(1.4, 2.6)
 		local c = spin(cf, rng) * CFrame.new(rng:NextNumber(-0.7, 0.7), h / 2 - 0.05, rng:NextNumber(-0.7, 0.7))
 		W(m, Vector3.new(0.34, h, 0.8), c * CFrame.Angles(rng:NextNumber(-0.25, 0.1), 0, 0), base:Lerp(C.Leaf2, rng:NextNumber(0, 0.6)), decor())

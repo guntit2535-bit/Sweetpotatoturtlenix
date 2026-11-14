@@ -460,12 +460,20 @@ function Build.walls()
 	for i, s in WALLS do
 		local r = World.Zones[i].Outer
 		local ring = subFolder(f, `Ring{i}`)
-		local segs = math.ceil(TAU * r / 28)
-		for k = 0, segs - 1 do
-			local deg = (k + 0.5) * 360 / segs
-			if roadDistance(deg, r) > gapHalf then
+		-- X4 (revision 4 item 14, "the wall eats the pillars"): the wall runs between the gates and stops at each
+		-- gate's side (the outside of the posts, or the barrier's end for the torii, whose pillars stand inside
+		-- it), instead of whole 28-stud pieces that reached into the posts
+		local clear = if s.gate == "torii" then World.GateWidth / 2 else World.GateWidth / 2 + 3
+		local step = 360 / World.Roads.Count
+		for _, road in roadAngles() do
+			local a0 = road + math.deg(clear / r)
+			local a1 = road + step - math.deg(clear / r)
+			local arc = math.rad(a1 - a0) * r
+			local n = math.max(1, math.ceil(arc / 28))
+			for k = 0, n - 1 do
+				local deg = a0 + (k + 0.5) * (a1 - a0) / n
 				local cf = polar(deg, r)
-				local len = TAU * r / segs + 0.4
+				local len = arc / n + (if k == 0 or k == n - 1 then 0 else 0.4)
 				Kit.part(ring, Vector3.new(len, s.h, s.t), cf * CFrame.new(0, s.h / 2, 0), s.color)
 				Kit.part(ring, Vector3.new(len, 1, s.t + 0.6), cf * CFrame.new(0, s.h + 0.5, 0), s.top, { decor = true })
 			end

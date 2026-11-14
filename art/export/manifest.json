@@ -1,4 +1,32 @@
 {
+ "Bamboo": {
+  "center": [
+   0.25,
+   11.0,
+   0.5
+  ],
+  "family": "MapProps",
+  "size": [
+   10.5,
+   22.0,
+   11.0
+  ],
+  "triangles": 2848
+ },
+ "Barrel": {
+  "center": [
+   0.0,
+   1.75,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   2.75,
+   3.5,
+   2.75
+  ],
+  "triangles": 652
+ },
  "Bat": {
   "center": [
    -0.0,
@@ -45,6 +73,48 @@
    11.25
   ],
   "triangles": 1576
+ },
+ "Bridge_Red": {
+  "center": [
+   0.0,
+   3.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   7.0,
+   6.0,
+   20.0
+  ],
+  "triangles": 1738
+ },
+ "Bridge_Stone": {
+  "center": [
+   0.0,
+   2.5,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   9.0,
+   5.0,
+   20.0
+  ],
+  "triangles": 2484
+ },
+ "Bridge_Wood": {
+  "center": [
+   0.0,
+   3.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   7.0,
+   6.0,
+   20.0
+  ],
+  "triangles": 1700
  },
  "Bush_1": {
   "center": [
@@ -102,6 +172,20 @@
   ],
   "triangles": 1100
  },
+ "Cabin": {
+  "center": [
+   -1.0,
+   8.75,
+   0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   21.0,
+   17.5,
+   15.5
+  ],
+  "triangles": 4238
+ },
  "CatHouse": {
   "center": [
    0.0,
@@ -115,6 +199,34 @@
    9.0
   ],
   "triangles": 2002
+ },
+ "Clothesline": {
+  "center": [
+   0.0,
+   3.5,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   13.5,
+   7.0,
+   1.5
+  ],
+  "triangles": 366
+ },
+ "Cobbles": {
+  "center": [
+   0.0,
+   0.125,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   5.25,
+   0.25,
+   5.25
+  ],
+  "triangles": 496
  },
  "Crate_Cosmic": {
   "center": [
@@ -381,6 +493,76 @@
    1.944
   ],
   "triangles": 2184
+ },
+ "CrystalBits": {
+  "center": [
+   0.0,
+   0.875,
+   -0.125
+  ],
+  "family": "MapProps",
+  "size": [
+   2.0,
+   1.75,
+   1.75
+  ],
+  "triangles": 160
+ },
+ "Crystals_Blue": {
+  "center": [
+   0.0,
+   4.0,
+   -0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.0,
+   8.0,
+   6.5
+  ],
+  "triangles": 672
+ },
+ "Crystals_Pink": {
+  "center": [
+   0.0,
+   4.0,
+   -0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.0,
+   8.0,
+   6.5
+  ],
+  "triangles": 654
+ },
+ "Crystals_Purple": {
+  "center": [
+   0.0,
+   4.0,
+   -0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.0,
+   8.0,
+   6.5
+  ],
+  "triangles": 684
+ },
+ "Doghouse": {
+  "center": [
+   0.0,
+   3.25,
+   1.25
+  ],
+  "family": "MapProps",
+  "size": [
+   6.0,
+   6.5,
+   8.5
+  ],
+  "triangles": 588
  },
  "Dumbbell1": {
   "center": [
@@ -980,6 +1162,34 @@
   ],
   "triangles": 24
  },
+ "Fern": {
+  "center": [
+   -0.125,
+   0.625,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   4.5,
+   1.25,
+   4.25
+  ],
+  "triangles": 726
+ },
+ "FlowerPot": {
+  "center": [
+   0.0,
+   1.125,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   1.75,
+   2.25,
+   1.75
+  ],
+  "triangles": 334
+ },
  "Flower_Blue": {
   "center": [
    0.018,
@@ -1078,6 +1288,90 @@
   ],
   "triangles": 676
  },
+ "Fountain": {
+  "center": [
+   0.0,
+   6.25,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   32.0,
+   12.5,
+   32.0
+  ],
+  "triangles": 5564
+ },
+ "FruitCrate": {
+  "center": [
+   0.0,
+   1.25,
+   0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   2.5,
+   2.5,
+   2.0
+  ],
+  "triangles": 116
+ },
+ "House_1": {
+  "center": [
+   0.0,
+   9.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   21.0,
+   18.0,
+   17.0
+  ],
+  "triangles": 2986
+ },
+ "House_2": {
+  "center": [
+   0.0,
+   9.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   21.0,
+   18.0,
+   17.0
+  ],
+  "triangles": 2886
+ },
+ "House_3": {
+  "center": [
+   0.0,
+   9.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   21.0,
+   18.0,
+   17.0
+  ],
+  "triangles": 2970
+ },
+ "IcePatch": {
+  "center": [
+   0.125,
+   0.125,
+   0.125
+  ],
+  "family": "MapProps",
+  "size": [
+   5.0,
+   0.25,
+   5.0
+  ],
+  "triangles": 264
+ },
  "Lamp": {
   "center": [
    0.0,
@@ -1091,6 +1385,90 @@
    2.0
   ],
   "triangles": 234
+ },
+ "LeafPile": {
+  "center": [
+   0.125,
+   0.375,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   4.0,
+   0.75,
+   3.75
+  ],
+  "triangles": 324
+ },
+ "Log": {
+  "center": [
+   0.0,
+   0.625,
+   0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   4.75,
+   1.25,
+   1.75
+  ],
+  "triangles": 304
+ },
+ "Mountain": {
+  "center": [
+   0.0,
+   34.125,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   65.25,
+   68.25,
+   53.25
+  ],
+  "triangles": 5348
+ },
+ "Mushroom": {
+  "center": [
+   0.125,
+   1.125,
+   -0.125
+  ],
+  "family": "MapProps",
+  "size": [
+   3.0,
+   2.25,
+   3.0
+  ],
+  "triangles": 604
+ },
+ "Pavilion": {
+  "center": [
+   0.0,
+   9.5,
+   0.5
+  ],
+  "family": "MapProps",
+  "size": [
+   20.0,
+   19.0,
+   18.0
+  ],
+  "triangles": 2736
+ },
+ "Pebbles": {
+  "center": [
+   -0.125,
+   0.375,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   3.5,
+   0.75,
+   3.25
+  ],
+  "triangles": 258
  },
  "PenGate": {
   "center": [
@@ -1693,6 +2071,34 @@
   ],
   "triangles": 4000
  },
+ "Sack": {
+  "center": [
+   0.0,
+   1.125,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   1.25,
+   2.25,
+   1.25
+  ],
+  "triangles": 164
+ },
+ "Sapling": {
+  "center": [
+   0.0,
+   1.625,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   2.0,
+   3.25,
+   2.0
+  ],
+  "triangles": 434
+ },
  "Shoe_BouncyBoots": {
   "center": [
    0,
@@ -1804,6 +2210,132 @@
    1.357
   ],
   "triangles": 3000
+ },
+ "Shop_1": {
+  "center": [
+   0.0,
+   8.75,
+   1.25
+  ],
+  "family": "MapProps",
+  "size": [
+   17.0,
+   17.5,
+   15.5
+  ],
+  "triangles": 2890
+ },
+ "Shop_2": {
+  "center": [
+   0.0,
+   8.75,
+   1.25
+  ],
+  "family": "MapProps",
+  "size": [
+   17.0,
+   17.5,
+   15.5
+  ],
+  "triangles": 2814
+ },
+ "Shop_3": {
+  "center": [
+   0.0,
+   8.75,
+   1.25
+  ],
+  "family": "MapProps",
+  "size": [
+   17.0,
+   17.5,
+   15.5
+  ],
+  "triangles": 2810
+ },
+ "SnowMound": {
+  "center": [
+   0.25,
+   0.5,
+   0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   6.0,
+   1.0,
+   4.0
+  ],
+  "triangles": 148
+ },
+ "Snowman": {
+  "center": [
+   0.0,
+   6.25,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   7.5,
+   12.5,
+   4.5
+  ],
+  "triangles": 1244
+ },
+ "Stall_1": {
+  "center": [
+   0.0,
+   4.75,
+   0.5
+  ],
+  "family": "MapProps",
+  "size": [
+   11.0,
+   9.5,
+   6.0
+  ],
+  "triangles": 1924
+ },
+ "Stall_2": {
+  "center": [
+   0.0,
+   4.75,
+   0.5
+  ],
+  "family": "MapProps",
+  "size": [
+   11.0,
+   9.5,
+   6.0
+  ],
+  "triangles": 1992
+ },
+ "StoneLantern": {
+  "center": [
+   0.0,
+   3.75,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   3.5,
+   7.5,
+   3.5
+  ],
+  "triangles": 398
+ },
+ "Torii": {
+  "center": [
+   0.0,
+   7.5,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   19.5,
+   15.0,
+   2.5
+  ],
+  "triangles": 1496
  },
  "Treadmill1": {
   "center": [

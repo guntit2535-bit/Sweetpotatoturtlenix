@@ -1,6 +1,7 @@
 """Renders every voxel map prop (voxprops.IDS) into art/preview/mapstyle/voxprops_sheet.png, labelled with the id,
 size (studs, x * y * z) and triangles.
-Run:  blender -b --factory-startup -P art/blender/voxprops_sheet.py -- <pillow path> [id,id,...]
+Run:  blender -b --factory-startup -P art/blender/voxprops_sheet.py -- <pillow path> [id,id,... | batch2] [out.png]
+(batch2 = voxprops.IDS2: art/blender/voxprops_sheet.py -- <pillow> batch2 voxprops_sheet2.png)
 """
 import os
 import sys
@@ -20,7 +21,8 @@ CELL = 360
 LABEL = 54
 COLS = 6
 
-ids = args[1].split(",") if len(args) > 1 and args[1] else voxprops.IDS
+ids = (voxprops.IDS2 if len(args) > 1 and args[1] == "batch2" else
+       args[1].split(",") if len(args) > 1 and args[1] else voxprops.IDS)
 cells = []
 for pid in ids:
     sc = kit.new_scene()
@@ -50,6 +52,6 @@ for n, (pid, path, tris, size) in enumerate(cells):
     d.text((x0 + 10, y0 + CELL + 30), f"{size.x:.2f} x {size.y:.2f} x {size.z:.2f}   {tris} tris", fill=(110, 116, 140),
            font=small)
     os.remove(path)
-name = "voxprops_sheet.png" if len(args) < 2 or not args[1] else "voxprops_sheet_part.png"
+name = args[2] if len(args) > 2 else "voxprops_sheet.png" if len(args) < 2 or not args[1] else "voxprops_sheet_part.png"
 sheet.save(os.path.join(OUT, name))
 print("sheet written", name)

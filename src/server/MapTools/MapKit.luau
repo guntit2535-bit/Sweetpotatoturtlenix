@@ -733,7 +733,8 @@ function Kit.cabin(parent: Instance, cf: CFrame, rng: Random): (Model, Spot)
 		local _ = rng
 	end
 	Kit.voxelize(m, "Cabin", cf) -- X4 batch 2: the voxel mesh
-	return m, { kind = "roof", pos = at(cf, -w / 4, h + 7.7, 0).Position }
+	-- (the voxel cabin's snowy ridge is 0.6 lower than the part one)
+	return m, { kind = "roof", pos = at(cf, -w / 4, h + (if m:FindFirstChild("Cabin") then 7.1 else 7.7), 0).Position }
 end
 
 function Kit.doghouse(parent: Instance, cf: CFrame)
@@ -1490,7 +1491,9 @@ function Kit.leafPile(parent: Instance, cf: CFrame, rng: Random, colors: { Color
 		local c = spin(cf, rng) * CFrame.new(rng:NextNumber(-1, 1), 0.06 + k * 0.05, rng:NextNumber(-1, 1))
 		P(m, Vector3.new(0.9, 0.08, 0.6), c * CFrame.Angles(rng:NextNumber(-0.3, 0.3), 0, rng:NextNumber(-0.3, 0.3)), pick(rng, cols), decor())
 	end
-	Kit.voxelize(m, "LeafPile", cf) -- X4 batch 2: the voxel mesh
+	if colors == nil then
+		Kit.voxelize(m, "LeafPile", cf) -- X4 batch 2: the voxel mesh (autumn colours only; other piles keep their parts)
+	end
 end
 
 -- Soft snow humps (balls half in the ground).

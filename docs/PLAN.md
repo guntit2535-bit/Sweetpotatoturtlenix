@@ -805,3 +805,10 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   road parts (cut tiles included). Studio: swimming in a creek works, 60 fps on the server. Captures in
   art/preview/mapstyle/ingame_*.jpg. Still old-style (S4 next): houses, shops, stalls, cabins, pavilions, torii, stone
   lanterns, snowmen, mountains, crystals, barrels / crates, the fountain.
+- 2026-11-15 X4 S4 batch 2 made (art/blender/voxprops2.py, 38 props: houses x3, shops x3, stalls x2, cabin, pavilion,
+  torii, doghouse, fountain, 3 bridges, stone lantern, snowman, mountain, crystals x3, bamboo, barrel, fruit crate and 13
+  small ground details; MapProps.fbx now 69 meshes, 92.6k tris, batch 1 unchanged; sheet
+  art/preview/mapstyle/voxprops_sheet2.png). MapKit: Kit.voxelize builds the old prop first (same draws), keeps its solid
+  parts as invisible blockers, drops its decoration, places the mesh; bridges keep their deck / ramps invisible; the
+  fountain keeps its spray; only autumn leaf piles go voxel; the voxel cabin's roof spot 0.6 lower. Waiting for the
+  developer's re-import of the full MapProps.fbx.

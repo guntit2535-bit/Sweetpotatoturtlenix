@@ -66,7 +66,8 @@ def family_jobs(family):
         return [(f"Crate_{k}", k, 7000, None) for k in CRATE_TIERS]
     if family == "MapProps":
         # X4 (map restyle, look B voxels + look A LEGO flowers): one merged voxel mesh per prop, origin = foot centre
-        return [(pid, lambda pid=pid: voxprops.prop(pid), 3000, None) for pid in voxprops.IDS]
+        # (batch 2, X4 S4: buildings, bridges, small props; batch 1 first so its meshes stay the same)
+        return [(pid, lambda pid=pid: voxprops.prop(pid), voxprops.budget(pid), None) for pid in voxprops.ALL_IDS]
     raise ValueError(family)
 
 

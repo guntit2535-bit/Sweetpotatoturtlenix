@@ -129,3 +129,8 @@
   2. แท็บ Home -> Import 3D -> เลือก `art/export/MapProps.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import
   3. ลากชิ้นที่ได้ทั้ง 31 ชิ้น (Tree_1 ... Lamp) ใส่โฟลเดอร์ `MapProps` (ชื่อต้องตรง ห้ามแก้ชื่อ)
   4. บอก Claude ว่า "นำเข้าของแต่งแมพแล้ว" (พร้อมเลข id ลายพื้น ถ้าอัปโหลดแล้ว) Claude จะสร้างแมพใหม่ทั้งหมดให้
+- [ ] **นำเข้าของแต่งแมพพิกเซลชุดเต็ม 69 ชิ้น** (ไฟล์ `art/export/MapProps.fbx` ตัวใหม่ มีของเดิม 31 ชิ้น + บ้าน ร้าน สะพาน น้ำพุ ฯลฯ 38 ชิ้น):
+  1. Explorer -> ReplicatedStorage -> ItemModels -> `MapProps` -> ลบของข้างในทั้งหมด (ของเก่า 31 ชิ้น)
+  2. Home -> Import 3D -> `art/export/MapProps.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import
+  3. ลากทั้ง 69 ชิ้นใส่โฟลเดอร์ `MapProps` (ห้ามแก้ชื่อ)
+  4. บอก Claude ว่า "นำเข้าชุดเต็มแล้ว" Claude จะสร้างแมพใหม่ทั้งหมดให้

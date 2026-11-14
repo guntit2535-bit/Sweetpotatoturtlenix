@@ -539,8 +539,31 @@ def lamp():
 
 
 # == entry ====================================================================================================
+# batch 2 (X4 S4): buildings, bridges and small props, built in voxprops2.py with these helpers
+IDS2 = ["House_1", "House_2", "House_3", "Shop_1", "Shop_2", "Shop_3", "Stall_1", "Stall_2", "Cabin", "Pavilion",
+        "Torii", "Doghouse", "Fountain", "Bridge_Wood", "Bridge_Stone", "Bridge_Red",
+        "StoneLantern", "Snowman", "Mountain", "Crystals_Pink", "Crystals_Blue", "Crystals_Purple", "Bamboo", "Barrel",
+        "FruitCrate", "Mushroom", "Log", "Fern", "LeafPile", "Sapling", "Sack", "FlowerPot", "Pebbles", "SnowMound",
+        "IcePatch", "CrystalBits", "Cobbles", "Clothesline"]
+ALL_IDS = IDS + IDS2  # the export order: batch 1 first (its meshes stay the same)
+BIG = {"House_1", "House_2", "House_3", "Shop_1", "Shop_2", "Shop_3", "Cabin", "Pavilion", "Fountain", "Mountain",
+       "Bridge_Wood", "Bridge_Stone", "Bridge_Red"}
+
+
+def budget(pid):
+    """Triangle cap for the export (the voxel meshes stay under it on their own)."""
+    return 6000 if pid in BIG else 3000
+
+
 def prop(pid):
     m = Model(pid)
+    if pid in IDS2:
+        import voxprops2
+        vx, extra = voxprops2.build(pid)
+        vx.mesh(m)
+        if extra:
+            extra(m)
+        return m
     if pid.startswith("Flower_"):
         flower(m, FLOWERS[pid.split("_", 1)[1]])
         return m
@@ -585,7 +608,7 @@ if __name__ == "__main__":  # blender -b --factory-startup -P art/blender/voxpro
 
     bpy.ops.wm.read_factory_settings(use_empty=True)
     cols = set()
-    for pid in IDS:
+    for pid in (sys.argv[sys.argv.index("--") + 1].split(",") if "--" in sys.argv else ALL_IDS):
         m = prop(pid)
         lo, hi = bounds(m)
         cols |= {tuple(o["rgb"]) for o in m.objects}

@@ -98,6 +98,14 @@ def arm_part(model, seed, pivot, angle, build, odd=False):
     m = Matrix.Translation(Vector(pivot)) @ Matrix.Rotation(angle, 4, "Y")
     for o in model.objects[n0:]:
         o.data.transform(m)
+    return model.objects[n0:]
+
+
+def tag_wave(model, parts, pivot):
+    """The waving arm: exported as its own mesh (origin at the shoulder) so the game can wave it."""
+    for o in parts:
+        o["wave"] = 1
+    model.wave_pivot = Vector(pivot)
 
 
 def add_badges(model, seed, badges):
@@ -221,7 +229,7 @@ def chibi(who):
             box(a, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5, "n_pink")
         box(a, -0.25, 0.25, -0.25, 0.25, 0.5, 1.25, "n_skin")
         put(a, 0.25, -0.25, 0.75, "n_skin")                                # thumb
-    arm_part(m, "npcAwave" + who, (-1.0, 0, 2.0), math.radians(-45), wave)
+    tag_wave(m, arm_part(m, "npcAwave" + who, (-1.0, 0, 2.0), math.radians(-45), wave), (-1.0, 0, 2.0))
     return m
 
 
@@ -333,7 +341,7 @@ def blocky(who):
         if shop:
             box(a, -0.25, 0.5, -0.5, 0.25, 1.0, 1.25, "n_pink")
         box(a, -0.25, 0.5, -0.5, 0.25, 1.25, 1.75, "n_skin")
-    arm_part(m, "npcBwave" + who, (-1.5, 0, 3.25), math.radians(-30), wave)
+    tag_wave(m, arm_part(m, "npcBwave" + who, (-1.5, 0, 3.25), math.radians(-30), wave), (-1.5, 0, 3.25))
     return m
 
 

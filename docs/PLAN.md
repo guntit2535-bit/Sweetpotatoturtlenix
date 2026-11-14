@@ -841,3 +841,9 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   R3 0h53, R5 2h10, end 48h23; C = A + Growth 4.02: R1 0h24, R2 0h42, R3 1h05, R5 3h09, end 53h17 (recommended:
   easy start, the ~50 h end kept). (1) NPC looks being made in Blender (art/blender/npcs.py).
 - 2026-11-15 NPC concepts (art/blender/npcs.py, art/preview/npc/): A chibi voxel (4.5 studs, big head, closest to the cats; needs a 2-stud step behind the counter) / B blocky avatar (5.5 studs, wave visible over the counter). Shop girl pink (twin tails, cat-ear headband, apron), Sell girl mint (ginger bob, overalls, coin badge, notepad). ~1k tris each.
+- 2026-11-15 developer picks: NPC style A (chibi), rebirth option B (very easy start). Config.RebirthNeed.Early =
+  {0.001, 0.01, 0.08, 0.3, 0.7}. NPCs: art/blender/npcs.py tags the waving arm; items_export family "NPCs" ->
+  art/export/NPCs.fbx (NPC_Shop / NPC_Sell bodies + _Arm meshes with their origin at the shoulder, 2k tris); MapKit
+  shopkeeper(): a hidden 2-stud step, the body and arm meshes and an "NpcSpot" in each stall; NpcController (client)
+  bobs them, waves the arm and turns them toward a player within 40 studs. Waiting for the import of NPCs.fbx, then
+  BuildMap.market().

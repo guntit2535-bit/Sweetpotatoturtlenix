@@ -469,7 +469,13 @@ Config.Mutations = {
 Config.Book = { TierBonus = 0.05, AllBonus = 0.25 }
 
 -- Rebirth (task 2.7): rebirth r + 1 needs Strength >= Strength * Growth^r.
-Config.RebirthNeed = { Strength = 1.5e8, Growth = 4 } -- R4 option B
+Config.RebirthNeed = {
+	Strength = 1.5e8,
+	Growth = 4, -- R4 option B
+	-- client 2026-11-15, option B "very easy start": rebirth n needs Early[n] x the rule (1 after the list). Sim (active
+	-- player): R1 0h22, R2 0h37, R3 0h53, R5 2h10, end 48h23 (was R1 1h46, end 52h48)
+	Early = { 0.001, 0.01, 0.08, 0.3, 0.7 },
+}
 
 -- Extra systems (tasks 2.10 - 2.16). Money rewards = max(Base, Seconds of the player's income).
 Config.Offline = { MaxHours = 8, Share = 0.5, MinSeconds = 120 } -- income while away, at half rate

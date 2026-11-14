@@ -1442,6 +1442,72 @@
   ],
   "triangles": 604
  },
+ "NPC_Sell": {
+  "center": [
+   0.0,
+   2.75,
+   -0.125
+  ],
+  "family": "NPCs",
+  "size": [
+   3.5,
+   5.5,
+   3.25
+  ],
+  "triangles": 890
+ },
+ "NPC_Sell_Arm": {
+  "center": [
+   -0.442,
+   0.442,
+   -0.0
+  ],
+  "family": "NPCs",
+  "grip": [
+   -1.0,
+   2.0,
+   -0.0
+  ],
+  "size": [
+   1.237,
+   1.237,
+   0.5
+  ],
+  "triangles": 58
+ },
+ "NPC_Shop": {
+  "center": [
+   0.0,
+   2.75,
+   -0.0
+  ],
+  "family": "NPCs",
+  "size": [
+   4.5,
+   5.5,
+   2.5
+  ],
+  "triangles": 974
+ },
+ "NPC_Shop_Arm": {
+  "center": [
+   -0.442,
+   0.442,
+   -0.0
+  ],
+  "family": "NPCs",
+  "grip": [
+   -1.0,
+   2.0,
+   -0.0
+  ],
+  "size": [
+   1.237,
+   1.237,
+   0.5
+  ],
+  "triangles": 74
+ },
  "Pavilion": {
   "center": [
    0.0,

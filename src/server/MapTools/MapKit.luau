@@ -1183,6 +1183,20 @@ local function pad(parent: Instance, cf: CFrame, d: number, color: Color3)
 	D(parent, cf * CFrame.new(0, 0.1, 0), d, 0.1, color, { decor = true, shadow = false, mat = Enum.Material.Neon, name = "Pad" })
 end
 
+-- The plaza shopkeeper (client 2026-11-15, style A chibi voxel, art/blender/npcs.py): she stands behind the counter
+-- on a hidden 2-stud step (the counter is shoulder high), her body and her waving arm as two meshes, and an invisible
+-- "NpcSpot" at her feet that NpcController (client) uses to wave her arm, bob her and turn her to the player.
+local function shopkeeper(m: Model, who: string, feet: CFrame)
+	if not Kit.hasMesh(`NPC_{who}`) then
+		return
+	end
+	P(m, Vector3.new(3, 2, 2.4), feet * CFrame.new(0, -1, 0), C.WoodDark, { name = "NpcStep" })
+	local spot = P(m, Vector3.new(0.4, 0.4, 0.4), feet, C.White, { t = 1, decor = true, shadow = false, name = "NpcSpot" })
+	spot:SetAttribute("Who", who)
+	Kit.mesh(m, `NPC_{who}`, feet)
+	Kit.mesh(m, `NPC_{who}_Arm`, feet * CFrame.new(1, 2, 0)) -- (the shoulder: Blender (-1, 0, 2), the import turns X)
+end
+
 function Kit.shopStall(parent: Instance, cf: CFrame): Model
 	local m = M(parent, "ShopStall")
 	local pinkBody, cream = hex("ff8fb8"), hex("fffaf0")
@@ -1206,6 +1220,7 @@ function Kit.shopStall(parent: Instance, cf: CFrame): Model
 	-- a ginger shop cat on the counter
 	P(m, Vector3.new(1.8, 1.6, 1.4), cf * CFrame.new(-4.6, 5.1, -3.6), C.Orange)
 	pad(m, cf * CFrame.new(0, 0, -9.5), 7, hex("ff5fa2"))
+	shopkeeper(m, "Shop", cf * CFrame.new(1.5, 2.6, -0.8))
 	return m
 end
 
@@ -1228,6 +1243,7 @@ function Kit.sellBooth(parent: Instance, cf: CFrame): Model
 	scalloped(m, cf * CFrame.new(0, 9.4, -1.2), 11, 7.4, hex("2fbf5a"), hex("fff6c2"))
 	P(m, Vector3.new(8, 2.6, 0.6), cf * CFrame.new(0, 12.3, -3.6), hex("2fbf5a"), { name = "SignBoard" })
 	pad(m, cf * CFrame.new(0, 0, -8), 6, hex("2fbf5a"))
+	shopkeeper(m, "Sell", cf * CFrame.new(-0.6, 2.6, -0.4))
 	return m
 end
 

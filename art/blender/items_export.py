@@ -35,6 +35,7 @@ kit.RES = float(args[1]) if len(args) > 1 else 0.5
 
 import crates  # noqa: E402
 import crates_v2  # noqa: E402
+import npcs  # noqa: E402
 import items  # noqa: E402
 import shoes  # noqa: E402
 import treats  # noqa: E402
@@ -61,6 +62,9 @@ def family_jobs(family):
         jobs += [(f"Shoe_{k}", lambda k=k: shoes.shoe(k), 3000, None) for k in shoes.KEYS]
         jobs += [(f"Treat_{n}", lambda n=n: treats.treat(n), 3000, None) for n in treats.NAMES]
         return jobs
+    if family == "NPCs":
+        # the plaza shopkeepers (developer 2026-11-15: style A chibi): body + waving arm (origin at the shoulder)
+        return [(f"NPC_{w}", w, 3000, None) for w in ("Shop", "Sell")]
     if family == "Crates":
         # X3 (revision 4 item 9, look B): the 7 cat-head chests of crates_v2 (was crates.py's 4 boxes)
         return [(f"Crate_{k}", k, 7000, None) for k in CRATE_TIERS]
@@ -181,6 +185,16 @@ def export_family(family, manifest):
 
     for item_id, build, max_tris, grip in family_jobs(family):
         offset = grip if grip is not None else Vector()
+        if family == "NPCs":
+            m = npcs.build("A", build)
+            bpy.context.view_layer.update()
+            parts = evaluated(m.objects)
+            wave = [bool(o.get("wave")) for o in m.objects]
+            pivot = m.wave_pivot
+            add(item_id, [p for p, w in zip(parts, wave) if not w], offset, max_tris)
+            add(item_id + "_Arm", [p for p, w in zip(parts, wave) if w], pivot, max_tris, {"grip": rbx(pivot)})
+            clear_scene()
+            continue
         if family == "Crates":
             key = build
             closed = crates_v2.crate(CRATE_LOOK, key)

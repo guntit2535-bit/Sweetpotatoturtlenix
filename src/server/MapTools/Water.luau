@@ -14,7 +14,7 @@ local Water = {}
 local TOP = -0.3 -- water surface (the ground's top is 0)
 local DEPTH = 5.6
 local DEEP = Color3.fromHex("2a6f9c")
-local SAND = Color3.fromHex("f3e2b5")
+local SAND = Color3.fromHex("ead9a8") -- MapKit's creek bank sand
 
 local function near(a: Color3, b: Color3): boolean
 	return math.abs(a.R - b.R) + math.abs(a.G - b.G) + math.abs(a.B - b.B) < 0.05
@@ -124,16 +124,17 @@ local function fill(p: BasePart)
 	local mid = TOP - DEPTH / 2
 	if p.Shape == Enum.PartType.Cylinder then
 		local r = p.Size.Y / 2
-		T:FillCylinder(CFrame.new(p.Position.X, -4.6, p.Position.Z), 5, r + 3, Enum.Material.Sand)
+		T:FillCylinder(CFrame.new(p.Position.X, -6, p.Position.Z), 4, r + 3, Enum.Material.Sand) -- below -4: terrain's 4-stud cells would round a higher bed up into a mound
 		local cf = CFrame.new(p.Position.X, mid, p.Position.Z)
-		T:FillCylinder(cf, DEPTH, r, Enum.Material.Air) -- water does not replace solid voxels
-		T:FillCylinder(cf, DEPTH, r, Enum.Material.Water)
+		-- the water reaches 1.5 under the cut edge (hidden by the tiles), so no dry sand ring shows
+		T:FillCylinder(cf, DEPTH, r + 1.5, Enum.Material.Air) -- water does not replace solid voxels
+		T:FillCylinder(cf, DEPTH, r + 1.5, Enum.Material.Water)
 	else
 		local turn = CFrame.Angles(0, yawOf(p), 0)
-		T:FillBlock(CFrame.new(p.Position.X, -4.6, p.Position.Z) * turn, Vector3.new(p.Size.X + 2, 5, p.Size.Z + 6), Enum.Material.Sand)
+		T:FillBlock(CFrame.new(p.Position.X, -6, p.Position.Z) * turn, Vector3.new(p.Size.X + 2, 4, p.Size.Z + 6), Enum.Material.Sand)
 		local cf = CFrame.new(p.Position.X, mid, p.Position.Z) * turn
-		T:FillBlock(cf, Vector3.new(p.Size.X + 0.6, DEPTH, p.Size.Z), Enum.Material.Air)
-		T:FillBlock(cf, Vector3.new(p.Size.X + 0.6, DEPTH, p.Size.Z), Enum.Material.Water)
+		T:FillBlock(cf, Vector3.new(p.Size.X + 0.6, DEPTH, p.Size.Z + 3), Enum.Material.Air)
+		T:FillBlock(cf, Vector3.new(p.Size.X + 0.6, DEPTH, p.Size.Z + 3), Enum.Material.Water)
 	end
 end
 
@@ -190,6 +191,29 @@ function Water.zone(i: number): number
 	return n
 end
 
+-- Redoes the terrain of every trench already made (from the old water parts kept in the backup): clears the cells
+-- above the bed (sand mounds) and fills the water again.
+function Water.refill(): number
+	local T = workspace.Terrain
+	local n = 0
+	for _, p in backupFolder():GetChildren() do
+		if p:IsA("BasePart") and p.Material == Enum.Material.Glass and p.Position.Y < 1.5 then
+			local turn = CFrame.Angles(0, yawOf(p), 0)
+			if p.Shape == Enum.PartType.Cylinder then
+				T:FillCylinder(CFrame.new(p.Position.X, -2, p.Position.Z), 4, p.Size.Y / 2 + 3, Enum.Material.Air)
+			else
+				T:FillBlock(CFrame.new(p.Position.X, -2, p.Position.Z) * turn, Vector3.new(p.Size.X + 2, 4, p.Size.Z + 6), Enum.Material.Air)
+			end
+			fill(p)
+			n += 1
+			if n % 50 == 0 then
+				task.wait()
+			end
+		end
+	end
+	return n
+end
+
 function Water.look()
 	local T = workspace.Terrain
 	T.WaterColor = Color3.fromHex("2fb7f5")
@@ -197,6 +221,7 @@ function Water.look()
 	T.WaterReflectance = 0.5
 	T.WaterWaveSize = 0.08
 	T.WaterWaveSpeed = 6
+	T:SetMaterialColor(Enum.Material.Sand, SAND) -- the trench sides and bed match the banks
 end
 
 return Water

@@ -19,8 +19,10 @@ local function targets(): { BasePart }
 	local map = mapRoot()
 	local out: { BasePart } = {}
 	local function add(p: Instance)
-		if p:IsA("Part") and p.Shape == Enum.PartType.Block and p.Transparency < 1 then
-			table.insert(out, p)
+		-- (a PartOperation is a tile with a creek cut out of it: MapTools/Water)
+		local block = (p:IsA("Part") and p.Shape == Enum.PartType.Block) or p:IsA("PartOperation")
+		if block and (p :: BasePart).Transparency < 1 then
+			table.insert(out, p :: BasePart)
 		end
 	end
 	for _, d in map:GetDescendants() do

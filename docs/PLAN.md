@@ -124,7 +124,7 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
 - [x] X1 Quick fixes (passed 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
 - [x] X2 Rules (passed 2026-11-15): rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
 - [x] X3 ★ Looks (passed 2026-11-15, crates imported): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
-- [ ] X4 ★ Map restyle (client, 2026-11-15, replaces the old X4 detail pass): new look for the decoration (ground, trees, bushes, flowers, rocks, paths, pens, fences), "cute + pixel + LEGO"; 3 Blender looks first; water (11) and the walls (14) are redone inside it
+- [~] X4 ★ Map restyle (client, 2026-11-15; S1-S3 built 2026-11-15, S4 buildings next): new look for the decoration (ground, trees, bushes, flowers, rocks, paths, pens, fences), "cute + pixel + LEGO"; 3 Blender looks first; water (11) and the walls (14) are redone inside it
 
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
@@ -798,3 +798,10 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   0.75-stud voxels (0.5 gave 3.5-4.9k tris a tree). Pen board moved onto the voxel gate's flat area (8.5 up, 1.2
   forward); lamp light at the lantern. BuildMap.lobbyPlants + BuildMap.restyle (lobby plants, pens, zones 1-4 from the
   same random numbers, sky, LEGO) wait for the developer's import; then Water.zone(1-3) and Detail.all() again.
+- 2026-11-15 X4 built in the place (developer imported MapProps, ground image 101282802802193 by the group): lobby
+  plants + pens + zones 1-4 + sky rebuilt with the voxel props (same random numbers: !wild still 36 a zone on 60 spots
+  each), LEGO studs, water again (Water.refill: the sand bed kept below -4 so no mounds, water reaching 1.5 under the
+  cut edges), Detail.all (sprigs are LEGO flowers too; snowy tufts keep their own colour), Pixel.apply on 4,645 ground /
+  road parts (cut tiles included). Studio: swimming in a creek works, 60 fps on the server. Captures in
+  art/preview/mapstyle/ingame_*.jpg. Still old-style (S4 next): houses, shops, stalls, cabins, pavilions, torii, stone
+  lanterns, snowmen, mountains, crystals, barrels / crates, the fountain.

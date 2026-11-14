@@ -122,9 +122,9 @@
 - [ ] **File -> Publish to Roblox** หลังนำเข้าเสร็จ (แมพในไฟล์เปลี่ยนแล้ว: พื้นคอกไม้ + พรม, ร้านค้ากับซุ้มขายกลางแมพ, เอาม้านั่ง เสาไฟ และวงแสงเหลืองออก)
 
 ## แมพใหม่ X4 (2026-11-15)
-- [ ] **อัปโหลดลายพื้นพิกเซล** `art/export/PixelGround.png`: Creator Hub -> Development Items -> Decals (หรือ Asset Manager -> Import -> Images) -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> อัปโหลด -> ส่งเลข id ของรูป (Image id) ให้ Claude
+- [x] **อัปโหลดลายพื้นพิกเซล** (ทำแล้ว 2026-11-15, id 101282802802193) `art/export/PixelGround.png`: Creator Hub -> Development Items -> Decals (หรือ Asset Manager -> Import -> Images) -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> อัปโหลด -> ส่งเลข id ของรูป (Image id) ให้ Claude
 - [ ] **Publish** หลังจาก Claude ทำแมพเสร็จ (น้ำจริงกับกำแพงใหม่แก้ในไฟล์แมพแล้ว)
-- [ ] **นำเข้าของแต่งแมพพิกเซล 31 ชิ้น** (ไฟล์ `art/export/MapProps.fbx`):
+- [x] **นำเข้าของแต่งแมพพิกเซล 31 ชิ้น** (ทำแล้ว 2026-11-15) (ไฟล์ `art/export/MapProps.fbx`):
   1. Explorer -> ReplicatedStorage -> ItemModels -> คลิกขวา -> Insert Object -> Folder -> ตั้งชื่อ `MapProps`
   2. แท็บ Home -> Import 3D -> เลือก `art/export/MapProps.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import
   3. ลากชิ้นที่ได้ทั้ง 31 ชิ้น (Tree_1 ... Lamp) ใส่โฟลเดอร์ `MapProps` (ชื่อต้องตรง ห้ามแก้ชื่อ)

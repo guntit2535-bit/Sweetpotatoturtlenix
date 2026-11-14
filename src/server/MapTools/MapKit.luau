@@ -1314,7 +1314,9 @@ function Kit.tuft(parent: Instance, cf: CFrame, rng: Random, color: Color3?)
 	-- X4: a pixel tuft (Tuft_1-2); the same draws as the blades (6 each)
 	local n = rng:NextInteger(4, 6)
 	local id = if n % 2 == 0 then "Tuft_1" else "Tuft_2"
-	if Kit.hasMesh(id) then
+	-- (the pixel tufts are green: a snowy tuft keeps its own colour as blades)
+	local green = base.G > base.R + 0.1 and base.G > base.B + 0.1
+	if green and Kit.hasMesh(id) then
 		for _ = 1, n * 6 do
 			rng:NextNumber()
 		end
@@ -1488,8 +1490,12 @@ function Kit.sprigs(parent: Instance, cf: CFrame, rng: Random)
 	for _ = 1, rng:NextInteger(2, 4) do
 		local h = rng:NextNumber(1.2, 2.1)
 		local c = cf * CFrame.new(rng:NextNumber(-1, 1), 0, rng:NextNumber(-1, 1))
-		P(m, Vector3.new(0.18, h, 0.18), c * CFrame.new(0, h / 2, 0), C.LeafDark, decor())
-		B(m, 0.8, (c * CFrame.new(0, h + 0.15, 0)).Position, pick(rng, Kit.FlowerColors), decor())
+		-- X4: look A's LEGO flower (same draws: the colour pick below)
+		local k = rng:NextInteger(1, #Kit.FlowerColors)
+		if not Kit.mesh(m, FLOWER_IDS[k], c * CFrame.Angles(0, h * 3, 0), 0.9 + h * 0.2) then
+			P(m, Vector3.new(0.18, h, 0.18), c * CFrame.new(0, h / 2, 0), C.LeafDark, decor())
+			B(m, 0.8, (c * CFrame.new(0, h + 0.15, 0)).Position, Kit.FlowerColors[k], decor())
+		end
 	end
 end
 

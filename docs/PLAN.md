@@ -825,3 +825,8 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   and 8 deep, tiles cut in axis-aligned runs, a shore ring), two shore looks prototyped on two Backyard creeks: A sand
   plates, B a raised two-grey stone border (art/preview/mapstyle/water_A_sand.jpg, water_B_stone.jpg). Waiting for the
   pick; meanwhile the place has fresh ground tiles and only those two creeks have water.
+- 2026-11-15 developer picked B (stone shore). Rebuilt: WaterGrid.reset (fresh tiles, terrain cleared), zones 1-4,
+  WaterGrid.zone(1-4, "stone"): 13 / 18 / 48 creeks and pools of water + 47 frozen ones as Glacier ice flush with the
+  ground (snow banks and bed removed), all on the 4-stud grid with a stone border; Detail.all, Lego.apply, Pixel.apply
+  (10,981 parts: the shore stones get the pixel + stud look). Play: !wild 36 a zone, 60 fps, swimming works. Captures
+  art/preview/mapstyle/grid_*.jpg. MapTools/Water (the first design) is no longer used.

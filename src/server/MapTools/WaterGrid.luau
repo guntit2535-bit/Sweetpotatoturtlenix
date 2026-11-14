@@ -24,6 +24,8 @@ local BED = -12
 local DEEP = Color3.fromHex("2a6f9c")
 local BANK = Color3.fromHex("ead9a8")
 local SHORE_SAND = Color3.fromHex("f0dfae")
+local SNOW = Color3.fromHex("f7fbff") -- MapKit's snow banks and the frozen bed (C.Snow, C.SnowShade)
+local SNOW_SHADE = Color3.fromHex("dcecfa")
 local STONES = { Color3.fromHex("b9c1cf"), Color3.fromHex("a3adbd") }
 
 local function near(a: Color3, b: Color3): boolean
@@ -193,11 +195,13 @@ local function shore(parent: Instance, ring: { [string]: { number } }, style: st
 	end
 end
 
--- One creek / waterfall pool. style "sand" | "stone"
+-- One creek / waterfall pool (frozen ones become ice). style "sand" | "stone" (developer 2026-11-15: "B ขอบหิน")
 function WaterGrid.model(model: Model, style: string): boolean
-	if model:GetAttribute("Frozen") == true or model:GetAttribute("GridWater") == true then
+	if model:GetAttribute("GridWater") == true then
 		return false
 	end
+	-- Snow Mountain's frozen creeks: the same grid, solid ice flush with the ground instead of water
+	local frozen = model:GetAttribute("Frozen") == true
 	local list = surfaces(model)
 	if #list == 0 then
 		return false
@@ -229,7 +233,7 @@ function WaterGrid.model(model: Model, style: string): boolean
 		T:FillBlock(cf, size, Enum.Material.Sand)
 		cf, size = box(c[1], c[2], WATER_BOTTOM, 0)
 		T:FillBlock(cf, size, Enum.Material.Air) -- water does not replace solid voxels
-		T:FillBlock(cf, size, Enum.Material.Water)
+		T:FillBlock(cf, size, if frozen then Enum.Material.Glacier else Enum.Material.Water)
 	end
 	shore(model, ring, style)
 	-- the old water and its edges go to the backup (the bridge, stones, reeds and lily pads stay)
@@ -238,7 +242,7 @@ function WaterGrid.model(model: Model, style: string): boolean
 		if p:IsA("BasePart") and p.Parent and p.Parent.Name ~= "Shore" then
 			-- the sand bank strips and the pools' round sand rims (flat cylinders)
 			local flat = p:IsA("Part") and (p.Size.Y < 0.5 or (p.Shape == Enum.PartType.Cylinder and p.Size.X < 0.5))
-			local bank = flat and near(p.Color, BANK)
+			local bank = flat and (near(p.Color, BANK) or (frozen and (near(p.Color, SNOW) or near(p.Color, SNOW_SHADE))))
 			if table.find(list, p :: any) or near(p.Color, DEEP) or bank or p.Name == "Flow" then
 				p.Parent = backup
 			end
@@ -284,6 +288,7 @@ function WaterGrid.look()
 	T.WaterWaveSize = 0.05
 	T.WaterWaveSpeed = 6
 	T:SetMaterialColor(Enum.Material.Sand, BANK)
+	T:SetMaterialColor(Enum.Material.Glacier, Color3.fromHex("a9e4ff")) -- the frozen creeks
 end
 
 return WaterGrid

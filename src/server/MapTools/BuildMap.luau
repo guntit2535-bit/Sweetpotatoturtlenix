@@ -229,22 +229,8 @@ function Build.lobby()
 	Kit.fountain(f, CFrame.new(0, 0.6, 0), 1.5)
 	-- pens between the roads
 	Build.pens(f)
-	-- safe-zone edge: a glowing ring with light posts
-	local edge = subFolder(f, "SafeEdge")
-	local r = World.LobbyRadius
-	local segs = math.ceil(TAU * r / 8)
-	for s = 0, segs - 1 do
-		local deg = (s + 0.5) * 360 / segs
-		Kit.part(edge, Vector3.new(TAU * r / segs + 0.2, 0.3, 1.4), polar(deg, r, 0.15), C.Yellow, { mat = Enum.Material.Neon, decor = true, shadow = false })
-	end
-	for s = 0, 23 do
-		local deg = s * 15
-		if roadDistance(deg, r) > 14 then
-			local cf = polar(deg, r + 1.5)
-			Kit.part(edge, Vector3.new(1.4, 3.4, 1.4), cf * CFrame.new(0, 1.7, 0), C.White)
-			Kit.part(edge, Vector3.new(1.6, 1.2, 1.6), cf * CFrame.new(0, 4, 0), C.Lamp, { mat = Enum.Material.Neon, decor = true })
-		end
-	end
+	-- X1 (revision 4 item 15, 2026-11-14): no glowing yellow ring and light posts at the safe-zone edge any more
+	-- (Build.removeSafeEdge() takes them out of a built map)
 	-- trees, flowers and benches
 	for i = 1, World.Pens.Count do
 		local deg = (i - 0.5) * 360 / World.Pens.Count
@@ -841,6 +827,20 @@ function Build.all()
 	end
 	Build.sky()
 	require(script.Parent.Lego).apply() -- revision 3: LEGO studs on the ground, paths and trees
+end
+
+-- X1 (revision 4 item 15): removes the old safe-zone edge (yellow ring + light posts) from a built map.
+function Build.removeSafeEdge(): number
+	local map = workspace:FindFirstChild("Map")
+	local lobby = map and map:FindFirstChild("Lobby")
+	local edge = lobby and lobby:FindFirstChild("SafeEdge")
+	if not edge then
+		return 0
+	end
+	local n = #edge:GetChildren()
+	edge:Destroy()
+	print(`[Sweetpotato] safe-zone edge removed ({n} parts)`)
+	return n
 end
 
 return Build

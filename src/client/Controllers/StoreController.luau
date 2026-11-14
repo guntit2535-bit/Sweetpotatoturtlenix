@@ -78,6 +78,9 @@ local function drawRobux(list: ScrollingFrame)
 		order += 1
 		local name, key = p[1], p[2]
 		local id = (Config.Passes :: any)[key].Id
+		if (Config.Passes :: any)[key].Sold == false then
+			continue -- X1 (revision 4 item 23): not sold any more
+		end
 		if id ~= 0 then
 			price("pass", id) -- also loads the icon of an owned pass
 		end

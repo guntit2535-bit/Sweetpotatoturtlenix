@@ -48,6 +48,9 @@ check(Bonus.easy(l), "Catnip active")
 local w = Bonus.ctx()
 check(Bonus.walk(0, w) == Config.Walk.Base, "walk base")
 w.shoes = 1
+local shoesOn = Config.Shoes.Enabled
+check(shoesOn or Bonus.walk(0, w) == Config.Walk.Base, "shoes off (X1): a pair adds nothing")
+;(Config.Shoes :: any).Enabled = true -- the rules below are still checked with shoes on
 check(near(Bonus.walk(0, w), Config.Walk.Base + Config.Shoes.List[1].Speed), "shoes add speed")
 w.passes.Speed = true
 w.speedPassOn = false
@@ -57,6 +60,7 @@ check(near(Bonus.walk(0, w), Config.Walk.Base + 2 * Config.Shoes.List[1].Speed),
 w.shoes = 8
 w.likeBuff = true
 check(Bonus.walk(1e12, w) == Config.Walk.Cap, "capped")
+;(Config.Shoes :: any).Enabled = shoesOn
 
 -- W6: training boost steps: x2 each, for ever, on top of rebirths and the Strength pass
 local b = Bonus.ctx()

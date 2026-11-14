@@ -96,6 +96,9 @@ local function hook(player: Player)
 end
 
 function CarryIconController.Start(_self: any)
+	if not Config.Carry.ShowIcon then
+		return -- X1 (revision 4 item 1): off; the carried cat over the head is enough
+	end
 	for _, p in Players:GetPlayers() do
 		hook(p)
 	end

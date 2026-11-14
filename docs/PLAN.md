@@ -121,7 +121,7 @@ shop / pen, economy, world.
 ## Phase 6 — revision list 4 (developer, 2026-11-14; table `docs/revision4_plan.md`)
 Developer's answers: build first, price talked later; item 23 = only the three x2 passes + the HUD x2 button;
 item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line to the cat and home.
-- [ ] X1 Quick fixes: carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
+- [~] X1 Quick fixes (built + checked in Studio 2026-11-14): carry icon off (1), bigger stats icons (5), Secret timer (7), shoes off (10), yellow ring off (15), cat label name + kg in tier colour (17), codes window (19), Rebirth big on the right (20), treadmill ring under it x2 (22), x2 passes + button off (23)
 - [ ] X2 Rules: rebirth keeps levels (6), x2 wild cats (11), put-in-pen button (16), easier bat + baseball swing (21), economy re-sim
 - [ ] X3 ★ Looks (renders / mockups first): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
 - [ ] X4 ★ Map: Terrain water ~6 studs deep (11), walls clear of gate pillars + detail pass (14)
@@ -145,6 +145,9 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   All 400 cat models stay in milestone 2 (2.21). Order only: the client's scope is unchanged.
 
 ## Decisions to review
+- 2026-11-14 X1: players who already own an x2 pass keep its effect (they paid for it); the passes are only no longer
+  sold. The weights ring keeps its size (item 22 named the treadmill only). Rebirth sits under the event pills on
+  phones (above the jump button), mid-right on PC.
 - W3 (2026-11-13): the left buttons became a 2-wide grid (Shop | x2 Speed, My Cats | Trade, Rebirth | Rewards) at
   70% size, so Rebirth and Rewards sit middle left without a taller column; the right-hand Strength panel is gone
   (Strength now big at the bottom left with Speed and money; the weights / treadmill levels stay on their Upgrade
@@ -729,3 +732,12 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
 - 2026-11-14 developer: revision list 4 (23 items, 13 pictures + a video; the "yellow line" in the video is the lobby's
   glowing safe-zone ring). Plan in docs/revision4_plan.md, phase 6 (X1-X4). Answers: build first, price later; item 23
   only the three x2 passes; item 6 rebirth keeps the training levels; item 4 train first + a guide line.
+- 2026-11-14 X1 built: no cat icon over carriers (Config.Carry.ShowIcon), stats icons 52 -> 72 px (rows 62), two event
+  pills (Mythical and Secret, each its own countdown), shoes off (Config.Shoes.Enabled = false; rebirth texts without
+  shoes), the safe-zone yellow ring and its posts removed (BuildMap.removeSafeEdge, run in the place: 150 parts),
+  cat label "Name · kg" in the tier colour, codes row without the picture square, Rebirth a big button on the right
+  (Hud.rightButton; glows when a rebirth is ready; the left grid is 2 x 2 now), the treadmill's green ring on the ground
+  under it at radius 7.2 (Config.Gym.TreadRingRadius), x2 Speed / Cash / Strength not sold (Config.Passes.*.Sold =
+  false; no HUD x2 button; owners keep the effect). Also: the tutorial's edge arrow showed on top of open windows (now hidden
+  while one is open) and moves to 0.25 of the width so it clears the Rebirth button. Checked in Studio (PC view):
+  HUD, labels, Codes tab, Shop tabs (no Shoes) and Robux cards (no x2), Rebirth window, treadmill ring.

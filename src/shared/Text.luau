@@ -73,7 +73,7 @@ Text.Lines = {
 	TierSecret = { en = "Secret", th = "Secret" },
 
 	-- Wild cats, fishing, carrying, bat (tasks 1.10 - 1.14)
-	CatLabel = { en = "{tier} · {kg} kg", th = "{tier} · {kg} กก." },
+	CatLabel = { en = "{name} · {kg} kg", th = "{name} · {kg} กก." }, -- X1 (rev 4 item 17): the tier shows as the colour
 	CatNeed = { en = "Need {kg} Strength", th = "ต้องมีพลัง {kg}" },
 	NeedStrength = { en = "You need {kg} Strength for this cat. Lift weights!", th = "ต้องมีพลัง {kg} ถึงจะตกแมวตัวนี้ได้ ไปยกเวทก่อนนะ!" },
 	FishNoCat = { en = "No cat in range. Walk closer!", th = "ไม่มีแมวในระยะ เดินเข้าไปใกล้อีกหน่อย!" },
@@ -235,11 +235,11 @@ Text.Lines = {
 	RebirthTitle = { en = "Rebirth {n}", th = "รีเบิร์ธครั้งที่ {n}" },
 	RebirthNeed = { en = "Needs {strength} Strength (you have {have})", th = "ต้องมีพลัง {strength} (ตอนนี้ {have})" },
 	RebirthGives = { en = "Money x1.5 and Strength x3.8 forever, every cat x3.6 heavier, new zones open", th = "เงิน x1.5 และพลัง x3.8 ถาวร แมวทุกตัวหนักขึ้น x3.6 และเปิดโซนใหม่" },
-	RebirthResets = { en = "Resets money, Strength, Speed and the weights / treadmill levels. Cats, rods, shoes and pen stay.", th = "รีเซ็ตเงิน พลัง ความเร็ว และเลเวลยกเวท/ลู่วิ่ง แมว เบ็ด รองเท้า และคอกยังอยู่" },
+	RebirthResets = { en = "Resets money, Strength, Speed and the weights / treadmill levels. Cats, rods and pen stay.", th = "รีเซ็ตเงิน พลัง ความเร็ว และเลเวลยกเวท/ลู่วิ่ง แมว เบ็ด และคอกยังอยู่" },
 	RebirthGo = { en = "Rebirth!", th = "รีเบิร์ธ!" },
 	RebirthYouKeep = { en = "You keep", th = "ยังอยู่" },
 	RebirthYouReset = { en = "You reset", th = "รีเซ็ต" },
-	RebirthKeeps = { en = "Your cats, rods, shoes and pen", th = "แมว เบ็ด รองเท้า และคอก" },
+	RebirthKeeps = { en = "Your cats, rods and pen", th = "แมว เบ็ด และคอก" }, -- X1: shoes are gone
 	RebirthResetsShort = { en = "Money, Strength, Speed, weights and treadmill levels", th = "เงิน พลัง ความเร็ว และเลเวลยกเวท / ลู่วิ่ง" },
 	RebirthStep = { en = "Rebirth {from} -> {to}", th = "รีเบิร์ธ {from} -> {to}" },
 	RebirthChipMoney = { en = "Money x{m}", th = "เงิน x{m}" },

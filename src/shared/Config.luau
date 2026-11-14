@@ -146,6 +146,7 @@ Config.TreadmillFx = {
 -- LookEvery weights levels (dumbbell > barbell > bench > machine > giant barbell).
 Config.Gym = {
 	StandRadius = 3.6,
+	TreadRingRadius = 7.2, -- X1 (revision 4 item 22): the treadmill's green ring, on the ground under it, x2
 	RingSegments = 24, -- W3: the green ring on your own training spots (client decoration)
 	LookEvery = 5,
 	UpgradeRate = { maxCalls = 3, window = 1 },
@@ -227,6 +228,7 @@ Config.Carry = {
 	MaxScale = 1.0, -- ... and never bigger than this model scale
 	DeliverMargin = 4, -- a carried cat goes in on the pen's floor or this close to its fence (CarryService; was a 22-stud radius)
 	CheckEvery = 0.25,
+	ShowIcon = false, -- X1 (revision 4 item 1): no floating cat icon over carriers (CarryIconController)
 	DroppedSeconds = 60, -- a knocked-loose cat nobody catches goes back into hiding (blueprint §4)
 }
 Config.Bat = {
@@ -339,9 +341,12 @@ Config.Passes = {
 		Mode = "pass" :: "pass" | "timed",
 		TimedMinutes = 15, -- used only when Mode = "timed"
 		PriceRobux = 0, -- 0 = not decided; the client confirms every Robux price
+		Sold = false,
 	},
-	Cash2x = { Id = 2075044202 },
-	Strength2x = { Id = 2075884214 },
+	-- X1 (revision 4 item 23, developer 2026-11-14 "too strong"): the three x2 passes are no longer sold (Sold = false:
+	-- not in the store, no HUD x2 button). A player who already owns one keeps its effect (PassService), as paid for.
+	Cash2x = { Id = 2075044202, Sold = false },
+	Strength2x = { Id = 2075884214, Sold = false },
 	Lucky = { Id = 2075734209 }, -- rare finds x2 (luck)
 	VIP = { Id = 2075422198, Money = 0.10 }, -- VIP tag + 10% money
 }
@@ -390,10 +395,10 @@ Config.Products = {
 	ReceiptsKept = 100,
 }
 
--- CLIENT PENDING: keep the 8 shoes next to the treadmill (both add speed), or drop the shoes.
+-- Client answered 2026-11-14 (revision 4 item 10): drop the shoes. The list stays for old saves (Shoes field kept).
 -- Default until the client answers: keep them (blueprint §11). Each pair adds walk speed (studs/s).
 Config.Shoes = {
-	Enabled = true,
+	Enabled = false, -- X1 (revision 4 item 10, 2026-11-14): the client does not want shoes (tab, items and speed off)
 	List = {
 		{ Key = "Sneakers", Cost = 1500, Speed = 2 },
 		{ Key = "SportShoes", Cost = 6000, Speed = 4 },

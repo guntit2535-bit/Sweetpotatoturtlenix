@@ -1,5 +1,5 @@
 --!strict
--- Labels over wild cats (task 1.10): "Rare · 32 kg" in the tier colour, and "Need 50 Strength" in red when
+-- Labels over wild cats (task 1.10): "Ginger Tabby · 32 kg" in the tier colour (X1: the name, no tier word), and "Need 50 Strength" in red when
 -- this player is not strong enough yet. Drawn on this client in its language; only within
 -- Config.WildCats.LabelRange.
 
@@ -9,6 +9,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Shared = ReplicatedStorage:WaitForChild("Shared")
 local CatRules = require(Shared:WaitForChild("CatRules"))
+local Cats = require(Shared:WaitForChild("Cats"))
 local Config = require(Shared:WaitForChild("Config"))
 local Format = require(Shared:WaitForChild("Format"))
 local Lang = require(script.Parent.Parent.Lang)
@@ -31,7 +32,9 @@ local function update(m: Model, gui: BillboardGui)
 	local t = Config.Tiers[tier]
 	local top = gui:FindFirstChild("Top") :: TextLabel
 	local need = gui:FindFirstChild("Need") :: TextLabel
-	top.Text = Lang.text("CatLabel", { tier = Lang.text("Tier" .. t.Key), kg = Format.money(kg) })
+	local kind = m:GetAttribute("Kind")
+	local design = if type(kind) == "string" then Cats.ById[kind] else nil
+	top.Text = Lang.text("CatLabel", { name = if design then design.Name else "?", kg = Format.money(kg) })
 	top.TextColor3 = Color3.fromHex(t.Color):Lerp(Color3.new(1, 1, 1), 0.15)
 	local strength = me:GetAttribute("Strength")
 	local tooHeavy = type(strength) == "number" and strength < kg
@@ -50,7 +53,7 @@ local function add(inst: Instance)
 	local gui = Instance.new("BillboardGui")
 	gui.Name = "CatTag"
 	gui.Adornee = root
-	gui.Size = UDim2.fromOffset(200, 54)
+	gui.Size = UDim2.fromOffset(260, 54)
 	gui.StudsOffsetWorldSpace = Vector3.new(0, root.Size.Y * 0.75 + 1.5, 0)
 	gui.MaxDistance = Config.WildCats.LabelRange
 	gui.LightInfluence = 0

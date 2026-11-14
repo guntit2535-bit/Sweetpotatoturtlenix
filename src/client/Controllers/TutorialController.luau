@@ -403,7 +403,7 @@ local function update()
 			-- 2026-11-13: never on top of the bubble at the bottom (it covered it when the target was behind you):
 			-- in the lower half it moves out to the left or right side, still turned toward the target
 			if banner.Visible and p.Y > size.Y * 0.5 then
-				p = Vector2.new(c2.X + (if v.X >= 0 then 1 else -1) * size.X * 0.36, size.Y * 0.5)
+				p = Vector2.new(c2.X + (if v.X >= 0 then 1 else -1) * size.X * 0.25, size.Y * 0.5) -- X1: 0.25, clear of the Rebirth button
 			end
 			edge.Position = UDim2.fromOffset(p.X, p.Y)
 			edge.Rotation = math.deg(math.atan2(v.Y, v.X))
@@ -470,6 +470,13 @@ local function update()
 			glow.Visible = true
 		end
 	else
+		hand.Visible = false
+		glow.Visible = false
+	end
+	-- 2026-11-14: nothing over an open window (the edge arrow floated on top of the Rewards window)
+	if Kit.anyWindowOpen() then
+		edge.Visible = false
+		edgeDist.Visible = false
 		hand.Visible = false
 		glow.Visible = false
 	end

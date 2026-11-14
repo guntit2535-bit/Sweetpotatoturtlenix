@@ -126,8 +126,9 @@ local function redraw()
 		local f = row(1, Lang.text("TabCodes"), "", C.sky)
 		local box = Instance.new("TextBox")
 		box.Name = "Code"
-		box.Size = UDim2.new(1, -220, 0, 34)
-		box.Position = UDim2.fromOffset(32, 24)
+		-- X1 (revision 4 item 19): the box fills the row left of the button; no picture square behind it
+		box.Size = UDim2.new(1, -200, 0, 46)
+		box.Position = UDim2.new(0, 16, 0.5, -23)
 		box.BackgroundColor3 = C.white
 		box.Font = Kit.Font
 		box.TextSize = 20
@@ -139,6 +140,8 @@ local function redraw()
 		Kit.stroke(box, 2, nil, true)
 		;(f:FindFirstChild("Name") :: TextLabel).Visible = false
 		;(f:FindFirstChild("InfoPill") :: Frame).Visible = false
+		;(f:FindFirstChild("Picture") :: Frame).Visible = false
+		box.TextSize = 24
 		button(f, Lang.text("CodeRedeem"), C.green, function()
 			codeRemote:FireServer(box.Text)
 		end)

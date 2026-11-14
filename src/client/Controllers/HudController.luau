@@ -29,13 +29,14 @@ local HudController = {}
 local C = Kit.Colors
 local me = Players.LocalPlayer
 
-local STAT_H = 52 -- W3: one bottom-left stat line (icon size and text height)
+local STAT_H = 52 -- W3: one bottom-left stat line (text height)
+local STAT_ROW = 62 -- X1 (revision 4 item 5): rows spaced for the bigger icons
+local STAT_ICON = 72 -- X1: icon size (was 52: too small to read on a phone)
 local strengthValue: TextLabel
 local speedLabel: TextLabel
 local moneyLabel: TextLabel
 local incomeLabel: TextLabel
-local eventFrame: Frame
-local eventLabel: TextLabel
+local eventPills: { [string]: { frame: Frame, label: TextLabel } } = {} -- X1 (revision 4 item 7): Mythical + Secret
 
 local function num(name: string): number
 	local v = me:GetAttribute(name)
@@ -88,26 +89,23 @@ local function refresh()
 	incomeLabel.Text = Lang.text("IncomeRate", { money = Format.money(num("Income")) })
 end
 
-local function eventText()
+local EVENT_LIVE = { Mythical = Color3.fromHex("ff5fa2"), Secret = Color3.fromHex("18c9b9") }
+local EVENT_WAIT = { Mythical = Color3.fromHex("6c4fc4"), Secret = Color3.fromHex("146f78") }
+
+-- X1 (revision 4 item 7): each event has its own pill: "Secret in 32:10", or "Secret cat out! 2:41" while it is on
+local function eventText(which: string): (string?, Color3)
 	local now = workspace:GetServerTimeNow()
 	local live = workspace:GetAttribute("LiveEvent")
-	if type(live) == "string" then
+	if live == which then
 		local ends = workspace:GetAttribute("LiveEventEnds")
 		local left = if type(ends) == "number" then ends - now else 0
-		eventFrame.BackgroundColor3 = if live == "Secret" then Color3.fromHex("18c9b9") else Color3.fromHex("ff5fa2")
-		return Lang.text("EventLive", { event = Lang.text("Event" .. live), time = Format.clock(math.max(0, left)) })
+		return Lang.text("EventLive", { event = Lang.text("Event" .. which), time = Format.clock(math.max(0, left)) }), EVENT_LIVE[which]
 	end
-	local m = workspace:GetAttribute("NextMythicalAt")
-	local s = workspace:GetAttribute("NextSecretAt")
-	if type(m) ~= "number" and type(s) ~= "number" then
-		return nil
+	local at = workspace:GetAttribute(`Next{which}At`)
+	if type(at) ~= "number" then
+		return nil, EVENT_WAIT[which]
 	end
-	local which, at = "Mythical", (m :: number?) or math.huge
-	if type(s) == "number" and s < at then
-		which, at = "Secret", s
-	end
-	eventFrame.BackgroundColor3 = Color3.fromHex("6c4fc4")
-	return Lang.text("EventNext", { event = Lang.text("Event" .. which), time = Format.clock(math.max(0, at - now)) })
+	return Lang.text("EventNext", { event = Lang.text("Event" .. which), time = Format.clock(math.max(0, at - now)) }), EVENT_WAIT[which]
 end
 
 local function build()
@@ -116,31 +114,35 @@ local function build()
 		ToastController.show("ComingSoon", nil, "info")
 	end
 	Hud.leftButton("Shop", "ShopButton", C.coral, 1, ShopController.toggle)
-	local speed = Hud.leftButton("Speed2x", "Speed2xButton", C.sky, 2, StoreController.speedButton)
-	local holder = speed.Parent :: Frame
-	local glow = Instance.new("UIStroke")
-	glow.Thickness = 5
-	glow.Color = C.yellow
-	glow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-	glow.Parent = holder:FindFirstChild("Lip")
-	RunService.RenderStepped:Connect(function()
-		if me:GetAttribute("PassSpeed") == true then
-			glow.Transparency = 1
-		else
-			glow.Transparency = 0.35 + 0.35 * math.sin(os.clock() * 3)
+	-- X1 (revision 4 item 23): the x2 Speed button only while the pass is sold
+	local speed = if Config.Passes.Speed2x.Sold ~= false then Hud.leftButton("Speed2x", "Speed2xButton", C.sky, 2, StoreController.speedButton) else nil
+	if speed then
+		local button: TextButton = speed
+		local holder = button.Parent :: Frame
+		local glow = Instance.new("UIStroke")
+		glow.Thickness = 5
+		glow.Color = C.yellow
+		glow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+		glow.Parent = holder:FindFirstChild("Lip")
+		RunService.RenderStepped:Connect(function()
+			if me:GetAttribute("PassSpeed") == true then
+				glow.Transparency = 1
+			else
+				glow.Transparency = 0.35 + 0.35 * math.sin(os.clock() * 3)
+			end
+		end)
+		local function speedText()
+			if me:GetAttribute("PassSpeed") == true then
+				local d = require(script.Parent.Parent.PlayerData).get()
+				Kit.setButtonText(button, Lang.text(if d and d.SpeedPassOn == false then "SpeedOff" else "SpeedOn"))
+				Kit.setButtonColor(button, if d and d.SpeedPassOn == false then C.grey else C.green)
+			end
 		end
-	end)
-	local function speedText()
-		if me:GetAttribute("PassSpeed") == true then
-			local d = require(script.Parent.Parent.PlayerData).get()
-			Kit.setButtonText(speed, Lang.text(if d and d.SpeedPassOn == false then "SpeedOff" else "SpeedOn"))
-			Kit.setButtonColor(speed, if d and d.SpeedPassOn == false then C.grey else C.green)
-		end
+		me:GetAttributeChangedSignal("PassSpeed"):Connect(speedText)
+		require(script.Parent.Parent.PlayerData).changed:Connect(speedText)
+		Lang.changed:Connect(speedText)
+		speedText()
 	end
-	me:GetAttributeChangedSignal("PassSpeed"):Connect(speedText)
-	require(script.Parent.Parent.PlayerData).changed:Connect(speedText)
-	Lang.changed:Connect(speedText)
-	speedText()
 	Hud.leftButton("Trade", "TradeButton", C.purple, 4, TradeController.toggle)
 
 	-- W3 (revision 3 item 10): Strength, Speed and money big at the bottom left, no panels: a big icon and a
@@ -152,7 +154,7 @@ local function build()
 	bl.BackgroundTransparency = 1
 	bl.AnchorPoint = Vector2.new(0, 1)
 	bl.Position = UDim2.new(0, 12, 1, -10)
-	bl.Size = UDim2.fromOffset(320, 3 * STAT_H + 24)
+	bl.Size = UDim2.fromOffset(340, 3 * STAT_ROW + 24)
 	bl.Parent = gui
 	fitScale(bl, 720)
 	Kit.edge(gui, bl, "left") -- hugs the left edge of a phone (revision 3, after W2)
@@ -160,10 +162,10 @@ local function build()
 		local line = Instance.new("Frame")
 		line.Name = name
 		line.BackgroundTransparency = 1
-		line.Size = UDim2.new(1, 0, 0, STAT_H)
-		line.Position = UDim2.fromOffset(0, (row - 1) * STAT_H)
+		line.Size = UDim2.new(1, 0, 0, STAT_ROW)
+		line.Position = UDim2.fromOffset(0, (row - 1) * STAT_ROW)
 		line.Parent = bl
-		local t = Kit.text(line, "Value", UDim2.new(1, -STAT_H - 8, 1, 0), UDim2.fromOffset(STAT_H + 6, 0), STAT_H - 10, true)
+		local t = Kit.text(line, "Value", UDim2.new(1, -STAT_ICON - 6, 1, 0), UDim2.fromOffset(STAT_ICON + 4, 0), STAT_H - 10, true)
 		t.TextXAlignment = Enum.TextXAlignment.Left
 		t.TextColor3 = color
 		t.TextWrapped = false
@@ -174,31 +176,37 @@ local function build()
 		return t
 	end
 	strengthValue = statLine("Strength", 1, Color3.fromHex("ff7a7a"))
-	Kit.icon(bl:FindFirstChild("Strength") :: Instance, "Strength", STAT_H, UDim2.new())
+	local iconAt = UDim2.fromOffset(0, (STAT_ROW - STAT_ICON) / 2) -- centred on the row, a little over its edges
+	Kit.icon(bl:FindFirstChild("Strength") :: Instance, "Strength", STAT_ICON, iconAt)
 	speedLabel = statLine("Speed", 2, Color3.fromHex("8fdcff"))
-	Kit.icon(bl:FindFirstChild("Speed") :: Instance, "Speed", STAT_H, UDim2.new())
+	Kit.icon(bl:FindFirstChild("Speed") :: Instance, "Speed", STAT_ICON, iconAt)
 	moneyLabel = statLine("Money", 3, Color3.fromHex("6dea6d"))
-	coin(bl:FindFirstChild("Money") :: Instance, STAT_H - 6, UDim2.fromOffset(3, 3))
-	incomeLabel = Kit.text(bl, "Income", UDim2.new(1, -STAT_H - 8, 0, 22), UDim2.fromOffset(STAT_H + 8, 3 * STAT_H), 20, true)
+	coin(bl:FindFirstChild("Money") :: Instance, STAT_ICON - 6, iconAt + UDim2.fromOffset(3, 3))
+	incomeLabel = Kit.text(bl, "Income", UDim2.new(1, -STAT_ICON - 6, 0, 22), UDim2.fromOffset(STAT_ICON + 6, 3 * STAT_ROW), 20, true)
 	incomeLabel.TextXAlignment = Enum.TextXAlignment.Left
 	incomeLabel.TextColor3 = Color3.fromHex("b8ffb8")
 
 	-- bottom-right: event countdown (W2: on touch screens top-right under the gear, clear of Roblox's jump button)
 	local touch = game:GetService("UserInputService").TouchEnabled
-	eventFrame = if touch
-		then pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 0, 92), Vector2.new(1, 0))
-		else pill(gui, "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 1, -12), Vector2.new(1, 1))
-	eventFrame.BackgroundColor3 = Color3.fromHex("6c4fc4")
-	fitScale(eventFrame, 720)
-	if touch then
-		Kit.edge(gui, eventFrame, "right")
+	-- X1: two pills stacked, Mythical then Secret (touch: under the gear going down; PC: bottom right going up)
+	for i, which in { "Mythical", "Secret" } do
+		local step = (i - 1) * 52 * Kit.scaleFor(720, 0.6) -- the pills shrink on small screens (fitScale), so the gap does too
+		local f = if touch
+			then pill(gui, which .. "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 0, 92 + step), Vector2.new(1, 0))
+			else pill(gui, which .. "Event", UDim2.fromOffset(250, 44), UDim2.new(1, -12, 1, -12 - (2 - i) * 52 * Kit.scaleFor(720, 0.6)), Vector2.new(1, 1))
+		f.BackgroundColor3 = EVENT_WAIT[which]
+		fitScale(f, 720)
+		if touch then
+			Kit.edge(gui, f, "right")
+		end
+		if (Config.UIIcons :: any).Event > 0 then
+			Kit.icon(f, "Event", 48, UDim2.fromOffset(-14, -6))
+		end
+		local label = Kit.text(f, "Text", UDim2.new(1, -44, 1, -6), UDim2.fromOffset(34, 3), 22, true)
+		label.TextScaled = true
+		f.Visible = false
+		eventPills[which] = { frame = f, label = label }
 	end
-	if (Config.UIIcons :: any).Event > 0 then
-		Kit.icon(eventFrame, "Event", 48, UDim2.fromOffset(-14, -6))
-	end
-	eventLabel = Kit.text(eventFrame, "Text", UDim2.new(1, -44, 1, -6), UDim2.fromOffset(34, 3), 22, true)
-	eventLabel.TextScaled = true
-	eventFrame.Visible = false
 end
 
 function HudController.Start(_self: any)
@@ -215,10 +223,13 @@ function HudController.Start(_self: any)
 	Lang.changed:Connect(refresh)
 	task.spawn(function()
 		while true do
-			local text = eventText()
-			eventFrame.Visible = text ~= nil
-			if text then
-				eventLabel.Text = text
+			for which, p in eventPills do
+				local text, color = eventText(which)
+				p.frame.Visible = text ~= nil
+				p.frame.BackgroundColor3 = color
+				if text then
+					p.label.Text = text
+				end
 			end
 			task.wait(0.5)
 		end

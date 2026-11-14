@@ -188,18 +188,25 @@ local function refreshRings()
 			continue
 		end
 		local s = stand :: BasePart
+		-- X1 (revision 4 item 22): the treadmill's ring lies on the ground under the whole machine, twice as big
+		local tread = which == "Treadmill"
 		if not ring then
-			ring = makeRing(Config.Gym.StandRadius)
+			ring = makeRing(if tread then Config.Gym.TreadRingRadius else Config.Gym.StandRadius)
 			rings[which] = ring
 		end
-		-- sit on whatever floor is under the spot (the lobby tiles, the treadmill belt)
+		-- sit on whatever floor is under the spot (the lobby tiles; for the treadmill the ground under it, not its belt)
 		local params = RaycastParams.new()
 		params.FilterType = Enum.RaycastFilterType.Exclude
-		params.FilterDescendantsInstances = { ring :: Model, me.Character :: any }
-		local hit = workspace:Raycast(s.Position + Vector3.new(0, 4, 0), Vector3.new(0, -12, 0), params)
+		params.FilterDescendantsInstances = if tread then { ring :: Model, me.Character :: any, model :: any } else { ring :: Model, me.Character :: any }
+		local at = s.Position
+		if tread then
+			local cf = (model :: Model):GetBoundingBox()
+			at = Vector3.new(cf.Position.X, s.Position.Y, cf.Position.Z)
+		end
+		local hit = workspace:Raycast(at + Vector3.new(0, 4, 0), Vector3.new(0, -16, 0), params)
 		local y = if hit then hit.Position.Y else s.Position.Y - s.Size.Y / 2
 		local r = ring :: Model
-		r:PivotTo(CFrame.new(s.Position.X, y + 0.08, s.Position.Z) * CFrame.Angles(0, 0, math.pi / 2))
+		r:PivotTo(CFrame.new(at.X, y + 0.08, at.Z) * CFrame.Angles(0, 0, math.pi / 2))
 		r.Parent = workspace
 	end
 end

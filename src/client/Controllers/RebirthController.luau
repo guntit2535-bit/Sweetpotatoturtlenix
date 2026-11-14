@@ -1,5 +1,5 @@
 --!strict
--- Rebirth on this client (task 2.7): a Rebirth button in the HUD's left column (W3) opens a window with the
+-- Rebirth on this client (task 2.7): a big Rebirth button on the right (X1; was the left column) opens a window with the
 -- Strength needed, what it gives and what it resets; the server checks and does it (Rebirth remote).
 -- R9 (mockup 07): "you keep" / "you reset" cards around a glowing cat, "Rebirth 3 -> 4", bonus chips from
 -- Config.Rebirth, a Strength progress bar and the big button.
@@ -147,10 +147,15 @@ function RebirthController.Start(_self: any)
 		remote:FireServer()
 		window.setOpen(false)
 	end)
-	-- W3 (revision 3 item 13): a button in the HUD's left column (middle left), after Trade
-	open = Hud.leftButton("Rebirth", "RebirthButton", C.purple, 5, function()
+	-- X1 (revision 4 item 20): a big button on the right (was in the left grid, W3); it glows while a rebirth is ready
+	local glow: UIStroke
+	open, glow = Hud.rightButton("Rebirth", "RebirthButton", C.purple, function()
 		refresh()
 		window.setOpen(not window.isOpen())
+	end)
+	game:GetService("RunService").RenderStepped:Connect(function()
+		local n = CatRules.rebirthNeed(num("Rebirths"))
+		glow.Transparency = if n and num("Strength") >= n then 0.2 + 0.4 * math.abs(math.sin(os.clock() * 3)) else 1
 	end)
 	refresh()
 	for _, a in { "Rebirths", "Strength" } do

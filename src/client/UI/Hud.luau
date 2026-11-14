@@ -9,7 +9,7 @@ local Kit = require(script.Parent.Kit)
 
 local Hud = {}
 
-Hud.StatsHeight = 180 -- W2: the bottom-left stats block as drawn (HudController: 3 lines of 52 + the income line)
+Hud.StatsHeight = 210 -- W2: the bottom-left stats block as drawn (HudController: 3 rows of 62 (X1) + the income line)
 
 local column: Frame? = nil
 local labels: { [TextButton]: string } = {}
@@ -20,7 +20,7 @@ local K = 0.7
 local SIZE = Vector2.new(math.floor(104 * K), math.floor(88 * K))
 local GAP = Vector2.new(10, 20) -- the row gap leaves room for the ears
 local PER_ROW = 2
-local ROWS = 3
+local ROWS = 2 -- X1: Shop | My Cats, Trade | Rewards (x2 Speed gone, Rebirth on the right)
 
 local function getColumn(): Frame
 	if column then
@@ -96,6 +96,63 @@ function Hud.leftButton(name: string, textKey: string, color: Color3, order: num
 	labels[face] = textKey
 	face.Activated:Connect(onClick)
 	return face
+end
+
+-- X1 (revision 4 item 20): one big button on the right side (Rebirth): icon on the left, a big label, a glowing
+-- outline the controller can pulse (holder.Glow). Touch screens: just under the two event pills (HudController,
+-- under the Settings gear), above Roblox's jump button; PC: the middle of the right edge.
+Hud.RightSize = Vector2.new(190, 76)
+function Hud.rightButton(name: string, textKey: string, color: Color3, onClick: () -> ()): (TextButton, UIStroke)
+	local gui = Kit.screen("HudRight", 2)
+	gui.ClipToDeviceSafeArea = false
+	local frame = Instance.new("Frame")
+	frame.Name = name .. "Spot"
+	frame.BackgroundTransparency = 1
+	frame.Size = UDim2.fromOffset(Hud.RightSize.X, Hud.RightSize.Y + 6)
+	frame.Parent = gui
+	local scale = Kit.fit(frame, 720, 0.55, Kit.TouchMin)
+	local touch = game:GetService("UserInputService").TouchEnabled
+	local function place()
+		if touch then
+			-- the pills: top 92, 44 tall, 52 apart, scaled (HudController); 12 px below the second
+			frame.AnchorPoint = Vector2.new(1, 0)
+			frame.Position = UDim2.new(1, -Kit.edgeX("right"), 0, 92 + (52 + 44) * Kit.scaleFor(720, 0.6) + 12) -- the pills scale like fitScale
+		else
+			frame.AnchorPoint = Vector2.new(1, 0.5)
+			frame.Position = UDim2.new(1, -Kit.edgeX("right"), 0.5, 0)
+		end
+	end
+	place()
+	task.delay(0.5, place)
+	Kit.insetsChanged:Connect(function()
+		task.defer(place)
+	end)
+	if workspace.CurrentCamera then
+		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+			task.defer(place)
+		end)
+	end
+	local face = Kit.button(frame, name, color, UDim2.fromOffset(Hud.RightSize.X, Hud.RightSize.Y), UDim2.new())
+	local holder = face.Parent :: Frame
+	local glow = Instance.new("UIStroke")
+	glow.Name = "Glow"
+	glow.Thickness = 5
+	glow.Color = Kit.Colors.yellow
+	glow.Transparency = 1
+	glow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	glow.Parent = holder:FindFirstChild("Lip")
+	local icon = 58
+	Kit.icon(face, name, icon, UDim2.new(0, 6, 0.5, -icon / 2))
+	local label = face:FindFirstChild("Label") :: TextLabel
+	label.Size = UDim2.new(1, -icon - 14, 1, -8)
+	label.Position = UDim2.fromOffset(icon + 8, 4)
+	label.TextScaled = true
+	local limit = label:FindFirstChildOfClass("UITextSizeConstraint") or Instance.new("UITextSizeConstraint")
+	limit.MaxTextSize = 30
+	limit.Parent = label
+	Kit.setButtonText(face, Lang.text(textKey))
+	face.Activated:Connect(onClick)
+	return face, glow
 end
 
 return Hud

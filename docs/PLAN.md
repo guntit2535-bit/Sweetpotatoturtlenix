@@ -853,4 +853,5 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   bobs and turns toward a near player. Captures art/preview/npc/ingame_*.jpg. Publish needed.
 - 2026-11-15 developer: "ผ่าน" (NPCs + easy rebirths). Every player reset again (Config.Data.ResetEpoch 1 -> 2: saves
   start over on their next join, receipts kept, new empty leaderboards). Last payment: 4,000 + 200 (revision list 4)
-  + 200 (new map) = 4,400 THB; client page with every system and the latest changes being made.
+  + 200 (new map) = 4,400 THB; client page with every system and the latest changes published: https://claude.ai/artifact/2jWeC54Anw8BwKBnUzt7cz
+  (source build/delivery/index.html + 18 in-game captures in build/delivery/img, not in git). Publish needed for the reset.

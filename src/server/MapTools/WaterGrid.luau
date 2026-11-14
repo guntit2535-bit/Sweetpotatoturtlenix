@@ -248,8 +248,41 @@ function WaterGrid.model(model: Model, style: string): boolean
 			end
 		end
 	end
+	WaterGrid.clearRound(model)
 	model:SetAttribute("GridWater", true)
 	return true
+end
+
+-- Developer 2026-11-15: "เอาก้อนกลมๆตรงน้ำออกทั้งหมด": the round things in and round the water go (the ball stones
+-- and snow lumps on the banks, the foam balls under the falls, the grey stepping stones); lily pads, reeds and the
+-- bridge stay. Returns how many went to the backup.
+function WaterGrid.clearRound(model: Model): number
+	local backup = backupFolder()
+	local n = 0
+	for _, p in model:GetDescendants() do
+		if p:IsA("Part") and p.Parent and p.Parent.Name ~= "Shore" then
+			local ball = p.Shape == Enum.PartType.Ball
+			local h, s = p.Color:ToHSV()
+			local _ = h
+			local step = p.Shape == Enum.PartType.Cylinder and p.Size.X >= 0.4 and p.Size.X <= 0.6 and p.Size.Y <= 3 and s < 0.25
+			if ball or step then
+				p.Parent = backup
+				n += 1
+			end
+		end
+	end
+	return n
+end
+
+function WaterGrid.clearAllRound(): number
+	local n = 0
+	for _, d in workspace.Map:GetDescendants() do
+		if d:IsA("Model") and (d.Name == "Creek" or d.Name == "Waterfall") then
+			n += WaterGrid.clearRound(d)
+		end
+	end
+	print(`[Sweetpotato] WaterGrid: {n} round stones / lumps removed from the water`)
+	return n
 end
 
 function WaterGrid.zone(i: number, style: string): number

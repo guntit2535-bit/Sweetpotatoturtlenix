@@ -830,3 +830,6 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   ground (snow banks and bed removed), all on the 4-stud grid with a stone border; Detail.all, Lego.apply, Pixel.apply
   (10,981 parts: the shore stones get the pixel + stud look). Play: !wild 36 a zone, 60 fps, swimming works. Captures
   art/preview/mapstyle/grid_*.jpg. MapTools/Water (the first design) is no longer used.
+- 2026-11-15 developer: "เอาก้อนกลมๆตรงน้ำออกทั้งหมด". WaterGrid.clearRound / clearAllRound: every ball (bank stones,
+  snow lumps, foam under the falls, lily flowers) and the grey stepping stones in the creek / waterfall models went to
+  the backup (2,356 parts); lily pads, reeds and bridges stay. Grid water now calls it itself.

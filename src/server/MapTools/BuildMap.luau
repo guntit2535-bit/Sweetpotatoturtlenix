@@ -864,6 +864,42 @@ function Build.all()
 	require(script.Parent.Lego).apply() -- revision 3: LEGO studs on the ground, paths and trees
 end
 
+-- X4 (map restyle): rebuilds only the lobby's trees and flower beds (Build.lobby's loop, same random numbers), so the
+-- lobby gets the voxel props without touching the pens, the market or anything else in it.
+function Build.lobbyPlants()
+	local f = mapRoot():FindFirstChild("Lobby") or error("Build.lobbyPlants: Map.Lobby not found")
+	for _, c in f:GetChildren() do
+		if c:IsA("Model") and (c.Name == "Tree" or c.Name == "Flowers") then
+			c:Destroy()
+		end
+	end
+	local rng = Random.new(101)
+	for i = 1, World.Pens.Count do
+		local deg = (i - 0.5) * 360 / World.Pens.Count
+		for _, side in { -1, 1 } do
+			Kit.tree(f, polar(deg + side * 15, 136), rng)
+			Kit.flowers(f, polar(deg + side * World.Pens.FlowerAngle, 128), rng, 5)
+		end
+	end
+	print("[Sweetpotato] lobby trees and flower beds rebuilt")
+end
+
+-- X4 (map restyle): every prop in its new look, the layout and hiding spots kept (each zone is rebuilt from the same
+-- random numbers). Run after the MapProps meshes are imported, then the water and the details again:
+--   local T = game.ServerScriptService.Server.MapTools:Clone()
+--   require(T.BuildMap).restyle(); for i = 1, 3 do require(T.Water).zone(i) end; require(T.Detail).all()
+function Build.restyle()
+	Build.lobbyPlants()
+	Build.pens()
+	for i = 1, 4 do
+		Build.zone(i)
+		task.wait()
+	end
+	Build.sky()
+	require(script.Parent.Lego).apply()
+	print("[Sweetpotato] restyle done: now run Water.zone(1-3) and Detail.all()")
+end
+
 -- X1 (revision 4 item 15): removes the old safe-zone edge (yellow ring + light posts) from a built map.
 function Build.removeSafeEdge(): number
 	local map = workspace:FindFirstChild("Map")

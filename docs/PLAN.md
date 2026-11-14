@@ -793,3 +793,8 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   pools are Terrain water 5.6 deep in trenches cut through the tiles (old water parts in ServerStorage.MapBackup_X4;
   Snow Mountain keeps its ice); walls rebuilt to stop at each gate's side (item 14, checked at a torii and a wood gate).
   The voxel prop kit is being made in Blender (art/blender/voxprops.py).
+- 2026-11-15 X4 S1 voxel kit made (art/blender/voxprops.py, 31 props, 33.6k tris, 63-colour palette; sheet
+  art/preview/mapstyle/voxprops_sheet.png; exported art/export/MapProps.fbx, ItemModelData updated). Trees / pines use
+  0.75-stud voxels (0.5 gave 3.5-4.9k tris a tree). Pen board moved onto the voxel gate's flat area (8.5 up, 1.2
+  forward); lamp light at the lantern. BuildMap.lobbyPlants + BuildMap.restyle (lobby plants, pens, zones 1-4 from the
+  same random numbers, sky, LEGO) wait for the developer's import; then Water.zone(1-3) and Detail.all() again.

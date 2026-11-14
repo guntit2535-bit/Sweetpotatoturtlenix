@@ -1,6 +1,6 @@
 """Game export for R5: blender -b --factory-startup -P art/blender/items_export.py -- [families] [res]
 
-families: comma list of Treadmills, Weights, Dumbbells, Rods, Gear, Crates (default: all); res = kit.RES
+families: comma list of Treadmills, Weights, Dumbbells, Rods, Gear, Crates, MapProps (default: all); res = kit.RES
 (0.5 default: lighter meshes for phones).
 
 Writes art/export/<Family>.fbx (one mesh per item, named by its id, one palette texture per family embedded in
@@ -10,10 +10,12 @@ src/shared/ItemModelData.luau.
 Mesh names (= MeshPart names after the import):
   Treadmill1..25, Weights1..25 (rack + pair), Dumbbell1..25 (one, held), Rod1..25, Bat,
   Shoe_<key> (right shoe; the game mirrors it for the left foot), Treat_<name>,
-  Crate_<key> (body) + Crate_<key>_Lid (opens around manifest.hinge).
+  Crate_<key> (body) + Crate_<key>_Lid (opens around manifest.hinge),
+  map props (X4, voxprops.IDS): Tree_1, Blossom_1, Pine_1, Bush_1, Rock_1, Flower_Pink, Tuft_1, FencePost,
+  FenceRail, PenGate, CatHouse, Lamp ...
   A part that is see-through (crystal / diamond) goes into an extra mesh <id>_Glass (the game makes it
   half transparent).
-Origin of every mesh = the item's origin in Blender (floor centre for gym pieces, crates, treats and shoes;
+Origin of every mesh = the item's origin in Blender (floor centre for gym pieces, crates, treats, shoes and map props;
 the hand grip for rods, the bat and a dumbbell), so the manifest centre places it.
 """
 import json
@@ -36,6 +38,7 @@ import crates_v2  # noqa: E402
 import items  # noqa: E402
 import shoes  # noqa: E402
 import treats  # noqa: E402
+import voxprops  # noqa: E402
 
 OUT = os.path.join(HERE, "..", "export")
 SW, GRID = 8, 16
@@ -61,6 +64,9 @@ def family_jobs(family):
     if family == "Crates":
         # X3 (revision 4 item 9, look B): the 7 cat-head chests of crates_v2 (was crates.py's 4 boxes)
         return [(f"Crate_{k}", k, 7000, None) for k in CRATE_TIERS]
+    if family == "MapProps":
+        # X4 (map restyle, look B voxels + look A LEGO flowers): one merged voxel mesh per prop, origin = foot centre
+        return [(pid, lambda pid=pid: voxprops.prop(pid), 3000, None) for pid in voxprops.IDS]
     raise ValueError(family)
 
 
@@ -244,7 +250,7 @@ def export_family(family, manifest):
 
 
 if __name__ == "__main__":
-    fams = args[0].split(",") if args and args[0] else ["Treadmills", "Weights", "Dumbbells", "Rods", "Gear", "Crates"]
+    fams = args[0].split(",") if args and args[0] else ["Treadmills", "Weights", "Dumbbells", "Rods", "Gear", "Crates", "MapProps"]
     manifest = {}
     for f in fams:
         export_family(f, manifest)

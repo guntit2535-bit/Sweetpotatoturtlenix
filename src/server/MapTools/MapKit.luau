@@ -461,11 +461,16 @@ function Kit.lamp(parent: Instance, cf: CFrame, light: boolean?)
 	if mesh then
 		Kit.blocker(m, Vector3.new(0.8, 9, 0.8), at(cf, 0, 4.5, 0))
 		if light then
+			-- at the lantern block (7.25 up)
+			local spot = Instance.new("Attachment")
+			spot.WorldPosition = (cf * CFrame.new(0, 7.25, 0)).Position
+			spot.Parent = mesh
+			spot.WorldPosition = (cf * CFrame.new(0, 7.25, 0)).Position
 			local pl = Instance.new("PointLight")
 			pl.Range = 16
 			pl.Brightness = 1.2
 			pl.Color = C.Lamp
-			pl.Parent = mesh
+			pl.Parent = spot
 		end
 		return
 	end
@@ -1180,8 +1185,11 @@ function Kit.pen(parent: Instance, index: number, cf: CFrame, w: number, d: numb
 	end
 	if not gateMesh then
 		P(sign, Vector3.new(14, 4.4, 0.8), sc * CFrame.new(0, 9, 0), C.WoodDark)
+		P(sign, Vector3.new(13, 3.6, 0.4), sc * CFrame.new(0, 9, -0.45), C.Wood, { name = "Board" })
+	else
+		-- the voxel gate's flat board area: centre 8.5 up, its face 1 stud in front of the gate's middle
+		P(sign, Vector3.new(13, 3.6, 0.4), sc * CFrame.new(0, 8.5, -1.2), C.Wood, { name = "Board" })
 	end
-	P(sign, Vector3.new(13, 3.6, 0.4), sc * CFrame.new(0, 9, -0.45), C.Wood, { name = "Board" })
 	-- training corner in front of the pen: treadmill on the left, dumbbell rack on the right
 	local tm = M(m, "Treadmill")
 	local tc = cf * CFrame.new(-12, 0, -hd - 8)

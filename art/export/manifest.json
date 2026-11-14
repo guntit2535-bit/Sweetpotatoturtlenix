@@ -18,6 +18,104 @@
   ],
   "triangles": 2998
  },
+ "Blossom_1": {
+  "center": [
+   0.375,
+   8.625,
+   0.375
+  ],
+  "family": "MapProps",
+  "size": [
+   12.75,
+   17.25,
+   12.75
+  ],
+  "triangles": 2002
+ },
+ "Blossom_2": {
+  "center": [
+   0.0,
+   7.875,
+   -0.375
+  ],
+  "family": "MapProps",
+  "size": [
+   12.0,
+   15.75,
+   11.25
+  ],
+  "triangles": 1576
+ },
+ "Bush_1": {
+  "center": [
+   0.0,
+   2.75,
+   0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.0,
+   5.5,
+   6.5
+  ],
+  "triangles": 1080
+ },
+ "Bush_2": {
+  "center": [
+   0.0,
+   2.75,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   8.0,
+   5.5,
+   7.0
+  ],
+  "triangles": 932
+ },
+ "Bush_Berry": {
+  "center": [
+   0.0,
+   2.75,
+   -0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.0,
+   5.5,
+   6.5
+  ],
+  "triangles": 1070
+ },
+ "Bush_Snow": {
+  "center": [
+   0.0,
+   2.75,
+   0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.0,
+   5.5,
+   6.5
+  ],
+  "triangles": 1100
+ },
+ "CatHouse": {
+  "center": [
+   0.0,
+   6.25,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   13.0,
+   12.5,
+   9.0
+  ],
+  "triangles": 2002
+ },
  "Crate_Cosmic": {
   "center": [
    0,
@@ -853,6 +951,272 @@
    1.528
   ],
   "triangles": 2500
+ },
+ "FencePost": {
+  "center": [
+   0.0,
+   2.25,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   1.0,
+   4.5,
+   1.0
+  ],
+  "triangles": 66
+ },
+ "FenceRail": {
+  "center": [
+   0.0,
+   0.3,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   0.4,
+   0.6,
+   1.0
+  ],
+  "triangles": 24
+ },
+ "Flower_Blue": {
+  "center": [
+   0.018,
+   0.66,
+   -0.026
+  ],
+  "family": "MapProps",
+  "size": [
+   1.091,
+   1.32,
+   1.047
+  ],
+  "triangles": 676
+ },
+ "Flower_Lilac": {
+  "center": [
+   0.018,
+   0.66,
+   -0.026
+  ],
+  "family": "MapProps",
+  "size": [
+   1.091,
+   1.32,
+   1.047
+  ],
+  "triangles": 676
+ },
+ "Flower_Orange": {
+  "center": [
+   0.018,
+   0.66,
+   -0.026
+  ],
+  "family": "MapProps",
+  "size": [
+   1.091,
+   1.32,
+   1.047
+  ],
+  "triangles": 676
+ },
+ "Flower_Pink": {
+  "center": [
+   0.018,
+   0.66,
+   -0.026
+  ],
+  "family": "MapProps",
+  "size": [
+   1.091,
+   1.32,
+   1.047
+  ],
+  "triangles": 676
+ },
+ "Flower_Red": {
+  "center": [
+   0.018,
+   0.66,
+   -0.026
+  ],
+  "family": "MapProps",
+  "size": [
+   1.091,
+   1.32,
+   1.047
+  ],
+  "triangles": 676
+ },
+ "Flower_White": {
+  "center": [
+   0.018,
+   0.66,
+   -0.026
+  ],
+  "family": "MapProps",
+  "size": [
+   1.091,
+   1.32,
+   1.047
+  ],
+  "triangles": 676
+ },
+ "Flower_Yellow": {
+  "center": [
+   0.018,
+   0.66,
+   -0.026
+  ],
+  "family": "MapProps",
+  "size": [
+   1.091,
+   1.32,
+   1.047
+  ],
+  "triangles": 676
+ },
+ "Lamp": {
+  "center": [
+   0.0,
+   4.5,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   2.0,
+   9.0,
+   2.0
+  ],
+  "triangles": 234
+ },
+ "PenGate": {
+  "center": [
+   0.0,
+   6.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   15.0,
+   12.0,
+   3.0
+  ],
+  "triangles": 1146
+ },
+ "PineSnow_1": {
+  "center": [
+   0.0,
+   8.625,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   12.0,
+   17.25,
+   12.0
+  ],
+  "triangles": 1810
+ },
+ "PineSnow_2": {
+  "center": [
+   0.0,
+   8.625,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   12.0,
+   17.25,
+   12.0
+  ],
+  "triangles": 1718
+ },
+ "Pine_1": {
+  "center": [
+   0.0,
+   8.625,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   12.0,
+   17.25,
+   12.0
+  ],
+  "triangles": 1800
+ },
+ "Pine_2": {
+  "center": [
+   0.0,
+   8.625,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   12.0,
+   17.25,
+   12.0
+  ],
+  "triangles": 1648
+ },
+ "Rock_1": {
+  "center": [
+   0.0,
+   3.0,
+   -0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.5,
+   6.0,
+   7.0
+  ],
+  "triangles": 1194
+ },
+ "Rock_2": {
+  "center": [
+   0.0,
+   3.0,
+   -0.25
+  ],
+  "family": "MapProps",
+  "size": [
+   8.5,
+   6.0,
+   7.0
+  ],
+  "triangles": 1092
+ },
+ "Rock_Moss": {
+  "center": [
+   0.0,
+   3.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   8.5,
+   6.0,
+   7.5
+  ],
+  "triangles": 1270
+ },
+ "Rock_Snow": {
+  "center": [
+   0.0,
+   3.0,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   8.5,
+   6.0,
+   7.5
+  ],
+  "triangles": 1188
  },
  "Rod1": {
   "center": [
@@ -1832,6 +2196,76 @@
    0.43
   ],
   "triangles": 3000
+ },
+ "Tree_1": {
+  "center": [
+   0.0,
+   8.625,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   13.5,
+   17.25,
+   13.5
+  ],
+  "triangles": 2042
+ },
+ "Tree_2": {
+  "center": [
+   0.0,
+   9.375,
+   -0.0
+  ],
+  "family": "MapProps",
+  "size": [
+   12.0,
+   18.75,
+   12.0
+  ],
+  "triangles": 2156
+ },
+ "Tree_3": {
+  "center": [
+   0.0,
+   7.875,
+   -0.375
+  ],
+  "family": "MapProps",
+  "size": [
+   12.0,
+   15.75,
+   11.25
+  ],
+  "triangles": 1580
+ },
+ "Tuft_1": {
+  "center": [
+   0.0,
+   0.6,
+   -0.2
+  ],
+  "family": "MapProps",
+  "size": [
+   1.6,
+   1.2,
+   1.2
+  ],
+  "triangles": 66
+ },
+ "Tuft_2": {
+  "center": [
+   0.0,
+   0.6,
+   -0.2
+  ],
+  "family": "MapProps",
+  "size": [
+   1.6,
+   1.2,
+   1.2
+  ],
+  "triangles": 86
  },
  "Weights1": {
   "center": [

@@ -32,6 +32,7 @@ local buyRemote: RemoteEvent
 local cratesBuilder: ((list: ScrollingFrame) -> ())? = nil
 local robuxBuilder: ((list: ScrollingFrame) -> ())? = nil
 local jumpNext = false -- show the next thing to buy when a tab is opened
+local robuxOnly = false -- opened from the HUD's Robux shop button: only the Robux tab (the rest is at the stall)
 
 export type CardOptions = ShopCard.Options
 
@@ -172,8 +173,35 @@ function ShopController.setRobuxBuilder(builder: (list: ScrollingFrame) -> ())
 	robuxBuilder = builder
 end
 
+-- 2026-11-15 (developer): the HUD's Robux shop button opens the window with the Robux tab only; the stall on the
+-- plaza opens every tab.
+local function setRobuxOnly(on: boolean)
+	robuxOnly = on
+	for tab, b in tabButtons do
+		(b.Parent :: Frame).Visible = not on or tab == "Robux"
+	end
+	if on then
+		current = "Robux"
+	elseif current == "Robux" then
+		current = "Rods"
+	end
+end
+
+function ShopController.isRobuxOnly(): boolean
+	return robuxOnly and window ~= nil and window.isOpen()
+end
+
+-- Opens every tab (the stall) or only Robux (the HUD button).
+function ShopController.open(onlyRobux: boolean)
+	setRobuxOnly(onlyRobux)
+	jumpNext = true
+	redraw()
+	window.setOpen(true)
+end
+
 -- Opens the window on a tab (the x2 Speed button opens Robux).
 function ShopController.openTab(tab: string)
+	setRobuxOnly(false)
 	current = tab
 	jumpNext = true
 	redraw()
@@ -190,9 +218,7 @@ function ShopController.toggle()
 	if window.isOpen() then
 		window.setOpen(false)
 	else
-		jumpNext = true
-		redraw()
-		window.setOpen(true)
+		ShopController.open(false)
 	end
 end
 

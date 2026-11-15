@@ -112,6 +112,14 @@ local function build(pen: Model)
 			boards[s.stat] = b
 		end
 	end
+	if not boards.Weights or not boards.Treadmill then
+		-- (StreamingEnabled: a training spot has not streamed in yet; check() builds both again a moment later)
+		for k, b in boards do
+			b.model:Destroy()
+			boards[k] = nil
+		end
+		return
+	end
 	boardPen = pen
 	refresh()
 end
@@ -131,9 +139,6 @@ local function check()
 end
 
 function TrainBoostController.Start(_self: any)
-	if not Config.TrainBoost.Sold then
-		return -- developer 2026-11-15: the boosts are no longer sold
-	end
 	PlayerData.changed:Connect(refresh)
 	Lang.changed:Connect(refresh)
 	task.spawn(function()

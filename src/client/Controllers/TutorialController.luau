@@ -28,12 +28,13 @@ local TutorialController = {}
 local C = Kit.Colors
 local me = Players.LocalPlayer
 local remote: RemoteEvent
-local STEPS = 7
-local TITLE = { "TutT1", "TutT5", "TutT2", "TutT3", "TutT4", "TutT6", "TutT7" }
-local BODY = { "TutWelcome", "TutTrain", "TutZone", "TutCatch", "TutCarry", "TutShop", "TutDone" }
-local TRAIN, ZONE, CATCH, CARRY, SHOP = 2, 3, 4, 5, 6
+local STEPS = 8
+local TITLE = { "TutT1", "TutT5", "TutT2", "TutT3", "TutT4", "TutT8", "TutT6", "TutT7" }
+local BODY = { "TutWelcome", "TutTrain", "TutZone", "TutCatch", "TutCarry", "TutPlace", "TutShop", "TutDone" }
+local TRAIN, ZONE, CATCH, CARRY, PLACE, SHOP = 2, 3, 4, 5, 6, 7
 local HOTBAR_SLOT, HOTBAR_STEP = 60, 65 -- Roblox's hotbar: slot size, slot + gap (measured in Studio 2026-11-13)
 local YELLOW = Color3.fromHex("ffd23f")
+local OUTLINE = Color3.fromHex("2f3552") -- the dark outline of the arrow over the target
 local CHEVRONS = 14
 local SPACING = 5
 
@@ -79,6 +80,13 @@ local function nearestCat(root: BasePart): Model?
 	local strength = me:GetAttribute("Strength")
 	local best, bestD, any, anyD = nil, math.huge, nil, math.huge
 	for _, m in CollectionService:GetTagged("WildCat") do
+		local only = m:GetAttribute("OnlyFor")
+		if only == me.UserId and m:IsA("Model") and m.PrimaryPart and m:GetAttribute("State") ~= "carried" then
+			return m -- 2026-11-15: your own tutorial cat behind your pen first
+		end
+		if only ~= nil then
+			continue
+		end
 		if m:IsA("Model") and m.PrimaryPart and m:GetAttribute("State") ~= "carried" then
 			local d = (m.PrimaryPart.Position - root.Position).Magnitude
 			local kg = m:GetAttribute("Kg")
@@ -97,9 +105,12 @@ end
 -- The target of a step: a world position and, when there is one, the model to outline.
 local function target(s: number, root: BasePart): (Vector3?, Instance?)
 	if s == ZONE then
-		local flat = Vector3.new(root.Position.X, 0, root.Position.Z)
-		local dir = if flat.Magnitude > 1 then flat.Unit else Vector3.new(0, 0, -1)
-		return dir * (Config.World.LobbyRadius + 24), nil
+		-- 2026-11-15: your own cat behind your pen (TutorialService)
+		local cat = nearestCat(root)
+		if cat and cat:GetAttribute("OnlyFor") == me.UserId and cat.PrimaryPart then
+			return cat.PrimaryPart.Position, cat
+		end
+		return nil, nil
 	elseif s == CATCH then
 		if me:GetAttribute("Fishing") ~= nil then
 			return nil, nil -- reeling: the pointer shows the hold button instead
@@ -110,6 +121,11 @@ local function target(s: number, root: BasePart): (Vector3?, Instance?)
 		local pen = myPen()
 		local spawnPart = pen and pen:FindFirstChild("Spawn")
 		return if spawnPart and spawnPart:IsA("BasePart") then spawnPart.Position else (pen and pen:GetPivot().Position), nil
+	elseif s == PLACE then
+		-- 2026-11-15 (bag): the middle of your pen's floor
+		local pen = myPen()
+		local a = pen and pen:FindFirstChild("Area")
+		return if a and a:IsA("BasePart") then a.Position else nil, nil
 	elseif s == SHOP then
 		-- X3: the Shop is the stall on the plaza; the arrows lead to its pad
 		local pad = MarketController.shopPad()
@@ -176,7 +192,8 @@ local function neon(parent: Instance, size: Vector3, cf: CFrame, wedge: boolean?
 	p.Size = size
 	p.CFrame = cf
 	p.Color = YELLOW
-	p.Material = Enum.Material.Neon
+	-- 2026-11-15 (developer): plain matte yellow with a dark outline, no glow (the neon hurt the eyes)
+	p.Material = Enum.Material.SmoothPlastic
 	p.Anchored = true
 	p.CanCollide = false
 	p.CanQuery = false
@@ -216,9 +233,16 @@ local function buildWorld()
 		neon(arrow, Vector3.new(1.1, 1.8, 1.4), CFrame.new(side * 0.7, 0.6, 0) * CFrame.Angles(0, side * math.pi / 2, math.pi), true)
 	end
 	arrow.Parent = guide
+	local outline = Instance.new("Highlight")
+	outline.Name = "Outline"
+	outline.FillTransparency = 1
+	outline.OutlineColor = OUTLINE
+	outline.DepthMode = Enum.HighlightDepthMode.Occluded
+	outline.Adornee = arrow
+	outline.Parent = arrow
 	highlight = Instance.new("Highlight")
 	highlight.FillColor = YELLOW
-	highlight.FillTransparency = 0.75
+	highlight.FillTransparency = 1 -- outline only (no yellow wash over the target)
 	highlight.OutlineColor = YELLOW
 	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 	highlight.Enabled = false
@@ -449,6 +473,34 @@ local function update()
 			rodSlot = Vector2.new(centre - HOTBAR_SLOT / 2, area.Y - HOTBAR_STEP / 2 - 2.5)
 		end
 	end
+	-- 2026-11-15 (bag): placing, no cat in hand yet: the arrow points at the last hotbar slot (the newest cat)
+	if s == PLACE and character and not rodSlot then
+		local backpack = me:FindFirstChildOfClass("Backpack")
+		local holding = false
+		for _, t in character:GetChildren() do
+			if t:IsA("Tool") and t:GetAttribute("CatId") ~= nil then
+				holding = true
+			end
+		end
+		if backpack and not holding then
+			local count, catSlot = 0, nil
+			for _, container in { backpack :: Instance, character } do
+				for _, t in container:GetChildren() do
+					if t:IsA("Tool") then
+						count += 1
+						if t:GetAttribute("CatId") ~= nil then
+							catSlot = count
+						end
+					end
+				end
+			end
+			if catSlot and count <= 9 then
+				local area = (hand.Parent :: ScreenGui).AbsoluteSize
+				local centre = area.X / 2 + HOTBAR_STEP * (catSlot - (count / 2 + 0.5))
+				rodSlot = Vector2.new(centre - HOTBAR_SLOT / 2, area.Y - HOTBAR_STEP / 2 - 2.5)
+			end
+		end
+	end
 	-- the hand pointing at a button
 	local b = if s then pointAt(s) else nil
 	if rodSlot then
@@ -505,7 +557,7 @@ function TutorialController.Start(_self: any)
 		if shop and shop:IsA("ScreenGui") then
 			shop:GetPropertyChangedSignal("Enabled"):Connect(function()
 				if step() == SHOP and shop.Enabled then
-					remote:FireServer("ack", 6)
+					remote:FireServer("ack", SHOP)
 				end
 			end)
 		end

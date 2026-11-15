@@ -132,6 +132,10 @@ local function pickTarget(): Model?
 	local best: Model? = nil
 	local bestScore = -math.huge
 	for _, m in CollectionService:GetTagged("WildCat") do
+		local only = m:GetAttribute("OnlyFor")
+		if only ~= nil and only ~= Players.LocalPlayer.UserId then
+			continue -- someone else's tutorial cat
+		end
 		if m:IsA("Model") and m.Parent then
 			local pos = m:GetPivot().Position
 			local offset = pos - root.Position

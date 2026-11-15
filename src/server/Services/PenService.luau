@@ -74,6 +74,22 @@ local function randomSpot(index: number): CFrame
 	return CFrame.new(p.Position) * CFrame.Angles(0, math.random() * math.pi * 2, 0)
 end
 
+-- 2026-11-15 (bag): where a placed cat stands (X / Z from the middle of the Area), facing the gate a little turned
+local function placedSpot(index: number, cat: DataTemplate.Cat): CFrame
+	local pen = penModel(index)
+	local area = pen and pen:FindFirstChild("Area")
+	if not area or not area:IsA("BasePart") or type(cat.X) ~= "number" or type(cat.Z) ~= "number" then
+		return randomSpot(index)
+	end
+	local s = area.Size
+	local x = math.clamp(cat.X :: number, -s.X / 2, s.X / 2)
+	local z = math.clamp(cat.Z :: number, -s.Z / 2, s.Z / 2)
+	local p = area.CFrame * CFrame.new(x, -s.Y / 2, z)
+	local lv = (pen :: Model):GetPivot().LookVector
+	local yaw = math.atan2(-lv.X, -lv.Z) + (math.random() - 0.5) * 1.2
+	return CFrame.new(p.Position) * CFrame.Angles(0, yaw, 0)
+end
+
 local function catModel(index: number, id: string, cat: DataTemplate.Cat, owner: Player)
 	local design = Cats.ById[cat.Kind]
 	if not design then
@@ -81,7 +97,7 @@ local function catModel(index: number, id: string, cat: DataTemplate.Cat, owner:
 	end
 	local look = table.clone(design.Look) :: any
 	look.mutation = cat.Mutation
-	local m = CatModel.build(look, randomSpot(index), CatRules.size(design.Tier, cat.Kg))
+	local m = CatModel.build(look, placedSpot(index, cat), CatRules.size(design.Tier, cat.Kg))
 	m:SetAttribute("Mutation", cat.Mutation)
 	m.Name = id
 	m:SetAttribute("CatId", id)
@@ -103,7 +119,7 @@ local function recountIncome(player: Player)
 	local total = 0
 	for _, cat in data.Cats do
 		local design = Cats.ById[cat.Kind]
-		if design then
+		if design and cat.Placed then -- 2026-11-15: cats in the bag earn nothing (developer)
 			total += CatRules.income(design.Tier, cat.Kg) * Mutation.money(cat.Mutation)
 		end
 	end
@@ -119,12 +135,13 @@ local function refreshCats(player: Player)
 	end
 	local folder = penFolder(index)
 	for _, m in folder:GetChildren() do
-		if not data.Cats[m.Name] then
+		local cat = data.Cats[m.Name]
+		if not cat or not cat.Placed then
 			m:Destroy()
 		end
 	end
 	for id, cat in data.Cats do
-		if not folder:FindFirstChild(id) then
+		if cat.Placed and not folder:FindFirstChild(id) then
 			catModel(index, id, cat, player)
 		end
 	end
@@ -188,6 +205,19 @@ function PenService.penIndex(player: Player): number?
 	return penOf[player]
 end
 
+-- The player's own pen's Area part (where cats are placed), if they have a pen.
+function PenService.area(player: Player): BasePart?
+	local index = penOf[player]
+	local pen = index and penModel(index)
+	local a = pen and pen:FindFirstChild("Area")
+	return if a and a:IsA("BasePart") then a else nil
+end
+
+-- Rebuilds the placed cats' models and the income from the save (BagService after a place / pick up).
+function PenService.refresh(player: Player)
+	refreshCats(player)
+end
+
 -- Money per second right now (cats x mutations x every multiplier): offline income, rewards.
 function PenService.incomeRate(player: Player): number
 	return (incomeOf[player] or 0) * Bonus.money(BonusCtx.of(player, DataService.GetData(player)))
@@ -198,8 +228,8 @@ function PenService.hasRoom(player: Player): boolean
 	return data ~= nil and DataTemplate.catCount(data) < data.PenSlots
 end
 
--- Puts a new cat in the player's pen (saved with the next save). Returns its id, or nil when the pen is
--- full or the data is not loaded.
+-- Gives the player a new cat (saved with the next save): it goes into their bag (2026-11-15: BagService; they place
+-- it on the pen floor themselves). Returns its id, or nil when the pen is full or the data is not loaded.
 function PenService.addCat(player: Player, kind: string, kg: number, mutation: string?): string?
 	if not Cats.ById[kind] or not PenService.hasRoom(player) then
 		return nil
@@ -207,7 +237,7 @@ function PenService.addCat(player: Player, kind: string, kg: number, mutation: s
 	local id: string? = nil
 	DataService.Update(player, function(data)
 		local newId = DataTemplate.newCatId(data)
-		data.Cats[newId] = { Kind = kind, Kg = kg, Locked = false, Got = os.time(), Mutation = if mutation ~= "" then mutation else nil }
+		data.Cats[newId] = { Kind = kind, Kg = kg, Locked = false, Got = os.time(), Mutation = if mutation ~= "" then mutation else nil, Placed = false }
 		data.Book[kind] = true -- the collection book (task 2.8)
 		data.Stats.Caught += 1
 		id = newId

@@ -254,6 +254,14 @@ function CarryService:Start()
 			for player, c in carrying do
 				local root = rootOf(player)
 				local here = root ~= nil and atPen(player, root.Position)
+				if here and Config.Carry.AutoBag then
+					-- 2026-11-15 (developer): walking in with the cat puts it in the bag (BagService), no button
+					deliver(player, c)
+					if carrying[player] ~= c then
+						continue
+					end
+					here = false -- (full pen: they keep carrying; no Put in pen button either)
+				end
 				if player:GetAttribute("AtPen") ~= (if here then true else nil) then
 					player:SetAttribute("AtPen", if here then true else nil) -- shows the client's button
 				end

@@ -85,12 +85,15 @@ Text.Lines = {
 	FishEscaped = { en = "The cat got away!", th = "แมวหนีไปแล้ว!" },
 	FishGaveUp = { en = "You stopped fishing", th = "เลิกตกแมวแล้ว" },
 	CatBusy = { en = "That cat can't be fished right now", th = "ตอนนี้ตกแมวตัวนี้ไม่ได้" },
-	CarryHint = { en = "Carry it to your pen and press Put in pen! Watch out for bats!", th = "ถือกลับคอก แล้วกด ใส่คอก! ระวังโดนตี!" },
+	CarryHint = { en = "Carry it home to your farm! Watch out for bats!", th = "ถือกลับฟาร์มของคุณ! ระวังโดนตี!" },
 	PutInPen = { en = "Put in pen", th = "ใส่คอก" }, -- X2: the button at your pen while carrying a cat
 	SellCarried = { en = "Sell ${money}", th = "ขาย ${money}" }, -- X3: the button at the plaza's sell booth
 	ShopSign = { en = "SHOP", th = "ร้านค้า" }, -- X3: the plaza stall's sign
 	SellSign = { en = "SELL", th = "ขายแมว" }, -- X3: the sell booth's sign
-	CatHome = { en = "{name} is in your pen!", th = "{name} เข้าคอกแล้ว!" },
+	CatHome = { en = "{name} is in your bag! Hold it and tap your farm floor to place it.", th = "{name} อยู่ในกระเป๋าแล้ว! ถือแมวแล้วแตะพื้นฟาร์มเพื่อวาง" },
+	CatPlaced = { en = "{name} placed!", th = "วาง {name} แล้ว!" },
+	PlaceOutside = { en = "Tap the floor inside your farm to place the cat", th = "แตะพื้นในฟาร์มของคุณเพื่อวางแมว" },
+	PickUpCat = { en = "Pick up", th = "หยิบ" },
 	BatDropped = { en = "{name} knocked your cat loose!", th = "{name} ตีแมวของคุณหลุดมือ!" },
 	BatHitCat = { en = "You knocked {name}'s cat loose! Catch it!", th = "คุณตีแมวของ {name} หลุดแล้ว! รีบตกเลย!" },
 	CaughtTitle = { en = "Caught!", th = "ตกได้แล้ว!" },
@@ -114,6 +117,7 @@ Text.Lines = {
 
 	-- HUD (task 1.17)
 	ShopButton = { en = "Shop", th = "ร้านค้า" },
+	RobuxShopButton = { en = "Shop", th = "ร้านค้า" },
 	Speed2xButton = { en = "x2 Speed", th = "เร็ว x2" },
 	TradeButton = { en = "Trade", th = "เทรด" },
 	ComingSoon = { en = "Coming in the next update!", th = "จะมาในอัปเดตถัดไป!" },
@@ -197,25 +201,30 @@ Text.Lines = {
 	-- V4: the new-player tutorial
 	TutStep = { en = "{n}/{max}", th = "{n}/{max}" },
 	TutT1 = { en = "Welcome!", th = "ยินดีต้อนรับ!" },
-	TutT2 = { en = "Go to the Backyard", th = "ไปสนามหลังบ้าน" },
+	TutT2 = { en = "Find your first cat", th = "หาแมวตัวแรก" },
 	TutT3 = { en = "Catch a cat", th = "ตกแมว" },
 	TutT4 = { en = "Carry it home", th = "แบกแมวกลับบ้าน" },
 	TutT5 = { en = "Get stronger", th = "เพิ่มพลัง" },
 	TutT6 = { en = "Visit the Shop", th = "ไปร้านค้า" },
 	TutT7 = { en = "Well done!", th = "เก่งมาก!" },
+	TutT8 = { en = "Place your cat", th = "วางแมว" },
 	TutWelcome = {
 		en = "Catch cats and bring them home: they make money for you!",
 		th = "จับแมวแล้วพากลับคอก แมวจะหาเงินให้คุณ!",
 	},
-	TutZone = { en = "Follow the yellow arrows out of town to the Backyard.", th = "เดินตามลูกศรสีเหลืองออกจากเมืองไปสนามหลังบ้าน" },
+	TutZone = { en = "Follow the yellow arrows to the cat behind your farm.", th = "เดินตามลูกศรสีเหลืองไปหาแมวหลังฟาร์มของคุณ" },
 	TutCatch = {
-		en = "Walk to the glowing cat, take your rod (slot 1) and tap the cat.",
-		th = "เดินไปหาแมวที่เรืองแสง กดช่อง 1 ถือเบ็ด แล้วแตะที่แมว",
+		en = "Walk to the cat, take your rod (slot 1) and tap the cat.",
+		th = "เดินไปหาแมว กดช่อง 1 ถือเบ็ด แล้วแตะที่แมว",
 	},
 	TutHold = { en = "Hold the button to keep the cat in the green!", th = "กดค้างที่ปุ่มให้แมวอยู่ในโซนสีเขียว!" },
 	TutCarry = {
-		en = "Follow the line to your pen and press Put in pen. Watch out for bats!",
-		th = "เดินตามเส้นกลับคอก แล้วกดปุ่ม ใส่คอก ระวังโดนไม้ตี!",
+		en = "Follow the arrows home and walk into your farm. Watch out for bats!",
+		th = "เดินตามลูกศรกลับบ้าน แล้วเดินเข้าฟาร์มของคุณ ระวังโดนไม้ตี!",
+	},
+	TutPlace = {
+		en = "Tap your cat in the bar below, then tap your farm floor. Placed cats make money!",
+		th = "แตะแมวในแถบด้านล่าง แล้วแตะพื้นฟาร์ม แมวที่วางแล้วจะสร้างเงิน!",
 	},
 	TutTrain = {
 		en = "Stand in the green ring at your weights until you have {kg} kg of Strength.",

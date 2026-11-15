@@ -42,8 +42,30 @@ local function update(m: Model, gui: BillboardGui)
 	need.Text = Lang.text("CatNeed", { kg = Format.short(math.ceil(kg)) })
 end
 
+-- 2026-11-15: someone else's tutorial cat (OnlyFor) is hidden on this client while it is wild (no label either)
+local hidden: { [Model]: RBXScriptConnection } = {}
+local function setHidden(m: Model, on: boolean)
+	for _, p in m:GetDescendants() do
+		if p:IsA("BasePart") then
+			p.LocalTransparencyModifier = if on then 1 else 0
+		end
+	end
+end
+
 local function add(inst: Instance)
 	if not inst:IsA("Model") or tags[inst] then
+		return
+	end
+	local only = inst:GetAttribute("OnlyFor")
+	if only ~= nil and only ~= me.UserId then
+		if not hidden[inst] then
+			setHidden(inst, true)
+			hidden[inst] = inst.DescendantAdded:Connect(function(p)
+				if p:IsA("BasePart") then
+					p.LocalTransparencyModifier = 1
+				end
+			end)
+		end
 		return
 	end
 	local root = inst.PrimaryPart
@@ -68,6 +90,11 @@ local function add(inst: Instance)
 end
 
 local function remove(inst: Instance)
+	if inst:IsA("Model") and hidden[inst] then
+		hidden[inst]:Disconnect()
+		hidden[inst] = nil
+		setHidden(inst, false) -- caught: its owner carries it, everyone sees that
+	end
 	if inst:IsA("Model") and tags[inst] then
 		tags[inst]:Destroy()
 		tags[inst] = nil

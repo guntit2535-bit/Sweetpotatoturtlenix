@@ -126,7 +126,7 @@ local function drawRobux(list: ScrollingFrame)
 			local have = (if p.Stat == "Weights" then data.BoostWeights else data.BoostTread) or 0
 			local short = if p.Stat == "Weights" then "W" else "T"
 			local mult = Config.TrainBoost.Mult ^ p.Step
-			show = Config.TrainBoost.Sold and p.Step == have + 1
+			show = Config.TrainBoost.InStore and p.Step == have + 1
 			title = Lang.text("TrainBoostTitle" .. short, { mult = mult })
 			line = Lang.text("TrainBoostDesc" .. short, { mult = mult })
 		end

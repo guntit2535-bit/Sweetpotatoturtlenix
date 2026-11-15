@@ -126,6 +126,9 @@ local function onCast(player: Player, rawId: unknown)
 	if not w or not root or not data or not character or not character:FindFirstChild("Rod") then
 		return
 	end
+	if w.only and w.only ~= player.UserId then
+		return -- someone else's tutorial cat (they cannot see it either)
+	end
 	if w.state ~= "hiding" and w.state ~= "hooked" and w.state ~= "dropped" then
 		Notify.send(player, "CatBusy", nil, "bad")
 		return

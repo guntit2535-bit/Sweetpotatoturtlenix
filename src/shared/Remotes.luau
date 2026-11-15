@@ -49,6 +49,8 @@ Remotes.Events = {
 	"Tutorial", -- client -> server: ack + step, skip or replay (task V4)
 	"PutInPen", -- client -> server: put the carried cat in my pen (X2, revision 4 item 16)
 	"SellCarried", -- client -> server: sell the cat I carry at the plaza's sell booth (X3, revision 4 item 18)
+	"PlaceCat", -- client -> server: (catId, x, z) put a cat from my bag on my pen floor (2026-11-15, BagService)
+	"PickUpCat", -- client -> server: (catId) put a placed cat back into my bag (2026-11-15, BagService)
 }
 Remotes.Functions = {
 	"GetData", -- client -> server: the owner's data snapshot, task 1.2

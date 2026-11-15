@@ -70,6 +70,11 @@ Config.Tutorial = {
 	WelcomeSeconds = 5, -- the welcome step moves on by itself
 	TrainTo = 15, -- step 2 ends at this much Strength (kg): about 3 in 4 Backyard cats can then be held
 	DoneSeconds = 5, -- so does the last one (with the reward)
+	-- 2026-11-15 (developer): step 3's cat waits behind the player's own pen, only for them (TutorialService)
+	CatBehind = 8, -- studs behind the back fence of the pen
+	CatKg = 3, -- its base weight (a new player has TrainTo kg of Strength by then)
+	NearCat = 14, -- studs: close enough, step 3 ends
+	CatRespawn = 3, -- seconds before a new one when it went (escaped, knocked loose)
 	Rate = { maxCalls = 4, window = 1 },
 }
 
@@ -100,6 +105,7 @@ Config.Pen = {
 	SellMany = 120, -- W3: most cats one SellCat call may sell (multi-select in My Cats)
 	LockRate = { maxCalls = 6, window = 1 },
 	LikeCooldown = 2, -- seconds between Like prompts per player (any pen)
+	Wander = false, -- 2026-11-15 (bag): a placed cat stays where its owner put it (rests, sleeps); true = walks around
 	WanderSpeed = 3, -- studs/s a pen cat walks (client side)
 	RestSeconds = { 3, 9 }, -- a pen cat rests this long between walks
 	FarStepSeconds = 0.4, -- V5i: a walking cat farther than CatAnim.Near moves in steps this often (cheaper)
@@ -232,6 +238,7 @@ Config.Carry = {
 	CheckEvery = 0.25,
 	PutRate = { maxCalls = 4, window = 1 }, -- X2: the PutInPen remote
 	ShowIcon = false, -- X1 (revision 4 item 1): no floating cat icon over carriers (CarryIconController)
+	AutoBag = true, -- 2026-11-15: walking into your pen with a cat puts it in your bag (no Put in pen button)
 	DroppedSeconds = 60, -- a knocked-loose cat nobody catches goes back into hiding (blueprint §4)
 }
 Config.Bat = {
@@ -330,6 +337,37 @@ Config.Cats = {
 -- X3 (revision 4 items 13 + 18): the shop stall and the sell booth on the plaza (BuildMap.market). Angles in
 -- degrees round the plaza centre, Radius in studs; PadRange = studs from a pad's centre that count as on it.
 Config.Market = { ShopAngle = 112.5, SellAngle = 67.5, Radius = 31, PadRange = 5, CheckEvery = 0.2 }
+-- The cat bag (developer 2026-11-15, BagService / BagController): cats you bring home are Tools in your backpack;
+-- hold one and tap your pen floor to place it. Margin = studs kept inside the Area's edge; Reach = how far
+-- outside the Area you may stand to place / pick up; Held* = the cat in your hand (model scale, offset from the
+-- tool's handle); Grip = the tool's grip (the handle in the right hand).
+Config.Bag = {
+	Rate = { maxCalls = 6, window = 1 },
+	Margin = 1.5,
+	Reach = 30,
+	HeldScale = 0.6,
+	HeldMax = 0.9,
+	HeldOffset = { 0, 0.2, -0.6 }, -- x, y, z studs
+	Grip = { 0, -0.2, 0.4 }, -- x, y, z studs
+	RespawnDelay = 0.4, -- seconds after a respawn before the cats go back in the backpack (rod and bat first)
+	PromptRange = 9, -- studs: the "Pick up" prompt on your own placed cats (client)
+	PreviewEvery = 0.05, -- seconds between the client's placing-ring updates
+}
+
+-- The shopkeepers (developer 2026-11-15: "bacon" Roblox avatars in the stalls; NpcService / NpcController).
+-- Hair = Roblox's Pal Hair (the bacon hair) and Head = the default head, both made by Roblox; Raise = a hidden step behind the counter (studs);
+-- the animations are Roblox's default R15 idle and wave.
+Config.Npc = {
+	Hair = 63690008, -- Pal Hair (checked 2026-11-15: the developer's own default avatar wears it)
+	Head = 10638267973, -- Roblox's default head with a face ("Stevie Standard"; the plain R15 head has none)
+	Scale = 1.15,
+	Raise = 1,
+	Skin = "eab892",
+	Shirt = { Shop = "ff5fa2", Sell = "2fbf5a" } :: { [string]: string },
+	Pants = "3a4a8c",
+	IdleAnim = 507766388,
+	WaveAnim = 507770239,
+}
 
 -- X3 (revision 4 item 3, small pin): the home pin over your own pen (HomeMarkerController). Size = circle px.
 Config.HomeMarker = { Size = 30, Height = 22, HideWithin = 60 }
@@ -366,9 +404,8 @@ Config.Passes = {
 
 -- W6 (revision 3 item 17): training boost steps (products TrainW1-6 / TrainT1-6 below): step n = x Mult ^ n gain,
 -- for ever; PriceHint = the suggested Robux price of each step (the real price is set in Creator Hub).
--- Developer 2026-11-15: no longer sold (Sold = false: no store cards, no boards at the gym). A player who already
--- bought a step keeps its effect (Bonus), and a late receipt is still granted (ProductService), as paid for.
-Config.TrainBoost = { Sold = false, Steps = 6, Mult = 2, PriceHint = { 5, 10, 20, 40, 80, 160 } }
+-- Developer 2026-11-15: sold only on the boards at the gym, not in the Robux store (InStore = false).
+Config.TrainBoost = { InStore = false, Steps = 6, Mult = 2, PriceHint = { 5, 10, 20, 40, 80, 160 } }
 -- its boards: studs from the training spot, Side = away from the pen's middle, Forward = toward the plaza
 Config.TrainBoostBoard = { Side = 6, Forward = 0, Scale = 0.8 }
 
@@ -442,7 +479,8 @@ Config.Rods = {
 Config.PenUpgrade = { Step = 5, Cost = 2000, CostGrowth = 14 } -- W5 option B (was x2.1): 60 slots at ~11 h, not 35 min
 -- W4 (revision 3 item 5): the board that sells pen slots, in front of your own pen (studs from the pen's gate sign:
 -- Forward = toward the plaza, Right = toward the weights: between the sign and the weights)
-Config.PenBoard = { Forward = 0.7, Right = 9 }
+-- (2026-11-15 developer: Right 9 -> 11.8 so the board clears the gate post: the gate is 15 wide, the board 7.2)
+Config.PenBoard = { Forward = 0.7, Right = 11.8 }
 
 -- Cat treats (task 2.5, blueprint §12): 10 minutes each; buying again adds 10 minutes. Price = the larger
 -- of Base and IncomeSeconds of the player's current income.

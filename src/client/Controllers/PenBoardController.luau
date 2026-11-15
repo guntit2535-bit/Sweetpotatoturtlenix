@@ -69,6 +69,12 @@ local function buy()
 end
 
 local function build(pen: Model)
+	-- (StreamingEnabled: until the gate sign and the floor have streamed in, the pen's pivot is not known yet;
+	-- 2026-11-15 a board was built at the world's middle. check() tries again a moment later.)
+	local s, f = pen:FindFirstChild("Sign"), pen:FindFirstChild("Floor")
+	if not s or #s:GetChildren() == 0 or not f or not f:IsA("BasePart") then
+		return
+	end
 	local pivot = pen:GetPivot()
 	local look = Vector3.new(pivot.LookVector.X, 0, pivot.LookVector.Z).Unit
 	local right = look:Cross(Vector3.yAxis)

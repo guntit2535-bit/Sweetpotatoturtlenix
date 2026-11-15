@@ -85,8 +85,8 @@ function MarketController.Start(_self: any)
 			end
 			if on and not wasOn then
 				local shop = me.PlayerGui:FindFirstChild("ShopWindow")
-				if not (shop and shop:IsA("ScreenGui") and shop.Enabled) then
-					ShopController.toggle()
+				if not (shop and shop:IsA("ScreenGui") and shop.Enabled) or ShopController.isRobuxOnly() then
+					ShopController.open(false)
 				end
 			end
 			wasOn = on

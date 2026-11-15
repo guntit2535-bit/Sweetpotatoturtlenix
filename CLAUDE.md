@@ -79,6 +79,10 @@ are starting values: they live in Config and are tuned after playtests (simulate
   "รอบที่ 3" (revision list 4, `docs/revision4_plan.md`) **200** + the new map (X4 restyle) **200** = **4,400 THB**.
   Also added at the client's request after X4 (inside that price): the two shopkeeper NPCs and the easy first
   rebirths (Config.RebirthNeed.Early). Every player reset again (Config.Data.ResetEpoch 2) before the delivery.
+- 2026-11-15, revision list 5 (7 points, PLAN phase 7), asked after the final price: the developer decides whether it is
+  charged. Blueprint changes, **the client should be told**: cats brought home go into a bag (backpack) and are placed on
+  the pen floor by hand, only placed cats earn; the training boosts are sold only at the gym boards; a Robux shop
+  button; bacon shopkeepers; the tutorial's first cat behind your own pen and a "Place your cat" step.
 
 ## Stack and layout
 - Rojo 7.7.1 + Lune 0.10.4 (pinned in `rokit.toml`), Luau with `--!strict` in every file,

@@ -126,6 +126,18 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
 - [x] X3 ★ Looks (passed 2026-11-15, crates imported): open left HUD (2), 7 crates + models (9), pen floor (12), shop stall + sell booth in the middle, plaza benches / lamps off (13, 18, 8), home marker (3), tutorial line (4)
 - [x] X4 ★ Map restyle (passed 2026-11-15): new look for the decoration (ground, trees, bushes, flowers, rocks, paths, pens, fences), "cute + pixel + LEGO"; 3 Blender looks first; water (11) and the walls (14) are redone inside it
 
+## Phase 7 — revision list 5 (developer, 2026-11-15, after the final price; price: the developer decides)
+Developer's answers: cats in the bag earn nothing; bacon shopkeepers in both stalls; a matte yellow arrow with a
+dark outline; the tutorial cat only for its player.
+- [x] Y1 (item 3) the x2 Strength / x2 Speed boost boards back at the gym; still not in the Robux store (TrainBoost.InStore = false)
+- [x] Y2 (item 7) the pen slots board clears the gate post (PenBoard.Right 9 -> 11.8); boards wait until the pen has streamed in
+- [x] Y3 (item 4) a Shop button beside Rewards opens the Shop window with the Robux tab only
+- [x] Y4 (item 1) the tutorial arrow: matte yellow with a dark outline, no neon; the target outline has no yellow wash
+- [x] Y5 (item 2) the shopkeepers are bacon Roblox avatars (Pal Hair, default head) behind the counters (NpcService / NpcController)
+- [x] Y6 (item 6) the tutorial's first cat waits behind the player's own pen, only for them (step 3 "Find your first cat")
+- [x] Y7 (item 5) the cat bag: walking in with a cat puts it in the backpack (a Tool); hold it and tap the pen floor to place it;
+  placed cats stay put and earn, bag cats earn nothing; Pick up prompt; sell a held cat at the booth; tutorial step 6 "Place your cat"
+
 ## Plan changes
 - 2026-11-13 (developer, 21-point list after the 2 free rounds): phase 5, done free. Changes to the blueprint the
   client should be told: economy paced to ~50 h with dearer crates, the Pen tab moves to the pen, a training
@@ -859,3 +871,10 @@ item 6 = rebirth keeps the training levels; item 4 = train first, a glowing line
   permanent training boost ladder (W6, products TrainW1-6 / TrainT1-6): Config.TrainBoost.Sold = false hides the store
   cards and the boards at the gym; an owner keeps the effect and a late receipt is still granted. Play: Robux tab shows
   Lucky, VIP, slots, 4 cash packs, strength pack, luck x3, server luck, summon, starter; no gym boards. Publish needed.
+- 2026-11-15 developer, revision list 5 (7 items, Phase 7 Y1-Y7), built and checked in Studio Play (FreshSave): the gym boost
+  boards are back (store cards stay hidden); pen slots board beside the gate, not over its post, and the gym / pen boards now
+  wait for the pen to stream in (one had been built at the world's middle); Shop (Robux) button opens a Robux-only window;
+  matte outlined tutorial arrow; bacon shopkeepers (server-built avatars, idle + wave animations, turn to the player); the
+  tutorial cat behind the own pen (hidden from and not fishable by others), 8 steps with "Place your cat"; the bag (BagService,
+  BagController): catch -> walk in -> tool in the backpack -> place on the floor (income starts) -> Pick up -> sell at the
+  booth (+$253 checked). Market rebuilt in the place (NpcSpots behind the counters). Publish needed.

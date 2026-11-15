@@ -19,6 +19,7 @@ local Format = require(Shared:WaitForChild("Format"))
 local Lang = require(script.Parent.Parent.Lang)
 local Kit = require(script.Parent.Parent.UI.Kit)
 local Hud = require(script.Parent.Parent.UI.Hud)
+local ShopController = require(script.Parent.ShopController)
 local StoreController = require(script.Parent.StoreController)
 local ToastController = require(script.Parent.ToastController)
 local TradeController = require(script.Parent.TradeController)
@@ -143,6 +144,14 @@ local function build()
 		speedText()
 	end
 	Hud.leftButton("Trade", "TradeButton", C.purple, 4, TradeController.toggle)
+	-- 2026-11-15 (developer): a Robux shop button beside Rewards (the Shop window, Robux tab only)
+	Hud.leftButton("Shop", "RobuxShopButton", C.coral, 7, function()
+		if ShopController.isRobuxOnly() then
+			ShopController.toggle()
+		else
+			ShopController.open(true)
+		end
+	end)
 
 	-- W3 (revision 3 item 10): Strength, Speed and money big at the bottom left, no panels: a big icon and a
 	-- big outlined number per line (the old right-hand Strength panel with the gym levels is gone; the levels

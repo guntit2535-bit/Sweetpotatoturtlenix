@@ -29,6 +29,7 @@ export type Wild = {
 	state: string,
 	event: string?, -- "Mythical" | "Secret" for event cats (task 1.18)
 	mutation: string?, -- kept by a knocked-loose cat (rolled once, when it was first caught)
+	only: number?, -- 2026-11-15: a tutorial cat only this UserId sees and may fish (attribute OnlyFor)
 }
 
 local WildCatService = {}
@@ -121,6 +122,15 @@ function WildCatService.spawnAt(kind: string, kg: number, at: CFrame, event: str
 	local w = build(kind, kg, at, 1, 0)
 	w.event = event
 	w.model:SetAttribute("Event", event)
+	return w
+end
+
+-- 2026-11-15 (developer): the tutorial's first cat behind a new player's own pen: only `player` sees it (clients
+-- hide it for everyone else by the OnlyFor attribute) and only they may fish it (FishingService).
+function WildCatService.spawnPrivate(player: Player, kind: string, kg: number, at: CFrame): Wild
+	local w = build(kind, kg, at, 1, 0)
+	w.only = player.UserId
+	w.model:SetAttribute("OnlyFor", player.UserId)
 	return w
 end
 

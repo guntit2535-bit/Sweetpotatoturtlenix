@@ -64,6 +64,9 @@ local function move(from: any, to: any, ids: { string }): { string }
 		local newId = `k{to.NextCatId}`
 		to.NextCatId += 1
 		cat.Locked = false
+		cat.Placed = false -- 2026-11-15: a traded cat arrives in the bag
+		cat.X = nil
+		cat.Z = nil
 		to.Cats[newId] = cat
 		if to.Book then
 			to.Book[cat.Kind] = true

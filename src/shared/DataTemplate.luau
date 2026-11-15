@@ -17,6 +17,11 @@ export type Cat = {
 	Locked: boolean, -- favourite: cannot be sold or traded
 	Got: number, -- os.time() it was caught (sort order in My Cats)
 	Mutation: string?, -- "" / nil = none, "Gold" | "Rainbow" | "Glow" (task 2.9)
+	-- 2026-11-15 (bag, BagService): false = in the bag (a Tool, earns nothing); true = on the pen floor at X / Z
+	-- (studs from the middle of the pen's Area). Saves from before: true, at a random spot.
+	Placed: boolean?,
+	X: number?,
+	Z: number?,
 }
 
 export type Quest = { Kind: string, Goal: number, Progress: number, Claimed: boolean }
@@ -231,6 +236,15 @@ function DataTemplate.sanitize(data: Data): number
 			end
 			if not isFinite(cat.Got) then
 				cat.Got = 0
+				fixes += 1
+			end
+			if type(cat.Placed) ~= "boolean" then
+				cat.Placed = true -- (cats from before the bag were in the pen)
+				fixes += 1
+			end
+			if cat.X ~= nil and not isFinite(cat.X) or cat.Z ~= nil and not isFinite(cat.Z) or not cat.Placed and (cat.X ~= nil or cat.Z ~= nil) then
+				cat.X = nil
+				cat.Z = nil
 				fixes += 1
 			end
 			local n = tonumber(string.match(id, "^k(%d+)$"))

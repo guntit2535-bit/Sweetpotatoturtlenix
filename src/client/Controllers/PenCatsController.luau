@@ -97,11 +97,13 @@ local function step(dt: number)
 				if (pivot.Position - eye).Magnitude > Config.CatAnim.Mid * state.scale then
 					-- far from the camera: keep resting (V5i: walking far cats cost the most and nobody sees it)
 					state.restUntil = now + rest[1]
-				elseif a then
+				elseif a and Config.Pen.Wander then
 					state.target = randomPoint(a)
 					cat:SetAttribute("Anim", "walk")
 				else
-					state.restUntil = now + rest[2]
+					-- 2026-11-15 (bag): a placed cat stays on its spot; it only changes between idle and sleep
+					state.restUntil = now + rest[1] + math.random() * (rest[2] - rest[1])
+					cat:SetAttribute("Anim", if math.random() < 0.3 then "sleep" else "idle")
 				end
 			end
 		end

@@ -149,7 +149,7 @@
 - [ ] **(ไม่บังคับ) ลบโมเดลสาวชิบิที่ไม่ใช้แล้ว:** Explorer -> ReplicatedStorage -> ItemModels -> `NPCs` ลบทั้งโฟลเดอร์ได้
   (เกมไม่ใช้แล้ว ปล่อยไว้ก็ไม่มีผล)
 - [ ] **บอกลูกค้า:** แมวที่แบกกลับบ้านจะเข้ากระเป๋า ต้องถือแล้วแตะพื้นฟาร์มเพื่อวาง แมวในกระเป๋าไม่สร้างเงิน
-- [ ] **อัปโหลดรูปแมว 400 รูปสำหรับ hotbar (2026-11-15):** Claude ทำรูปแมวทุกตัวจากโมเดลจริงไว้แล้วที่ `art/export/CatIcons` (ดูตัวอย่าง `art/preview/cat_icons_sheet.png`)
+- [x] **อัปโหลดรูปแมว 400 รูปสำหรับ hotbar (2026-11-15):** (ทำแล้ว 2026-11-15 ใส่เข้าเกมแล้ว เหลือลบ API key `cat-icons` ใน Creator Hub) Claude ทำรูปแมวทุกตัวจากโมเดลจริงไว้แล้วที่ `art/export/CatIcons` (ดูตัวอย่าง `art/preview/cat_icons_sheet.png`)
   1. เปิด https://create.roblox.com -> เลือกกลุ่ม **Sweetpotatoturtlenix** -> Open Cloud -> API Keys -> **Create API Key**
   2. ตั้งชื่อ เช่น `cat-icons` -> Access Permissions เลือก **Assets API** ติ๊ก **read** และ **write** -> IP ใส่ `0.0.0.0/0` -> Save แล้ว **Copy** key (ห้ามส่ง key ให้ใคร รวมถึง Claude)
   3. ดับเบิลคลิกไฟล์ `tools/icons/upload_icons.bat` -> วาง key -> Enter แล้วรอ (ประมาณ 10-15 นาที ถ้าหยุดกลางทาง เปิดใหม่ได้ จะอัปต่อจากตัวที่ค้าง)

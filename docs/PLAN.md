@@ -885,3 +885,7 @@ dark outline; the tutorial cat only for its player.
   outline (art/export/CatIcons, sheet art/preview/cat_icons_sheet.png), tools/icons/upload_icons.bat (the developer's group
   API key) uploads them as Decals into ids.json; Claude then resolves the image ids into shared/CatIcons.luau, and
   BagService sets each cat tool's TextureId. Shopkeepers checked in Play. Waiting: the upload (DEVELOPER_TODO).
+- 2026-11-15 the developer uploaded the 400 icons (ids.json, 0 failed); Claude read each Decal's image id in Studio
+  (InsertService, 400 of 400) into shared/CatIcons.luau (art/export/CatIcons/image_ids.json). Play: bag tools carry
+  TextureId (Rod, Bat, Ginger Tabby, Circus Star, Earth Titan Cat); 9 sample pictures load and match their cats.
+  Studio captures do not show Roblox's hotbar itself. Publish needed.

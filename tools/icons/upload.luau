@@ -20,6 +20,10 @@ local IDS = `{DIR}/ids.json`
 local PAUSE = 1.2 -- seconds between uploads (the API allows about 60 a minute)
 
 local key = process.env.ROBLOX_API_KEY
+if key then
+	key = string.gsub(key, "^[%s\"']+", "")
+	key = string.gsub(key :: string, "[%s\"']+$", "")
+end
 if not key or key == "" then
 	error("ROBLOX_API_KEY is not set (run tools/icons/upload_icons.bat)")
 end
@@ -55,6 +59,12 @@ local function upload(name: string, png: string): string?
 	})
 	if not res.ok then
 		print(`  {name}: upload failed {res.statusCode} {res.body}`)
+		if res.statusCode == 401 or res.statusCode == 403 then
+			-- the key is not accepted: every other upload would fail the same way
+			print("\nThe API key was not accepted. Check: the whole key was pasted (it is long), it is the group's key,")
+			print("and it has the Assets API with read + write. Then run upload_icons.bat again.")
+			process.exit(1)
+		end
 		return nil
 	end
 	local op = serde.decode("json", res.body)

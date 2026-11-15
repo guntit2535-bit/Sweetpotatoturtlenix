@@ -12,3 +12,4 @@ __pycache__/
 /art/**/parts/
 /art/preview/*.mp4
 /art/.render.lock
+/art/export/CatIcons/parts.json

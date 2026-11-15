@@ -13,6 +13,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Shared = ReplicatedStorage.Shared
 local Config = require(Shared.Config)
 local Cats = require(Shared.Cats)
+local CatIcons = require(Shared.CatIcons)
 local CatModel = require(Shared.CatModel)
 local CatRules = require(Shared.CatRules)
 local Format = require(Shared.Format)
@@ -80,6 +81,10 @@ local function makeTool(id: string, cat: DataTemplate.Cat): Tool?
 	tool.CanBeDropped = false
 	tool.RequiresHandle = true
 	tool.ToolTip = `{design.Name} · {Format.short(cat.Kg)} kg`
+	local icon = CatIcons[cat.Kind]
+	if icon then
+		tool.TextureId = `rbxassetid://{icon}` -- the cat's picture in the hotbar (else its name shows)
+	end
 	tool:SetAttribute("CatId", id)
 	tool:SetAttribute("Kind", cat.Kind)
 	tool:SetAttribute("Kg", cat.Kg)

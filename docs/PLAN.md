@@ -878,3 +878,10 @@ dark outline; the tutorial cat only for its player.
   tutorial cat behind the own pen (hidden from and not fishable by others), 8 steps with "Place your cat"; the bag (BagService,
   BagController): catch -> walk in -> tool in the backpack -> place on the floor (income starts) -> Pick up -> sell at the
   booth (+$253 checked). Market rebuilt in the place (NpcSpots behind the counters). Publish needed.
+- 2026-11-15 developer: (1) the cat's hotbar slot shows the real cat; (2) dress the two shopkeepers. Answers: outfit C
+  (a vest in the stall's colour over a white shirt, gold buttons and bow tie: NpcService.dress, Config.Npc.Vest / Trim);
+  icons = uploaded pictures (not a custom hotbar). tools/icons/cat_parts.luau writes each cat's blocks and own colours
+  (shared/CatShapes + the CatModel tint) to JSON, art/blender/cat_icons.py renders 400 transparent 256 px icons with a dark
+  outline (art/export/CatIcons, sheet art/preview/cat_icons_sheet.png), tools/icons/upload_icons.bat (the developer's group
+  API key) uploads them as Decals into ids.json; Claude then resolves the image ids into shared/CatIcons.luau, and
+  BagService sets each cat tool's TextureId. Shopkeepers checked in Play. Waiting: the upload (DEVELOPER_TODO).

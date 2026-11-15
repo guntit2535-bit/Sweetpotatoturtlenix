@@ -363,7 +363,10 @@ Config.Npc = {
 	Scale = 1.15,
 	Raise = 1,
 	Skin = "eab892",
-	Shirt = { Shop = "ff5fa2", Sell = "2fbf5a" } :: { [string]: string },
+	-- look C (developer 2026-11-15): a vest in the stall's colour over a white shirt, gold buttons and bow tie
+	ShirtColor = "ffffff",
+	Vest = { Shop = "ff5fa2", Sell = "2fbf5a" } :: { [string]: string },
+	Trim = "ffd23f",
 	Pants = "3a4a8c",
 	IdleAnim = 507766388,
 	WaveAnim = 507770239,

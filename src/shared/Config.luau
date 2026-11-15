@@ -336,7 +336,10 @@ Config.Cats = {
 -- Player arm poses (task 2.22, shared/PlayerPoses): carrying a cat and reeling, drawn by every client.
 -- X3 (revision 4 items 13 + 18): the shop stall and the sell booth on the plaza (BuildMap.market). Angles in
 -- degrees round the plaza centre, Radius in studs; PadRange = studs from a pad's centre that count as on it.
-Config.Market = { ShopAngle = 112.5, SellAngle = 67.5, Radius = 31, PadRange = 5, CheckEvery = 0.2 }
+Config.Market = { ShopAngle = 112.5, SellAngle = 67.5, Radius = 31, PadRange = 5, CheckEvery = 0.2,
+	-- 2026-11-15 sell booth: press E at the shopkeeper (SellBoothController) -> a talk menu; SellRange = studs the server
+	-- allows from the shopkeeper's spot, PromptRange = the prompt's reach, CloseRange = the menu closes farther away
+	SellRange = 18, PromptRange = 11, CloseRange = 16, SellRate = { maxCalls = 3, window = 1 } }
 -- The cat bag (developer 2026-11-15, BagService / BagController): cats you bring home are Tools in your backpack;
 -- hold one and tap your pen floor to place it. Margin = studs kept inside the Area's edge; Reach = how far
 -- outside the Area you may stand to place / pick up; Held* = the cat in your hand (model scale, offset from the

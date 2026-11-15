@@ -1236,7 +1236,7 @@ function Kit.sellBooth(parent: Instance, cf: CFrame): Model
 	D(m, cf * CFrame.new(-2.6, 5.6, -2.6) * CFrame.Angles(0, 0, math.pi / 2), 2.2, 0.4, hex("ffcf33"))
 	scalloped(m, cf * CFrame.new(0, 9.4, -1.2), 11, 7.4, hex("2fbf5a"), hex("fff6c2"))
 	P(m, Vector3.new(8, 2.6, 0.6), cf * CFrame.new(0, 12.3, -3.6), hex("2fbf5a"), { name = "SignBoard" })
-	pad(m, cf * CFrame.new(0, 0, -8), 6, hex("2fbf5a"))
+	-- (2026-11-15: no green pad any more: selling is "press E" at the shopkeeper, SellBoothController)
 	shopkeeper(m, "Sell", cf * CFrame.new(0, 0.6, 1)) -- behind the counter, between the scale and the coin
 	return m
 end

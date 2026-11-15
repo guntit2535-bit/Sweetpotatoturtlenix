@@ -48,7 +48,7 @@ Remotes.Events = {
 	"StopTraining", -- client -> server: a jump while locked on the weights / treadmill spot, task R2
 	"Tutorial", -- client -> server: ack + step, skip or replay (task V4)
 	"PutInPen", -- client -> server: put the carried cat in my pen (X2, revision 4 item 16)
-	"SellCarried", -- client -> server: sell the cat I carry at the plaza's sell booth (X3, revision 4 item 18)
+	"SellAtBooth", -- client -> server: (mode: this | all) sell the cat I carry or hold, or my whole bag, at the sell booth (2026-11-15)
 	"PlaceCat", -- client -> server: (catId, x, z) put a cat from my bag on my pen floor (2026-11-15, BagService)
 	"PickUpCat", -- client -> server: (catId) put a placed cat back into my bag (2026-11-15, BagService)
 }

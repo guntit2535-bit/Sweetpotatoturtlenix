@@ -889,3 +889,11 @@ dark outline; the tutorial cat only for its player.
   (InsertService, 400 of 400) into shared/CatIcons.luau (art/export/CatIcons/image_ids.json). Play: bag tools carry
   TextureId (Rod, Bat, Ginger Tabby, Circus Star, Earth Titan Cat); 9 sample pictures load and match their cats.
   Studio captures do not show Roblox's hotbar itself. Publish needed.
+- 2026-11-15 developer: the sell booth works by "press E" and a menu instead of standing on the green pad (the pad is gone,
+  market rebuilt in the place). SellBoothController: a Sell prompt on the booth's shopkeeper opens a talk menu (Cat Buyer:
+  "What are you looking to sell?") with 1 Sell my bag (count, money), 2 Sell this one (the carried or held cat, money),
+  3 How much is this worth?, 4 Never mind; tap / click only (number keys pick Roblox's hotbar slots). BoothService checks
+  the player is at the booth (Config.Market.SellRange) and sells through CarryService.sellCarried / PenService.sellCats.
+  ActionController is "Put in pen" only; SellCarried remote gone (SellAtBooth). Play (FreshSave): menu opens, "How much"
+  answers, bag sold (+2.5M, bag empty), held cat sold (+$431), walking away closes it, selling from 60 studs refused.
+  The Studio test tool's mouse clicks do not reach any GUI in phone emulation (the Shop button neither): tap test by hand.

@@ -276,6 +276,16 @@ local function onSell(player: Player, raw: unknown)
 	else
 		take(raw)
 	end
+	PenService.sellCats(player, ids)
+end
+
+-- Sells these cats of the player's (owned, not locked; the caller checked the ids are strings without repeats) in
+-- one save change, with the toast after. Used by SellCat (My Cats) and the sell booth (BoothService).
+function PenService.sellCats(player: Player, ids: { string })
+	local data = DataService.GetData(player)
+	if not data then
+		return
+	end
 	local bonus = Bonus.money(BonusCtx.of(player, data))
 	local sold: { string } = {}
 	local total = 0

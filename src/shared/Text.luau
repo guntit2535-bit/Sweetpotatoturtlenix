@@ -87,7 +87,19 @@ Text.Lines = {
 	CatBusy = { en = "That cat can't be fished right now", th = "ตอนนี้ตกแมวตัวนี้ไม่ได้" },
 	CarryHint = { en = "Carry it home to your farm! Watch out for bats!", th = "ถือกลับฟาร์มของคุณ! ระวังโดนตี!" },
 	PutInPen = { en = "Put in pen", th = "ใส่คอก" }, -- X2: the button at your pen while carrying a cat
-	SellCarried = { en = "Sell ${money}", th = "ขาย ${money}" }, -- X3: the button at the plaza's sell booth
+	-- 2026-11-15: the sell booth's talk menu (press E at the shopkeeper; SellBoothController)
+	SellPrompt = { en = "Sell", th = "ขาย" },
+	SellNpc = { en = "Cat Buyer", th = "คนรับซื้อแมว" },
+	SellGreet = { en = "What are you looking to sell?", th = "อยากขายอะไรล่ะ?" },
+	SellOptAll = { en = "Sell my bag! ({count}) ${money}", th = "ขายทั้งกระเป๋า! ({count} ตัว) ${money}" },
+	SellOptThis = { en = "Sell this one! ${money}", th = "ขายตัวนี้! ${money}" },
+	SellOptThisNone = { en = "Sell this one!", th = "ขายตัวนี้!" },
+	SellOptWorth = { en = "How much is this worth?", th = "ตัวนี้ราคาเท่าไหร่?" },
+	SellOptBye = { en = "Never mind", th = "ไม่เป็นไร" },
+	SellWorthIs = { en = "That {name} is worth ${money}!", th = "{name} ตัวนี้ราคา ${money}!" },
+	SellHoldOne = { en = "Hold a cat from your bag first!", th = "ถือแมวจากกระเป๋าก่อนนะ!" },
+	SellBagEmpty = { en = "Your bag is empty! Catch some cats first.", th = "กระเป๋าว่างอยู่นะ! ไปจับแมวมาก่อน" },
+	SellThanks = { en = "Thank you! Come again!", th = "ขอบคุณนะ! แวะมาใหม่นะ!" },
 	ShopSign = { en = "SHOP", th = "ร้านค้า" }, -- X3: the plaza stall's sign
 	SellSign = { en = "SELL", th = "ขายแมว" }, -- X3: the sell booth's sign
 	CatHome = { en = "{name} is in your bag! Hold it and tap your farm floor to place it.", th = "{name} อยู่ในกระเป๋าแล้ว! ถือแมวแล้วแตะพื้นฟาร์มเพื่อวาง" },

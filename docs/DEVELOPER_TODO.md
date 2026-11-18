@@ -160,9 +160,10 @@
   1. Explorer -> ReplicatedStorage -> ItemModels -> โฟลเดอร์เบ็ด (ที่มี Rod1 ... Rod25) -> ลบของข้างในทั้งหมด
   2. Home -> Import 3D -> `art/export/Rods.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import
   3. ลากทั้ง 50 ชิ้น (Rod1 ... Rod50) ใส่โฟลเดอร์เดิม (ห้ามแก้ชื่อ)
-- [ ] **นำเข้ากล่อง 8 ใบ (เพิ่มกล่อง Galaxy):**
+- [x] **นำเข้ากล่อง 8 ใบ (เพิ่มกล่อง Galaxy):** (ทำแล้ว 2026-11-18)
   1. ItemModels -> `Crates` -> ลบของข้างในทั้งหมด
   2. Import 3D -> `art/export/Crates.fbx` -> Creator = กลุ่ม -> Import -> ลากทั้ง 16 ชิ้น (กล่อง + ฝา) ใส่ `Crates`
-- [ ] **อัปโหลดรูปเบ็ด 50 รูป + เหรียญ Robux สีทอง (ไม่ต้องใช้ API key):** Home -> Import 3D -> `art/export/RodIcons.fbx` ->
+- [x] **อัปโหลดรูปเบ็ด 50 รูป + เหรียญ Robux สีทอง (ไม่ต้องใช้ API key):** (ทำแล้ว 2026-11-18 ใส่เข้าเกมแล้ว) Home -> Import 3D -> `art/export/RodIcons.fbx` ->
   Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import (วางไว้ใน Workspace ได้เลย Claude จะอ่านเลขรูปแล้วลบให้)
 - [ ] เสร็จทั้งสามข้อ กด Save แล้วบอก Claude ว่า "นำเข้าเบ็ดกับกล่อง และอัปรูปแล้ว"
+- [ ] **Publish หลังแก้รอบ 6:** กด File -> Publish to Roblox (เบ็ด 50 อัน กล่อง Galaxy รูปเบ็ด เหรียญทอง ป้ายใหม่ ตัวเลขใหม่)

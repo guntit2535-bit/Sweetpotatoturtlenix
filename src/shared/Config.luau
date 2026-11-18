@@ -302,7 +302,7 @@ Config.UIIcons = {
 	Rod = 137425277592316, -- P13_rod (uploaded 2026-11-13, checked: image, group, loads)
 	Bat = 71320313933012, -- P14_bat (uploaded 2026-11-13, checked: image, group, loads)
 	-- 2026-11-18 (revision list 6): the gold Robux coin on the Robux shop button (art/export/RodIcons/RobuxCoin.png), 0 = the shop bag
-	RobuxCoin = 0,
+	RobuxCoin = 125354390827078, -- (uploaded 2026-11-18 through Import 3D, group image)
 }
 
 -- R3: "+$X" popups over your own pen cats every income tick, and "+$total" by the money pill.

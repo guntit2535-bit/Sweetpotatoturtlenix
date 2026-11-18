@@ -172,7 +172,8 @@ local function collider(parent: Instance, size: Vector3, cf: CFrame)
 end
 
 function GymLooks.applyLevel(gym: Model, which: string, level: number): boolean
-	local id = which .. level
+	local look = math.min(level, Config.Gym.MeshLevels) -- (2026-11-18: levels 26-50 keep the level-25 model)
+	local id = which .. look
 	if not ItemModels.has(id) then
 		return false
 	end
@@ -193,7 +194,7 @@ function GymLooks.applyLevel(gym: Model, which: string, level: number): boolean
 	local isTread = which == "Treadmill"
 	local scale = if isTread
 		then Config.ItemModels.TreadmillScale
-		else Config.ItemModels.WeightsScale * (1 + 0.06 * (level - 1)) ^ (Config.ItemModels.WeightsGrowth - 1)
+		else Config.ItemModels.WeightsScale * (1 + 0.06 * (look - 1)) ^ (Config.ItemModels.WeightsGrowth - 1)
 	local model = ItemModels.build(id, scale) :: Model
 	model.Name = "Look"
 	for _, c in gym:GetChildren() do
@@ -214,7 +215,7 @@ function GymLooks.applyLevel(gym: Model, which: string, level: number): boolean
 	model.Parent = gym
 	if isTread then
 		-- items.py treadmill: deck top 0.82, belt top 0.9 and belt centre 0.1 back, x (1 + 0.02 (level - 1))
-		local k = 1 + 0.02 * (level - 1)
+		local k = 1 + 0.02 * (look - 1)
 		local beltTop = ItemModels.point(scale, 0, 0.1 * k, 0.9 * k)
 		collider(gym, Vector3.new(2.4, 0.9, 4.2) * k * scale, place * CFrame.new(0, 0.45 * k * scale, 0))
 		stand.CFrame = place * CFrame.new(beltTop) * CFrame.new(0, -stand.Size.Y / 2, 0)

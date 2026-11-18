@@ -897,3 +897,20 @@ dark outline; the tutorial cat only for its player.
   ActionController is "Put in pen" only; SellCarried remote gone (SellAtBooth). Play (FreshSave): menu opens, "How much"
   answers, bag sold (+2.5M, bag empty), held cat sold (+$431), walking away closes it, selling from 60 studs refused.
   The Studio test tool's mouse clicks do not reach any GUI in phone emulation (the Shop button neither): tap test by hand.
+
+## Phase 8 — revision list 6 (client, 2026-11-18, paid 200 THB)
+Developer's answers: rods 26-50 = 5 new materials on the 5 rod shapes (Blender); Secret 5B-100B kg; the Secret crate
+gives Secret 10% (Legendary 40 / Mythical 50).
+- [x] Z1 Numbers (sim, option W): weights + treadmill 50 levels (x1.6 to 25, then x1.1; prices x2.2 then x3.3, fixed),
+  50 rods (x3 then x2.3), rod ease halved per level, StrengthMult 3.8 -> 3.45, Secret 5B-100B kg, crate prices fixed
+  on a ladder + the 8th crate Galaxy (Secret 10 %). Gym models: levels 26-50 keep the level-25 look.
+- [ ] Z2 Rods 26-50 (Ruby, Emerald, Lava, Rainbow, Galaxy) + the Galaxy crate in Blender; the developer imports
+- [ ] Z3 Hotbar rod icons for every rod + the shop button's gold Robux coin; the developer uploads
+- [ ] Z4 Prettier upgrade boards (weights, treadmill, pen slots): looks first
+- 2026-11-18 client (revision list 6, 200 THB paid): Z1 numbers. Sim (tools/sim/endgame.luau, options T..X, kept W):
+  end 45h35 (was 48h23), rebirth 1 0h31, weights level 25 2h09 / 40 20h32 / 50 35h17 (was all 25 in 0h52), rod 25 9h03 /
+  50 37h30, crates first bought Paper 0h22 ... Cosmic 16h42, Galaxy 26h52 (first Secret 27h34). Late prices kept under
+  the 99 Sx cap (options T-S had levels 40-50 all at the cap price), the rebirth need stays x4 (more makes rebirth 25
+  impossible under the cap). Secret 5B-100B: wild Secret cats are catchable only after the last rebirth (Strength
+  then keeps growing). Play: weights level 30, rod 30, Galaxy x1000 rolls 38/53/8.5 %, bought one for 1 Qi, opened
+  (a plain block until its model is imported). Tests updated (8 crates, Secret only in AllowSecret crates).

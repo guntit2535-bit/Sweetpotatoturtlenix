@@ -180,7 +180,7 @@ local function holdDumbbells(player: Player)
 	if not character or not data then
 		return
 	end
-	local level = data.WeightsLevel
+	local level = math.min(data.WeightsLevel, Config.Gym.MeshLevels) -- (2026-11-18: levels 26-50 keep the level-25 dumbbell)
 	local id = "Dumbbell" .. level
 	local old = character:FindFirstChild("Dumbbells")
 	if old and old:GetAttribute("Id") == id then

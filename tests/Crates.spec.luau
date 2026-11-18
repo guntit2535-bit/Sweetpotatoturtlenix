@@ -1,5 +1,6 @@
 --!strict
--- Crates (task 2.6): odds as in the blueprint, sum to 100, no Secret, and rolls follow the odds.
+-- Crates (task 2.6): odds as in the blueprint, sum to 100, no Secret (except a crate marked AllowSecret: the client's
+-- Galaxy crate, 2026-11-18), and rolls follow the odds.
 -- Run by scripts/check.luau (lune).
 
 local Shared = require("./lib/Shared")
@@ -14,7 +15,7 @@ local function check(ok: boolean, message: string)
 	end
 end
 
--- X3 (revision 4 item 9): 7 crates, prices rising, odds as agreed 2026-11-15
+-- X3 (revision 4 item 9): 7 crates, prices rising, odds as agreed 2026-11-15; 2026-11-18 (revision list 6): + Galaxy (Secret)
 local blueprint = {
 	Paper = { Basic = 75, Rare = 22, Epic = 3 },
 	Wood = { Basic = 50, Rare = 38, Epic = 11, Legendary = 1 },
@@ -24,7 +25,7 @@ local blueprint = {
 	Diamond = { Epic = 55, Legendary = 44.3, Mythical = 0.7 },
 	Cosmic = { Epic = 35, Legendary = 63, Mythical = 2 },
 }
-check(#Config.Crates.List == 7, "7 crates")
+check(#Config.Crates.List == 8, "8 crates")
 for i = 2, #Config.Crates.List do
 	check(Config.Crates.List[i].Cost > Config.Crates.List[i - 1].Cost, `crate {i} dearer than crate {i - 1}`)
 end
@@ -36,7 +37,7 @@ for key, want in blueprint do
 		for tier, p in c.Odds do
 			sum += p
 			check(want[tier] == p, `{key} {tier} = {want[tier]}%`)
-			check(tier ~= "Secret", `{key} has no Secret`)
+			check(tier ~= "Secret" or c.AllowSecret == true, `{key} has no Secret`)
 		end
 		check(math.abs(sum - 100) < 1e-9, `{key} odds sum to 100`)
 	end

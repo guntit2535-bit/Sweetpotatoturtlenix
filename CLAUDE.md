@@ -79,6 +79,10 @@ are starting values: they live in Config and are tuned after playtests (simulate
   "รอบที่ 3" (revision list 4, `docs/revision4_plan.md`) **200** + the new map (X4 restyle) **200** = **4,400 THB**.
   Also added at the client's request after X4 (inside that price): the two shopkeeper NPCs and the easy first
   rebirths (Config.RebirthNeed.Early). Every player reset again (Config.Data.ResetEpoch 2) before the delivery.
+- 2026-11-18, revision list 6 (9 points, PLAN phase 8), **paid 200 THB** by the client. Blueprint changes, **the client should be
+  told**: 50 weights / treadmill levels and 50 rods (fixed prices), Secret cats 5B-100B kg (wild ones only after the last
+  rebirth), crate prices fixed (no rise per rebirth) and an 8th crate with Secret cats (the blueprint had "no Secret in
+  crates"), a gold Robux coin on the shop button, rod pictures in the hotbar, prettier upgrade boards.
 - 2026-11-15, revision list 5 (7 points, PLAN phase 7), asked after the final price: the developer decides whether it is
   charged. Blueprint changes, **the client should be told**: cats brought home go into a bag (backpack) and are placed on
   the pen floor by hand, only placed cats earn; the training boosts are sold only at the gym boards; a Robux shop

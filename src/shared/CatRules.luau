@@ -94,9 +94,21 @@ end
 
 -- Training ------------------------------------------------------------------------------------------
 
+-- 2026-11-18 (revision list 6, 50 levels): a price ladder Cost x CostGrowth ^ (L - 1) up to level Split, then
+-- x CostGrowth2 a level (nil: CostGrowth all the way). Used by the weights, the treadmill and the rods (Shop).
+function CatRules.ladder(c: any, level: number): number
+	local split = c.Split or c.Levels
+	return c.Cost * c.CostGrowth ^ (math.min(level, split) - 1) * (c.CostGrowth2 or c.CostGrowth) ^ math.max(0, level - split)
+end
+
+-- 2026-11-18 (revision list 6, 50 levels): Growth up to level Split, then the gentler Growth2 (nil: Growth all the way)
+local function gain(c: any, level: number): number
+	local split = c.Split or c.Levels
+	return c.Gain * c.Growth ^ (math.min(level, split) - 1) * (c.Growth2 or c.Growth) ^ math.max(0, level - split)
+end
+
 function CatRules.weightsGain(level: number): number
-	local w = Config.Weights
-	return w.Gain * w.Growth ^ (level - 1)
+	return gain(Config.Weights, level)
 end
 
 -- Money to go from `level` to level + 1 (nil at the top); x CostRebirth per rebirth (R4).
@@ -105,12 +117,11 @@ function CatRules.weightsCost(level: number, rebirths: number?): number?
 	if level >= w.Levels then
 		return nil
 	end
-	return math.floor(CatRules.cap(w.Cost * w.CostGrowth ^ (level - 1) * w.CostRebirth ^ (rebirths or 0)))
+	return math.floor(CatRules.cap(CatRules.ladder(w, level) * w.CostRebirth ^ (rebirths or 0)))
 end
 
 function CatRules.treadGain(level: number): number
-	local t = Config.Treadmill
-	return t.Gain * t.Growth ^ (level - 1)
+	return gain(Config.Treadmill, level)
 end
 
 function CatRules.treadCost(level: number, rebirths: number?): number?
@@ -118,7 +129,7 @@ function CatRules.treadCost(level: number, rebirths: number?): number?
 	if level >= t.Levels then
 		return nil
 	end
-	return math.floor(CatRules.cap(t.Cost * t.CostGrowth ^ (level - 1) * t.CostRebirth ^ (rebirths or 0)))
+	return math.floor(CatRules.cap(CatRules.ladder(t, level) * t.CostRebirth ^ (rebirths or 0)))
 end
 
 -- Speed gained per treadmill step: x SpeedMult per rebirth (R4; Speed resets at rebirth).

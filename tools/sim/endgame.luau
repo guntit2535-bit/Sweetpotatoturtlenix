@@ -52,7 +52,7 @@ local function clock(s: number?): string
 	return string.format("%dh%02d", s // 3600, (s % 3600) // 60)
 end
 
-type Result = { reb: { [number]: number }, inc: { [number]: number }, rod25: number?, pen60: number?, zones: { [number]: number }, money: number, crates: number }
+type Result = { reb: { [number]: number }, inc: { [number]: number }, rod25: number?, pen60: number?, zones: { [number]: number }, money: number, crates: number, wlAt: { [number]: number }, rodAt: { [number]: number }, crateAt: { [string]: number }, secret: number? }
 
 local function run(seed: number): Result
 	local rand = lcg(seed)
@@ -60,7 +60,7 @@ local function run(seed: number): Result
 	local rod, slots, penBuys = 1, Config.Pen.StartSlots, 0
 	local pen: { number } = {} -- income per second of each cat (before the rebirth multiplier)
 	local nextCatch, nextCrate = 0, 0
-	local res: Result = { reb = {}, inc = {}, zones = { [1] = 0 }, money = 0, crates = 0 }
+	local res: Result = { reb = {}, inc = {}, zones = { [1] = 0 }, money = 0, crates = 0, wlAt = {}, rodAt = {}, crateAt = {} }
 	local function addCat(inc: number)
 		table.insert(pen, inc)
 		table.sort(pen, function(a, b)
@@ -85,6 +85,7 @@ local function run(seed: number): Result
 			if c and money >= c then
 				money -= c
 				wl += 1
+				res.wlAt[wl] = res.wlAt[wl] or t
 				continue
 			end
 			if slots < Config.Pen.MaxSlots and money >= Shop.penCost(penBuys) then
@@ -100,6 +101,7 @@ local function run(seed: number): Result
 			if rc and money >= rc then
 				money -= rc
 				rod += 1
+				res.rodAt[rod] = res.rodAt[rod] or t
 				if rod >= Config.Rods.Levels then
 					res.rod25 = res.rod25 or t
 				end
@@ -117,7 +119,11 @@ local function run(seed: number): Result
 			end
 			if best then
 				money -= Crates.cost(best, r)
+				res.crateAt[best] = res.crateAt[best] or t
 				local tier = Crates.roll(best, rand())
+				if tier == #Config.Tiers then
+					res.secret = res.secret or t
+				end
 				local kg = CatRules.kgFor(CatRules.rollKg(tier, rand()), r)
 				addCat(CatRules.income(tier, kg) * Mutation.money(Mutation.roll(tier, luck, rand())))
 				res.crates += 1
@@ -217,6 +223,23 @@ for _, o in OPTIONS do
 	end
 	print(`  crate prices in minutes of income (Paper/Wood/Gold/Diamond): {table.concat(mins, " | ")}`)
 	print(`  rod 25 at {clock(m.rod25)} | 60 pen slots at {clock(m.pen60)} | crates bought {m.crates} | (fastest / slowest seed: {clock(runs[1].reb[25])} / {clock(runs[3].reb[25])})`)
+	local wlRow, rodRow = {}, {}
+	for _, L in { 10, 20, 25, 30, 40, 45, 50 } do
+		table.insert(wlRow, `{L} {clock(m.wlAt[L])}`)
+		table.insert(rodRow, `{L} {clock(m.rodAt[L])}`)
+	end
+	print(`  weights level: {table.concat(wlRow, ' | ')}`)
+	print(`  rod: {table.concat(rodRow, ' | ')}`)
+	local crRow = {}
+	for _, cr in Config.Crates.List do
+		table.insert(crRow, `{cr.Key} {clock(m.crateAt[cr.Key])}`)
+	end
+	print(`  first crate bought: {table.concat(crRow, ' | ')} | first Secret from a crate {clock(m.secret)}`)
+	local incRow = {}
+	for _, k in { 1, 3, 5, 8, 10, 13, 15, 18, 20, 23, 25 } do
+		table.insert(incRow, `{k}:{short(m.inc[k] or 0)}`)
+	end
+	print(`  income/s at the end of life: {table.concat(incRow, ' ')}`)
 	for i = #saved, 1, -1 do
 		local s = saved[i]
 		s[1][s[2]] = s[3]

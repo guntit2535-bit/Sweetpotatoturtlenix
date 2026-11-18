@@ -122,7 +122,9 @@ Config.Tiers = {
 	{ Key = "Epic", Count = 70, MinKg = 1e4, MaxKg = 1e6, Rate = 1.2, Color = "a46bff" },
 	{ Key = "Legendary", Count = 50, MinKg = 1e6, MaxKg = 1e8, Rate = 2, Color = "ffb020" },
 	{ Key = "Mythical", Count = 50, MinKg = 1e8, MaxKg = 1e9, Rate = 4, Color = "ff5fa2", SizeMin = 1.3, SizeMax = 2 },
-	{ Key = "Secret", Count = 50, MinKg = 1e9, MaxKg = 1.18e9, Rate = 8, Color = "18c9b9", SizeMin = 3, SizeMax = 6 },
+	-- 2026-11-18 (client, revision list 6): Secret cats much heavier, 5B-100B kg (were 1B-1.18B): wild ones are an end-game
+	-- catch (after the last rebirth); the Galaxy crate gives them without the Strength
+	{ Key = "Secret", Count = 50, MinKg = 5e9, MaxKg = 1e11, Rate = 8, Color = "18c9b9", SizeMin = 3, SizeMax = 6 },
 }
 Config.KgSkew = 2 -- base kg = min * (max / min) ^ (u ^ KgSkew): heavy cats of a tier are rarer
 
@@ -137,8 +139,12 @@ Config.Economy = {
 
 -- Training (tasks 1.15 / 1.16, R4): one rep / step every Tick seconds; level L gives Gain * Growth^(L-1) (x the
 -- rebirth multipliers); the next level costs Cost * CostGrowth^(L-1) * CostRebirth^rebirths money.
-Config.Weights = { Levels = 25, Tick = 1, Gain = 1, Growth = 1.6, Cost = 30, CostGrowth = 1.78, CostRebirth = 3 }
-Config.Treadmill = { Levels = 25, Tick = 1, Gain = 1, Growth = 1.6, Cost = 20, CostGrowth = 1.78, CostRebirth = 3 }
+-- 2026-11-18 (revision list 6, option W, tools/sim/endgame.luau): 50 levels; gain x1.6 a level up to Split (25), then x1.1;
+-- price x2.2 a level up to 25, then x3.3 (level 50 stays under the 99 Sx cap), the same in every life (CostRebirth 1:
+-- the levels are kept, X2). Sim: level 25
+-- at ~2h, 30 ~4h30, 40 ~20h, 50 ~35h of a ~45h30 game (was: all 25 levels in 52 minutes).
+Config.Weights = { Levels = 50, Tick = 1, Gain = 1, Growth = 1.6, Split = 25, Growth2 = 1.1, Cost = 30, CostGrowth = 2.2, CostGrowth2 = 3.3, CostRebirth = 1 }
+Config.Treadmill = { Levels = 50, Tick = 1, Gain = 1, Growth = 1.6, Split = 25, Growth2 = 1.1, Cost = 20, CostGrowth = 2.2, CostGrowth2 = 3.3, CostRebirth = 1 }
 -- R7: running on the treadmill gets faster with its level: the run animation plays RunSpeed[1] .. [2] times as
 -- fast (level 1 .. 25), and sparkles race back along the belt (rate and speed level 1 .. 25), in the
 -- colour of the treadmill's family (basic, sport, neon, gold, cosmic: 5 levels each).
@@ -155,6 +161,7 @@ Config.Gym = {
 	TreadRingRadius = 7.2, -- X1 (revision 4 item 22): the treadmill's green ring, on the ground under it, x2
 	RingSegments = 24, -- W3: the green ring on your own training spots (client decoration)
 	LookEvery = 5,
+	MeshLevels = 25, -- 2026-11-18: gym models exist for levels 1-25; levels 26-50 keep the level-25 look
 	UpgradeRate = { maxCalls = 3, window = 1 },
 	-- R2: stepping on the spot locks the player there (walk speed 0) until a jump (StopTraining)
 	CheckEvery = 0.2, -- seconds between spot checks
@@ -186,7 +193,9 @@ Config.Gates = { CheckEvery = 0.5, PushBack = 8 }
 Config.Walk = { Base = 16, Bonus = 9, Scale = 100, Max = 60, Cap = 120, LikeBuff = 2, LikeBuffSeconds = 300 }
 -- Each rebirth (R4): money x1.5, Strength gain x3.95, Speed gain x3.95, every cat in the world x3.6 heavier.
 -- W5 (revision 3 item 9, option B, docs/economy.md): StrengthMult 3.95 -> 3.8, so the 25 rebirths take ~53 h of active play
-Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.8, SpeedMult = 3.95, KgMult = 3.6,
+-- 2026-11-18 (revision list 6, option W): StrengthMult 3.8 -> 3.45, so the 25 more gym levels do not shorten the game
+-- (the rebirth need cannot grow faster than x4: rebirth 25 would need more than the 99 Sx cap)
+Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.45, SpeedMult = 3.95, KgMult = 3.6,
 	KeepLevels = true, -- X2 (revision 4 item 6, 2026-11-14): a rebirth keeps the weights / treadmill levels (was: back to 1)
 }
 
@@ -225,8 +234,10 @@ Config.Fishing = {
 		{ Zone = 0.235, CatSpeed = 0.52, Change = { 0.45, 1.1 }, Fill = 0.058, Drain = 0.06 }, -- Mythical
 		{ Zone = 0.225, CatSpeed = 0.55, Change = { 0.4, 1.0 }, Fill = 0.052, Drain = 0.058 }, -- Secret: hardest
 	},
-	RodZonePerLevel = 0.006, -- milestone 2: each rod level widens the zone ...
-	RodFillPerLevel = 0.02, -- ... and fills the meter faster
+	-- milestone 2: each rod level widens the zone and fills the meter faster (2026-11-18: halved for 50 rods, so rod 50
+	-- plays like rod 25 did)
+	RodZonePerLevel = 0.003,
+	RodFillPerLevel = 0.01,
 }
 
 -- Carrying a caught cat home (task 1.13) and the baseball bat (task 1.14).
@@ -472,12 +483,17 @@ Config.Shoes = {
 -- Rods (task 2.2): 25 tiers, 5 per material, bought in order; the best one owned is used.
 -- Rod L costs Cost * CostGrowth^(L-2) (rod 1 is free). Fishing ease per level is in Config.Fishing.
 Config.Rods = {
-	Levels = 25,
+	-- 2026-11-18 (revision list 6, option W): 50 rods, 10 materials of 5; price x3 a rod up to rod 25 (Split 24: the
+	-- ladder starts at rod 2), then x2.3 (rod 50 under the 99 Sx cap): sim rod 25 at ~9h, 50 at ~37h30 (was 25 rods, x5.5,
+	-- rod 25 at ~32h)
+	Levels = 50,
 	PerMaterial = 5,
-	Materials = { "Wood", "Iron", "Gold", "Crystal", "Cosmic" },
-	Colors = { "c98a4a", "a9b0bf", "f5bf2e", "7fe3ff", "9a6bff" },
+	Materials = { "Wood", "Iron", "Gold", "Crystal", "Cosmic", "Ruby", "Emerald", "Lava", "Rainbow", "Galaxy" },
+	Colors = { "c98a4a", "a9b0bf", "f5bf2e", "7fe3ff", "9a6bff", "ff4d6d", "3ddc84", "ff7a1a", "ff8ef0", "3d5bff" },
 	Cost = 400,
-	CostGrowth = 5.5, -- W5 option B (was 2.15): rod 25 comes at ~35 h instead of 3 h
+	CostGrowth = 3,
+	Split = 24,
+	CostGrowth2 = 2.3,
 	LuckPerLevel = 0.04, -- +4% luck per level above 1
 }
 
@@ -583,21 +599,24 @@ Config.Trade = {
 -- minutes of income (the Diamond one ~5-8 minutes at the end of a life) instead of seconds.
 Config.Crates = {
 	List = {
-		-- X3 (revision 4 item 9, developer 2026-11-15 "9B 9-3A"): 7 crates on a price ladder (Iron, Ruby, Cosmic new; Wood
-		-- 2.5M -> 600K, Diamond's odds moved up under Cosmic). Sim: the end game stays 52h48 (tools/sim). No Secret.
+		-- X3 (revision 4 item 9, developer 2026-11-15 "9B 9-3A"): 7 crates on a price ladder (Iron, Ruby, Cosmic new).
+		-- 2026-11-18 (client, revision list 6, option W): FIXED prices (no rise per rebirth), spread over the game (sim: first
+		-- bought Paper 0h22, Wood 0h38, Iron 2h, Gold 3h, Ruby 7h, Diamond 10h30, Cosmic 16h40, Galaxy 27h), and an 8th crate,
+		-- Galaxy, with Secret cats (AllowSecret: the client asked for it; the blueprint had no Secret in crates).
 		{ Key = "Paper", Cost = 40000, Color = "e8d6ab", Odds = { Basic = 75, Rare = 22, Epic = 3 } },
 		{ Key = "Wood", Cost = 600e3, Color = "c98a4a", Odds = { Basic = 50, Rare = 38, Epic = 11, Legendary = 1 } },
-		{ Key = "Iron", Cost = 8e6, Color = "b8c2d6", Odds = { Basic = 25, Rare = 45, Epic = 26, Legendary = 4 } },
-		{ Key = "Gold", Cost = 75e6, Color = "f5bf2e", Odds = { Rare = 50, Epic = 38, Legendary = 12 } },
-		{ Key = "Ruby", Cost = 300e6, Color = "ff4d6d", Odds = { Rare = 25, Epic = 50, Legendary = 24.7, Mythical = 0.3 } },
-		{ Key = "Diamond", Cost = 900e6, Color = "7fe3ff", Odds = { Epic = 55, Legendary = 44.3, Mythical = 0.7 } },
-		{ Key = "Cosmic", Cost = 3e9, Color = "6b4cff", Odds = { Epic = 35, Legendary = 63, Mythical = 2 } },
+		{ Key = "Iron", Cost = 3e8, Color = "b8c2d6", Odds = { Basic = 25, Rare = 45, Epic = 26, Legendary = 4 } },
+		{ Key = "Gold", Cost = 3e10, Color = "f5bf2e", Odds = { Rare = 50, Epic = 38, Legendary = 12 } },
+		{ Key = "Ruby", Cost = 3e12, Color = "ff4d6d", Odds = { Rare = 25, Epic = 50, Legendary = 24.7, Mythical = 0.3 } },
+		{ Key = "Diamond", Cost = 3e13, Color = "7fe3ff", Odds = { Epic = 55, Legendary = 44.3, Mythical = 0.7 } },
+		{ Key = "Cosmic", Cost = 3e15, Color = "6b4cff", Odds = { Epic = 35, Legendary = 63, Mythical = 2 } },
+		{ Key = "Galaxy", Cost = 1e18, Color = "18c9b9", AllowSecret = true, Odds = { Legendary = 40, Mythical = 50, Secret = 10 } },
 	},
 	BuyRate = { maxCalls = 2, window = 1 },
 	RevealSeconds = 1.2, -- (before R8; unused)
 	-- R8: the opening, in seconds from the result: drop in, shake until, lid off until, card done; closes itself
 	Open = { Drop = 1, Shake = 3, Pop = 3.6, Done = 5, AutoClose = 12 },
-	CostRebirth = 3.4, -- W5 option B (was 3): income grows about x3.4 a rebirth (their cats are x3.6 heavier)
+	CostRebirth = 1, -- 2026-11-18 (client): fixed prices (was 3.4: x3.4 a rebirth)
 }
 
 -- Sound (task 2.23). Ids picked by the developer (docs/Sweetpotato_Sounds.xlsx, 2026-11-08; each checked in Studio:

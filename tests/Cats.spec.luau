@@ -58,7 +58,10 @@ check(math.abs(CatRules.size(5, T[5].MinKg) - 1.3) < 1e-9 and math.abs(CatRules.
 check(math.abs(CatRules.size(6, T[6].MinKg) - 3) < 1e-9 and math.abs(CatRules.size(6, T[6].MaxKg) - 6) < 1e-9, "Secret 3-6x")
 -- R4: a rebirthed player's heavier cat keeps its size (the rebirth factor is taken out)
 local mid = T[6].MinKg * (T[6].MaxKg / T[6].MinKg) ^ 0.5
-check(math.abs(CatRules.size(6, mid * Config.Rebirth.KgMult ^ 7) - CatRules.size(6, mid)) < 1e-6, "Secret size ignores the rebirth factor")
+-- (2026-11-18: Secret 5B-100B is wider than one rebirth step, x3.6, so the factor cannot be taken out exactly any more;
+-- a rebirthed player's Secret still stays inside the Secret sizes)
+local big = CatRules.size(6, mid * Config.Rebirth.KgMult ^ 7)
+check(big >= T[6].SizeMin and big <= T[6].SizeMax, "a rebirthed Secret stays 3-6x")
 -- R4: weights per player, the 99 Sx cap
 check(CatRules.kgFor(50, 0) == 50, "no rebirth: base kg")
 check(math.abs(CatRules.kgFor(1e6, 2) - 1e6 * Config.Rebirth.KgMult ^ 2) < 1, "x KgMult per rebirth")

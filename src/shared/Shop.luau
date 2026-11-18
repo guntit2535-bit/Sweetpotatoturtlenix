@@ -8,6 +8,7 @@
 --   Shop.rodMaterial(level)      material index 1 .. 5 and the number 1 .. 5 inside it
 
 local Config = require(script.Parent.Config)
+local CatRules = require(script.Parent.CatRules)
 
 local Shop = {}
 
@@ -16,7 +17,8 @@ function Shop.rodCost(level: number): number?
 	if level < 2 or level > r.Levels then
 		return nil
 	end
-	return math.floor(r.Cost * r.CostGrowth ^ (level - 2))
+	-- (rod 2 is the first one bought: the ladder starts there; 2026-11-18 CostGrowth2 after Split, CatRules.ladder)
+	return math.floor(CatRules.cap(CatRules.ladder(r, level - 1)))
 end
 
 function Shop.rodMaterial(level: number): (number, number)

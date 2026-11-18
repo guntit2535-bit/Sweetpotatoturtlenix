@@ -156,13 +156,13 @@
   4. จบแล้วบอก Claude ว่า "อัปรูปแมวแล้ว" (Claude จะใส่รูปเข้าเกมเอง) แล้วลบ API key ทิ้งได้ใน Creator Hub
 
 ## แก้รอบ 6 (ลูกค้าจ่าย 200 บาท, 2026-11-18)
-- [ ] **นำเข้าเบ็ด 50 อัน (แทนของเดิม 25):**
+- [x] **นำเข้าเบ็ด 50 อัน (แทนของเดิม 25):** (ทำแล้ว 2026-11-18 Claude ย้ายเข้า ItemModels/Rods ให้)
   1. Explorer -> ReplicatedStorage -> ItemModels -> โฟลเดอร์เบ็ด (ที่มี Rod1 ... Rod25) -> ลบของข้างในทั้งหมด
   2. Home -> Import 3D -> `art/export/Rods.fbx` -> Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import
   3. ลากทั้ง 50 ชิ้น (Rod1 ... Rod50) ใส่โฟลเดอร์เดิม (ห้ามแก้ชื่อ)
 - [ ] **นำเข้ากล่อง 8 ใบ (เพิ่มกล่อง Galaxy):**
   1. ItemModels -> `Crates` -> ลบของข้างในทั้งหมด
   2. Import 3D -> `art/export/Crates.fbx` -> Creator = กลุ่ม -> Import -> ลากทั้ง 16 ชิ้น (กล่อง + ฝา) ใส่ `Crates`
-- [ ] **อัปโหลดรูปเบ็ด 50 รูป + เหรียญ Robux สีทอง:** สร้าง API key ใหม่แบบเดิม (Assets API read + write) แล้วดับเบิลคลิก
-  `tools/icons/upload_rod_icons.bat` วาง key -> Enter รอจบ (51 รูป ประมาณ 2-3 นาที) แล้วลบ key ทิ้ง
+- [ ] **อัปโหลดรูปเบ็ด 50 รูป + เหรียญ Robux สีทอง (ไม่ต้องใช้ API key):** Home -> Import 3D -> `art/export/RodIcons.fbx` ->
+  Creator = **กลุ่ม Sweetpotatoturtlenix** -> Import (วางไว้ใน Workspace ได้เลย Claude จะอ่านเลขรูปแล้วลบให้)
 - [ ] เสร็จทั้งสามข้อ กด Save แล้วบอก Claude ว่า "นำเข้าเบ็ดกับกล่อง และอัปรูปแล้ว"

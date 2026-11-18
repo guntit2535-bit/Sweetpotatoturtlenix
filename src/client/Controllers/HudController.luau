@@ -145,13 +145,19 @@ local function build()
 	end
 	Hud.leftButton("Trade", "TradeButton", C.purple, 4, TradeController.toggle)
 	-- 2026-11-15 (developer): a Robux shop button beside Rewards (the Shop window, Robux tab only)
-	Hud.leftButton("Shop", "RobuxShopButton", C.coral, 7, function()
+	local robuxShop = Hud.leftButton("Shop", "RobuxShopButton", C.coral, 7, function()
 		if ShopController.isRobuxOnly() then
 			ShopController.toggle()
 		else
 			ShopController.open(true)
 		end
 	end)
+	-- 2026-11-18 (revision list 6): a gold Robux coin on it (Config.UIIcons.RobuxCoin, our own picture), once uploaded
+	local coin = (Config.UIIcons :: any).RobuxCoin
+	local coinIcon = robuxShop:FindFirstChild("Icon")
+	if type(coin) == "number" and coin > 0 and coinIcon and coinIcon:IsA("ImageLabel") then
+		coinIcon.Image = `rbxassetid://{coin}`
+	end
 
 	-- W3 (revision 3 item 10): Strength, Speed and money big at the bottom left, no panels: a big icon and a
 	-- big outlined number per line (the old right-hand Strength panel with the gym levels is gone; the levels

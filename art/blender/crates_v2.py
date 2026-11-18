@@ -42,6 +42,10 @@ TIERS = {
     "Cosmic": dict(main=(92, 52, 186), main2=(70, 40, 158), dark=(30, 26, 84), trim=(255, 206, 60),
                    gem=(120, 236, 255), ribbon=(110, 232, 255), pat="stars", corner="star", rough=0.3, coat=0.6,
                    glow=1.6, eye=(30, 22, 60)),
+    # 2026-11-18 (revision list 6): the 8th crate, Galaxy, with Secret cats: deep night blue, teal trim, pink gems
+    "Galaxy": dict(main=(26, 40, 104), main2=(18, 30, 84), dark=(8, 12, 44), trim=(110, 238, 255),
+                   gem=(255, 120, 230), ribbon=(110, 238, 255), pat="stars", corner="star", rough=0.25, coat=0.8,
+                   glow=1.9, eye=(16, 18, 52)),
 }
 LOOKS = ("A", "B", "C")
 

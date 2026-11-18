@@ -37,6 +37,12 @@ RODS = [
     dict(name="gold", pole=(250, 196, 40), grip=(200, 40, 50), trim=(214, 40, 50), reel=(250, 196, 40), glow=(255, 220, 90)),
     dict(name="crystal", pole=(150, 220, 255), grip=(236, 238, 248), trim=(214, 222, 240), reel=(170, 230, 255), glow=(120, 220, 255)),
     dict(name="cosmic", pole=(70, 40, 150), grip=(150, 90, 220), trim=(250, 200, 60), reel=(120, 70, 200), glow=(255, 110, 230)),
+    # 2026-11-18 (revision list 6): rods 26-50, five more materials on the same five shapes
+    dict(name="ruby", pole=(220, 30, 70), grip=(255, 214, 90), trim=(255, 206, 60), reel=(236, 40, 84), glow=(255, 120, 160), gem=(255, 90, 130)),
+    dict(name="emerald", pole=(36, 186, 108), grip=(250, 244, 226), trim=(255, 206, 60), reel=(56, 216, 136), glow=(120, 255, 180), gem=(90, 255, 170)),
+    dict(name="lava", pole=(64, 44, 44), grip=(255, 120, 20), trim=(255, 178, 40), reel=(255, 92, 24), glow=(255, 140, 40), gem=(255, 200, 60)),
+    dict(name="rainbow", pole=(255, 140, 214), grip=(116, 196, 255), trim=(255, 228, 90), reel=(164, 120, 255), glow=(255, 255, 255), gem=(120, 240, 200)),
+    dict(name="galaxy", pole=(40, 50, 160), grip=(24, 22, 64), trim=(120, 240, 255), reel=(92, 60, 220), glow=(150, 220, 255), gem=(255, 140, 240)),
 ]
 CRATES = {
     "Paper": dict(body=(214, 170, 110), lid=(226, 186, 128), trim=(236, 214, 170), corner=None, alpha=1.0, glow=None),
@@ -301,7 +307,9 @@ def weights(level):
 # --------------------------------------------------------------------------------------------------
 # Rods (M01-M05): 5 materials x 5 tiers
 def rod(level):
-    f, step = fam_step(level)
+    # 2026-11-18: 50 rods = 10 materials x 5 steps (fam_step stops at 25 for the gym pieces)
+    level = max(1, min(50, level))
+    f, step = (level - 1) // 5, (level - 1) % 5 + 1
     P = RODS[f]
     m = Model(f"Rod{level}")
     L = 4.6 + 0.04 * level
@@ -322,6 +330,10 @@ def rod(level):
     # tip ring the line hangs from
     tip = Vector(pts[-1])
     m.ball(tip, 0.13, P["trim"])
+    if "gem" in P:
+        # rods 26-50: a glowing gem on the tip and a second gem on the grip's cap
+        m.ball(tip + Vector((0, -0.05, 0.12)), 0.17, P["gem"], emit=1.2)
+        m.ball(Vector((0, 0, 1.25)), 0.13, P["gem"], emit=1.0)
     # reel on the -X side (the angler's right in the game), the paw facing out
     rc = Vector((-0.42, 0, 1.45))  # on -X = the angler's right in the game: the right hand cranks (V2, developer)
     cyl(m, rc + Vector((0.22, 0, 0)), Vector((0, 0, 1.45)), 0.09, P["trim"])

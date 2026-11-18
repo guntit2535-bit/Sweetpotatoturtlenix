@@ -15,7 +15,8 @@ local serde = require("@lune/serde")
 local task = require("@lune/task")
 
 local GROUP_ID = "565190385" -- Config.GroupId
-local DIR = "art/export/CatIcons"
+-- 2026-11-18: any folder of pictures: lune run tools/icons/upload.luau [folder] (default the cat icons)
+local DIR = string.gsub(process.args[1] or "art/export/CatIcons", "[/\\]+$", "")
 local IDS = `{DIR}/ids.json`
 local PAUSE = 1.2 -- seconds between uploads (the API allows about 60 a minute)
 
@@ -41,7 +42,7 @@ local function upload(name: string, png: string): string?
 	local boundary = "----SweetpotatoIcon" .. tostring(math.random(1e8, 9e8))
 	local request = serde.encode("json", {
 		assetType = "Decal",
-		displayName = `Sweetpotato cat icon {name}`,
+		displayName = `Sweetpotato icon {name}`,
 		description = "Hotbar icon (Sweetpotatoturtlenix)",
 		creationContext = { creator = { groupId = GROUP_ID } },
 	})
@@ -92,7 +93,7 @@ end
 
 local files = {}
 for _, f in fs.readDir(DIR) do
-	local id = string.match(f, "^(cat%d+)%.png$")
+	local id = string.match(f, "^([%w_]+)%.png$")
 	if id then
 		table.insert(files, id)
 	end

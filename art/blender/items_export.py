@@ -56,7 +56,7 @@ def family_jobs(family):
     if family == "Dumbbells":
         return [(f"Dumbbell{L}", lambda L=L: items.dumbbell(L), 2500, GRIPS["Dumbbell"]) for L in range(1, 26)]
     if family == "Rods":
-        return [(f"Rod{L}", lambda L=L: items.rod(L), 4000, GRIPS["Rod"]) for L in range(1, 26)]
+        return [(f"Rod{L}", lambda L=L: items.rod(L), 4000, GRIPS["Rod"]) for L in range(1, 51)]  # 2026-11-18: 50 rods
     if family == "Gear":
         jobs = [("Bat", items.bat, 3000, GRIPS["Bat"])]
         jobs += [(f"Shoe_{k}", lambda k=k: shoes.shoe(k), 3000, None) for k in shoes.KEYS]
@@ -75,7 +75,7 @@ def family_jobs(family):
     raise ValueError(family)
 
 
-CRATE_TIERS = ("Paper", "Wood", "Iron", "Gold", "Ruby", "Diamond", "Cosmic")
+CRATE_TIERS = ("Paper", "Wood", "Iron", "Gold", "Ruby", "Diamond", "Cosmic", "Galaxy")  # 2026-11-18: + Galaxy (Secret)
 CRATE_LOOK = "B"
 LID_Z = 1.0  # look B: every part wholly above the collar's middle is the cat-head lid
 HINGE_V2 = Vector((0, 0.86 + 0.07, 1.02))  # look B: the back edge of the collar band

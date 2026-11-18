@@ -13,6 +13,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Config = require(ReplicatedStorage.Shared.Config)
 local ItemModels = require(ReplicatedStorage.Shared.ItemModels)
 local Shop = require(ReplicatedStorage.Shared.Shop)
+local RodIcons = require(ReplicatedStorage.Shared.RodIcons)
 local DataService = require(script.Parent.DataService)
 
 local ToolService = {}
@@ -141,6 +142,11 @@ function ToolService.refreshRod(player: Player)
 	local color = Color3.fromHex(Config.Rods.Colors[m])
 	for _, container in { player:FindFirstChild("Backpack"), player.Character } do
 		local rod = container and container:FindFirstChild("Rod")
+		-- 2026-11-18 (revision list 6): the hotbar shows the rod the player has (shared/RodIcons), else the old picture
+		local picture = RodIcons[level]
+		if rod and rod:IsA("Tool") and picture then
+			rod.TextureId = `rbxassetid://{picture}`
+		end
 		if rod and rod:IsA("Tool") and rod:GetAttribute("Level") == level and rod:FindFirstChild("Mesh") then
 			continue
 		end

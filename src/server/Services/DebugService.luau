@@ -146,7 +146,7 @@ local function registerBasics()
 		return `{which} level = {n}`
 	end)
 
-	DebugService.register("gear", "!gear rod|shoes N  set the best rod (1-25) / shoe pair (0-8) (R5 looks)", function(player, args)
+	DebugService.register("gear", "!gear rod|shoes N  set the best rod (1-50) / shoe pair (0-8) (R5 looks)", function(player, args)
 		local which = args[1]
 		local n = Commands.integer(args[2])
 		if n == nil or (which ~= "rod" and which ~= "shoes") then

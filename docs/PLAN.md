@@ -904,9 +904,9 @@ gives Secret 10% (Legendary 40 / Mythical 50).
 - [x] Z1 Numbers (sim, option W): weights + treadmill 50 levels (x1.6 to 25, then x1.1; prices x2.2 then x3.3, fixed),
   50 rods (x3 then x2.3), rod ease halved per level, StrengthMult 3.8 -> 3.45, Secret 5B-100B kg, crate prices fixed
   on a ladder + the 8th crate Galaxy (Secret 10 %). Gym models: levels 26-50 keep the level-25 look.
-- [ ] Z2 Rods 26-50 (Ruby, Emerald, Lava, Rainbow, Galaxy) + the Galaxy crate in Blender; the developer imports
-- [ ] Z3 Hotbar rod icons for every rod + the shop button's gold Robux coin; the developer uploads
-- [ ] Z4 Prettier upgrade boards (weights, treadmill, pen slots): looks first
+- [~] Z2 Rods 26-50 (Ruby, Emerald, Lava, Rainbow, Galaxy) + the Galaxy crate exported (Rods.fbx 50, Crates.fbx 8); the developer imports
+- [~] Z3 50 rod icons + the gold coin rendered (art/export/RodIcons), wired (shared/RodIcons, Config.UIIcons.RobuxCoin); the developer uploads
+- [x] Z4 Prettier upgrade boards: look A (cream face, pink title band with cat ears, LEGO-stud posts), WorldBoard
 - 2026-11-18 client (revision list 6, 200 THB paid): Z1 numbers. Sim (tools/sim/endgame.luau, options T..X, kept W):
   end 45h35 (was 48h23), rebirth 1 0h31, weights level 25 2h09 / 40 20h32 / 50 35h17 (was all 25 in 0h52), rod 25 9h03 /
   50 37h30, crates first bought Paper 0h22 ... Cosmic 16h42, Galaxy 26h52 (first Secret 27h34). Late prices kept under
@@ -914,3 +914,9 @@ gives Secret 10% (Legendary 40 / Mythical 50).
   impossible under the cap). Secret 5B-100B: wild Secret cats are catchable only after the last rebirth (Strength
   then keeps growing). Play: weights level 30, rod 30, Galaxy x1000 rolls 38/53/8.5 %, bought one for 1 Qi, opened
   (a plain block until its model is imported). Tests updated (8 crates, Secret only in AllowSecret crates).
+- 2026-11-18 Z2-Z4: rods 26-50 (items.py RODS ruby / emerald / lava / rainbow / galaxy, a glowing gem on the tip and the
+  grip) and the Galaxy chest (crates_v2 TIERS) exported with their families (Rods.fbx 50, Crates.fbx 8; ItemModelData
+  regenerated); art/blender/rod_icons.py renders the 50 rod pictures + our own gold hexagon coin (preview
+  art/preview/rev6_items.png); tools/icons/upload.luau takes a folder (upload_rod_icons.bat). Boards: 3 looks shown
+  (art/preview/rev6_boards.jpg), the developer picked A; WorldBoard rebuilt (pink band title, cream face, wood back).
+  Play: boards at the pen in look A; found and fixed a HudController error (a new local shadowed coin()).

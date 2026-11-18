@@ -153,10 +153,10 @@ local function build()
 		end
 	end)
 	-- 2026-11-18 (revision list 6): a gold Robux coin on it (Config.UIIcons.RobuxCoin, our own picture), once uploaded
-	local coin = (Config.UIIcons :: any).RobuxCoin
+	local robuxCoin = (Config.UIIcons :: any).RobuxCoin
 	local coinIcon = robuxShop:FindFirstChild("Icon")
-	if type(coin) == "number" and coin > 0 and coinIcon and coinIcon:IsA("ImageLabel") then
-		coinIcon.Image = `rbxassetid://{coin}`
+	if type(robuxCoin) == "number" and robuxCoin > 0 and coinIcon and coinIcon:IsA("ImageLabel") then
+		coinIcon.Image = `rbxassetid://{robuxCoin}`
 	end
 
 	-- W3 (revision 3 item 10): Strength, Speed and money big at the bottom left, no panels: a big icon and a

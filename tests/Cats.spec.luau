@@ -65,7 +65,8 @@ check(big >= T[6].SizeMin and big <= T[6].SizeMax, "a rebirthed Secret stays 3-6
 -- R4: weights per player, the 99 Sx cap
 check(CatRules.kgFor(50, 0) == 50, "no rebirth: base kg")
 check(math.abs(CatRules.kgFor(1e6, 2) - 1e6 * Config.Rebirth.KgMult ^ 2) < 1, "x KgMult per rebirth")
-check(CatRules.kgFor(T[6].MaxKg, 25) <= Config.Economy.Max and CatRules.kgFor(T[6].MaxKg, 25) > Config.Economy.Max * 0.9, "top Secret at 25 rebirths is about 99 Sx")
+-- 2026-11-21 (developer): one weight per cat whatever the rebirths (KgMult 1)
+check(CatRules.kgFor(T[6].MaxKg, 25) == T[6].MaxKg and CatRules.kgFor(T[6].MaxKg, 25) <= Config.Economy.Max, "a cat keeps its weight at 25 rebirths")
 check(CatRules.cap(1e30) == Config.Economy.Max, "cap at 99 Sx")
 check(CatRules.income(1, 100) > CatRules.income(1, 1) and CatRules.income(1, 100) < 100 * CatRules.income(1, 1), "income grows slower than weight")
 check(math.abs((CatRules.weightsCost(5, 2) :: number) - (CatRules.weightsCost(5, 0) :: number) * Config.Weights.CostRebirth ^ 2) <= Config.Weights.CostRebirth ^ 2, "weights cost x CostRebirth per rebirth")
@@ -92,7 +93,7 @@ check(CatRules.walkSpeed(100, 2) > CatRules.walkSpeed(100), "like buff makes you
 check(CatRules.zoneOpen(1, 1, 0), "Backyard always open")
 local g2 = Config.World.Zones[2].Strength
 check(not CatRules.zoneOpen(2, g2 - 1, 0) and CatRules.zoneOpen(2, g2, 0) and CatRules.zoneOpen(2, 1, 1), "Market: its Strength or 1 rebirth")
-check(not CatRules.zoneOpen(3, Config.World.Zones[3].Strength, 1) and CatRules.zoneOpen(3, Config.World.Zones[3].Strength * Config.Rebirth.KgMult, 1), "gates x KgMult per rebirth (R4)")
+check(not CatRules.zoneOpen(3, Config.World.Zones[3].Strength - 1, 0) and CatRules.zoneOpen(3, Config.World.Zones[3].Strength * Config.Rebirth.KgMult, 1), "gates x KgMult per rebirth (1 since 2026-11-21: the same Strength every life)")
 
 if failures > 0 then
 	error(`Cats: {failures} failure(s)`)

@@ -926,3 +926,10 @@ gives Secret 10% (Legendary 40 / Mythical 50).
   The 51 image ids were read from the planes' TextureID into shared/RodIcons.luau and Config.UIIcons.RobuxCoin, the
   planes deleted. Play: the hotbar rod picture follows the rod level (1 -> 30), the Shop button shows the gold coin,
   the Galaxy crate opens with its own chest, rod 30 in the hand.
+- 2026-11-21 developer: (1) every cat has one fixed weight, not changing with rebirths; (2) no grey band behind windows.
+  (1) Config.Rebirth.KgMult 3.6 -> 1 (the world no longer gets heavier per rebirth; zone gates the same Strength every
+  life) and MoneyMult 1.5 -> 3 so money keeps its pace: sim end 44h33 (was 45h35), weights 50 at 35h28, rod 50 37h00,
+  Galaxy crate 24h34. Secret cats (5B-100B) can now be caught once Strength gets there, mid game, not only after the
+  last rebirth. Rebirth window's third chip says the gym levels stay; RebirthDone / RebirthGives use the real numbers.
+  (2) Kit.window's backdrop is invisible (still closes the window on a tap outside). Play: a Rose Tutu labelled 712 kg
+  before and after rebirth 1; the backdrop transparent. Crate opening keeps its dark scene (not a window).

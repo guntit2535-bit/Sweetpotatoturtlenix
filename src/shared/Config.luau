@@ -195,7 +195,10 @@ Config.Walk = { Base = 16, Bonus = 9, Scale = 100, Max = 60, Cap = 120, LikeBuff
 -- W5 (revision 3 item 9, option B, docs/economy.md): StrengthMult 3.95 -> 3.8, so the 25 rebirths take ~53 h of active play
 -- 2026-11-18 (revision list 6, option W): StrengthMult 3.8 -> 3.45, so the 25 more gym levels do not shorten the game
 -- (the rebirth need cannot grow faster than x4: rebirth 25 would need more than the 99 Sx cap)
-Config.Rebirth = { Max = 25, MoneyMult = 1.5, StrengthMult = 3.45, SpeedMult = 3.95, KgMult = 3.6,
+-- 2026-11-21 (developer): every cat keeps ONE weight for everyone, whatever the rebirths (KgMult 3.6 -> 1); the money a
+-- rebirth gives goes x1.5 -> x3 instead (cats earned x3.6^0.6 more a life through their weight). Sim: end 44h33 (was 45h35),
+-- weights level 50 at 35h28, rod 50 at 37h00, Galaxy crate first at 24h34.
+Config.Rebirth = { Max = 25, MoneyMult = 3, StrengthMult = 3.45, SpeedMult = 3.95, KgMult = 1,
 	KeepLevels = true, -- X2 (revision 4 item 6, 2026-11-14): a rebirth keeps the weights / treadmill levels (was: back to 1)
 }
 

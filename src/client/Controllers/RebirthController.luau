@@ -54,7 +54,8 @@ local function refresh()
 	local R = Config.Rebirth
 	chips[1].Text = Lang.text("RebirthChipMoney", { m = R.MoneyMult })
 	chips[2].Text = Lang.text("RebirthChipStrength", { m = R.StrengthMult })
-	chips[3].Text = Lang.text("RebirthChipCats", { m = R.KgMult })
+	-- 2026-11-21: cats keep one weight (KgMult 1): the third chip says the gym levels stay instead
+	chips[3].Text = if R.KgMult ~= 1 then Lang.text("RebirthChipCats", { m = R.KgMult }) else Lang.text("RebirthChipLevels")
 	if not n then
 		need.Text = Lang.text("RebirthMax")
 		barFill.Size = UDim2.fromScale(1, 1)

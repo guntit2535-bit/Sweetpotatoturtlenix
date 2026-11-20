@@ -43,7 +43,7 @@ local function onRebirth(player: Player)
 		end
 	end)
 	DataService.SaveAsync(player)
-	Notify.send(player, "RebirthDone", { n = data.Rebirths }, "good")
+	Notify.send(player, "RebirthDone", { n = data.Rebirths, money = Config.Rebirth.MoneyMult, strength = Config.Rebirth.StrengthMult }, "good")
 end
 
 function RebirthService:Init()

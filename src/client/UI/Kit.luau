@@ -474,7 +474,9 @@ function Kit.window(opts: WindowOptions): Window
 	backdrop.Name = "Backdrop"
 	backdrop.Size = UDim2.fromScale(1, 1)
 	backdrop.BackgroundColor3 = C.ink
-	backdrop.BackgroundTransparency = 0.55
+	-- 2026-11-21 (developer): no grey band behind windows any more (PC and phone); it stays as an invisible layer, so a
+	-- tap outside the window still closes it
+	backdrop.BackgroundTransparency = 1
 	backdrop.AutoButtonColor = false
 	backdrop.Text = ""
 	backdrop.Parent = gui

@@ -4,6 +4,7 @@
 local Shared = require("./lib/Shared")
 local Bonus = Shared.require("Bonus")
 local Config = Shared.require("Config")
+local M2 = Config.Rebirth.MoneyMult ^ 2 -- (2026-11-21: x3 a rebirth, was x1.5)
 
 local failures = 0
 local function check(ok: boolean, message: string)
@@ -22,16 +23,16 @@ check(near(Bonus.money(c), 1) and near(Bonus.strength(c), 1) and near(Bonus.luck
 check(not Bonus.easy(c), "no Catnip")
 
 c.rebirths = 2
-check(near(Bonus.money(c), 2.25) and near(Bonus.strength(c), Config.Rebirth.StrengthMult ^ 2), "2 rebirths = money x1.5^2, Strength x StrengthMult^2 (W)")
+check(near(Bonus.money(c), M2) and near(Bonus.strength(c), Config.Rebirth.StrengthMult ^ 2), "2 rebirths = money x MoneyMult^2, Strength x StrengthMult^2")
 c.passes.Cash = true
 c.passes.VIP = true
-check(near(Bonus.money(c), 2.25 * 2 * 1.1), "Cash x2 and VIP +10%")
+check(near(Bonus.money(c), M2 * 2 * 1.1), "Cash x2 and VIP +10%")
 c.boosts.Money = 1200
-check(near(Bonus.money(c), 2.25 * 2 * 1.1 * 2), "Golden Fish x2 while active")
+check(near(Bonus.money(c), M2 * 2 * 1.1 * 2), "Golden Fish x2 while active")
 c.boosts.Money = 900
-check(near(Bonus.money(c), 2.25 * 2 * 1.1), "Golden Fish over")
+check(near(Bonus.money(c), M2 * 2 * 1.1), "Golden Fish over")
 c.bookMoney = 0.05
-check(near(Bonus.money(c), 2.25 * 2 * 1.1 * 1.05), "book bonus")
+check(near(Bonus.money(c), M2 * 2 * 1.1 * 1.05), "book bonus")
 
 local l = Bonus.ctx()
 l.now = 10
